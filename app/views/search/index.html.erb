@@ -1,0 +1,20 @@
+hello there
+
+<%= link_to 'Search Anatomy', :action => "anatomy" %>
+
+<div id="anatomy_search">
+	
+</div>
+	
+<div id="taxonomy_search">
+</div>
+
+<div id="gene_search">
+</div>
+
+<script type="text/javascript">
+	var panel = new TermInfoPanel("anatomy_search");
+	var termInfoDS = new TermInfoPanelDataSource(panel);
+	termInfoDS.loadTerm("/javascripts/dummy_info.js");
+	termInfoDS.loadTerm("/javascripts/dummy_info.js");
+</script>
