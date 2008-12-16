@@ -1,20 +1,76 @@
-hello there
-
-<%= link_to 'Search Anatomy', :action => "anatomy" %>
-
+<div id="term_info"></div>
 <div id="anatomy_search">
-	
+	<form id="anatomy_search_form" action="blah">
+		<input type="hidden" name="termID">
+		<table>
+			<tr>
+				<td>Search anatomy:</td>
+				<td>
+					<div id="entityChoiceGroup">
+						<input type="text" id="entityChoice">
+						<div id="entityComplete"></div>
+					</div>
+				</td>
+				<td>
+					<input type="button" value="Search" onclick="submitAnatomy()">
+				</td>
+			</tr>
+		</table>
+	</form>
 </div>
 	
 <div id="taxonomy_search">
+	<form id="taxonomy_search_form" action="blah">
+		<input type="hidden" name="termID">
+		<table>
+			<tr>
+				<td>Search taxonomy:</td>
+				<td>
+					<div id="taxonChoiceGroup">
+						<input type="text" id="taxonChoice">
+						<div id="taxonComplete"></div>
+					</div>
+				</td>
+				<td>
+					<input type="submit" value="Search">
+				</td>
+			</tr>
+		</table>
+	</form>
 </div>
 
 <div id="gene_search">
 </div>
 
 <script type="text/javascript">
-	var panel = new TermInfoPanel("anatomy_search");
+	var panel = new TermInfoPanel("term_info");
 	var termInfoDS = new TermInfoPanelDataSource(panel);
-	termInfoDS.loadTerm("/javascripts/dummy_info.js");
-	termInfoDS.loadTerm("/javascripts/dummy_info.js");
+	var entityAC = initAutocomplete($("entityChoice"), $("entityComplete"), "TAO");
+	var taxonAC = initAutocomplete($("taxonChoice"), $("taxonComplete"), "TTO");
+	var rollOver = function(event, item) {
+		var acInstance = item[0];
+		var li = item[1];
+		var data = acInstance.getListItemData(li);
+		termInfoDS.loadTerm(HOST + "/OBD-WS/term/" + data[1]);
+		}
+	entityAC.itemMouseOverEvent.subscribe(rollOver);
+	entityAC.itemArrowToEvent.subscribe(rollOver);
+	taxonAC.itemMouseOverEvent.subscribe(rollOver);
+	taxonAC.itemArrowToEvent.subscribe(rollOver);
+	var selectItem = function(form, event, item) {
+		var data = item[2];
+		logDebug(data[1]);
+		logDebug($(form));
+		$(form).termID.value = data[1];
+	}
+	entityAC.itemSelectEvent.subscribe(partial(selectItem, "anatomy_search_form"));
+	
+	
+	function submitAnatomy() {
+		location.href = ("/search/anatomy/" + $("anatomy_search_form").termID.value);
+	}
+	
+	function submitTaxonomy() {
+		location.href = ("/search/taxonomy/" + $("taxonomy_search_form").termID.value);
+	}
 </script>

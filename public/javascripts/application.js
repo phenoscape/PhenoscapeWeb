@@ -2,6 +2,8 @@
 // This file is automatically included by javascript_include_tag :defaults
 
 
+var HOST = "http://localhost";
+
 // class TermInfoPanel
 function TermInfoPanel(divNode) {
     this.div = $(divNode);
@@ -33,7 +35,7 @@ TermInfoPanel.prototype.displayRelationships = function(table, links) {
     replaceChildNodes(table);
     for (var i = 0; i < links.length; i++) {
         var link = links[i];
-        appendChildNodes(table, TR(null, TD({"title":link.id}, link.relation), TD(link.name)));
+        appendChildNodes(table, TR(null, TD(null, link.relation.name), TD({"title":link.target.id}, link.target.name)));
     }
 }
 
@@ -57,4 +59,22 @@ TermInfoPanelDataSource.prototype.loadTerm = function(termURL) {
 
 TermInfoPanelDataSource.prototype.update = function(data) {
     this.panel.setTerm(data);
+}
+
+function initAutocomplete(input, div, ontologyPrefix) {
+	var dataSource = new YAHOO.util.XHRDataSource(HOST + "/OBD-WS/term/search");
+	dataSource.responseSchema = { resultsList:"matches", fields:[{key:"match_text"}, {key:"id"}, {key:"match_type"}] };
+	dataSource.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
+	var autocomplete = new YAHOO.widget.AutoComplete(input, div, dataSource);
+    autocomplete.generateRequest = function(query) {
+        return "?text=" + query + "&ontology=" + ontologyPrefix + "&syn=true";
+    };
+    autocomplete.maxResultsDisplayed = 100;
+    autocomplete.queryDelay = 0.3;
+    autocomplete.minQueryLength = 3;
+    autocomplete.formatResult = function(resultData , query , resultMatch) {
+        var matchType = resultData[2];
+        return resultMatch + ((matchType != "name") ? " <span class=\"match_type\">" + matchType + "</span>" : "");
+    }
+    return autocomplete;
 }
