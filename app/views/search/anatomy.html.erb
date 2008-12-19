@@ -1,2 +1,14 @@
-viewing anatomy search summary for <%=h @term %>
-taxon annotations: <%=h @summary %>
+<p>Phenotypes involving <span class="term-name" title="<%=h @summary["term"]["id"] %>"><%=h @summary["term"]["name"] %></span>, grouped by character attribute.</p>
+
+<table>
+	<tr>
+		<th>Attribute</th><th>Taxon Annotations</th><th>Gene Annotations</th>
+	</tr>
+	<% for attribute in @summary["qualities"] %>
+	<tr>
+		<td><%=h attribute["name"] %></td>
+		<td><%=h attribute["taxon_annotations"]["annotation_count"] %> annotations in <%=h attribute["taxon_annotations"]["taxon_count"]; %> taxa</td>
+		<td><%=h attribute["genotype_annotations"]["annotation_count"] %> annotations in <%=h attribute["genotype_annotations"]["genotype_count"]; %> taxa</td>
+	</tr>
+	<% end %>
+</table>

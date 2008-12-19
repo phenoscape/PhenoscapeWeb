@@ -7,35 +7,43 @@ var HOST = "http://localhost";
 // class TermInfoPanel
 function TermInfoPanel(divNode) {
     this.div = $(divNode);
-    this.nameNode = DIV({"class":"TermInfoPanel.name"});
-    replaceChildNodes(this.div, this.nameNode);
-    var infoTable = TABLE(null);
-    appendChildNodes(this.div, infoTable);
+    this.infoTable = TABLE(null);
+    appendChildNodes(this.div, this.infoTable);
+    this.nameNode = TD({"class":"TermInfoPanel-name", "colspan":"2"});
+    appendChildNodes(this.infoTable, TR(null, this.nameNode));
     this.idNode = TD(null);
-    appendChildNodes(infoTable, TR(null, TD(null, "ID:"), this.idNode));
+    appendChildNodes(this.infoTable, TR(null, TD({"class":"TermInfoPanel-field-label"}, "ID:"), this.idNode));
     this.defNode = TD(null);
-    appendChildNodes(infoTable, TR(null, TD(null, "Definition:"), this.defNode));
-    appendChildNodes(this.div, DIV(null, "Parents"));
-    this.parentsTable = TABLE(null);
-    appendChildNodes(this.div, this.parentsTable);
-    appendChildNodes(this.div, DIV(null, "Children"));
-    this.childrenTable = TABLE(null);
-    appendChildNodes(this.div, this.childrenTable);
+    appendChildNodes(this.infoTable, TR(null, TD({"class":"TermInfoPanel-field-label"}, "Definition:"), this.defNode));
+    this.parentsRow = TR(null, TD({"colspan":"2", "class":"TermInfoPanel-header-label"}, "Parents"));
+    appendChildNodes(this.infoTable, this.parentsRow);
+    this.childrenRow = TR(null, TD({"colspan":"2", "class":"TermInfoPanel-header-label"}, "Children"));
+    appendChildNodes(this.infoTable, this.childrenRow);
 }
 
 TermInfoPanel.prototype.setTerm = function(data) {
     replaceChildNodes(this.nameNode, data.name);
     replaceChildNodes(this.idNode, data.id);
     replaceChildNodes(this.defNode, data.definition);
-    this.displayRelationships(this.parentsTable, data.parents);
-    this.displayRelationships(this.childrenTable, data.children);
+    var rows = this.infoTable.childNodes;
+    for (var i = rows.length; i > 0; i--) {
+        logDebug("At row: " + (i - 1));
+        var child = rows.item(i - 1);
+        if (child == this.parentsRow) {
+            logDebug("We found the parent row");
+            break;
+        }
+        this.infoTable.removeChild(child);
+    }
+    this.displayRelationships(this.infoTable, data.parents);
+    appendChildNodes(this.infoTable, this.childrenRow);
+    this.displayRelationships(this.infoTable, data.children);
 }
 
 TermInfoPanel.prototype.displayRelationships = function(table, links) {
-    replaceChildNodes(table);
     for (var i = 0; i < links.length; i++) {
         var link = links[i];
-        appendChildNodes(table, TR(null, TD(null, link.relation.name), TD({"title":link.target.id}, link.target.name)));
+        appendChildNodes(table, TR(null, TD({"class":"TermInfoPanel-field-label relation_name", "title":link.relation.id}, (link.relation.name ? link.relation.name : link.relation.id) + ":"), TD({"title":link.target.id}, (link.target.name ? link.target.name : link.target.id))));
     }
 }
 
@@ -72,6 +80,7 @@ function initAutocomplete(input, div, ontologyPrefix) {
     autocomplete.maxResultsDisplayed = 100;
     autocomplete.queryDelay = 0.3;
     autocomplete.minQueryLength = 3;
+    autocomplete.forceSelection = true;
     autocomplete.formatResult = function(resultData , query , resultMatch) {
         var matchType = resultData[2];
         return resultMatch + ((matchType != "name") ? " <span class=\"match_type\">" + matchType + "</span>" : "");

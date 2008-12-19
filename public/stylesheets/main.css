@@ -1,8 +1,19 @@
-#term_info {width: 30%; float: right; border: 2px solid green;}
-#term_info td {vertical-align: top;  border: 3px solid red;}
-#entityChoice {border: 3px solid red;}
-#entityChoiceGroup {width: 25em; display: block;}
-
+body {background-color: white;}
+body {padding: 0; margin: 0;}
+body > p {margin: 1em;}
+h1 {background-color: #033; margin-top: 0em;}
+.term-name {font-weight: bold; color: #033;}
+img.top_logo {display: block; margin-left:30px;}
+#term_info {width: 40%; float: right; border: 2px solid #033; margin-right: 1em;}
+.TermInfoPanel-name {font-size: 150%; color: white; background-color: #033;}
+.TermInfoPanel-header-label {color: white; background-color: #033;}
+.TermInfoPanel-field-label {background-color: #6c9; text-align: right;}
+#term_info td {vertical-align: top;}
+#search_fields {width: 45%;}
+.field_label {text-align: right;}
+.relation_name {font-style: italic;}
+td {padding-left: 0.5em;}
+td.or {text-align: center;}
 .match_type {font-size: 75%; font-family: oblique;}
 /* styles for entire widget */
 .yui-ac {
@@ -46,5 +57,5 @@
 
 /* styles for highlighted result item */
 .yui-ac-content li.yui-ac-highlight {
-    background:#426FD9;color:#FFF;
+    background:#033;color:#FFF;
 }

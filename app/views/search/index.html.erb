@@ -1,48 +1,42 @@
+<p>Welcome to the Phenoscape phenotype database for Ostariophysan fishes.</p>
 <div id="term_info"></div>
-<div id="anatomy_search">
-	<form id="anatomy_search_form" action="blah">
-		<input type="hidden" name="termID">
-		<table>
-			<tr>
-				<td>Search anatomy:</td>
-				<td>
-					<div id="entityChoiceGroup">
-						<input type="text" id="entityChoice">
-						<div id="entityComplete"></div>
-					</div>
-				</td>
-				<td>
-					<input type="button" value="Search" onclick="submitAnatomy()">
-				</td>
-			</tr>
-		</table>
-	</form>
-</div>
-	
-<div id="taxonomy_search">
-	<form id="taxonomy_search_form" action="blah">
-		<input type="hidden" name="termID">
-		<table>
-			<tr>
-				<td>Search taxonomy:</td>
-				<td>
-					<div id="taxonChoiceGroup">
-						<input type="text" id="taxonChoice">
-						<div id="taxonComplete"></div>
-					</div>
-				</td>
-				<td>
-					<input type="submit" value="Search">
-				</td>
-			</tr>
-		</table>
-	</form>
-</div>
+<table id="search_fields">
+	<tr id="anatomy_search">
+		<td class="field_label">Search anatomy:</td>
+		<td>
+			<div id="entityChoiceGroup">
+				<input type="text" id="entityChoice">
+				<div id="entityComplete"></div>
+			</div>
+		</td>
+		<td>
+			<input type="button" value="Search" onclick="submitAnatomy()">
+		</td>
+	</tr>
+	<tr>
+		<td class="or" colspan="2">or</td>
+	</tr>
+	<tr id="taxonomy_search">
+		<td class="field_label">Search taxonomy:</td>
+		<td>
+			<div id="taxonChoiceGroup">
+				<input type="text" id="taxonChoice">
+				<div id="taxonComplete"></div>
+			</div>
+		</td>
+		<td>
+			<input type="button" value="Search">
+		</td>
+	</tr>
+</table>
 
 <div id="gene_search">
 </div>
 
 <script type="text/javascript">
+	var selectedAnatomy = {"id":null};
+	var selectedTaxon = {"id":null};
+
 	var panel = new TermInfoPanel("term_info");
 	var termInfoDS = new TermInfoPanelDataSource(panel);
 	var entityAC = initAutocomplete($("entityChoice"), $("entityComplete"), "TAO");
@@ -57,20 +51,20 @@
 	entityAC.itemArrowToEvent.subscribe(rollOver);
 	taxonAC.itemMouseOverEvent.subscribe(rollOver);
 	taxonAC.itemArrowToEvent.subscribe(rollOver);
-	var selectItem = function(form, event, item) {
+	var selectItem = function(storage, event, item) {
 		var data = item[2];
 		logDebug(data[1]);
-		logDebug($(form));
-		$(form).termID.value = data[1];
+		storage.id = data[1];
 	}
-	entityAC.itemSelectEvent.subscribe(partial(selectItem, "anatomy_search_form"));
+	entityAC.itemSelectEvent.subscribe(partial(selectItem, selectedAnatomy));
 	
 	
 	function submitAnatomy() {
-		location.href = ("/search/anatomy/" + $("anatomy_search_form").termID.value);
+		logDebug(selectedAnatomy.name);
+		location.href = ("/search/anatomy/" + selectedAnatomy.id);
 	}
 	
 	function submitTaxonomy() {
-		location.href = ("/search/taxonomy/" + $("taxonomy_search_form").termID.value);
+		location.href = ("/search/taxonomy/" + selectedTaxon.id);
 	}
 </script>
