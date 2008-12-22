@@ -1,14 +1,14 @@
-<p>Phenotypes involving <span class="term-name" title="<%=h @summary["term"]["id"] %>"><%=h @summary["term"]["name"] %></span>, grouped by character attribute.</p>
+<p>Summary of taxon phenotypes involving <span class="term-name" title="<%=h @summary["term"]["id"] %>"><%=h @summary["term"]["name"] %></span>, grouped by character attribute.</p>
 
 <table>
 	<tr>
 		<th>Attribute</th><th>Taxon Annotations</th><th>Gene Annotations</th>
 	</tr>
-	<% for attribute in @summary["qualities"] %>
+	<% for attribute in @summary["attributes"] %>
 	<tr>
 		<td><%=h attribute["name"] %></td>
-		<td><%=h attribute["taxon_annotations"]["annotation_count"] %> annotations in <%=h attribute["taxon_annotations"]["taxon_count"]; %> taxa</td>
-		<td><%=h attribute["genotype_annotations"]["annotation_count"] %> annotations in <%=h attribute["genotype_annotations"]["genotype_count"]; %> taxa</td>
+		<td><a href="/search/phenotypes/anatomy/<%=h @summary["term"]["id"]%>/taxa/<%=h attribute["id"]%>"> <%=h attribute["taxon_annotations"]["annotation_count"] %> annotations</a> in <%=h attribute["taxon_annotations"]["taxon_count"]; %> taxa</td>
+		<td><a href="/search/phenotypes/anatomy/<%=h @summary["term"]["id"]%>/genes/<%=h attribute["id"]%>"><%=h attribute["genotype_annotations"]["annotation_count"] %> annotations</a> in <%=h attribute["genotype_annotations"]["genotype_count"] %> genotypes</td>
 	</tr>
 	<% end %>
 </table>

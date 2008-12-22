@@ -1,6 +1,6 @@
 {
     "term" : {"id" : "TAO:xxxxxxx", "name" : "some anatomical part" },
-    "qualities" : [
+    "attributes" : [
         {
             "id" : "PATO:0001594",
             "name" : "arched",

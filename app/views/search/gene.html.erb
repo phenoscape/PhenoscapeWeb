@@ -1,0 +1,16 @@
+<p>Summary of phenotypes associated with genotype <span class="term-name" title="<%=h @results["term"]["id"] %>"><%=h @results["term"]["name"] %></span>.</p>
+
+<table>
+	<tr>
+		<th>Entity</th><th>Quality</th><th></th>
+	</tr>
+	<% for annotation in @results["annotations"] %>
+	<tr>
+		<td><%=h annotation["entity"]["name"] %></td>
+		<td><%=h annotation["quality"]["name"] %></td>
+		<% anatomy_id = annotation["entity"]["id"]%>
+		<% quality_id = annotation["quality"]["id"]%>
+		<td><a href="/search/phenotypes/anatomy/<%=h anatomy_id %>/taxa/<%=h quality_id %>?attribute=true">Related taxonomic phenotypes</a></td>
+	</tr>
+	<% end %>
+</table>

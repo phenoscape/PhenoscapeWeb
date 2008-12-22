@@ -1,0 +1,14 @@
+<p>Phenotypes involving <span class="term-name" title="<%=h @results["entity"]["id"] %>"><%=h @results["entity"]["name"] %></span>, affecting <span class="term-name" title="<%=h @results["quality"]["id"] %>"><%=h @results["quality"]["name"] %></span></p>
+
+<table class="annotations">
+	<tr>
+		<th>Taxon</th><th>Entity</th><th>Quality</th>
+	</tr>
+	<% for annotation in @results["annotations"]%>
+	<tr>
+		<td><%=h annotation["taxon"]["name"] %></td>
+		<td><%=h annotation["entity"]["name"] %></td>
+		<td><%=h annotation["quality"]["name"] %></td>
+	</tr>
+	<% end %>
+</table>

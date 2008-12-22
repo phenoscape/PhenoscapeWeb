@@ -2,7 +2,7 @@
 // This file is automatically included by javascript_include_tag :defaults
 
 
-var HOST = "http://localhost";
+var HOST = window.location.hostname;
 
 // class TermInfoPanel
 function TermInfoPanel(divNode) {
