@@ -13,8 +13,20 @@
 			<input type="button" value="Search" onclick="submitAnatomy()">
 		</td>
 	</tr>
-	<tr style="display:none;">
+	<tr>
 		<td class="or" colspan="2">or</td>
+	</tr>
+	<tr id="gene_search">
+		<td class="field_label">Search genes:</td>
+		<td>
+			<div id="geneChoiceGroup">
+				<input type="text" id="geneChoice">
+				<div id="geneComplete"></div>
+			</div>
+		</td>
+		<td>
+			<input type="button" value="Search" onclick="submitGene()">
+		</td>
 	</tr>
 	<tr id="taxonomy_search" style="display:none;">
 		<td class="field_label">Search taxonomy:</td>
@@ -35,11 +47,13 @@
 
 <script type="text/javascript">
 	var selectedAnatomy = {"id":null};
+	var selectedGene = {"id":null};
 	var selectedTaxon = {"id":null};
 
 	var panel = new TermInfoPanel("term_info");
 	var termInfoDS = new TermInfoPanelDataSource(panel);
 	var entityAC = initAutocomplete($("entityChoice"), $("entityComplete"), "TAO");
+	var geneAC = initAutocomplete($("geneChoice"), $("geneComplete"), "ZFIN");
 	var taxonAC = initAutocomplete($("taxonChoice"), $("taxonComplete"), "TTO");
 	var rollOver = function(event, item) {
 		var acInstance = item[0];
@@ -57,11 +71,16 @@
 		storage.id = data[1];
 	}
 	entityAC.itemSelectEvent.subscribe(partial(selectItem, selectedAnatomy));
-	
+	geneAC.itemSelectEvent.subscribe(partial(selectItem, selectedGene));
 	
 	function submitAnatomy() {
 		logDebug(selectedAnatomy.name);
 		location.href = ("/search/anatomy/" + selectedAnatomy.id);
+	}
+	
+	function submitGene() {
+		logDebug(selectedGene.name);
+		location.href = ("/search/gene/" + selectedGene.id);
 	}
 	
 	function submitTaxonomy() {

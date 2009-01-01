@@ -7,8 +7,8 @@
 	<% for attribute in @summary["attributes"] %>
 	<tr>
 		<td><%=h attribute["name"] %></td>
-		<td><a href="/search/phenotypes/anatomy/<%=h @summary["term"]["id"]%>/taxa/<%=h attribute["id"]%>"> <%=h attribute["taxon_annotations"]["annotation_count"] %> annotations</a> in <%=h attribute["taxon_annotations"]["taxon_count"]; %> taxa</td>
-		<td><a href="/search/phenotypes/anatomy/<%=h @summary["term"]["id"]%>/genes/<%=h attribute["id"]%>"><%=h attribute["genotype_annotations"]["annotation_count"] %> annotations</a> in <%=h attribute["genotype_annotations"]["genotype_count"] %> genotypes</td>
+		<td><a href="/search/phenotypes/anatomy/<%=h @summary["term"]["id"]%>/taxa/<%=h attribute["id"]%>?attribute=true"> <%=h attribute["taxon_annotations"]["annotation_count"] %> annotations</a> in <%=h attribute["taxon_annotations"]["taxon_count"]; %> taxa</td>
+		<td><a href="/search/phenotypes/anatomy/<%=h @summary["term"]["id"]%>/genes/<%=h attribute["id"]%>?attribute=true"><%=h attribute["genotype_annotations"]["annotation_count"] %> annotations</a> in <%=h attribute["genotype_annotations"]["genotype_count"] %> genotypes</td>
 	</tr>
 	<% end %>
 </table>
