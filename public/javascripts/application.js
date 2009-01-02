@@ -19,6 +19,8 @@ function TermInfoPanel(divNode) {
     appendChildNodes(this.infoTable, this.parentsRow);
     this.childrenRow = TR(null, TD({"colspan":"2", "class":"TermInfoPanel-header-label"}, "Children"));
     appendChildNodes(this.infoTable, this.childrenRow);
+    this.synonymsRow = TR(null, TD({"colspan":"2", "class":"TermInfoPanel-header-label"}, "Synonyms"));
+    this.synonymsDataRow = TR(null, TD({"colspan":"2"}));
 }
 
 TermInfoPanel.prototype.setTerm = function(data) {
@@ -27,10 +29,8 @@ TermInfoPanel.prototype.setTerm = function(data) {
     replaceChildNodes(this.defNode, data.definition);
     var rows = this.infoTable.childNodes;
     for (var i = rows.length; i > 0; i--) {
-        logDebug("At row: " + (i - 1));
         var child = rows.item(i - 1);
         if (child == this.parentsRow) {
-            logDebug("We found the parent row");
             break;
         }
         this.infoTable.removeChild(child);
@@ -38,6 +38,16 @@ TermInfoPanel.prototype.setTerm = function(data) {
     this.displayRelationships(this.infoTable, data.parents);
     appendChildNodes(this.infoTable, this.childrenRow);
     this.displayRelationships(this.infoTable, data.children);
+    appendChildNodes(this.infoTable, this.synonymsRow);
+    appendChildNodes(this.infoTable, this.synonymsDataRow);
+    var synonymsText = "";
+    for (var i = 0; i < data.synonyms.length; i++) {
+        synonymsText  = synonymsText + data.synonyms[i].name;
+        if (i < (data.synonyms.length - 1)) {
+            synonymsText = synonymsText + ", ";
+        }
+    }
+    replaceChildNodes(this.synonymsDataRow, synonymsText);
 }
 
 TermInfoPanel.prototype.displayRelationships = function(table, links) {

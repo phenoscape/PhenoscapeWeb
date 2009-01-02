@@ -61,14 +61,14 @@
 		var data = acInstance.getListItemData(li);
 		termInfoDS.loadTerm(HOST + "/OBD-WS/term/" + data[1]);
 		}
-	entityAC.itemMouseOverEvent.subscribe(rollOver);
-	entityAC.itemArrowToEvent.subscribe(rollOver);
-	taxonAC.itemMouseOverEvent.subscribe(rollOver);
-	taxonAC.itemArrowToEvent.subscribe(rollOver);
+	//entityAC.itemMouseOverEvent.subscribe(rollOver);
+	//entityAC.itemArrowToEvent.subscribe(rollOver);
+	//taxonAC.itemMouseOverEvent.subscribe(rollOver);
+	//taxonAC.itemArrowToEvent.subscribe(rollOver);
 	var selectItem = function(storage, event, item) {
 		var data = item[2];
-		logDebug(data[1]);
 		storage.id = data[1];
+		termInfoDS.loadTerm(HOST + "/OBD-WS/term/" + data[1]);
 	}
 	entityAC.itemSelectEvent.subscribe(partial(selectItem, selectedAnatomy));
 	geneAC.itemSelectEvent.subscribe(partial(selectItem, selectedGene));
