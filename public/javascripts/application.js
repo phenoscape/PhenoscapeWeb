@@ -20,7 +20,8 @@ function TermInfoPanel(divNode) {
     this.childrenRow = TR(null, TD({"colspan":"2", "class":"TermInfoPanel-header-label"}, "Children"));
     appendChildNodes(this.infoTable, this.childrenRow);
     this.synonymsRow = TR(null, TD({"colspan":"2", "class":"TermInfoPanel-header-label"}, "Synonyms"));
-    this.synonymsDataRow = TR(null, TD({"colspan":"2"}));
+    this.synonymsData = TD({"colspan":"2"});
+    this.synonymsDataRow = TR(null, this.synonymsData);
 }
 
 TermInfoPanel.prototype.setTerm = function(data) {
@@ -47,7 +48,7 @@ TermInfoPanel.prototype.setTerm = function(data) {
             synonymsText = synonymsText + ", ";
         }
     }
-    replaceChildNodes(this.synonymsDataRow, synonymsText);
+    replaceChildNodes(this.synonymsData, synonymsText);
 }
 
 TermInfoPanel.prototype.displayRelationships = function(table, links) {

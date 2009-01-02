@@ -27,12 +27,10 @@ class SearchController < ApplicationController
       response = Net::HTTP.get_response("localhost", "/OBD-WS/phenotypes/anatomy/" + params[:id] + "/taxa/" + params[:quality])
       #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_anatomy_results_taxon.js")
       @results = ActiveSupport::JSON.decode(response.body)
-      logger.debug(@results["annotations"][2])
-      logger.debug("The count of annotations is: " + @results["annotations"].length.to_s)
       render(:action => "taxa_phenotypes")
     else
-      #response = Net::HTTP.get_response("localhost", "/OBD-WS/phenotypes/anatomy/" + params[:id] + "/genes/" + params[:quality])
-      response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_anatomy_results_gene.js")
+      response = Net::HTTP.get_response("localhost", "/OBD-WS/phenotypes/anatomy/" + params[:id] + "/genes/" + params[:quality])
+      #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_anatomy_results_gene.js")
       @results = ActiveSupport::JSON.decode(response.body)
       render(:action => "genes_phenotypes")
     end

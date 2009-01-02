@@ -1,6 +1,6 @@
-<p>Phenotypes involving <span class="term-name" title="<%=h @results["entity"]["id"] %>"><%=h @results["entity"]["name"] %></span>, affecting <span class="term-name" title="<%=h @results["quality"]["id"] %>"><%=h @results["quality"]["name"] %></span></p>
+<p>Phenotypes involving <span class="term-name" title="<%=h @results["anatomical_feature"]["id"] %>"><%=h @results["anatomical_feature"]["name"] %></span>, affecting <span class="term-name" title="<%=h @results["quality"]["id"] %>"><%=h @results["quality"]["name"] %></span></p>
 
-<table class="annotations">
+<table class="annotations sortable" id="datatable">
 	<tr>
 		<th>Genotype</th><th>Entity</th><th>Quality</th>
 	</tr>

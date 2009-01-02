@@ -1,4 +1,4 @@
-body {background-color: white;}
+body {background-color: white; font-family: serif;}
 body {padding: 0; margin: 0;}
 body > p {margin: 1em;}
 h1 {background-color: #033; margin-top: 0em;}
@@ -14,8 +14,14 @@ img.top_logo {display: block; margin-left:30px;}
 .relation_name {font-style: italic;}
 td {padding-left: 0.5em;}
 td.or {text-align: center;}
-table.annotations td {border: 2px solid green;}
+table.annotations {border: 2px solid #033;}
+table.annotations th {font-size: 125%; color: white; background-color: #033; text-decoration: none;}
+table.annotations th a {color: white; background-color: #033; text-decoration: none;}
+table.annotations a {color: #033;}
+
 .match_type {font-size: 75%; font-family: oblique;}
+
+
 /* styles for entire widget */
 .yui-ac {
     position:relative; font-size:100%;
@@ -33,7 +39,7 @@ table.annotations td {border: 2px solid green;}
 
 /* styles for header/body/footer wrapper within container */
 .yui-ac-content {
-    position:absolute;width:100%;border:1px solid #808080;background:#fff;overflow:hidden;z-index:9050;
+    position:absolute; width:100%; border:1px solid #808080; background:#fff; overflow:auto; z-index:9050; max-height: 350px; overflow-x:hidden; overflow-y:scroll;
 }
 
 /* styles for container shadow */
