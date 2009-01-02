@@ -27,6 +27,7 @@ class SearchController < ApplicationController
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/anatomy/" + params[:id] + "/taxa/" + params[:quality])
       #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_anatomy_results_taxon.js")
       @results = ActiveSupport::JSON.decode(response.body)
+      logger.info("RESULTS: " + ActiveSupport::JSON.encode(@results))
       render(:action => "taxa_phenotypes")
     else
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/anatomy/" + params[:id] + "/genes/" + params[:quality])
