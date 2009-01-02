@@ -14,7 +14,8 @@ img.top_logo {display: block; margin-left:30px;}
 .relation_name {font-style: italic;}
 td {padding-left: 0.5em;}
 td.or {text-align: center;}
-table.annotations {border: 2px solid #033;}
+tr.odd {background-color: #6c9;}
+table.annotations {border: 2px solid #033; margin-left: auto; margin-right: auto;}
 table.annotations th {font-size: 125%; color: white; background-color: #033; text-decoration: none;}
 table.annotations th a {color: white; background-color: #033; text-decoration: none;}
 table.annotations a {color: #033;}

@@ -68,7 +68,9 @@
 	var selectItem = function(storage, event, item) {
 		var data = item[2];
 		storage.id = data[1];
-		termInfoDS.loadTerm(HOST + "/OBD-WS/term/" + data[1]);
+		if (storage === selectedAnatomy) {
+			termInfoDS.loadTerm(HOST + "/OBD-WS/term/" + data[1]);
+		}
 	}
 	entityAC.itemSelectEvent.subscribe(partial(selectItem, selectedAnatomy));
 	geneAC.itemSelectEvent.subscribe(partial(selectItem, selectedGene));
