@@ -1,14 +1,22 @@
-<p>Summary of phenotypes associated with genotype <span class="term-name" title="<%=h @results["term"]["id"] %>"><%=h @results["term"]["name"] %></span>.</p>
+<p>Summary of phenotypes associated with gene <span class="term-name" title="<%=h @results["gene"]["id"] %>"><%=h @results["gene"]["name"] %></span>.</p>
 
-<table>
+<table class="annotations sortable" id="datatable">
 	<tr>
-		<th>Entity</th><th>Quality</th><th></th>
+		<th>Entity</th><th>Quality</th><th>Genotypes</th><th>Taxonomic Phenotypes</th>
 	</tr>
 	<% for annotation in @results["annotations"] %>
 	<tr>
 		<td><%=h annotation["entity"]["name"] %></td>
 		<td><%=h annotation["quality"]["name"] %></td>
-		<% anatomy_id = annotation["entity"]["id"]%>
+		<td>
+			<% genotype_list = ""%>
+			<% for genotype in annotation["genotypes"] %>
+				<% genotype_list += (genotype["name"] + ",") if genotype.has_key? "name" %>
+			<% end %>
+			<% genotype_list[-1] = "" if genotype_list.length > 0%>
+			<%= genotype_list %>
+		</td>
+		<% anatomy_id = annotation["teleost_entity"]["id"]%>
 		<% quality_id = annotation["quality"]["id"]%>
 		<td><a href="/search/phenotypes/anatomy/<%=h anatomy_id %>/taxa/<%=h quality_id %>?attribute=true">Related taxonomic phenotypes</a></td>
 	</tr>
