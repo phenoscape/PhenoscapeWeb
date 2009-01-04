@@ -1,3 +1,9 @@
+<% if @results["annotations"].empty? %>
+
+<h2>No phenotypes were found involving <span class="term-name" title="<%=h @results["anatomical_feature"]["id"] %>"><%=h @results["anatomical_feature"]["name"] %></span>, affecting <span class="term-name" title="<%=h @results["quality"]["id"] %>"><%=h @results["quality"]["name"] %></span>.</h2>
+
+<% else %>
+
 <p>Phenotypes involving <span class="term-name" title="<%=h @results["anatomical_feature"]["id"] %>"><%=h @results["anatomical_feature"]["name"] %></span>, affecting <span class="term-name" title="<%=h @results["quality"]["id"] %>"><%=h @results["quality"]["name"] %></span></p>
 
 <table class="annotations sortable" id="datatable">
@@ -12,3 +18,5 @@
 	</tr>
 	<% end %>
 </table>
+
+<% end %>
