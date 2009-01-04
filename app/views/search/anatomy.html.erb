@@ -1,4 +1,9 @@
-<p>Summary of taxon phenotypes involving <span class="term-name" title="<%=h @summary["term"]["id"] %>"><%=h @summary["term"]["name"] %></span>, grouped by character attribute.</p>
+<% if @summary["attributes"].empty? %>
+
+<h2>No phenotypes were found involving <span class="term-name" title="<%=h @summary["term"]["id"] %>"><%=h @summary["term"]["name"] %></span>.</h2>
+
+<% else %>
+<h2>Summary of phenotypes involving <span class="term-name" title="<%=h @summary["term"]["id"] %>"><%=h @summary["term"]["name"] %></span>, grouped by character attribute.</h2>
 
 <table class="annotations sortable" id="datatable">
 	<tr>
@@ -7,8 +12,22 @@
 	<% for attribute in @summary["attributes"] %>
 	<tr>
 		<td><%=h attribute["name"] %></td>
-		<td><a href="/search/phenotypes/anatomy/<%=h @summary["term"]["id"]%>/taxa/<%=h attribute["id"]%>?attribute=true"> <%=h attribute["taxon_annotations"]["annotation_count"] %> annotations</a> in <%=h attribute["taxon_annotations"]["taxon_count"]; %> taxa</td>
-		<td><a href="/search/phenotypes/anatomy/<%=h @summary["term"]["id"]%>/genes/<%=h attribute["id"]%>?attribute=true"><%=h attribute["genotype_annotations"]["annotation_count"] %> annotations</a> in <%=h attribute["genotype_annotations"]["genotype_count"] %> genotypes</td>
+		<td>
+			<% if attribute["taxon_annotations"]["taxon_count"] > 0 %>
+				<a href="/search/phenotypes/anatomy/<%=h @summary["term"]["id"]%>/taxa/<%=h attribute["id"]%>?attribute=true"> <%=h attribute["taxon_annotations"]["annotation_count"] %> annotations</a> in <%=h attribute["taxon_annotations"]["taxon_count"]; %> taxa
+			<% else %>
+				None
+			<% end %>
+		</td>
+		<td>
+			<% if attribute["genotype_annotations"]["genotype_count"] > 0 %>
+				<a href="/search/phenotypes/anatomy/<%=h @summary["term"]["id"]%>/genes/<%=h attribute["id"]%>?attribute=true"><%=h attribute["genotype_annotations"]["annotation_count"] %> annotations</a> in <%=h attribute["genotype_annotations"]["genotype_count"] %> genotypes
+			<% else %>
+				None
+			<% end %>
+		</td>
 	</tr>
 	<% end %>
 </table>
+
+<% end %>

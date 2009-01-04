@@ -1,0 +1,19 @@
+<h2>The server took too long to find phenotypes involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</h2>
+	
+<% if @term_info["children"].empty? %>
+	
+<p>We are working on performance improvements to the database.  Please try again later.</p>
+<p><a href="/search">Return to the search page.</a></p>
+
+<% else %>
+
+<p>You may want to try a narrower search.  More specific terms related to <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span> are linked below.</p>
+<ul>
+	<% for child_term in @term_info["children"] %>
+	<li>
+		<a href="/search/anatomy/<%=h child_term["target"]["id"]%>"><%=h child_term["target"]["name"] %></a>
+	</li>
+	<% end %>
+</ul>
+
+<% end %>

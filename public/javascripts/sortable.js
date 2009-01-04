@@ -9,10 +9,10 @@ Version 1.5.7
 */
 
 /* You can change these values */
-var image_path = "http://www.joostdevalk.nl/code/sortable-table/";
-var image_up = "arrow-up.gif";
-var image_down = "arrow-down.gif";
-var image_none = "arrow-none.gif";
+var image_path = "http://" + window.location.hostname + "/images/";
+var image_up = "up.png";
+var image_down = "down.png";
+var image_none = "pixel.png";
 var europeandate = false;
 var alternate_row_colors = true;
 

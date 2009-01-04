@@ -1,9 +1,12 @@
 body {background-color: white; font-family: serif;}
 body {padding: 0; margin: 0;}
 body > p {margin: 1em;}
-h1 {background-color: #033; margin-top: 0em;}
+h1 {background-color: #033; margin-top: 0em; padding: 0;}
+h2 {margin-left: 20px; margin-right: 20px;}
+h1 a {display: block; margin: 0; padding: 0;}
+a {color: #033;}
 .term-name {font-weight: bold; color: #033;}
-img.top_logo {display: block; margin-left:30px;}
+img.top_logo {display: block; margin: 0; margin-left:30px; padding: 0;}
 #term_info {width: 40%; float: right; border: 2px solid #033; margin-right: 1em;}
 .TermInfoPanel-name {font-size: 150%; color: white; background-color: #033;}
 .TermInfoPanel-header-label {color: white; background-color: #033;}
@@ -15,12 +18,13 @@ img.top_logo {display: block; margin-left:30px;}
 td {padding-left: 0.5em;}
 td.or {text-align: center;}
 tr.odd {background-color: #6c9;}
-table.annotations {border: 2px solid #033; margin-left: auto; margin-right: auto;}
+table.annotations {border: 2px solid #033; margin-left: 20px; margin-right: 20px;}
 table.annotations th {font-size: 125%; color: white; background-color: #033; text-decoration: none;}
 table.annotations th a {color: white; background-color: #033; text-decoration: none;}
-table.annotations a {color: #033;}
 
 .match_type {font-size: 75%; font-family: oblique;}
+
+.sortarrow img {border: none;}
 
 
 /* styles for entire widget */
