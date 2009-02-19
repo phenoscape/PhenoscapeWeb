@@ -25,7 +25,7 @@
 		<td><span class="term-name" title="<%=h phenotype["entity"]["id"] %>"><%=h phenotype["entity"]["name"] %></span> <span class="term-name" title="<%=h phenotype["quality"]["id"] %>"><%=h phenotype["quality"]["name"] %></span></td>
 		<td>
 			<% if phenotype["taxon_annotations"]["taxon_count"] > 0 %>
-				<%=h phenotype["taxon_annotations"]["annotation_count"] %> phenotypes (<%=h phenotype["taxon_annotations"]["taxon_count"]; %> taxa)
+				<a href="/search/phenotypes/anatomy/TAO:12345/taxa/PATO:12345"><%=h phenotype["taxon_annotations"]["annotation_count"] %> phenotypes (<%=h phenotype["taxon_annotations"]["taxon_count"]; %> taxa</a>)
 			<% else %>
 				None
 			<% end %>
