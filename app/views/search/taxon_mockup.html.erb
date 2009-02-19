@@ -1,0 +1,39 @@
+<% summary = taxon_mockup_data %>
+
+<table style="width: 100%;">
+	<tr><td colspan="2" class="TermInfoPanel-name"><%=h summary["term"]["name"]%></td></tr>
+	<tr><td class="TermInfoPanel-field-label">ID:</td><td><%=h summary["term"]["id"]%></td></tr>
+	<tr><td class="TermInfoPanel-field-label">Synonyms:</td><td><%=h summary["term"]["synonyms"].join(", ")%></td></tr>
+	<tr><td class="TermInfoPanel-header-label" colspan="2">Parents</td></tr>
+	<tr><td title="OBO_REL:is_a" class="TermInfoPanel-field-label relation_name">is_a:</td><td title="TTO:10930"><a href="">Ictaluridae</a></td></tr>
+	<tr><td class="TermInfoPanel-header-label" colspan="2">Children</td></tr>
+	<tr><td title="OBO_REL:is_a" class="TermInfoPanel-field-label relation_name">is_a:</td><td title="TTO:1054206"><a href="">Ictalurus punctatus</a></td></tr>
+	<tr><td title="OBO_REL:is_a" class="TermInfoPanel-field-label relation_name">is_a:</td><td title="TTO:1004547"><a href="">Ictalurus furcatus</a></td></tr>
+	<tr><td title="OBO_REL:is_a" class="TermInfoPanel-field-label relation_name">is_a:</td><td title="TTO:1004548"><a href="">Ictalurus lupus</a></td></tr>
+</table>
+
+<div style="margin-top: 1em; margin-bottom: 0.5em;" class="TermInfoPanel-name">Phenotypes</div>
+<table class="annotations sortable" id="datatable">
+	<tr>
+		<th>Phenotypes</th><th><span class="term-name" title="<%=h summary["term"]["id"] %>"><%=h summary["term"]["name"] %></span> Evolutionary Data</th><th>Matching Model Organism Data</th>
+	</tr>
+	<% for phenotype in summary["phenotypes"] %>
+	<tr>
+		<td><span class="term-name" title="<%=h phenotype["entity"]["id"] %>"><%=h phenotype["entity"]["name"] %></span> <span class="term-name" title="<%=h phenotype["quality"]["id"] %>"><%=h phenotype["quality"]["name"] %></span></td>
+		<td>
+			<% if phenotype["taxon_annotations"]["taxon_count"] > 0 %>
+				<%=h phenotype["taxon_annotations"]["annotation_count"] %> phenotypes (<%=h phenotype["taxon_annotations"]["taxon_count"]; %> taxa)
+			<% else %>
+				None
+			<% end %>
+		</td>
+		<td>
+			<% if phenotype["gene_annotations"]["gene_count"] > 0 %>
+				<%=h phenotype["gene_annotations"]["annotation_count"] %> phenotypes (<%=h phenotype["gene_annotations"]["gene_count"] %> genes)
+			<% else %>
+				None
+			<% end %>
+		</td>
+	</tr>
+	<% end %>
+</table>

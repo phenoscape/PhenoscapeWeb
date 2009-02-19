@@ -1,0 +1,46 @@
+<% summary = anatomy_mockup_data %>
+
+<table style="width: 100%;">
+	<tr><td colspan="2" class="TermInfoPanel-name">basihyal bone</td></tr>
+	<tr><td class="TermInfoPanel-field-label">ID:</td><td>TAO:0000316</td></tr><tr><td class="TermInfoPanel-field-label">Synonyms:</td><td>glossohyal, basihyoid</td></tr><tr><td class="TermInfoPanel-field-label">Definition:</td><td>Endochondral bone that is the median and anteriorly projecting element of the ventral hyoid arch.</td></tr><tr><td class="TermInfoPanel-header-label" colspan="2">Parents</td></tr><tr><td title="OBO_REL:is_a" class="TermInfoPanel-field-label relation_name">is_a:</td><td title="TAO:0001591"><a href="">endochondral bone</a></td></tr><tr><td title="part_of" class="TermInfoPanel-field-label relation_name">part_of:</td><td title="TAO:0001402"><a href="">ventral hyoid arch</a></td></tr><tr><td title="develops_from" class="TermInfoPanel-field-label relation_name">develops from:</td><td title="TAO:0001510"><a href="">basihyal cartilage</a></td></tr><tr><td class="TermInfoPanel-header-label" colspan="2">Children</td></tr></table>
+
+<% if summary["attributes"].empty? %>
+
+<h2>No phenotypes were found involving <span class="term-name" title="<%=h summary["term"]["id"] %>"><%=h summary["term"]["name"] %></span>.</h2>
+
+<% else %>
+
+<div style="margin-top: 1em; margin-bottom: 0.5em;" class="TermInfoPanel-name">Phenotypes</div>
+<table class="annotations sortable" id="datatable">
+	<tr>
+		<th><span class="term-name" title="<%=h summary["term"]["id"] %>"><%=h summary["term"]["name"] %></span> Phenotype</th><th>Model Organism Data</th><th>Evolutionary Data</th>
+	</tr>
+	<% for attribute in summary["attributes"] %>
+	<tr>
+		<td>
+			<span class="term-name" title="<%=h attribute["id"] %>"><%=h attribute["name"] %></span>
+			<ul>
+				<% for value in attribute["values"] %>
+				<li><span class="term-name" title="<%=h value["id"] %>"><%=h value["name"] %></span></li>
+				<% end %>
+			</ul>
+		</td>
+		<td>
+			<% if attribute["gene_annotations"]["gene_count"] > 0 %>
+				<a href="/search/phenotypes/anatomy/<%=h summary["term"]["id"]%>/genes/<%=h attribute["id"]%>?attribute=true"><%=h attribute["gene_annotations"]["annotation_count"] %> phenotypes</a> (<%=h attribute["gene_annotations"]["gene_count"] %> genes)
+			<% else %>
+				None
+			<% end %>
+		</td>
+		<td>
+			<% if attribute["taxon_annotations"]["taxon_count"] > 0 %>
+				<a href="/search/phenotypes/anatomy/<%=h summary["term"]["id"]%>/taxa/<%=h attribute["id"]%>?attribute=true"> <%=h attribute["taxon_annotations"]["annotation_count"] %> phenotypes</a> (<%=h attribute["taxon_annotations"]["taxon_count"]; %> taxa)
+			<% else %>
+				None
+			<% end %>
+		</td>
+	</tr>
+	<% end %>
+</table>
+
+<% end %>

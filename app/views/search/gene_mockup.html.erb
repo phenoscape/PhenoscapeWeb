@@ -1,0 +1,35 @@
+<% results = gene_mockup_data %>
+
+<% if results["phenotypes"].empty? %>
+
+<h2>No phenotypes were found associated with gene <span class="term-name" title="<%=h results["gene"]["id"] %>"><%=h results["gene"]["name"] %></span>.</h2>
+
+<% else %>
+
+<h2>Gene <span class="term-name" title="<%=h results["gene"]["id"] %>"><%=h results["gene"]["name"] %></span></h2>
+
+<p><a href="http://zfin.org/cgi-bin/webdriver?MIval=aa-markerview.apg&amp;OID=<%= results["gene"]["id"][5..-1] %>">View this gene at ZFIN</a></p>
+
+<table class="annotations sortable" id="datatable">
+	<tr>
+		<th>Zebrafish Phenotypes</th><th>Zebrafish Genes With Matching Phenotypes</th><th>Taxa With Matching Phenotypes</th>
+	</tr>
+	<% for phenotype in results["phenotypes"] %>
+	<tr>
+		<td>
+			<span class="term-name" title="<%=h phenotype["entity"]["id"] %>"><%=h phenotype["entity"]["name"] %></span> <span class="term-name" title="<%=h phenotype["attribute"]["id"] %>"><%=h phenotype["attribute"]["name"] %></span>
+			<ul>
+				<% for value in phenotype["values"] %>
+				<li><span class="term-name" title="<%=h value["id"] %>"><%=h value["name"] %></span></li>
+				<% end %>
+			</ul>
+		</td>
+		<td><%=h phenotype["related_genes"].length %></td>
+		<td><%=h phenotype["related_taxa"].length %></td>
+	</tr>
+	<% end %>
+</table>
+
+<p class="data-download"><a href="/OBD-WS/phenotypes/summary/gene/<%=h results["gene"]["id"] %>">Download these results directly in JSON format.</a></p>
+
+<% end %>

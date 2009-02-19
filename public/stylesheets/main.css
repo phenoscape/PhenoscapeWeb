@@ -1,4 +1,4 @@
-body {background-color: white; font-family: serif;}
+body {background-color: white; font-family: sans-serif;}
 body {padding: 0; margin: 0;}
 body > p {margin: 1em;}
 h1 {background-color: #033; margin-top: 0em; padding: 0;}
@@ -18,7 +18,7 @@ img.top_logo {display: block; margin: 0; margin-left:30px; padding: 0;}
 td {padding-left: 0.5em;}
 td.or {text-align: center;}
 tr.odd {background-color: #6c9;}
-table.annotations {border: 2px solid #033; margin-left: 20px; margin-right: 20px;}
+table.annotations {border: 2px solid #033; width: 100%;}
 table.annotations th {font-size: 125%; color: white; background-color: #033; text-decoration: none;}
 table.annotations th a {color: white; background-color: #033; text-decoration: none;}
 
