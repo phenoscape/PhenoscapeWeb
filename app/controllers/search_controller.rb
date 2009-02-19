@@ -57,6 +57,10 @@ class SearchController < ApplicationController
         #logger.info("RESULTS: " + ActiveSupport::JSON.encode(@results))
         render(:action => "taxa_phenotypes")
       else
+        ##mockup##
+        render(:action => "taxa_phenotypes_mockup")
+        return
+        ##mockup##
         response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/anatomy/" + params[:id] + "/genes/" + params[:quality])
         #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_anatomy_results_gene.js")
         @results = ActiveSupport::JSON.decode(response.body)

@@ -5,6 +5,7 @@
 	<tr><td class="TermInfoPanel-field-label" style="width: 10em;">Included taxa:</td><td>
 <%=h (results["included_taxa"].collect {|item| item["name"]}).join(", ")%> <button type="button">Add</button></td></tr>
 	<tr><td class="TermInfoPanel-field-label" style="width: 10em;">Included characters:</td><td><%=h (results["included_characters"].collect {|item| item["entity"]["name"] + " " + item["quality"]["name"]}).join(", ")%> <button type="button">Add</button></td></tr>
+	<tr><td class="TermInfoPanel-field-label" style="width: 10em;">Included publications:</td><td><i>All</i> <button type="button">Add</button></td></tr>
 </table>
 
 <table style="margin-top: 2em;" class="annotations sortable" id="datatable">

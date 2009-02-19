@@ -24,8 +24,8 @@
 				<% end %>
 			</ul>
 		</td>
-		<td><%=h phenotype["related_genes"].length %></td>
-		<td><%=h phenotype["related_taxa"].length %></td>
+		<td><a href="/search/phenotypes/anatomy/TAO:12345/taxa/PATO:12345"><%=h truncate_list((phenotype["related_genes"].collect {|item| item["name"]}), 4) %></a></td>
+		<td><a href="/search/phenotypes/anatomy/TAO:12345/taxa/PATO:12345"><%=h truncate_list((phenotype["related_taxa"].collect {|item| item["name"]}), 4) %></a></td>
 	</tr>
 	<% end %>
 </table>

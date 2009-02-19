@@ -89,7 +89,14 @@ module SearchHelper
           ],
           "related_taxa" => [
               {"id" => "TTO:222222", "name" => "Ictalurus punctatus"},
-              {"id" => "TTO:222222", "name" => "Danio rerio"}
+              {"id" => "TTO:222222", "name" => "Danio rerio"},
+              {"id" => "TTO:222222", "name" => "Ictalurus punctatus"},
+              {"id" => "TTO:222222", "name" => "Ictalurus punctatus"},
+              {"id" => "TTO:222222", "name" => "Ictalurus punctatus"},
+              {"id" => "TTO:222222", "name" => "Ictalurus punctatus"},
+              {"id" => "TTO:222222", "name" => "Ictalurus punctatus"},
+              {"id" => "TTO:222222", "name" => "Ictalurus punctatus"},
+              {"id" => "TTO:222222", "name" => "Ictalurus punctatus"}
           ]
         }
       ]
@@ -217,6 +224,14 @@ module SearchHelper
         }
         ]
     }
+  end
+  
+  def truncate_list(list, length)
+    if list.length <= length
+      return list.join(", ")
+    else
+      list[0..(length - 1)].join(", ") + (" ...and %d more" % (list.length - length))
+    end
   end
   
 end
