@@ -6,7 +6,8 @@
 
 <% else %>
 
-<h2>Gene <span class="term-name" title="<%=h results["gene"]["id"] %>"><%=h results["gene"]["name"] %></span></h2>
+<h2>Gene name: <span class="term-name" title="<%=h results["gene"]["id"] %>">bromodomain and PHD finger containing, 1</span></h2>
+<h2>Gene symbol: <span class="term-name" title="<%=h results["gene"]["id"] %>"><%=h results["gene"]["name"] %></span></h2>
 
 <p><a href="http://zfin.org/cgi-bin/webdriver?MIval=aa-markerview.apg&amp;OID=<%= results["gene"]["id"][5..-1] %>">View this gene at ZFIN</a></p>
 

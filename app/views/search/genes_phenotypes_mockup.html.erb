@@ -1,34 +1,32 @@
-<% if @quality == "ictalurus" %>
-<% results = taxon_phenotypes_mockup_data_ictalurus %>
+<% if @quality == "PATO:brpf1" %>
+<% results = genes_phenotypes_mockup_data_brpf1 %>
 <% else %>
-<% results = taxon_phenotypes_mockup_data %>
+<% results = genes_phenotypes_mockup_data %>
 <% end %>
 
-
 <table style="width: 100%;">
-	<tr><td colspan="2" class="TermInfoPanel-name">Evolutionary Phenotypes</td></tr>
-	<tr><td class="TermInfoPanel-field-label" style="width: 10em;">Included taxa:</td><td>
-		<% if results["included_taxa"].length == 0 %>
+	<tr><td colspan="2" class="TermInfoPanel-name">Model Organism Phenotypes</td></tr>
+	<tr><td class="TermInfoPanel-field-label" style="width: 10em;">Included genes:</td><td>
+		<% if results["included_genes"].length == 0 %>
 		<i>All</i>
 		<% else %>
-<%=h (results["included_taxa"].collect {|item| item["name"]}).join(", ")%>
+<%=h (results["included_genes"].collect {|item| item["name"]}).join(", ")%>
 		<% end %>
  <button type="button">Add</button></td></tr>
 	<tr><td class="TermInfoPanel-field-label" style="width: 10em;">Included characters:</td><td><%=h (results["included_characters"].collect {|item| item["entity"]["name"] + " " + item["quality"]["name"]}).join(", ")%> <button type="button">Add</button></td></tr>
-	<tr><td class="TermInfoPanel-field-label" style="width: 10em;">Included publications:</td><td><i>All</i> <button type="button">Add</button></td></tr>
 </table>
 
 <table style="margin-top: 2em;" class="annotations sortable" id="datatable">
 	<tr>
-		<th>Taxon</th>
+		<th>Gene</th>
 		<% for character in results["characters"] %>
 		<th><span class="term-name" title="<%=h character["entity"]["id"] %>"><%=h character["entity"]["name"] %></span> <span class="term-name" title="<%=h character["quality"]["id"] %>"><%=h character["quality"]["name"] %></span></th>
 		<% end %>
 	</tr>
-	<% for taxon in results["taxa"] %>
+	<% for gene in results["genes"] %>
 	<tr>
-		<th><span style="color:white;" class="term-name" title="<%=h taxon["id"] %>"><%=h taxon["name"] %></span></th>
-		<% for values in taxon["value-list"]%>
+		<th><a href="/search/gene/<%=h gene["id"]%>"><span style="color:white;" class="term-name" title="<%=h gene["id"] %>"><%=h gene["name"] %></span></a></th>
+		<% for values in gene["value-list"]%>
 		<td>
 		<ul>
 			<% for state in values%>

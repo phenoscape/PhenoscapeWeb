@@ -1,36 +1,41 @@
-<% if @results["annotations"].empty? %>
+<% if @summary["characters"].empty? %>
 
-<h2>No phenotypes were found associated with gene <span class="term-name" title="<%=h @results["gene"]["id"] %>"><%=h @results["gene"]["name"] %></span>.</h2>
+<h2>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</h2>
 
 <% else %>
+<h2><span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h2>
+<p><i>Term Info</i></p>
 
-<h2>Summary of phenotypes associated with gene <span class="term-name" title="<%=h @results["gene"]["id"] %>"><%=h @results["gene"]["name"] %></span>.</h2>
+<h2>Publications</h2>
+<p><i>Not yet implemented.</i></p>
 
-<p><a href="http://zfin.org/cgi-bin/webdriver?MIval=aa-markerview.apg&amp;OID=<%= @results["gene"]["id"][5..-1] %>">View this gene at ZFIN</a></p>
-
+<h2>Phenotypes</h2>
 <table class="annotations sortable" id="datatable">
 	<tr>
-		<th>Entity</th><th>Quality</th><th>Genotypes</th><th>Taxonomic Phenotypes</th>
+		<th>Anatomy</th><th>Quality</th><th>Zebrafish Data</th><th>Evolutionary Data</th>
 	</tr>
-	<% for annotation in @results["annotations"] %>
+	<% for character in @summary["characters"] %>
 	<tr>
-		<td><%=h annotation["entity"]["name"] %></td>
-		<td><%=h annotation["quality"]["name"] %></td>
-		<td>
-			<% genotype_list = ""%>
-			<% for genotype in annotation["genotypes"] %>
-				<% genotype_list += (genotype["name"] + ", ") if genotype.has_key? "name" %>
-			<% end %>
-			<% genotype_list[-2] = "" if genotype_list.length > 0%>
-			<%= genotype_list %>
+		<td><%=h character["entity"]["name"] %></td>
+		<td><%=h character["character_quality"]["name"] %><br>Values include: 
+			<%=h (character["qualities"]["examples"].collect {|item| item["name"]}).join(", ") %> and <%=h character["qualities"]["count"] - @examples_length %> more
 		</td>
-		<% anatomy_id = annotation["teleost_entity"]["id"]%>
-		<% quality_id = annotation["quality"]["id"]%>
-		<td><a href="/search/phenotypes/anatomy/<%=h anatomy_id %>/taxa/<%=h quality_id %>?attribute=true">Related taxonomic phenotypes</a></td>
+		<td>
+			<% if character["genes"]["count"] > 0 %>
+				<a href="/search/phenotypes/anatomy/<%=h @term_info["id"]%>/genes/<%=h character["id"]%>?attribute=true"><%=h character["genes"]["count"] %> genes
+			<% else %>
+				None
+			<% end %>
+		</td>
+		<td>
+			<% if character["taxa"]["count"] > 0 %>
+				<a href="/search/phenotypes/anatomy/<%=h @term_info["id"]%>/taxa/<%=h character["id"]%>?attribute=true"> <%=h character["taxa"]["count"] %> taxa
+			<% else %>
+				None
+			<% end %>
+		</td>
 	</tr>
 	<% end %>
 </table>
-
-<p class="data-download"><a href="/OBD-WS/phenotypes/summary/gene/<%=h @results["gene"]["id"] %>">Download these results directly in JSON format.</a></p>
 
 <% end %>

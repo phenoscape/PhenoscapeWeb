@@ -18,21 +18,21 @@
 <div style="margin-top: 1em; margin-bottom: 0.5em;" class="TermInfoPanel-name">Phenotypes</div>
 <table class="annotations sortable" id="datatable">
 	<tr>
-		<th>Phenotypes</th><th><span class="term-name" title="<%=h summary["term"]["id"] %>"><%=h summary["term"]["name"] %></span> Evolutionary Data</th><th>Matching Model Organism Data</th>
+		<th>Phenotypes</th><th><span class="term-name" title="<%=h summary["term"]["id"] %>"><%=h summary["term"]["name"] %></span> Evolutionary Data</th><th>Matching Zebrafish Data</th>
 	</tr>
 	<% for phenotype in summary["phenotypes"] %>
 	<tr>
 		<td><span class="term-name" title="<%=h phenotype["entity"]["id"] %>"><%=h phenotype["entity"]["name"] %></span> <span class="term-name" title="<%=h phenotype["quality"]["id"] %>"><%=h phenotype["quality"]["name"] %></span></td>
 		<td>
 			<% if phenotype["taxon_annotations"]["taxon_count"] > 0 %>
-				<a href="/search/phenotypes/anatomy/TAO:12345/taxa/PATO:12345"><%=h phenotype["taxon_annotations"]["annotation_count"] %> phenotypes (<%=h phenotype["taxon_annotations"]["taxon_count"]; %> taxa</a>)
+				<a href="/search/phenotypes/anatomy/TAO:12345/taxa/ictalurus"><%=h phenotype["taxon_annotations"]["annotation_count"] %> phenotypes (<%=h phenotype["taxon_annotations"]["taxon_count"]; %> taxa</a>)
 			<% else %>
 				None
 			<% end %>
 		</td>
 		<td>
 			<% if phenotype["gene_annotations"]["gene_count"] > 0 %>
-				<%=h phenotype["gene_annotations"]["annotation_count"] %> phenotypes (<%=h phenotype["gene_annotations"]["gene_count"] %> genes)
+				<a href="/search/phenotypes/anatomy/TAO:12345/genes/PATO:brpf1"><%=h phenotype["gene_annotations"]["annotation_count"] %> phenotypes (<%=h phenotype["gene_annotations"]["gene_count"] %> genes)</a>
 			<% else %>
 				None
 			<% end %>

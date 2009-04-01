@@ -2,8 +2,17 @@ module SearchHelper
   
   def anatomy_mockup_data
     return {
-      "term" => {"id" => "TAO:12345", "name" => "basihyal bone"},
+      "term" => {"id" => "TAO:12345", "name" => "bone"},
       "attributes" => [
+        {"id" => "PATO:12345", 
+          "name" => "count in organism", 
+          "values" => [ 
+              {"id" => "PATO:12345", "name" => "absent from organism"}, 
+              {"id" => "PATO:12345", "name" => "present in normal numbers in organism"}
+          ],
+          "taxon_annotations" => {"taxon_count" => 4, "annotation_count" => 4},
+          "gene_annotations" => {"gene_count" => 3, "annotation_count" => 5}
+        },
         {"id" => "PATO:12345", 
           "name" => "shape", 
           "values" => [ 
@@ -39,13 +48,41 @@ module SearchHelper
   
   def gene_mockup_data
     return {
-      "gene" => {"id" => "ZFIN:ZDB-GENE-990712-18", "name" => "eya1"},
+      "gene" => {"id" => "ZFIN:ZDB-GENE-040426-731", "name" => "brpf1"},
       "phenotypes" => [
         {
           "entity" => {"id" => "TAO:12345", "name" => "basihyal bone"},
+          "attribute" => {"id" => "PATO:12345", "name" => "count in organism"}, 
+          "values" => [ 
+              {"id" => "PATO:12345", "name" => "absent from organism"}, 
+              {"id" => "PATO:12345", "name" => "present in organism"}
+          ],
+          "related_genes" => [
+          ],
+          "related_taxa" => [
+              {
+                 "id" => "TTO:101020",
+                  "name" => "Ictalurus punctatus"
+              },
+              {
+                 "id" => "TTO:101020",
+                  "name" => "Ictalurus furcatus"
+              },
+              {
+                 "id" => "TTO:101020",
+                  "name" => "Ictalurus lupus"
+              },
+              {
+                 "id" => "TTO:101020",
+                  "name" => "Astyanax validus"
+              }
+          ]
+        },
+        {
+          "entity" => {"id" => "TAO:12345", "name" => "ceratohyal bone"},
           "attribute" => {"id" => "PATO:12345", "name" => "shape"}, 
           "values" => [ 
-              {"id" => "PATO:12345", "name" => "serrated"}, 
+              {"id" => "PATO:12345", "name" => "abnormal"}, 
               {"id" => "PATO:12345", "name" => "pointy"}, 
               {"id" => "PATO:12345", "name" => "round"} 
           ],
@@ -59,29 +96,11 @@ module SearchHelper
           ]
         },
         {
-          "entity" => {"id" => "TAO:12345", "name" => "basihyal bone"},
-          "attribute" => {"id" => "PATO:12345", "name" => "shape"}, 
+          "entity" => {"id" => "TAO:12345", "name" => "opercle"},
+          "attribute" => {"id" => "PATO:12345", "name" => "size"}, 
           "values" => [ 
-              {"id" => "PATO:12345", "name" => "serrated"}, 
-              {"id" => "PATO:12345", "name" => "pointy"}, 
-              {"id" => "PATO:12345", "name" => "round"} 
-          ],
-          "related_genes" => [
-              {"id" => "ZFIN:ZDB-GENE-990712-18", "name" => "eya2"},
-              {"id" => "ZFIN:ZDB-GENE-990712-18", "name" => "eya3"}
-          ],
-          "related_taxa" => [
-              {"id" => "TTO:222222", "name" => "Ictalurus punctatus"},
-              {"id" => "TTO:222222", "name" => "Danio rerio"}
-          ]
-        },
-        {
-          "entity" => {"id" => "TAO:12345", "name" => "basihyal bone"},
-          "attribute" => {"id" => "PATO:12345", "name" => "shape"}, 
-          "values" => [ 
-              {"id" => "PATO:12345", "name" => "serrated"}, 
-              {"id" => "PATO:12345", "name" => "pointy"}, 
-              {"id" => "PATO:12345", "name" => "round"} 
+              {"id" => "PATO:12345", "name" => "decreased size"}, 
+              {"id" => "PATO:12345", "name" => "increased width"}, 
           ],
           "related_genes" => [
               {"id" => "ZFIN:ZDB-GENE-990712-18", "name" => "eya2"},
@@ -113,9 +132,9 @@ module SearchHelper
       "phenotypes" => [
           {
             "entity" => {"id" => "TAO:12345", "name" => "basihyal bone"},
-            "quality" => {"id" => "PATO:12345", "name" => "shape"},
-            "taxon_annotations" => {"taxon_count" => 25, "annotation_count" => 43},
-            "gene_annotations" => {"gene_count" => 4, "annotation_count" => 4}
+            "quality" => {"id" => "PATO:12345", "name" => "count in organism"},
+            "taxon_annotations" => {"taxon_count" => 3, "annotation_count" => 1},
+            "gene_annotations" => {"gene_count" => 1, "annotation_count" => 2}
           },
           {
             "entity" => {"id" => "TAO:12345", "name" => "dorsal fin"},
@@ -135,10 +154,21 @@ module SearchHelper
   
   def taxon_phenotypes_mockup_data
     return { #characters and all taxa["value-list"] must be the same length
+      "included_taxa" => [],
+      "included_characters" => [
+        {
+          "entity" => {"id" => "TAO:12345", "name" => "bone"},
+          "quality" => {"id" => "PATO:12345", "name" => "count in organism"}
+        }
+        ],
       "characters" => [
           {
             "entity" => {"id" => "TAO:12345", "name" => "basihyal bone"},
-            "quality" => {"id" => "PATO:12345", "name" => "shape"}
+            "quality" => {"id" => "PATO:12345", "name" => "count in organism"}
+          },
+          {
+            "entity" => {"id" => "TAO:12345", "name" => "opercle"},
+            "quality" => {"id" => "PATO:12345", "name" => "count in organism"}
           }
         ],
       "taxa" => [
@@ -146,21 +176,73 @@ module SearchHelper
            "id" => "TTO:101020",
             "name" => "Ictalurus punctatus",
             "value-list" => [
-              [{"id" => "PATO:12345", "name" => "serrated"}]
+              [{"id" => "PATO:12345", "name" => "absent from organism"}],
+              []
               ]
         },
         {
            "id" => "TTO:101020",
             "name" => "Ictalurus furcatus",
             "value-list" => [
-              [{"id" => "PATO:12345", "name" => "serrated"}]
+              [{"id" => "PATO:12345", "name" => "absent from organism"}],
+              []
               ]
         },
         {
            "id" => "TTO:101020",
             "name" => "Ictalurus lupus",
             "value-list" => [
-              [{"id" => "PATO:12345", "name" => "serrated"}]
+              [{"id" => "PATO:12345", "name" => "absent from organism"}],
+              []
+              ]
+        },
+        {
+           "id" => "TTO:101020",
+            "name" => "Astyanax validus",
+            "value-list" => [
+              [{"id" => "PATO:12345", "name" => "present in organism"}],
+              [{"id" => "PATO:12345", "name" => "present in organism"}]
+              ]
+        }
+        ]
+    }
+  end
+  
+  def taxon_phenotypes_mockup_data_ictalurus
+    return { #characters and all taxa["value-list"] must be the same length
+      "included_taxa" => [],
+      "included_characters" => [
+        {
+          "entity" => {"id" => "TAO:12345", "name" => "basihyal bone"},
+          "quality" => {"id" => "PATO:12345", "name" => "count in organism"}
+        }
+        ],
+      "characters" => [
+          {
+            "entity" => {"id" => "TAO:12345", "name" => "basihyal bone"},
+            "quality" => {"id" => "PATO:12345", "name" => "count in organism"}
+          }
+        ],
+      "taxa" => [
+        {
+           "id" => "TTO:101020",
+            "name" => "Ictalurus punctatus",
+            "value-list" => [
+              [{"id" => "PATO:12345", "name" => "absent from organism"}]
+              ]
+        },
+        {
+           "id" => "TTO:101020",
+            "name" => "Ictalurus furcatus",
+            "value-list" => [
+              [{"id" => "PATO:12345", "name" => "absent from organism"}]
+              ]
+        },
+        {
+           "id" => "TTO:101020",
+            "name" => "Ictalurus lupus",
+            "value-list" => [
+              [{"id" => "PATO:12345", "name" => "absent from organism"}]
               ]
         }
         ]
@@ -220,6 +302,73 @@ module SearchHelper
               [{"id" => "PATO:12345", "name" => "serrated"}],
               [{"id" => "PATO:12345", "name" => "serrated"}],
               [{"id" => "PATO:12345", "name" => "serrated"}]
+              ]
+        }
+        ]
+    }
+  end
+  
+  def genes_phenotypes_mockup_data
+    return { #characters and all taxa["value-list"] must be the same length
+      "included_genes" => [],
+      "included_characters" => [
+        {
+          "entity" => {"id" => "TAO:12345", "name" => "bone"},
+          "quality" => {"id" => "PATO:12345", "name" => "count in organism"}
+        }
+        ],
+      "characters" => [
+           {
+              "entity" => {"id" => "TAO:12345", "name" => "basihyal bone"},
+              "quality" => {"id" => "PATO:12345", "name" => "count in organism"}
+            },
+            {
+              "entity" => {"id" => "TAO:12345", "name" => "epibranchial bone"},
+              "quality" => {"id" => "PATO:12345", "name" => "count in organism"}
+            }
+        ],
+      "genes" => [
+        {
+           "id" => "ZFIN:101020",
+            "name" => "brpf1",
+            "value-list" => [
+              [{"id" => "PATO:12345", "name" => "present in normal numbers in organism"}, {"id" => "PATO:12345", "name" => "absent from organism"}],
+              []
+              ]
+        },
+        {
+           "id" => "ZFIN:101020",
+            "name" => "trpm7",
+            "value-list" => [
+              [],
+              [{"id" => "PATO:12345", "name" => "count in organism [3 count]"}]
+              ]
+        }
+        ]
+    }
+  end
+  
+  def genes_phenotypes_mockup_data_brpf1
+    return { #characters and all taxa["value-list"] must be the same length
+      "included_genes" => [],
+      "included_characters" => [
+        {
+          "entity" => {"id" => "TAO:12345", "name" => "basihyal bone"},
+          "quality" => {"id" => "PATO:12345", "name" => "count in organism"}
+        }
+        ],
+      "characters" => [
+           {
+              "entity" => {"id" => "TAO:12345", "name" => "basihyal bone"},
+              "quality" => {"id" => "PATO:12345", "name" => "count in organism"}
+            }
+        ],
+      "genes" => [
+        {
+           "id" => "ZFIN:101020",
+            "name" => "brpf1",
+            "value-list" => [
+              [{"id" => "PATO:12345", "name" => "present in normal numbers in organism"}, {"id" => "PATO:12345", "name" => "absent from organism"}]
               ]
         }
         ]
