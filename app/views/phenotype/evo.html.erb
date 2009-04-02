@@ -1,0 +1,22 @@
+<table style="margin-top: 2em;" class="annotations sortable" id="datatable">
+	<tr>
+		<th>Taxon</th>
+		<% for character in results["characters"] %>
+		<th><span class="term-name" title="<%=h character["entity"]["id"] %>"><%=h character["entity"]["name"] %></span> <span class="term-name" title="<%=h character["quality"]["id"] %>"><%=h character["quality"]["name"] %></span></th>
+		<% end %>
+	</tr>
+	<% for taxon in results["taxa"] %>
+	<tr>
+		<th><span style="color:white;" class="term-name" title="<%=h taxon["id"] %>"><%=h taxon["name"] %></span></th>
+		<% for values in taxon["value-list"]%>
+		<td>
+		<ul>
+			<% for state in values%>
+			<li><span class="term-name" title="<%=h state["id"] %>"><a href="/search/annotation/12345"><%=h state["name"] %></a></span></li>
+			<% end %>
+		</ul>
+		</td>
+		<% end %>
+	</tr>
+	<% end %>
+</table>
