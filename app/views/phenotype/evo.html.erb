@@ -1,22 +1,21 @@
-<table style="margin-top: 2em;" class="annotations sortable" id="datatable">
+<h2>All phenotypes for <span class="term-name" title="<%=h @entity["id"] %>"><a href="/search/anatomy/<%=h @entity["id"] %>"><%=h @entity["name"] %></a></span> <span class="term-name" title="<%=h @quality["id"] %>"><%=h @quality["name"] %></span></h2>
+
+<table class="annotations sortable" id="datatable">
 	<tr>
 		<th>Taxon</th>
-		<% for character in results["characters"] %>
-		<th><span class="term-name" title="<%=h character["entity"]["id"] %>"><%=h character["entity"]["name"] %></span> <span class="term-name" title="<%=h character["quality"]["id"] %>"><%=h character["quality"]["name"] %></span></th>
-		<% end %>
 	</tr>
-	<% for taxon in results["taxa"] %>
+	<% for taxon in @phenotypes.values %>
 	<tr>
-		<th><span style="color:white;" class="term-name" title="<%=h taxon["id"] %>"><%=h taxon["name"] %></span></th>
-		<% for values in taxon["value-list"]%>
+		<td><%=h taxon["subject"]["name"] %></td>
 		<td>
-		<ul>
-			<% for state in values%>
-			<li><span class="term-name" title="<%=h state["id"] %>"><a href="/search/annotation/12345"><%=h state["name"] %></a></span></li>
-			<% end %>
-		</ul>
+			<ul>
+				<% for phenotype in taxon["phenotypes"]%>
+				<li>
+				<%=h phenotype["entity"]["name"] %> <%=h phenotype["quality"]["name"] %>
+				</li>
+				<% end %>
+			</ul>
 		</td>
-		<% end %>
 	</tr>
 	<% end %>
 </table>

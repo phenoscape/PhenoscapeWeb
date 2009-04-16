@@ -41,6 +41,12 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':controller/:action/:id'
   #map.connect ':controller/:action/:id.:format'
   
+  map.connect ':controller/:action/:entity/:quality',
+    :requirements => {:action => /evo|devo/}
+    
+  map.connect ':controller/:action/:subject/:entity/:quality',
+    :requirements => {:action => /evo|devo/}
+  
   map.connect ':controller/:action/anatomy/:id/:type/:quality',
     :requirements => {:type => /taxa|genes/}
 end
