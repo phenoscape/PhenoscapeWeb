@@ -7,7 +7,7 @@ class PhenotypeController < ApplicationController
   
   def devo
     formatAnnotationResults
-    #TODO fill in template
+    #TODO fill in html template
   end
   
   

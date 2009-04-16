@@ -13,20 +13,20 @@ function TermInfoPanel(divNode) {
     appendChildNodes(this.infoTable, TR(null, this.nameNode));
     this.idNode = TD(null);
     appendChildNodes(this.infoTable, TR(null, TD({"class":"TermInfoPanel-field-label"}, "ID:"), this.idNode));
+    this.synonymsData = TD(null);
+    appendChildNodes(this.infoTable, TR(null, TD({"class":"TermInfoPanel-field-label"}, "Synonyms:"), this.synonymsData));
     this.defNode = TD(null);
     appendChildNodes(this.infoTable, TR(null, TD({"class":"TermInfoPanel-field-label"}, "Definition:"), this.defNode));
     this.parentsRow = TR(null, TD({"colspan":"2", "class":"TermInfoPanel-header-label"}, "Parents"));
     appendChildNodes(this.infoTable, this.parentsRow);
     this.childrenRow = TR(null, TD({"colspan":"2", "class":"TermInfoPanel-header-label"}, "Children"));
     appendChildNodes(this.infoTable, this.childrenRow);
-    this.synonymsRow = TR(null, TD({"colspan":"2", "class":"TermInfoPanel-header-label"}, "Synonyms"));
-    this.synonymsData = TD({"colspan":"2"});
-    this.synonymsDataRow = TR(null, this.synonymsData);
 }
 
 TermInfoPanel.prototype.setTerm = function(data) {
     replaceChildNodes(this.nameNode, data.name);
     replaceChildNodes(this.idNode, data.id);
+    replaceChildNodes(this.synonymsData, this.formatSynonyms(data.synonyms));
     replaceChildNodes(this.defNode, data.definition);
     var rows = this.infoTable.childNodes;
     for (var i = rows.length; i > 0; i--) {
@@ -39,16 +39,17 @@ TermInfoPanel.prototype.setTerm = function(data) {
     this.displayRelationships(this.infoTable, data.parents);
     appendChildNodes(this.infoTable, this.childrenRow);
     this.displayRelationships(this.infoTable, data.children);
-    appendChildNodes(this.infoTable, this.synonymsRow);
-    appendChildNodes(this.infoTable, this.synonymsDataRow);
+}
+
+TermInfoPanel.prototype.formatSynonyms = function(synonyms) {
     var synonymsText = "";
-    for (var i = 0; i < data.synonyms.length; i++) {
-        synonymsText  = synonymsText + data.synonyms[i].name;
-        if (i < (data.synonyms.length - 1)) {
+    for (var i = 0; i < synonyms.length; i++) {
+        synonymsText  = synonymsText + synonyms[i].name;
+        if (i < (synonyms.length - 1)) {
             synonymsText = synonymsText + ", ";
         }
     }
-    replaceChildNodes(this.synonymsData, synonymsText);
+    return synonymsText;
 }
 
 TermInfoPanel.prototype.displayRelationships = function(table, links) {
