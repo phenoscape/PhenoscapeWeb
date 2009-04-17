@@ -5,4 +5,7 @@ class AboutController < ApplicationController
   end
   
   
+  def services
+  end
+  
 end
