@@ -18,18 +18,18 @@
 	<tr>
 		<td><%=h character["entity"]["name"] %></td>
 		<td><%=h character["character_quality"]["name"] %><br>Values include: 
-			<%=h (character["qualities"]["examples"].collect {|item| item["name"]}).join(", ") %> and <%=h character["qualities"]["count"] - @examples_length %> more
+			<%=h (character["qualities"]["examples"].collect {|item| item["name"]}).join(", ") %> and <%=h character["qualities"]["count"] - character["qualities"]["examples"].length %> more
 		</td>
 		<td>
 			<% if character["genes"]["count"] > 0 %>
-				<a href="/search/phenotypes/anatomy/<%=h @term%>/genes/<%=h character["id"]%>?attribute=true"><%=h character["genes"]["count"] %> genes
+				<a href="/phenotype/devo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"><%=h character["genes"]["count"] %> genes
 			<% else %>
 				None
 			<% end %>
 		</td>
 		<td>
 			<% if character["taxa"]["count"] > 0 %>
-				<a href="/search/phenotypes/anatomy/<%=h @term%>/taxa/<%=h character["id"]%>?attribute=true"> <%=h character["taxa"]["count"] %> taxa
+				<a href="/phenotype/evo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"> <%=h character["taxa"]["count"] %> taxa
 			<% else %>
 				None
 			<% end %>

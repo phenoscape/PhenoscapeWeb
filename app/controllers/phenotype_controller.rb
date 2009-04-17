@@ -18,8 +18,9 @@ class PhenotypeController < ApplicationController
      @entity = ActiveSupport::JSON.decode(entity_response.body)
      quality_response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + params[:quality])
      @quality = ActiveSupport::JSON.decode(quality_response.body)
-     response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_annotation_results.js")
-     #logger.info("The response was" + response.body)
+     #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_annotation_results.js")
+     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes?entity=" + params[:entity] + "&quality=" + params[:quality])
+     logger.info("The response was" + response.body)
      result = ActiveSupport::JSON.decode(response.body)
      bySubject = Hash.new {|hash, key| hash[key] = {"subject" => {}, "phenotypes" => []} }
      for item in result["phenotypes"]

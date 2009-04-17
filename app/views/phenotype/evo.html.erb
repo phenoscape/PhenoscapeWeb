@@ -6,7 +6,7 @@
 	</tr>
 	<% for taxon in @phenotypes.values %>
 	<tr>
-		<td><%=h taxon["subject"]["name"] %></td>
+		<td><%= format_taxon(h taxon["subject"]["name"]) %></td>
 		<td>
 			<ul>
 				<% for phenotype in taxon["phenotypes"]%>
