@@ -1,0 +1,25 @@
+<h2>All zebrafish phenotypes for <span class="term-name" title="<%=h @entity["id"] %>"><a href="/search/anatomy/<%=h @entity["id"] %>"><%=h @entity["name"] %></a></span> <span class="term-name" title="<%=h @quality["id"] %>"><%=h @quality["name"] %></span>
+<% if @subject != nil %>
+in <span class="term-name" title="<%=h @subject["id"] %>"><a href="/search/taxon/<%=h @subject["id"] %>"><%= format_taxon(h @subject["name"]) %></a></span>
+<% end %>
+</h2>
+
+<table class="annotations sortable" id="datatable">
+	<tr>
+		<th>Gene</th>
+	</tr>
+	<% for gene in @phenotypes.values %>
+	<tr>
+		<td><%=h gene["subject"]["name"]%></td>
+		<td>
+			<ul>
+				<% for phenotype in gene["phenotypes"]%>
+				<li>
+				<%=h phenotype["entity"]["name"] %> <%=h phenotype["quality"]["name"] %>
+				</li>
+				<% end %>
+			</ul>
+		</td>
+	</tr>
+	<% end %>
+</table>

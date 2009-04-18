@@ -16,7 +16,6 @@ class SearchController < ApplicationController
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&entity=" + @term)
       #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_summary_results.js")
       @summary = ActiveSupport::JSON.decode(response.body)
-      @term_info = {"id"=>"TEST", "name"=>"TEST"}
     rescue Timeout::Error
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
       @term_info = ActiveSupport::JSON.decode(response.body)
@@ -34,8 +33,8 @@ class SearchController < ApplicationController
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
     @term_info = ActiveSupport::JSON.decode(response.body)
     begin
-      #response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?subject=" + @term)
-      response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_summary_results.js")
+      response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&subject=" + @term)
+      #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_summary_results.js")
       @summary = ActiveSupport::JSON.decode(response.body)
     rescue Timeout::Error
       render(:action => "generic_timeout")
@@ -48,8 +47,8 @@ class SearchController < ApplicationController
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
     @term_info = ActiveSupport::JSON.decode(response.body)
     begin
-      #response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?subject=" + @term)
-      response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_summary_results.js")
+      response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&subject=" + @term)
+      #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_summary_results.js")
       @summary = ActiveSupport::JSON.decode(response.body)
     rescue Timeout::Error
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)

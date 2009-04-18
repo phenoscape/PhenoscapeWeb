@@ -1,7 +1,7 @@
 <p>Welcome to the Phenoscape phenotype database for ostariophysan fishes.</p>
 
 <p>Begin typing to choose a search term from the popup menu.</p>
-<div id="term_info"></div>
+<!-- <div id="term_info"></div> -->
 <table id="search_fields">
 	<tr id="anatomy_search">
 		<td class="field_label">Search anatomy:</td>
@@ -42,30 +42,27 @@
 			</div>
 		</td>
 		<td>
-			<input type="button" value="Search">
+			<input type="button" value="Search" onclick="submitTaxon()">
 		</td>
 	</tr>
 </table>
-
-<div id="gene_search">
-</div>
 
 <script type="text/javascript">
 	var selectedAnatomy = {"id":null};
 	var selectedGene = {"id":null};
 	var selectedTaxon = {"id":null};
 
-	var panel = new TermInfoPanel("term_info");
-	var termInfoDS = new TermInfoPanelDataSource(panel);
+	//var panel = new TermInfoPanel("term_info");
+	//var termInfoDS = new TermInfoPanelDataSource(panel);
 	var entityAC = initAutocomplete($("entityChoice"), $("entityComplete"), "TAO");
 	var geneAC = initAutocomplete($("geneChoice"), $("geneComplete"), "ZFIN");
 	var taxonAC = initAutocomplete($("taxonChoice"), $("taxonComplete"), "TTO");
-	var rollOver = function(event, item) {
-		var acInstance = item[0];
-		var li = item[1];
-		var data = acInstance.getListItemData(li);
-		termInfoDS.loadTerm(HOST + "/OBD-WS/term/" + data[1]);
-		}
+	// var rollOver = function(event, item) {
+	// 		var acInstance = item[0];
+	// 		var li = item[1];
+	// 		var data = acInstance.getListItemData(li);
+	// 		termInfoDS.loadTerm(HOST + "/OBD-WS/term/" + data[1]);
+	// 		}
 	//entityAC.itemMouseOverEvent.subscribe(rollOver);
 	//entityAC.itemArrowToEvent.subscribe(rollOver);
 	//taxonAC.itemMouseOverEvent.subscribe(rollOver);
@@ -74,11 +71,12 @@
 		var data = item[2];
 		storage.id = data[1];
 		if (storage === selectedAnatomy) {
-			termInfoDS.loadTerm(HOST + "/OBD-WS/term/" + data[1]);
+			//termInfoDS.loadTerm(HOST + "/OBD-WS/term/" + data[1]);
 		}
 	}
 	entityAC.itemSelectEvent.subscribe(partial(selectItem, selectedAnatomy));
 	geneAC.itemSelectEvent.subscribe(partial(selectItem, selectedGene));
+	taxonAC.itemSelectEvent.subscribe(partial(selectItem, selectedTaxon));
 	
 	function submitAnatomy() {
 		logDebug(selectedAnatomy.name);
@@ -90,7 +88,7 @@
 		location.href = ("/search/gene/" + selectedGene.id);
 	}
 	
-	function submitTaxonomy() {
-		location.href = ("/search/taxonomy/" + selectedTaxon.id);
+	function submitTaxon() {
+		location.href = ("/search/taxon/" + selectedTaxon.id);
 	}
 </script>

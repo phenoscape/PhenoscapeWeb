@@ -18,7 +18,7 @@
 	<tr>
 		<td><%=h character["entity"]["name"] %></td>
 		<td><%=h character["character_quality"]["name"] %><br>Values include: 
-			<%=h (character["qualities"]["examples"].collect {|item| item["name"]}).join(", ") %> and <%=h character["qualities"]["count"] - @examples_length %> more
+			<%=h (character["qualities"]["examples"].collect {|item| item["name"]}).join(", ") %> and <%=h character["qualities"]["count"] - character["qualities"]["examples"].length %> more
 		</td>
 		<td>
 			<% if character["genes"]["count"] > 0 %>
