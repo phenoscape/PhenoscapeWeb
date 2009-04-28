@@ -4,7 +4,7 @@
 
 <% else %>
 <h2><span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h2>
-<p><i>Term Info</i></p>
+<div id="term_info"></div>
 
 <h2>Publications</h2>
 <p><i>Not yet implemented.</i></p>
@@ -22,14 +22,14 @@
 		</td>
 		<td>
 			<% if character["genes"]["count"] > 0 %>
-				<a href="/search/phenotypes/anatomy/<%=h @term_info["id"]%>/genes/<%=h character["id"]%>?attribute=true"><%=h character["genes"]["count"] %> genes
+				<a href="/phenotype/devo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"><%=h character["genes"]["count"] %> genes
 			<% else %>
 				None
 			<% end %>
 		</td>
 		<td>
 			<% if character["taxa"]["count"] > 0 %>
-				<a href="/search/phenotypes/anatomy/<%=h @term_info["id"]%>/taxa/<%=h character["id"]%>?attribute=true"> <%=h character["taxa"]["count"] %> taxa
+				<a href="/phenotype/evo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"> <%=h character["taxa"]["count"] %> taxa
 			<% else %>
 				None
 			<% end %>
@@ -37,5 +37,11 @@
 	</tr>
 	<% end %>
 </table>
+
+<script type="text/javascript">
+var panel = new TermInfoPanel("term_info");
+var dataSource = new TermInfoPanelDataSource(panel);
+dataSource.loadTerm(HOST + "/OBD-WS/term/" + "<%=h @term %>");
+</script>
 
 <% end %>
