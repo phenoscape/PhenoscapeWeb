@@ -10,11 +10,12 @@ class SearchController < ApplicationController
     # return
     ##mockup##
     #@examples_length = 2
-    # response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
-    # @term_info = ActiveSupport::JSON.decode(response.body)
+    response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
+    @term_info = ActiveSupport::JSON.decode(response.body)
     begin
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&entity=" + @term)
       #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_summary_results.js")
+      logger.info("RESULTS: " + response.body)
       @summary = ActiveSupport::JSON.decode(response.body)
     rescue Timeout::Error
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
