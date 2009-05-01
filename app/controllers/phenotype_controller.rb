@@ -1,15 +1,22 @@
 class PhenotypeController < ApplicationController
   
+  ## FIXME Should have method documentation as to what it does.
   def evo
     formatAnnotationResults("evo")
   end
   
   
+  ## FIXME Should have method documentation as to what it does.
   def devo
     formatAnnotationResults("devo")
   end
   
-  
+  ## FIXME There seem to be a lot of common path prefixes and URL
+  ## parameters interspersed throughout the code - should pull these
+  ## together into a set of constants.
+
+  ## FIXME Should have method (and parameter!) documentation as to
+  ## what it does and how it does it.
   private
   def formatAnnotationResults(type)
     #should check validity of entity and quality terms, and return 404? if one doesn't exist
@@ -22,11 +29,15 @@ class PhenotypeController < ApplicationController
      if params[:subject] != nil
        subject_response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + params[:subject])
        @subject = ActiveSupport::JSON.decode(subject_response.body)
+       # FIXME this sounds like debugging information - should really use
+       # logger.debug() then
        logger.info("Adding subject to URL")
        url += "&subject=" + params[:subject]
      else
-        @subject = nil
+       @subject = nil
      end
+    # FIXME this sounds like debugging information - should really use
+    # logger.debug() then
      logger.info("URL is: " + url)
      response = Net::HTTP.get_response(self.request.host, url)
      logger.info("The response was" + response.body)
