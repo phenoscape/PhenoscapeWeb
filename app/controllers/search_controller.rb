@@ -1,14 +1,20 @@
+## FIXME class-level documentation missing
 class SearchController < ApplicationController
-    
+
+  ## FIXME need to document here the secrets of Rails as to when this
+  ## gets called and why it actually has a function.
   def index
   end
-  
+
+  ## FIXME There seem to be a lot of common path prefixes and URL
+  ## parameters interspersed throughout the code - should pull these
+  ## together into a set of constants. Also, these are used in other
+  ## controllers as well - maybe put into the base controller class?
+
+  ## FIXME Should have method (and parameter!) documentation as to
+  ## what it does and how it does it.  
   def anatomy
     @term = params[:id]
-    ##mockup##
-    # render(:action => "anatomy_mockup")
-    # return
-    ##mockup##
     #@examples_length = 2
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
     @term_info = ActiveSupport::JSON.decode(response.body)
@@ -24,12 +30,10 @@ class SearchController < ApplicationController
     end
   end
   
+  ## FIXME Should have method (and parameter!) documentation as to
+  ## what it does and how it does it.
   def gene
     @term = params[:id]
-    ##mockup##
-    # render(:action => "gene_mockup")
-    #     return
-    ##mockup##
     @examples_length = 2
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
     @term_info = ActiveSupport::JSON.decode(response.body)
@@ -42,6 +46,8 @@ class SearchController < ApplicationController
     end
   end
   
+  ## FIXME Should have method (and parameter!) documentation as to
+  ## what it does and how it does it.
   def taxon
     @term = params[:id]
     @examples_length = 2
@@ -58,6 +64,8 @@ class SearchController < ApplicationController
     end
   end
   
+  ## FIXME Should have method (and parameter!) documentation as to
+  ## what it does and how it does it.
   def phenotypes
     type = params[:type]
     begin
@@ -87,6 +95,8 @@ class SearchController < ApplicationController
     end
   end
   
+  ## FIXME Should have method (and parameter!) documentation as to
+  ## what it does and how it does it.
   def annotation
     ##mockup##
     render(:action => "annotation_mockup")
@@ -94,6 +104,8 @@ class SearchController < ApplicationController
     ##mockup##
   end
   
+  ## FIXME Should have method (and parameter!) documentation as to
+  ## what it does and how it does it.
   def publication
     ##mockup##
     render(:action => "publication_mockup")

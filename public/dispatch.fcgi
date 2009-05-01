@@ -1,5 +1,9 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
 #
+## FIXME this is one of three files two of which are nearly identical
+## and all of which contain a hard-coded path name that will only work
+## for MacOSX server. If they can be removed they should be.
+#
 # You may specify the path to the FastCGI crash log (a log of unhandled
 # exceptions which forced the FastCGI instance to exit, great for debugging)
 # and the number of requests to process before running garbage collection.

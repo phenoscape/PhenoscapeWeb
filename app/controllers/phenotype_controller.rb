@@ -1,3 +1,4 @@
+## FIXME class-level documentation missing
 class PhenotypeController < ApplicationController
   
   ## FIXME Should have method documentation as to what it does.
@@ -5,7 +6,11 @@ class PhenotypeController < ApplicationController
     formatAnnotationResults("evo")
   end
   
-  
+  ## FIXME should think of a better name for the "devo" view - it's
+  ## really more the model organism (MOD) source of the data and the
+  ## fact that the phenotypes are linked to genotypes that sets this
+  ## apart. Maybe evo versus geno?
+
   ## FIXME Should have method documentation as to what it does.
   def devo
     formatAnnotationResults("devo")

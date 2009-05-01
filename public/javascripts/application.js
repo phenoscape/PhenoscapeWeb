@@ -4,6 +4,9 @@
 
 var HOST = "http://" + window.location.hostname;
 
+// FIXME Function (constructor) documentation for what this does and
+// how is missing
+
 // class TermInfoPanel
 function TermInfoPanel(divNode) {
     this.div = $(divNode);
@@ -23,6 +26,7 @@ function TermInfoPanel(divNode) {
     appendChildNodes(this.infoTable, this.childrenRow);
 }
 
+// FIXME method documentation for what this does and how is missing
 TermInfoPanel.prototype.setTerm = function(data) {
     replaceChildNodes(this.nameNode, data.name);
     replaceChildNodes(this.idNode, data.id);
@@ -41,6 +45,7 @@ TermInfoPanel.prototype.setTerm = function(data) {
     this.displayRelationships(this.infoTable, data.children);
 }
 
+// FIXME method documentation for what this does and how is missing
 TermInfoPanel.prototype.formatSynonyms = function(synonyms) {
     var synonymsText = "";
     for (var i = 0; i < synonyms.length; i++) {
@@ -52,6 +57,7 @@ TermInfoPanel.prototype.formatSynonyms = function(synonyms) {
     return synonymsText;
 }
 
+// FIXME method documentation for what this does and how is missing
 TermInfoPanel.prototype.displayRelationships = function(table, links) {
     for (var i = 0; i < links.length; i++) {
         var link = links[i];
@@ -60,12 +66,15 @@ TermInfoPanel.prototype.displayRelationships = function(table, links) {
 }
 
 
+// FIXME Function (constructor) documentation for what this does and
+// how is missing
 // class TermInfoPanelDataSource
 function TermInfoPanelDataSource(panelObj) {
     this.deferred = null;
     this.panel = panelObj;
 }
 
+// FIXME method documentation for what this does and how is missing
 TermInfoPanelDataSource.prototype.loadTerm = function(termURL) {
     if (this.deferred) { this.deferred.cancel(); }
     this.deferred = loadJSONDoc(termURL);
@@ -77,10 +86,12 @@ TermInfoPanelDataSource.prototype.loadTerm = function(termURL) {
     });
 }
 
+// FIXME method documentation for what this does and how is missing
 TermInfoPanelDataSource.prototype.update = function(data) {
     this.panel.setTerm(data);
 }
 
+// FIXME function documentation for what this does and how is missing
 function initAutocomplete(input, div, ontologyPrefix) {
 	var dataSource = new YAHOO.util.XHRDataSource(HOST + "/OBD-WS/term/search");
 	dataSource.responseSchema = { resultsList:"matches", fields:[{key:"match_text"}, {key:"id"}, {key:"match_type"}] };
