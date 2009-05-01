@@ -92,6 +92,9 @@ TermInfoPanelDataSource.prototype.update = function(data) {
 }
 
 // FIXME function documentation for what this does and how is missing
+
+// FIXME shouldn't some of the URL prefix strings be constants and
+// declared separately?
 function initAutocomplete(input, div, ontologyPrefix) {
 	var dataSource = new YAHOO.util.XHRDataSource(HOST + "/OBD-WS/term/search");
 	dataSource.responseSchema = { resultsList:"matches", fields:[{key:"match_text"}, {key:"id"}, {key:"match_type"}] };
