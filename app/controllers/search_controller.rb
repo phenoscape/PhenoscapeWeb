@@ -142,6 +142,12 @@ class SearchController < ApplicationController
        match = exact_name_matches[0]
        return match["id"]
      end
+     synonym_matches = matches.find_all {|item| item["match_type"] == "synonym" and item["match_text"].downcase == input.downcase}
+     if not synonym_matches.empty?
+       # pick one
+       match = synonym_matches[0]
+       return match["id"]
+     end
     end
     return nil
   end
