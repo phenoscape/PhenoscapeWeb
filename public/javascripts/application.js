@@ -106,7 +106,7 @@ function initAutocomplete(input, div, ontologyPrefix) {
     autocomplete.maxResultsDisplayed = 100;
     autocomplete.queryDelay = 0.3;
     autocomplete.minQueryLength = 3;
-    autocomplete.forceSelection = true;
+    autocomplete.forceSelection = false;
     autocomplete.formatResult = function(resultData , query , resultMatch) {
         var matchType = resultData[2];
         return resultMatch + ((matchType != "name") ? " <span class=\"match_type\">" + matchType + "</span>" : "");

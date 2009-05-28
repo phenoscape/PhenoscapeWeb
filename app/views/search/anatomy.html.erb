@@ -1,15 +1,47 @@
-<% if @summary["characters"].empty? %>
-
-<h2>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</h2>
-
-<% else %>
 <h2><span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h2>
 <div id="term_info"></div>
 
-<h2>Publications</h2>
-<p><i>Not yet implemented.</i></p>
+<div id="term_info">
+	<table>
+		<tr>
+			<td class="TermInfoPanel-field-label">Synonyms:</td>
+			<td><%=h (@term_info["synonyms"].collect {|item| item["name"]}).join(", ") %></td>
+		</tr>
+		<tr>
+			<td class="TermInfoPanel-field-label">Definition:</td>
+			<td><%=h @term_info["definition"]%></td>
+		</tr>
+		<tr>
+			<td class="TermInfoPanel-header-label" colspan="2">Parents</td>
+		</tr>
+		<tr>
+			<td title="develops_from" class="TermInfoPanel-field-label relation_name">develops from:</td>
+			<td title="TAO:0001688">palatine cartilage</td>
+		</tr>
+		<tr>
+			<td title="OBO_REL:is_a" class="TermInfoPanel-field-label relation_name">OBO_REL:is_a:</td>
+			<td title="TAO:0001460">pharyngeal arch cartilage</td>
+		</tr>
+		<tr>
+			<td class="TermInfoPanel-header-label" colspan="2">Children</td>
+		</tr>
+		<%  if not @homology["homologies"].empty? %>
+		<tr>
+			<td class="TermInfoPanel-header-label" colspan="2">Possible Homologs</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<%= list_more(format_homologies(@homology["homologies"]), 0) %>
+			</td>
+		</tr>
+		<% end %>
+	</table>
+</div>
 
 <h2>Phenotypes</h2>
+<% if @summary["characters"].empty? %>
+<p>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</p>
+<% else %>
 <table class="annotations sortable" id="datatable">
 	<tr>
 		<th>Anatomy</th><th>Quality</th><th>Zebrafish Data</th><th>Evolutionary Data</th>
@@ -17,7 +49,7 @@
 	<% for character in @summary["characters"] %>
 	<tr>
 		<td><%=h character["entity"]["name"] %></td>
-		<td><%=h character["character_quality"]["name"] %><br>Values include: 
+		<td><%=h character["character_quality"]["name"] %><br>Values include:
 			<%=h (character["qualities"]["examples"].collect {|item| item["name"]}).join(", ") %> and <%=h character["qualities"]["count"] - character["qualities"]["examples"].length %> more
 		</td>
 		<td>
@@ -37,6 +69,7 @@
 	</tr>
 	<% end %>
 </table>
+<% end %>
 
 <script type="text/javascript">
 var panel = new TermInfoPanel("term_info");
@@ -44,4 +77,3 @@ var dataSource = new TermInfoPanelDataSource(panel);
 dataSource.loadTerm(HOST + "/OBD-WS/term/" + "<%=h @term %>");
 </script>
 
-<% end %>

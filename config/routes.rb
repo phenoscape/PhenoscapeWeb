@@ -44,8 +44,11 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':controller/:action/:id'
   #map.connect ':controller/:action/:id.:format'
   
+  map.connect 'search/pub/:id/data',
+    :controller => 'search', :action => 'pub_data'
+  
   map.connect ':controller/:action/:entity/:quality',
-    :requirements => {:action => /evo|devo/}
+    :requirements => {:action => /evo|devo|pub/}
     
   map.connect ':controller/:action/:subject/:entity/:quality',
     :requirements => {:action => /evo|devo/}

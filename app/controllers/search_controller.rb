@@ -1,6 +1,10 @@
 ## FIXME class-level documentation missing
 class SearchController < ApplicationController
-
+  
+  caches_page :anatomy
+  caches_page :gene
+  caches_page :taxon
+  
   ## FIXME need to document here the secrets of Rails as to when this
   ## gets called and why it actually has a function.
   def index
@@ -14,10 +18,24 @@ class SearchController < ApplicationController
   ## FIXME Should have method (and parameter!) documentation as to
   ## what it does and how it does it.  
   def anatomy
+    if params[:find] == "true"
+      match_id = find_match(params[:id], "TAO")
+      #TODO check for nil match_id
+      if (match_id)
+        redirect_to(:action => :anatomy, :id => match_id)
+        return
+      else
+        @input = params[:id]
+        render(:action => "unknown_term")
+        return
+      end
+    end
     @term = params[:id]
-    #@examples_length = 2
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
     @term_info = ActiveSupport::JSON.decode(response.body)
+    homology_response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term + "/homology")
+    #homology_response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_homology_results.js")
+    @homology = ActiveSupport::JSON.decode(homology_response.body)
     begin
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&entity=" + @term)
       #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_summary_results.js")
@@ -33,6 +51,17 @@ class SearchController < ApplicationController
   ## FIXME Should have method (and parameter!) documentation as to
   ## what it does and how it does it.
   def gene
+    if params[:find] == "true"
+      match_id = find_match(params[:id], "ZFIN")
+      if (match_id)
+        redirect_to(:action => :gene, :id => match_id)
+        return
+      else
+        @input = params[:id]
+        render(:action => "unknown_term")
+        return
+      end
+    end
     @term = params[:id]
     @examples_length = 2
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
@@ -49,6 +78,17 @@ class SearchController < ApplicationController
   ## FIXME Should have method (and parameter!) documentation as to
   ## what it does and how it does it.
   def taxon
+    if params[:find] == "true"
+      match_id = find_match(params[:id], "TTO")
+      if (match_id)
+        redirect_to(:action => :taxon, :id => match_id)
+        return
+      else
+        @input = params[:id]
+        render(:action => "unknown_term")
+        return
+      end
+    end
     @term = params[:id]
     @examples_length = 2
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
@@ -64,36 +104,6 @@ class SearchController < ApplicationController
     end
   end
   
-  ## FIXME Should have method (and parameter!) documentation as to
-  ## what it does and how it does it.
-  def phenotypes
-    type = params[:type]
-    begin
-      @quality = params[:quality]
-      if type == "taxa"
-        ##mockup##
-        render(:action => "taxa_phenotypes_mockup")
-        return
-        ##mockup##
-        response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/anatomy/" + params[:id] + "/taxa/" + params[:quality])
-        #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_anatomy_results_taxon.js")
-        @results = ActiveSupport::JSON.decode(response.body)
-        #logger.info("RESULTS: " + ActiveSupport::JSON.encode(@results))
-        render(:action => "taxa_phenotypes")
-      else
-        ##mockup##
-        render(:action => "genes_phenotypes_mockup")
-        return
-        ##mockup##
-        response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/anatomy/" + params[:id] + "/genes/" + params[:quality])
-        #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_anatomy_results_gene.js")
-        @results = ActiveSupport::JSON.decode(response.body)
-        render(:action => "genes_phenotypes")
-      end
-    rescue Timeout::Error
-      render(:action => "generic_timeout")
-    end
-  end
   
   ## FIXME Should have method (and parameter!) documentation as to
   ## what it does and how it does it.
@@ -104,13 +114,36 @@ class SearchController < ApplicationController
     ##mockup##
   end
   
-  ## FIXME Should have method (and parameter!) documentation as to
-  ## what it does and how it does it.
-  def publication
-    ##mockup##
-    render(:action => "publication_mockup")
-    return
-    ##mockup##
+  def pub
+    @identifier = params[:id]
+    # get publication info
+    info_response = Net::HTTP.get_response(self.request.host, "/OBD-WS/pub/" + @identifier)
+    info_response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_pub.js")
+    @pub_info = ActiveSupport::JSON.decode(info_response.body)
+    # get publication summary
+    #response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&pub=" + @identifier)
+    #this is temporary fake url
+    response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&subject=" + "TTO:10930")
+    @summary = ActiveSupport::JSON.decode(response.body)
+  end
+  
+  def pub_data
+  end
+  
+  # try to find an exact term match for the given input in the given ontology
+  private
+  def find_match(input, ontology)
+    response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/search?ontology=#{ontology}&name=true&syn=true&text=#{input}")
+    matches = ActiveSupport::JSON.decode(response.body)["matches"]
+    if not matches.empty?
+     exact_name_matches = matches.find_all {|item| item["match_type"] == "name" and item["name"].downcase == input.downcase}
+     if not exact_name_matches.empty?
+       # pick one
+       match = exact_name_matches[0]
+       return match["id"]
+     end
+    end
+    return nil
   end
   
 end

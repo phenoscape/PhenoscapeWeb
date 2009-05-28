@@ -1,6 +1,9 @@
 ## FIXME class-level documentation missing
 class PhenotypeController < ApplicationController
   
+  caches_page :evo
+  caches_page :devo
+  
   ## FIXME Should have method documentation as to what it does.
   def evo
     formatAnnotationResults("evo")
@@ -16,7 +19,12 @@ class PhenotypeController < ApplicationController
     formatAnnotationResults("devo")
   end
   
-  ## FIXME There seem to be a lot of common path prefixes and URL
+  
+  def pub
+    #TODO
+  end
+  
+   ## FIXME There seem to be a lot of common path prefixes and URL
   ## parameters interspersed throughout the code - should pull these
   ## together into a set of constants.
 
