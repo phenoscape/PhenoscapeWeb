@@ -10,5 +10,12 @@ module ApplicationHelper
     end
   end
   
+  def taxon_link(term)
+    id = term["id"]
+    name = term["name"]
+    name = "<i>" + name + "</i>" if name.include? " "
+    return %Q'<a href="/search/taxon/#{id}" title="#{id}">#{name}</a>'
+  end
+  
   
 end

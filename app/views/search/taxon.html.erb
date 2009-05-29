@@ -1,10 +1,31 @@
+<h2><span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h2>
+
+<div id="term_info">
+	<table>
+		<tr>
+			<td class="TermInfoPanel-field-label">Synonyms:</td>
+			<td><%=h (@term_info["synonyms"].collect {|item| item["name"]}).sort.join(", ") %></td>
+		</tr>
+		<tr>
+			<td class="TermInfoPanel-header-label">Parent:</td>
+			<td>
+				<%= ((@term_info["parents"].sort_by {|item| item["target"]["name"]}).collect {|item| taxon_link(item["target"]) }).join(", ") %>
+			</td>
+		</tr>
+		<tr>
+			<td class="TermInfoPanel-header-label">Children:</td>
+			<td>
+				<%= ((@term_info["children"].sort_by {|item| item["target"]["name"]}).collect {|item| taxon_link(item["target"]) }).join(", ") %>
+			</td>
+		</tr>
+	</table>
+</div>
+
 <% if @summary["characters"].empty? %>
 
 <h2>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</h2>
 
 <% else %>
-<h2><span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h2>
-<div id="term_info"></div>
 
 <h2>Phenotypes</h2>
 <table class="annotations sortable" id="datatable">
@@ -34,11 +55,5 @@
 	</tr>
 	<% end %>
 </table>
-
-<script type="text/javascript">
-var panel = new TermInfoPanel("term_info");
-var dataSource = new TermInfoPanelDataSource(panel);
-dataSource.loadTerm(HOST + "/OBD-WS/term/" + "<%=h @term %>");
-</script>
 
 <% end %>
