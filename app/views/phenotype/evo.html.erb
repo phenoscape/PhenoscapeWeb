@@ -10,7 +10,7 @@ in <span class="term-name" title="<%=h @subject["id"] %>"><a href="/search/taxon
 	</tr>
 	<% for taxon in @phenotypes.values %>
 	<tr>
-		<td><%= format_taxon(h taxon["subject"]["name"]) %></td>
+		<td><%= taxon_link(taxon["subject"]) %></td>
 		<td>
 			<ul>
 				<% for phenotype in taxon["phenotypes"]%>
