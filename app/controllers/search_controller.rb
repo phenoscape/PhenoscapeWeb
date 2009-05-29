@@ -34,12 +34,10 @@ class SearchController < ApplicationController
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
     @term_info = ActiveSupport::JSON.decode(response.body)
     homology_response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term + "/homology")
-    #homology_response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_homology_results.js")
-    @homology = ActiveSupport::JSON.decode(homology_response.body)
+    homology_data = ActiveSupport::JSON.decode(homology_response.body)
+    @homology = lump_homologies(homology_data)
     begin
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&entity=" + @term)
-      #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_summary_results.js")
-      logger.info("RESULTS: " + response.body)
       @summary = ActiveSupport::JSON.decode(response.body)
     rescue Timeout::Error
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
@@ -104,32 +102,6 @@ class SearchController < ApplicationController
     end
   end
   
-  
-  ## FIXME Should have method (and parameter!) documentation as to
-  ## what it does and how it does it.
-  def annotation
-    ##mockup##
-    render(:action => "annotation_mockup")
-    return
-    ##mockup##
-  end
-  
-  def pub
-    @identifier = params[:id]
-    # get publication info
-    info_response = Net::HTTP.get_response(self.request.host, "/OBD-WS/pub/" + @identifier)
-    info_response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_pub.js")
-    @pub_info = ActiveSupport::JSON.decode(info_response.body)
-    # get publication summary
-    #response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&pub=" + @identifier)
-    #this is temporary fake url
-    response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&subject=" + "TTO:10930")
-    @summary = ActiveSupport::JSON.decode(response.body)
-  end
-  
-  def pub_data
-  end
-  
   # try to find an exact term match for the given input in the given ontology
   private
   def find_match(input, ontology)
@@ -150,6 +122,16 @@ class SearchController < ApplicationController
      end
     end
     return nil
+  end
+  
+  def lump_homologies(homology_data)
+    homologs = Hash.new {|hash, key| hash[key] = {"sources" => []}}
+    for statement in homology_data["homologies"]
+      entry = homologs[statement["target"]["entity"]["id"]]
+      entry["target"] = statement["target"]
+      entry["sources"].push({"source" => entry["source"], "evidence" => entry["evidence"]})
+    end
+    return homologs.values.sort_by {|item| item["target"]["entity"]["name"]}
   end
   
 end

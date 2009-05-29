@@ -1,5 +1,4 @@
 <h2><span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h2>
-<div id="term_info"></div>
 
 <div id="term_info">
 	<table>
@@ -14,24 +13,32 @@
 		<tr>
 			<td class="TermInfoPanel-header-label" colspan="2">Parents</td>
 		</tr>
+		<% for relation in lump_relations(@term_info["parents"]) %>
 		<tr>
-			<td title="develops_from" class="TermInfoPanel-field-label relation_name">develops from:</td>
-			<td title="TAO:0001688">palatine cartilage</td>
+			<td class="TermInfoPanel-field-label relation_name" title="<%=h relation["relation"]["id"] %>"><%=h relation["relation"]["name"] %></td>
+			<td>
+				<%= (relation["targets"].collect {|item| anatomy_link(item) }).join(", ") %>
+			</td>
 		</tr>
-		<tr>
-			<td title="OBO_REL:is_a" class="TermInfoPanel-field-label relation_name">OBO_REL:is_a:</td>
-			<td title="TAO:0001460">pharyngeal arch cartilage</td>
-		</tr>
+		<% end %>
 		<tr>
 			<td class="TermInfoPanel-header-label" colspan="2">Children</td>
 		</tr>
-		<%  if not @homology["homologies"].empty? %>
+		<% for relation in lump_relations(@term_info["children"]) %>
+		<tr>
+			<td class="TermInfoPanel-field-label relation_name" title="<%=h relation["relation"]["id"] %>"><%=h relation["relation"]["name"] %></td>
+			<td>
+				<%= (relation["targets"].collect {|item| anatomy_link(item) }).join(", ") %>
+			</td>
+		</tr>
+		<% end %>
+		<%  if not @homology.empty? %>
 		<tr>
 			<td class="TermInfoPanel-header-label" colspan="2">Possible Homologs</td>
 		</tr>
 		<tr>
 			<td colspan="2">
-				<%= list_more(format_homologies(@homology["homologies"]), 0) %>
+				<%= list_more(format_homologies(@homology), 0) %>
 			</td>
 		</tr>
 		<% end %>
@@ -72,8 +79,9 @@
 <% end %>
 
 <script type="text/javascript">
-var panel = new TermInfoPanel("term_info");
-var dataSource = new TermInfoPanelDataSource(panel);
-dataSource.loadTerm(HOST + "/OBD-WS/term/" + "<%=h @term %>");
+function showSource(termID) {
+	//alert is temporary - will convert to DHTML panel
+	alert("Source for " + termID + ":\n");
+}
 </script>
 
