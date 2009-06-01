@@ -7,12 +7,14 @@
 		<td class="field_label">Search anatomy:</td>
 		<td>
 			<div id="entityChoiceGroup">
-				<input type="text" id="entityChoice">
+				<form id="entityForm" action="" onsubmit="return submitAnatomy();">
+					<input type="text" id="entityChoice">
+				</form>
 				<div id="entityComplete"></div>
 			</div>
 		</td>
 		<td>
-			<input type="button" value="Search" onclick="submitAnatomy()">
+			<input type="button" value="Search" onclick="submitAnatomy();">
 		</td>
 	</tr>
 	<tr>
@@ -21,13 +23,15 @@
 	<tr id="gene_search">
 		<td class="field_label">Search genes:</td>
 		<td>
-			<div id="geneChoiceGroup">
-				<input type="text" id="geneChoice">
-				<div id="geneComplete"></div>
-			</div>
+			<form id="geneForm" action="" onsubmit="return submitGene();">
+				<div id="geneChoiceGroup">
+					<input type="text" id="geneChoice">
+					<div id="geneComplete"></div>
+				</div>
+			</form>
 		</td>
 		<td>
-			<input type="button" value="Search" onclick="submitGene()">
+			<input type="button" value="Search" onclick="submitGene();">
 		</td>
 	</tr>
 	<tr>
@@ -36,13 +40,15 @@
 	<tr id="taxonomy_search">
 		<td class="field_label">Search taxonomy:</td>
 		<td>
+			<form id="taxonForm" action="" onsubmit="return submitTaxon();">
 			<div id="taxonChoiceGroup">
 				<input type="text" id="taxonChoice">
 				<div id="taxonComplete"></div>
 			</div>
+			</form>
 		</td>
 		<td>
-			<input type="button" value="Search" onclick="submitTaxon()">
+			<input type="button" value="Search" onclick="submitTaxon();">
 		</td>
 	</tr>
 </table>
@@ -72,6 +78,7 @@
 			href += selectedAnatomy.id;
 		}
 		location.href = (href);
+		return false; //bypass form submission
 	}
 	
 	function submitGene() {
@@ -82,6 +89,7 @@
 			href += selectedGene.id;
 		}
 		location.href = (href);
+		return false; //bypass form submission
 	}
 	
 	function submitTaxon() {
@@ -92,5 +100,7 @@
 			href += selectedTaxon.id;
 		}
 		location.href = (href);
+		return false; //bypass form submission
 	}
+	
 </script>
