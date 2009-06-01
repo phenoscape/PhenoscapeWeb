@@ -66,8 +66,8 @@
 	
 	function submitAnatomy() {
 		var href = "/search/anatomy/";
-		if ((selectedAnatomy.id == null) || ($(entityChoice).value != selectedAnatomy.name)) {
-			href += $(entityChoice).value + "?find=true";
+		if ((selectedAnatomy.id == null) || ($("entityChoice").value != selectedAnatomy.name)) {
+			href += $("entityChoice").value + "?find=true";
 		} else {
 			href += selectedAnatomy.id;
 		}
@@ -76,8 +76,8 @@
 	
 	function submitGene() {
 		var href = "/search/gene/";
-		if ((selectedGene.id == null) || ($(geneChoice).value != selectedGene.name)) {
-			href += $(geneChoice).value + "?find=true";
+		if ((selectedGene.id == null) || ($("geneChoice").value != selectedGene.name)) {
+			href += $("geneChoice").value + "?find=true";
 		} else {
 			href += selectedGene.id;
 		}
@@ -86,8 +86,8 @@
 	
 	function submitTaxon() {
 		var href = "/search/taxon/";
-		if ((selectedTaxon.id == null) || ($(taxonChoice).value != selectedTaxon.name)) {
-			href += $(taxonChoice).value + "?find=true";
+		if ((selectedTaxon.id == null) || ($("taxonChoice").value != selectedTaxon.name)) {
+			href += $("taxonChoice").value + "?find=true";
 		} else {
 			href += selectedTaxon.id;
 		}
