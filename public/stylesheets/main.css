@@ -27,3 +27,5 @@ table.annotations th a {color: white; background-color: #033; text-decoration: n
 
 body {font-family: sans-serif;}
 td {border: 1px solid black;}
+#search_fields {width: 80%;}
+.yui-ac {width: 100%;}

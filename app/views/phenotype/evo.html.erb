@@ -20,6 +20,69 @@ in <span class="term-name" title="<%=h @subject["id"] %>"><a href="/search/taxon
 				<% end %>
 			</ul>
 		</td>
+		<td><a href="" onclick="showSource(<%= phenotype["reified_link"]["reif_id"]%>, this); return false;">Source</a>
+		</td>
 	</tr>
 	<% end %>
 </table>
+
+<script type="text/javascript">
+
+var deferred = null;
+
+function showSource(id, element) {
+	var sourcePanel = new YAHOO.widget.Panel("source_panel", {
+		"context" : [element, YAHOO.widget.Overlay.TOP_RIGHT, YAHOO.widget.Overlay.BOTTOM_LEFT],
+		"constraintoviewport" : true,
+		"visible" : false
+		});
+	sourcePanel.hideEvent.subscribe(destroyPanel, sourcePanel);
+	var img = IMG({"src":"/images/rotation.gif", "alt":"loading"});
+	var div = DIV(null, img);
+	sourcePanel.setBody(div);
+	sourcePanel.setHeader("Loading...");
+	if (deferred) { deferred.cancel(); }
+	deferred = loadJSONDoc(HOST + "/OBD-WS/phenotypes/source/" + id);
+	deferred.addCallback(partial(fillInSource, sourcePanel));
+	logDebug(id);
+	logDebug(element);
+	sourcePanel.render(document.body);
+	sourcePanel.show();
+}
+
+function fillInSource(panel, content) {
+	logDebug("Fill in source: " + content);
+	var taxon = A(null, content["phenotype"]["subject"]["name"]);
+	var entity = A(null, content["phenotype"]["entity"]["name"]);
+	var quality = A(null, content["phenotype"]["quality"]["name"]);	
+	replaceChildNodes(panel.header, taxon, " ", entity, " ", quality);
+	var sources = map(function(item) {
+		var citation = P(null, item["publication"]);
+		var characterTable = TABLE(null, TR(null, TD(null, "character:"), TD(null, item["character_text"])));
+		if (item["character_comment"].length > 0) {
+			logDebug("setting up comment");
+			var comment = P({"style":"display: none;", "class":"character_comment"}, item["character_comment"]);
+			var revealer = A({"href":"#"}, "View comment");
+			var revealerBlock = P(null, revealer);
+			connect(revealer, "onclick", function() {
+				logDebug("Running onclick");
+				hideElement(revealerBlock);
+				blindDown(comment);
+			});
+			var commentRow = TR(null, TD({"colspan":"2"}, revealerBlock, comment));
+			appendChildNodes(characterTable, commentRow);
+		}
+		appendChildNodes(characterTable, TR(null, TD(null, "state:"), TD(null, item["state_text"])));
+		var curator = P({"class":"curator"}, "curated by ", item["curated_by"]);
+		return DIV(null, citation, characterTable, curator);
+	}, content["sources"]);
+	replaceChildNodes(panel.body, sources);
+}
+
+function destroyPanel(type, args, obj) {
+	logDebug("Destroy");
+	if (deferred) { deferred.cancel(); }
+	obj.destroy();
+}
+
+</script>
