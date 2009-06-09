@@ -78,10 +78,68 @@
 </table>
 <% end %>
 
+
 <script type="text/javascript">
-function showSource(termID) {
-	//alert is temporary - will convert to DHTML panel
-	alert("Source for " + termID + ":\n");
+
+var homologies = <%= @homology_json %>["homologies"];
+
+function showSource(anatomyID, taxonID, element) {
+	var sourcePanel = new YAHOO.widget.Panel("source_panel", {
+		"context" : [element, YAHOO.widget.Overlay.TOP_RIGHT, YAHOO.widget.Overlay.BOTTOM_LEFT],
+		"constraintoviewport" : true,
+		"visible" : false
+		});
+	sourcePanel.hideEvent.subscribe(destroyPanel, sourcePanel);
+	var sources = filter(function(item) {
+		return ((item["target"]["entity"]["id"] == anatomyID) && (item["target"]["taxon"]["id"] == taxonID));
+	}, homologies);
+	if (sources.length == 0) {
+		// this should never happen
+		return;
+	}
+	var target = sources[0]["target"];
+	var body = P(null, target["entity"]["name"] + " in " + target["taxon"]["name"]);
+	sourcePanel.setBody(body);
+	sourcePanel.setHeader("Source");
+	sourcePanel.render(document.body);
+	sourcePanel.show();
 }
+
+function fillInSource(panel, content) {
+	logDebug("Fill in source: " + content);
+	// var taxon = A(null, content["phenotype"]["subject"]["name"]);
+	// var entity = A(null, content["phenotype"]["entity"]["name"]);
+	// var quality = A(null, content["phenotype"]["quality"]["name"]);	
+	// replaceChildNodes(panel.header, taxon, " ", entity, " ", quality);
+	// var sources = map(function(item) {
+	// 	var citation = P(null, item["publication"]);
+	// 	var characterTable = TABLE(null, TR(null, TD(null, "character:"), TD(null, item["character_text"])));
+	// 	if (item["character_comment"].length > 0) {
+	// 		logDebug("setting up comment");
+	// 		var comment = P({"style":"display: none;", "class":"character_comment"}, item["character_comment"]);
+	// 		var revealer = A({"href":"#"}, "View comment");
+	// 		var revealerBlock = P(null, revealer);
+	// 		connect(revealer, "onclick", function() {
+	// 			logDebug("Running onclick");
+	// 			hideElement(revealerBlock);
+	// 			blindDown(comment);
+	// 		});
+	// 		var commentRow = TR(null, TD({"colspan":"2"}, revealerBlock, comment));
+	// 		appendChildNodes(characterTable, commentRow);
+	// 	}
+	// 	appendChildNodes(characterTable, TR(null, TD(null, "state:"), TD(null, item["state_text"])));
+	// 	var curator = P({"class":"curator"}, "curated by ", item["curated_by"]);
+	// 	return DIV(null, citation, characterTable, curator);
+	// }, content["sources"]);
+	//replaceChildNodes(panel.body, sources);
+	replaceChildNodes(panel.body, keys(content));
+}
+
+function destroyPanel(type, args, obj) {
+	logDebug("Destroy");
+	if (deferred) { deferred.cancel(); }
+	obj.destroy();
+}
+
 </script>
 

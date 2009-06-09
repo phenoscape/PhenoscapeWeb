@@ -1,59 +1,50 @@
 <p>Welcome to the Phenoscape phenotype database for ostariophysan fishes.</p>
 
-<p>Begin typing to choose a search term from the popup menu.</p>
+<div id="search_buttons">
+	<input type="button" value="Anatomy" onclick="showSearch('anatomy_search');"> <input type="button" value="Taxonomy" onclick="showSearch('taxonomy_search');"> <input type="button" value="Genes" onclick="showSearch('gene_search');">
+</div>
+
 <!-- <div id="term_info"></div> -->
-<table id="search_fields">
-	<tr id="anatomy_search">
-		<td class="field_label">Search anatomy:</td>
-		<td>
+	<div id="anatomy_search">
+		<h2 class="field_label">Search Anatomy</h2>
+		<p>Begin typing to choose a search term from the popup menu.</p>
+		<form id="entityForm" action="" onsubmit="submitAnatomy(); return false;">
 			<div id="entityChoiceGroup">
-				<form id="entityForm" action="" onsubmit="return submitAnatomy();">
-					<input type="text" id="entityChoice">
-				</form>
+				<input type="text" id="entityChoice">
 				<div id="entityComplete"></div>
 			</div>
-		</td>
-		<td>
-			<input type="button" value="Search" onclick="submitAnatomy();">
-		</td>
-	</tr>
-	<tr>
-		<td class="or" colspan="2">or</td>
-	</tr>
-	<tr id="gene_search">
-		<td class="field_label">Search genes:</td>
-		<td>
-			<form id="geneForm" action="" onsubmit="return submitGene();">
-				<div id="geneChoiceGroup">
-					<input type="text" id="geneChoice">
-					<div id="geneComplete"></div>
-				</div>
-			</form>
-		</td>
-		<td>
-			<input type="button" value="Search" onclick="submitGene();">
-		</td>
-	</tr>
-	<tr>
-		<td class="or" colspan="2">or</td>
-	</tr>
-	<tr id="taxonomy_search">
-		<td class="field_label">Search taxonomy:</td>
-		<td>
-			<form id="taxonForm" action="" onsubmit="return submitTaxon();">
+			<input type="submit" value="Search">
+		</form>
+	</div>
+
+	<div id="taxonomy_search" style="display: none;">
+		<h2 class="field_label">Search Taxonomy</h2>
+		<p>Begin typing to choose a search term from the popup menu.</p>
+		<form id="taxonForm" action="" onsubmit="submitTaxon(); return false;">
 			<div id="taxonChoiceGroup">
 				<input type="text" id="taxonChoice">
 				<div id="taxonComplete"></div>
 			</div>
-			</form>
-		</td>
-		<td>
-			<input type="button" value="Search" onclick="submitTaxon();">
-		</td>
-	</tr>
-</table>
+			<input type="submit" value="Search">
+		</form>
+	</div>
+	
+	<div id="gene_search" style="display: none;">
+		<h2 class="field_label">Search Genes</h2>
+		<p>Begin typing to choose a search term from the popup menu.</p>
+		<form id="geneForm" action="" onsubmit="submitGene(); return false;">
+			<div id="geneChoiceGroup">
+				<input type="text" id="geneChoice">
+				<div id="geneComplete"></div>
+			</div>
+			<input type="submit" value="Search">
+		</form>
+	</div>
+
 
 <script type="text/javascript">
+	var shownSearch = "anatomy_search";
+
 	var selectedAnatomy = {"id":null, "name":null};
 	var selectedGene = {"id":null, "name":null};
 	var selectedTaxon = {"id":null, "name":null};
@@ -78,7 +69,6 @@
 			href += selectedAnatomy.id;
 		}
 		location.href = (href);
-		return false; //bypass form submission
 	}
 	
 	function submitGene() {
@@ -89,7 +79,6 @@
 			href += selectedGene.id;
 		}
 		location.href = (href);
-		return false; //bypass form submission
 	}
 	
 	function submitTaxon() {
@@ -100,7 +89,14 @@
 			href += selectedTaxon.id;
 		}
 		location.href = (href);
-		return false; //bypass form submission
+	}
+	
+	function showSearch(divID) {
+		if (divID == shownSearch) return;
+		logDebug("Showing " + divID);
+		hideElement(shownSearch);
+		appear(divID);
+		shownSearch = divID;	
 	}
 	
 </script>

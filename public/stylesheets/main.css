@@ -25,7 +25,6 @@ table.annotations th a {color: white; background-color: #033; text-decoration: n
 .sortarrow img {border: none;}
 */
 
-body {font-family: sans-serif;}
+body {font-family: Helvetica, sans-serif;}
 td {border: 1px solid black;}
-#search_fields {width: 80%;}
-.yui-ac {width: 100%;}
+.yui-skin-sam .yui-ac-input { position: static; width: 75%;}

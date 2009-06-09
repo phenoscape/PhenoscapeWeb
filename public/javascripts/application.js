@@ -113,3 +113,12 @@ function initAutocomplete(input, div, ontologyPrefix) {
     }
     return autocomplete;
 }
+
+var OBDWS = HOST + "/OBD-WS/";
+
+var URL = {
+    
+    homology : function(termID) {
+        return OBDWS + "term/" + termID + "/homology";
+    }
+}
