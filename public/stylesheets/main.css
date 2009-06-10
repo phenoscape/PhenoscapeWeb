@@ -28,3 +28,4 @@ table.annotations th a {color: white; background-color: #033; text-decoration: n
 body {font-family: Helvetica, sans-serif;}
 td {border: 1px solid black;}
 .yui-skin-sam .yui-ac-input { position: static; width: 75%;}
+.relation-name {font-style: italic;}

@@ -33,6 +33,7 @@ class SearchController < ApplicationController
     @term = params[:id]
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
     @term_info = ActiveSupport::JSON.decode(response.body)
+    @title = @term_info["name"]
     homology_response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term + "/homology")
     @homology_json = homology_response.body
     homology_data = ActiveSupport::JSON.decode(@homology_json)

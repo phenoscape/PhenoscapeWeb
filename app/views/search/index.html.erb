@@ -49,9 +49,9 @@
 	var selectedGene = {"id":null, "name":null};
 	var selectedTaxon = {"id":null, "name":null};
 
-	var entityAC = initAutocomplete($("entityChoice"), $("entityComplete"), "TAO");
-	var geneAC = initAutocomplete($("geneChoice"), $("geneComplete"), "ZFIN");
-	var taxonAC = initAutocomplete($("taxonChoice"), $("taxonComplete"), "TTO");
+	var entityAC = initAutocomplete($("entityChoice"), $("entityComplete"), ONTOLOGY.TAO);
+	var geneAC = initAutocomplete($("geneChoice"), $("geneComplete"), ONTOLOGY.ZFIN);
+	var taxonAC = initAutocomplete($("taxonChoice"), $("taxonComplete"), ONTOLOGY.TTO);
 	var selectItem = function(storage, event, item) {
 		var data = item[2];
 		storage.id = data[1];

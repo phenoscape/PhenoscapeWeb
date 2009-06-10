@@ -2,7 +2,6 @@
 // This file is automatically included by javascript_include_tag :defaults
 
 
-var HOST = "http://" + window.location.hostname;
 
 // FIXME Function (constructor) documentation for what this does and
 // how is missing
@@ -92,11 +91,8 @@ TermInfoPanelDataSource.prototype.update = function(data) {
 }
 
 // FIXME function documentation for what this does and how is missing
-
-// FIXME shouldn't some of the URL prefix strings be constants and
-// declared separately?
 function initAutocomplete(input, div, ontologyPrefix) {
-	var dataSource = new YAHOO.util.XHRDataSource(HOST + "/OBD-WS/term/search");
+	var dataSource = new YAHOO.util.XHRDataSource(URL.autocomplete());
 	dataSource.responseSchema = { resultsList:"matches", fields:[{key:"match_text"}, {key:"id"}, {key:"match_type"}] };
 	dataSource.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
 	var autocomplete = new YAHOO.widget.AutoComplete(input, div, dataSource);
@@ -114,11 +110,24 @@ function initAutocomplete(input, div, ontologyPrefix) {
     return autocomplete;
 }
 
-var OBDWS = HOST + "/OBD-WS/";
+
+var HOST = "http://" + window.location.hostname;
+
+var OBDWS = HOST + "/OBD-WS";
 
 var URL = {
     
     homology : function(termID) {
-        return OBDWS + "term/" + termID + "/homology";
+        return OBDWS + "/term/" + termID + "/homology";
+    },
+    
+    autocomplete : function() {
+        return OBDWS + "/term/search";
     }
-}
+};
+
+var ONTOLOGY = {
+    TAO : "TAO",
+    TTO : "TTO",
+    ZFIN : "ZFIN"
+};
