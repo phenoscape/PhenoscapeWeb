@@ -25,12 +25,20 @@ table.annotations th a {color: white; background-color: #033; text-decoration: n
 .sortarrow img {border: none;}
 */
 
+h1 img {border: none;}
+#navbar {background-color: #74c4ab; text-align: right; color: #0a3a34;}
+#navbar a {color: inherit;}
+.clear {clear: both;}
 body {font-family: Helvetica, sans-serif;}
 td {border: 1px solid black;}
-.yui-skin-sam .yui-ac-input { position: static; width: 100%;}
 .relation-name {font-style: italic;}
+
+.yui-skin-sam .yui-ac-input { position: static; width: 100%;}
 .tag-cloud {font-size: 8pt; }
-.tag-cloud a {display: block; float: left; margin: -0.1em 0.25em -0.1em 0.25em; text-decoration: none; color: blue;}
-.tag-cloud a:hover {background-color: #9cf;}
-.tag-cloud a:visited {color: blue;}
+.tag-cloud a {display: block; float: left; margin: -0.1em 0.25em -0.1em 0.25em; text-decoration: none; color: #0a3a34;}
+.tag-cloud a:hover {background-color: #74c4ab;}
+.tag-cloud a:visited {color: #0a3a34;}
 #search-forms {width: 80%; margin-left: auto; margin-right: auto;}
+#search-forms h2 {}
+#search-buttons {text-align: center;}
+#search-buttons input {margin-left: 2em; margin-right: 2em;}
