@@ -42,9 +42,6 @@ module SearchHelper
       entry["targets"].push(link["target"])
     end
     for relation in relations.values
-      if relation["relation"]["id"] == IS_A
-        relation["relation"]["name"] = "is_a"
-      end
       relation["targets"].sort! {|x,y| x["name"] <=> y["name"]}
     end
     return relations.values.sort do |x,y|
