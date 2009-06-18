@@ -1,83 +1,66 @@
 <h2><span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h2>
-
-<div id="term_info">
-	<table>
-		<tr>
-			<td class="TermInfoPanel-field-label">Synonyms:</td>
-			<td><%=h (@term_info["synonyms"].collect {|item| item["name"]}).join(", ") %></td>
-		</tr>
-		<tr>
-			<td class="TermInfoPanel-field-label">Definition:</td>
-			<td><%=h @term_info["definition"]%></td>
-		</tr>
-		<tr>
-			<td class="TermInfoPanel-header-label" colspan="2">Parents</td>
-		</tr>
+<div id="sidebar">
+	<div id="term_info">
+		<h3>Anatomical Term</h3>
+		<h4 class="term-info-header">Properties</h4>
+		<div>
+			<span class="term-info-field-label">Synonyms:</span> <span><%=h (@term_info["synonyms"].collect {|item| item["name"]}).join(", ") %></span>
+		</div>
+		<div>
+			<span class="term-info-field-label">Definition:</span> <span><%=h @term_info["definition"]%></span>
+		</div>
+		<h4 class="term-info-header">Relationships</h4>
 		<% for relation in lump_relations(@term_info["parents"]) %>
-		<tr>
-			<td class="TermInfoPanel-field-label relation_name" title="<%=h relation["relation"]["id"] %>"><%=h relation["relation"]["name"] %></td>
-			<td>
-				<%= (relation["targets"].collect {|item| anatomy_link(item) }).join(", ") %>
-			</td>
-		</tr>
+		<div>
+			<span class="term-info-field-label relation_name" title="<%=h relation["relation"]["id"] %>"><%=h subject_rel(relation["relation"]["id"], relation["relation"]["name"]) %>:</span> <span><%= (relation["targets"].collect {|item| anatomy_link(item) }).join(", ") %></span>
+		</div>	
 		<% end %>
-		<tr>
-			<td class="TermInfoPanel-header-label" colspan="2">Children</td>
-		</tr>
 		<% for relation in lump_relations(@term_info["children"]) %>
-		<tr>
-			<td class="TermInfoPanel-field-label relation_name" title="<%=h relation["relation"]["id"] %>"><%=h relation["relation"]["name"] %></td>
-			<td>
-				<%= (relation["targets"].collect {|item| anatomy_link(item) }).join(", ") %>
-			</td>
-		</tr>
+		<div>
+			<span class="term-info-field-label relation_name" title="<%=h relation["relation"]["id"] %>"><%=h object_rel(relation["relation"]["id"], relation["relation"]["name"]) %>:</span> <span><%= (relation["targets"].collect {|item| anatomy_link(item) }).join(", ") %></span>
+		</div>
 		<% end %>
 		<%  if not @homology.empty? %>
+			<div>
+			<span class="term-info-field-label relation_name">possible homologs:</span> <span><%= list_more(format_homologies(@homology), 0) %></span>
+		</div>
+		<% end %>
+	</div>
+</div>
+<div id="main">
+	<h2>Phenotypes</h2>
+	<% if @summary["characters"].empty? %>
+	<p>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</p>
+	<% else %>
+	<table class="annotations sortable" id="datatable">
 		<tr>
-			<td class="TermInfoPanel-header-label" colspan="2">Possible Homologs</td>
+			<th>Anatomy</th><th>Quality</th><th>Zebrafish Data</th><th>Evolutionary Data</th>
 		</tr>
+		<% for character in @summary["characters"] %>
 		<tr>
-			<td colspan="2">
-				<%= list_more(format_homologies(@homology), 0) %>
+			<td><%=h character["entity"]["name"] %></td>
+			<td><%=h character["character_quality"]["name"] %><br>Values include:
+				<%=h (character["qualities"]["examples"].collect {|item| item["name"]}).join(", ") %> and <%=h character["qualities"]["count"] - character["qualities"]["examples"].length %> more
+			</td>
+			<td>
+				<% if character["genes"]["count"] > 0 %>
+					<a href="/phenotype/devo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"><%=h character["genes"]["count"] %> genes
+				<% else %>
+					None
+				<% end %>
+			</td>
+			<td>
+				<% if character["taxa"]["count"] > 0 %>
+					<a href="/phenotype/evo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"> <%=h character["taxa"]["count"] %> taxa
+				<% else %>
+					None
+				<% end %>
 			</td>
 		</tr>
 		<% end %>
 	</table>
-</div>
-
-<h2>Phenotypes</h2>
-<% if @summary["characters"].empty? %>
-<p>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</p>
-<% else %>
-<table class="annotations sortable" id="datatable">
-	<tr>
-		<th>Anatomy</th><th>Quality</th><th>Zebrafish Data</th><th>Evolutionary Data</th>
-	</tr>
-	<% for character in @summary["characters"] %>
-	<tr>
-		<td><%=h character["entity"]["name"] %></td>
-		<td><%=h character["character_quality"]["name"] %><br>Values include:
-			<%=h (character["qualities"]["examples"].collect {|item| item["name"]}).join(", ") %> and <%=h character["qualities"]["count"] - character["qualities"]["examples"].length %> more
-		</td>
-		<td>
-			<% if character["genes"]["count"] > 0 %>
-				<a href="/phenotype/devo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"><%=h character["genes"]["count"] %> genes
-			<% else %>
-				None
-			<% end %>
-		</td>
-		<td>
-			<% if character["taxa"]["count"] > 0 %>
-				<a href="/phenotype/evo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"> <%=h character["taxa"]["count"] %> taxa
-			<% else %>
-				None
-			<% end %>
-		</td>
-	</tr>
 	<% end %>
-</table>
-<% end %>
-
+</div>
 
 <script type="text/javascript">
 
@@ -123,4 +106,3 @@ function destroyPanel(type, args, obj) {
 }
 
 </script>
-
