@@ -1,4 +1,4 @@
-<h2>All phenotypes for <span class="term-name" title="<%=h @entity["id"] %>"><a href="/search/anatomy/<%=h @entity["id"] %>"><%=h @entity["name"] %></a></span> <span class="term-name" title="<%=h @quality["id"] %>"><%=h @quality["name"] %></span>
+<h2>All phenotypes for <span class="term-name" title="<%=h @entity["id"] %>"><a href="/search/entity/<%=h @entity["id"] %>"><%=h @entity["name"] %></a></span> <span class="term-name" title="<%=h @quality["id"] %>"><%=h @quality["name"] %></span>
 <% if @subject != nil %>
 in <span class="term-name" title="<%=h @subject["id"] %>"><a href="/search/taxon/<%=h @subject["id"] %>"><%= format_taxon(h @subject["name"]) %></a></span>
 <% end %>

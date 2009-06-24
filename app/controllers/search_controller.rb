@@ -17,7 +17,7 @@ class SearchController < ApplicationController
 
   ## FIXME Should have method (and parameter!) documentation as to
   ## what it does and how it does it.  
-  def anatomy
+  def entity
     if params[:find] == "true"
       match_id = find_match(params[:id], "TAO")
       #TODO check for nil match_id
@@ -63,7 +63,6 @@ class SearchController < ApplicationController
       end
     end
     @term = params[:id]
-    @examples_length = 2
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
     @term_info = ActiveSupport::JSON.decode(response.body)
     begin
@@ -90,12 +89,10 @@ class SearchController < ApplicationController
       end
     end
     @term = params[:id]
-    @examples_length = 2
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
     @term_info = ActiveSupport::JSON.decode(response.body)
     begin
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&subject=" + @term)
-      #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_summary_results.js")
       @summary = ActiveSupport::JSON.decode(response.body)
     rescue Timeout::Error
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)

@@ -11,7 +11,7 @@
 <ul>
 	<% for child_term in @term_info["children"] %>
 	<li>
-		<a href="/search/anatomy/<%=h child_term["target"]["id"]%>"><%=h child_term["target"]["name"] %></a>
+		entity_link(child_term)
 	</li>
 	<% end %>
 </ul>

@@ -4,20 +4,26 @@
 		<h3>Anatomical Term</h3>
 		<h4 class="term-info-header">Properties</h4>
 		<div>
-			<span class="term-info-field-label">Synonyms:</span> <span><%=h (@term_info["synonyms"].collect {|item| item["name"]}).join(", ") %></span>
+			<span class="term-info-field-label">Synonyms:</span> <span><%= textOrNone((@term_info["synonyms"].collect {|item| item["name"]}).join(", ")) %></span>
 		</div>
 		<div>
-			<span class="term-info-field-label">Definition:</span> <span><%=h @term_info["definition"]%></span>
+			<% definition = @term_info["definition"]%>
+			<span class="term-info-field-label">Definition:</span> <span><%= textOrNone(definition)%></span>
 		</div>
+		<% if not empty(@term_info["comment"]) %>
+		<div>
+			<span class="term-info-field-label">Comment:</span> <span><%=h @term_info["comment"]%></span>
+		</div>
+		<% end %>
 		<h4 class="term-info-header">Relationships</h4>
 		<% for relation in lump_relations(@term_info["parents"]) %>
 		<div>
-			<span class="term-info-field-label relation_name" title="<%=h relation["relation"]["id"] %>"><%=h subject_rel(relation["relation"]["id"], relation["relation"]["name"]) %>:</span> <span><%= (relation["targets"].collect {|item| anatomy_link(item) }).join(", ") %></span>
+			<span class="term-info-field-label relation_name" title="<%=h relation["relation"]["id"] %>"><%=h subject_rel(relation["relation"]["id"], relation["relation"]["name"]) %>:</span> <span><%= (relation["targets"].collect {|item| entity_link(item) }).join(", ") %></span>
 		</div>	
 		<% end %>
 		<% for relation in lump_relations(@term_info["children"]) %>
 		<div>
-			<span class="term-info-field-label relation_name" title="<%=h relation["relation"]["id"] %>"><%=h object_rel(relation["relation"]["id"], relation["relation"]["name"]) %>:</span> <span><%= (relation["targets"].collect {|item| anatomy_link(item) }).join(", ") %></span>
+			<span class="term-info-field-label relation_name" title="<%=h relation["relation"]["id"] %>"><%=h object_rel(relation["relation"]["id"], relation["relation"]["name"]) %>:</span> <span><%= (relation["targets"].collect {|item| entity_link(item) }).join(", ") %></span>
 		</div>
 		<% end %>
 		<%  if not @homology.empty? %>
@@ -28,6 +34,7 @@
 	</div>
 </div>
 <div id="main">
+	<div class="feedback"><form action="/contact"><input type="submit" value="Provide Feedback"></input><input type="hidden" name="page" value="<%= @title%>"></input></form></div>
 	<h2>Phenotypes</h2>
 	<% if @summary["characters"].empty? %>
 	<p>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</p>

@@ -1,59 +1,54 @@
 <h2><span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h2>
-
-<div id="term_info">
-	<table>
-		<tr>
-			<td class="TermInfoPanel-field-label">Synonyms:</td>
-			<td><%=h (@term_info["synonyms"].collect {|item| item["name"]}).sort.join(", ") %></td>
-		</tr>
-		<tr>
-			<td class="TermInfoPanel-header-label">Parent:</td>
-			<td>
-				<%= ((@term_info["parents"].sort_by {|item| item["target"]["name"]}).collect {|item| taxon_link(item["target"]) }).join(", ") %>
-			</td>
-		</tr>
-		<tr>
-			<td class="TermInfoPanel-header-label">Children:</td>
-			<td>
-				<%= ((@term_info["children"].sort_by {|item| item["target"]["name"]}).collect {|item| taxon_link(item["target"]) }).join(", ") %>
-			</td>
-		</tr>
-	</table>
+<div id="sidebar">
+	<div id="term_info">
+		<h3>Taxonomic Group</h3>
+		<h4 class="term-info-header">Properties</h4>
+		<div>
+			<span class="term-info-field-label">Synonyms:</span> <span><%=h (@term_info["synonyms"].collect {|item| item["name"]}).sort.join(", ") %></span>
+		</div>
+		<div>
+			<span class="term-info-field-label">Parent:</span> <span><%= ((@term_info["parents"].sort_by {|item| item["target"]["name"]}).collect {|item| taxon_link(item["target"]) }).join(", ") %></span>
+		</div>
+		<div>
+			<span class="term-info-field-label">Children:</span> <span><%= ((@term_info["children"].sort_by {|item| item["target"]["name"]}).collect {|item| taxon_link(item["target"]) }).join(", ") %></span>
+		</div>
+	</div>
 </div>
+<div id="main">
+	<% if @summary["characters"].empty? %>
 
-<% if @summary["characters"].empty? %>
+	<h2>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</h2>
 
-<h2>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</h2>
+	<% else %>
 
-<% else %>
+	<h2>Phenotypes</h2>
+	<table class="annotations sortable" id="datatable">
+		<tr>
+			<th>Anatomy</th><th>Quality</th><th>Zebrafish Data</th><th>Evolutionary Data</th>
+		</tr>
+		<% for character in @summary["characters"] %>
+		<tr>
+			<td><%=h character["entity"]["name"] %></td>
+			<td><%=h character["character_quality"]["name"] %><br>Values include: 
+				<%=h (character["qualities"]["examples"].collect {|item| item["name"]}).join(", ") %> and <%=h character["qualities"]["count"] - character["qualities"]["examples"].length %> more
+			</td>
+			<td>
+				<% if character["genes"]["count"] > 0 %>
+					<a href="/phenotype/devo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"><%=h character["genes"]["count"] %> genes
+				<% else %>
+					None
+				<% end %>
+			</td>
+			<td>
+				<% if character["taxa"]["count"] > 0 %>
+					<a href="/phenotype/evo/<%=h @term %>/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"> <%=h character["taxa"]["count"] %> taxa
+				<% else %>
+					None
+				<% end %>
+			</td>
+		</tr>
+		<% end %>
+	</table>
 
-<h2>Phenotypes</h2>
-<table class="annotations sortable" id="datatable">
-	<tr>
-		<th>Anatomy</th><th>Quality</th><th>Zebrafish Data</th><th>Evolutionary Data</th>
-	</tr>
-	<% for character in @summary["characters"] %>
-	<tr>
-		<td><%=h character["entity"]["name"] %></td>
-		<td><%=h character["character_quality"]["name"] %><br>Values include: 
-			<%=h (character["qualities"]["examples"].collect {|item| item["name"]}).join(", ") %> and <%=h character["qualities"]["count"] - character["qualities"]["examples"].length %> more
-		</td>
-		<td>
-			<% if character["genes"]["count"] > 0 %>
-				<a href="/phenotype/devo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"><%=h character["genes"]["count"] %> genes
-			<% else %>
-				None
-			<% end %>
-		</td>
-		<td>
-			<% if character["taxa"]["count"] > 0 %>
-				<a href="/phenotype/evo/<%=h @term %>/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"> <%=h character["taxa"]["count"] %> taxa
-			<% else %>
-				None
-			<% end %>
-		</td>
-	</tr>
 	<% end %>
-</table>
-
-<% end %>
+</div>

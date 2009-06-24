@@ -1,44 +1,41 @@
-<% if @summary["characters"].empty? %>
 
-<h2>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</h2>
-
-<% else %>
 <h2><span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h2>
-<div id="term_info"></div>
-
-<h2>Phenotypes</h2>
-<table class="annotations sortable" id="datatable">
-	<tr>
-		<th>Anatomy</th><th>Quality</th><th>Zebrafish Data</th><th>Evolutionary Data</th>
-	</tr>
-	<% for character in @summary["characters"] %>
-	<tr>
-		<td><%=h character["entity"]["name"] %></td>
-		<td><%=h character["character_quality"]["name"] %><br>Values include: 
-			<%=h (character["qualities"]["examples"].collect {|item| item["name"]}).join(", ") %> and <%=h character["qualities"]["count"] - character["qualities"]["examples"].length %> more
-		</td>
-		<td>
-			<% if character["genes"]["count"] > 0 %>
-				<a href="/phenotype/devo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"><%=h character["genes"]["count"] %> genes
-			<% else %>
-				None
-			<% end %>
-		</td>
-		<td>
-			<% if character["taxa"]["count"] > 0 %>
-				<a href="/phenotype/evo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"> <%=h character["taxa"]["count"] %> taxa
-			<% else %>
-				None
-			<% end %>
-		</td>
-	</tr>
-	<% end %>
-</table>
-
-<script type="text/javascript">
-var panel = new TermInfoPanel("term_info");
-var dataSource = new TermInfoPanelDataSource(panel);
-dataSource.loadTerm(HOST + "/OBD-WS/term/" + "<%=h @term %>");
-</script>
-
+<div id="sidebar">
+	<div id="term_info">
+		<h3>ZFIN Gene</h3>
+	</div>
+</div>
+<div id="main">
+	<h2>Phenotypes</h2>
+	<% if @summary["characters"].empty? %>
+	<h2>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</h2>
+	<% else %>
+	<table class="annotations sortable" id="datatable">
+		<tr>
+			<th>Anatomy</th><th>Quality</th><th>Zebrafish Data</th><th>Evolutionary Data</th>
+		</tr>
+		<% for character in @summary["characters"] %>
+		<tr>
+			<td><%=h character["entity"]["name"] %></td>
+			<td><%=h character["character_quality"]["name"] %><br>Values include: 
+				<%=h (character["qualities"]["examples"].collect {|item| item["name"]}).join(", ") %> and <%=h character["qualities"]["count"] - character["qualities"]["examples"].length %> more
+			</td>
+			<td>
+				<% if character["genes"]["count"] > 0 %>
+					<a href="/phenotype/devo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"><%=h character["genes"]["count"] %> genes
+				<% else %>
+					None
+				<% end %>
+			</td>
+			<td>
+				<% if character["taxa"]["count"] > 0 %>
+					<a href="/phenotype/evo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"> <%=h character["taxa"]["count"] %> taxa
+				<% else %>
+					None
+				<% end %>
+			</td>
+		</tr>
+		<% end %>
+	</table>
+</div>
 <% end %>

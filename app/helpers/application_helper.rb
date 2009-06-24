@@ -38,4 +38,12 @@ module ApplicationHelper
     return (@@object_relation_mappings.has_key? id) ? @@object_relation_mappings[id] : default
   end
   
+  def empty(text)
+    return (text != nil or text != "")
+  end
+  
+  def textOrNone(text)
+    return empty(text) ? "<i>None</i>" : h(text)
+  end
+  
 end
