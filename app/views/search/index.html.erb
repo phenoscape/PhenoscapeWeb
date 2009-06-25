@@ -1,120 +1,102 @@
 
 <div id="search-buttons">
-	<p>Welcome to the Phenoscape phenotype database for ostariophysan fishes.  Select a datatype to search.</p>
-	<input type="button" value="Anatomy" onclick="showSearch('anatomy_search');"> <input type="button" value="Taxonomy" onclick="showSearch('taxonomy_search');"> <input type="button" value="Genes" onclick="showSearch('gene_search');">
+	<p>Welcome to the Phenoscape phenotype database for ostariophysan fishes.</p>
+	<!-- <input type="button" value="Anatomy" onclick="showSearch('anatomy_search');"> <input type="button" value="Taxonomy" onclick="showSearch('taxonomy_search');"> <input type="button" value="Genes" onclick="showSearch('gene_search');"> -->
 </div>
 
-<!-- <div id="term_info"></div> -->
 <div id="search-forms">
-	<div id="anatomy_search">
-		<h2 class="field_label">Search Anatomy</h2>
+	<div id="term_search">
+		<h2 class="field_label">Search the Phenoscape Knowledgebase</h2>
 		<p>Begin typing to choose a search term from the popup menu.</p>
-		<form id="entityForm" action="" onsubmit="submitAnatomy(); return false;">
-			<div id="entityChoiceGroup">
-				<input type="text" id="entityChoice">
-				<div id="entityComplete"></div>
+		<form id="termForm" action="" onsubmit="submitTerm(); return false;">
+			<div id="termChoiceGroup">
+				<input type="text" id="termChoice">
+				<div id="termComplete"></div>
 			</div>
 			<input type="submit" value="Search">
 		</form>
 		<p>Or, try one of the most commonly used terms:</p>
 		<div class="tag-cloud">
-			<a href="/search/entity/TAO:0001162" style="font-size:118%;">anal fin</a> <a href="/search/entity/TAO:0001421" style="font-size:104%;">anal fin lepidotrichium</a> <a href="/search/entity/TAO:0000467" style="font-size:118%;">anguloarticular</a> <a href="/search/entity/TAO:0000620" style="font-size:581%;">autopalatine</a> <a href="/search/entity/TAO:0001608" style="font-size:377%;">autopalatine-lateral ethmoid joint</a> <a href="/search/entity/TAO:0000623" style="font-size:102%;">basipterygium</a> <a href="/search/entity/TAO:0000476" style="font-size:113%;">branchiostegal ray</a> <a href="/search/entity/TAO:0001902" style="font-size:101%;">ceratobranchial 4 element</a> <a href="/search/entity/TAO:0001239" style="font-size:122%;">ceratobranchial 5 bone</a> <a href="/search/entity/TAO:0000694" style="font-size:129%;">ceratobranchial 5 tooth</a> <a href="/search/entity/TAO:0000332" style="font-size:104%;">coracoid</a> <a href="/search/entity/TAO:0001274" style="font-size:306%;">coronomeckelian</a> <a href="/search/entity/TAO:0001628" style="font-size:209%;">dentary tooth</a> <a href="/search/entity/TAO:0001789" style="font-size:121%;">dorsal fin spine 1</a> <a href="/search/entity/TAO:0001243" style="font-size:101%;">epibranchial 1 bone</a> <a href="/search/entity/TAO:0001905" style="font-size:222%;">epibranchial 1 element</a> <a href="/search/entity/TAO:0001906" style="font-size:211%;">epibranchial 2 element</a> <a href="/search/entity/TAO:0001822" style="font-size:170%;">epibranchial 3 bone uncinate process</a> <a href="/search/entity/TAO:0001244" style="font-size:195%;">epibranchial 5 cartilage</a> <a href="/search/entity/TAO:0001412" style="font-size:134%;">epiotic</a> <a href="/search/entity/TAO:0001405" style="font-size:201%;">ethmoid cartilage</a> <a href="/search/entity/TAO:0000514" style="font-size:150%;">frontal bone</a> <a href="/search/entity/TAO:0000356" style="font-size:210%;">gill raker</a> <a href="/search/entity/TAO:0000672" style="font-size:195%;">hyomandibula</a> <a href="/search/entity/TAO:0001896" style="font-size:108%;">hypobranchial 3 element</a> <a href="/search/entity/TAO:0000223" style="font-size:150%;">infraorbital 1</a> <a href="/search/entity/TAO:0001811" style="font-size:121%;">infraorbital sensory canal</a> <a href="/search/entity/TAO:0000674" style="font-size:134%;">interopercle</a> <a href="/search/entity/TAO:0000226" style="font-size:336%;">lateral ethmoid</a> <a href="/search/entity/TAO:0000270" style="font-size:307%;">maxilla</a> <a href="/search/entity/TAO:0001205" style="font-size:308%;">Meckel's cartilage</a> <a href="/search/entity/TAO:0000323" style="font-size:237%;">mesethmoid bone</a> <a href="/search/entity/TAO:0000240" style="font-size:197%;">metapterygoid</a> <a href="/search/entity/TAO:0000250" style="font-size:153%;">opercle</a> <a href="/search/entity/TAO:0001941" style="font-size:107%;">orbitosphenoid-lateral ethmoid joint</a> <a href="/search/entity/TAO:0001171" style="font-size:147%;">os suspensorium</a> <a href="/search/entity/TAO:0001362" style="font-size:113%;">parapophysis</a> <a href="/search/entity/TAO:0001911" style="font-size:128%;">pharyngobranchial 2 element</a> <a href="/search/entity/TAO:0000567" style="font-size:294%;">premaxilla</a> <a href="/search/entity/TAO:0001626" style="font-size:164%;">premaxillary tooth</a> <a href="/search/entity/TAO:0000264" style="font-size:105%;">preopercle</a> <a href="/search/entity/TAO:0001834" style="font-size:1141%;">process</a> <a href="/search/entity/TAO:0000576" style="font-size:150%;">pterotic</a> <a href="/search/entity/TAO:0001768" style="font-size:100%;">retractor tentaculi</a> <a href="/search/entity/TAO:0000277" style="font-size:372%;">scale</a> <a href="/search/entity/TAO:0000076" style="font-size:115%;">swim bladder</a> <a href="/search/entity/TAO:0001683" style="font-size:189%;">transcapular ligament</a> <a href="/search/entity/TAO:0001658" style="font-size:137%;">upper pharyngeal tooth plate</a> <a href="/search/entity/TAO:0000452" style="font-size:167%;">urohyal</a> <a href="/search/entity/TAO:0000308" style="font-size:155%;">vomer</a>
-			
-		</div>
-	</div>
-
-	<div id="taxonomy_search" style="display: none;">
-		<h2 class="field_label">Search Taxonomy</h2>
-		<p>Begin typing to choose a search term from the popup menu.</p>
-		<form id="taxonForm" action="" onsubmit="submitTaxon(); return false;">
-			<div id="taxonChoiceGroup">
-				<input type="text" id="taxonChoice">
-				<div id="taxonComplete"></div>
-			</div>
-			<input type="submit" value="Search">
-		</form>
-		<p>Or, try one of the most commonly used terms:</p>
-		<div class="tag-cloud">
-			<a href="/search/taxon/TTO:1049089" style="font-size:107%;">Amblyceps mangois</a> <a href="/search/taxon/TTO:1054196" style="font-size:151%;">Ameiurus nebulosus</a> <a href="/search/taxon/TTO:1045515" style="font-size:128%;">Amphilius atesuensis</a> <a href="/search/taxon/TTO:1004676" style="font-size:126%;">Ariopsis felis</a> <a href="/search/taxon/TTO:1005605" style="font-size:106%;">Aspredinichthys tibicen</a> <a href="/search/taxon/TTO:1005467" style="font-size:106%;">Aspredo aspredo</a> <a href="/search/taxon/TTO:1008785" style="font-size:122%;">Austroglanis barnardi</a> <a href="/search/taxon/TTO:1005554" style="font-size:125%;">Bagre marinus</a> <a href="/search/taxon/TTO:1048049" style="font-size:101%;">Bagrichthys hypselopterus</a> <a href="/search/taxon/TTO:1005552" style="font-size:160%;">Bagroides melapterus</a> <a href="/search/taxon/TTO:1005482" style="font-size:122%;">Bagrus bajad</a> <a href="/search/taxon/TTO:1045692" style="font-size:161%;">Batasio batasio</a> <a href="/search/taxon/TTO:1005858" style="font-size:121%;">Brachyrhamdia imitator</a> <a href="/search/taxon/TTO:1005647" style="font-size:126%;">Brachysynodontis batensoda</a> <a href="/search/taxon/TTO:1046540" style="font-size:120%;">Cetopsis coecutiens</a> <a href="/search/taxon/TTO:1006047" style="font-size:132%;">Chaca chaca</a> <a href="/search/taxon/TTO:1045693" style="font-size:116%;">Chiloglanis batesii</a> <a href="/search/taxon/TTO:1005577" style="font-size:248%;">Chrysichthys auratus</a> <a href="/search/taxon/TTO:1048743" style="font-size:135%;">Chrysichthys longipinnis</a> <a href="/search/taxon/TTO:1005576" style="font-size:135%;">Chrysichthys nigrodigitatus</a> <a href="/search/taxon/TTO:1053958" style="font-size:117%;">Clarias buettikoferi</a> <a href="/search/taxon/TTO:1049231" style="font-size:117%;">Clarias meladerma</a> <a href="/search/taxon/TTO:1005561" style="font-size:135%;">Clarotes laticeps</a> <a href="/search/taxon/TTO:1004810" style="font-size:106%;">Corydoras aeneus</a> <a href="/search/taxon/TTO:1046341" style="font-size:143%;">Diplomystes chilensis</a> <a href="/search/taxon/TTO:1005788" style="font-size:123%;">Goeldiella eques</a> <a href="/search/taxon/TTO:1005684" style="font-size:122%;">Helogenes marmoratus</a> <a href="/search/taxon/TTO:1005665" style="font-size:134%;">Hemibagrus nemurus</a> <a href="/search/taxon/TTO:1004205" style="font-size:106%;">Hepsetus odoe</a> <a href="/search/taxon/TTO:1054206" style="font-size:149%;">Ictalurus punctatus</a> <a href="/search/taxon/TTO:1005580" style="font-size:113%;">Leiocassis poecilopterus</a> <a href="/search/taxon/TTO:1049792" style="font-size:193%;">Mystus nigriceps</a> <a href="/search/taxon/TTO:1005555" style="font-size:120%;">Nematogenys inermis</a> <a href="/search/taxon/TTO:1005484" style="font-size:148%;">Noturus flavus</a> <a href="/search/taxon/TTO:1005595" style="font-size:118%;">Noturus gyrinus</a> <a href="/search/taxon/TTO:1056294" style="font-size:146%;">Pangasianodon hypophthalmus</a> <a href="/search/taxon/TTO:1005926" style="font-size:106%;">Parakysis verrucosus</a> <a href="/search/taxon/TTO:1054684" style="font-size:113%;">Pelteobagrus intermedius</a> <a href="/search/taxon/TTO:1005771" style="font-size:105%;">Phreatobius cisternarum</a> <a href="/search/taxon/TTO:1005623" style="font-size:104%;">Pseudecheneis sulcata</a> <a href="/search/taxon/TTO:1005694" style="font-size:107%;">Pterygoplichthys multiradiatus</a> <a href="/search/taxon/TTO:1003957" style="font-size:115%;">Rhabdalestes septentrionalis</a> <a href="/search/taxon/TTO:1067751" style="font-size:122%;">Rhamdia laticauda</a> <a href="/search/taxon/TTO:1050828" style="font-size:158%;">Rhamdia quelen</a> <a href="/search/taxon/TTO:1005828" style="font-size:121%;">Rhamdiopsis moreirai</a> <a href="/search/taxon/TTO:1005579" style="font-size:161%;">Rita rita</a> <a href="/search/taxon/TTO:1005481" style="font-size:194%;">Schilbe mystus</a> <a href="/search/taxon/TTO:1004595" style="font-size:161%;">Tachysurus fulvidraco</a> <a href="/search/taxon/TTO:1026946" style="font-size:100%;">Tatia creutzbergi</a> <a href="/search/taxon/TTO:1004213" style="font-size:114%;">Xenocharax spilurus</a>
-			
-		</div>
-	</div>
-	
-	<div id="gene_search" style="display: none;">
-		<h2 class="field_label">Search Genes</h2>
-		<p>Begin typing to choose a search term from the popup menu.</p>
-		<form id="geneForm" action="" onsubmit="submitGene(); return false;">
-			<div id="geneChoiceGroup">
-				<input type="text" id="geneChoice">
-				<div id="geneComplete"></div>
-			</div>
-			<input type="submit" value="Search">
-		</form>
-		<p>Or, try one of the most commonly used terms:</p>
-		<div class="tag-cloud">
-			<a href="/search/gene/ZFIN:ZDB-GENE-010906-1" style="font-size:160%;">ache</a> <a href="/search/gene/ZFIN:ZDB-GENE-070521-2" style="font-size:156%;">ahctf1</a> <a href="/search/gene/ZFIN:ZDB-GENE-070117-2032" style="font-size:129%;">alb</a> <a href="/search/gene/ZFIN:ZDB-GENE-001212-1" style="font-size:174%;">atp1a1</a> <a href="/search/gene/ZFIN:ZDB-GENE-020905-1" style="font-size:100%;">atp2a1</a> <a href="/search/gene/ZFIN:ZDB-GENE-040426-731" style="font-size:119%;">brpf1</a> <a href="/search/gene/ZFIN:ZDB-GENE-990415-171" style="font-size:300%;">cdh2</a> <a href="/search/gene/ZFIN:ZDB-GENE-980526-330" style="font-size:225%;">cdx4</a> <a href="/search/gene/ZFIN:ZDB-GENE-990415-33" style="font-size:245%;">chd</a> <a href="/search/gene/ZFIN:ZDB-GENE-070117-2515" style="font-size:105%;">clo</a> <a href="/search/gene/ZFIN:ZDB-GENE-030911-7" style="font-size:119%;">disp1</a> <a href="/search/gene/ZFIN:ZDB-GENE-070117-2036" style="font-size:100%;">eis</a> <a href="/search/gene/ZFIN:ZDB-GENE-041124-2" style="font-size:190%;">extl3</a> <a href="/search/gene/ZFIN:ZDB-GENE-990712-18" style="font-size:250%;">eya1</a> <a href="/search/gene/ZFIN:ZDB-GENE-990415-72" style="font-size:211%;">fgf8a</a> <a href="/search/gene/ZFIN:ZDB-GENE-980526-143" style="font-size:107%;">foxd3</a> <a href="/search/gene/ZFIN:ZDB-GENE-011119-1" style="font-size:180%;">gpc4</a> <a href="/search/gene/ZFIN:ZDB-GENE-020419-32" style="font-size:168%;">hdac1</a> <a href="/search/gene/ZFIN:ZDB-GENE-020104-1" style="font-size:109%;">hnf1b</a> <a href="/search/gene/ZFIN:ZDB-GENE-980526-464" style="font-size:150%;">kita</a> <a href="/search/gene/ZFIN:ZDB-GENE-030131-555" style="font-size:129%;">krit1</a> <a href="/search/gene/ZFIN:ZDB-GENE-060118-1" style="font-size:603%;">lama1</a> <a href="/search/gene/ZFIN:ZDB-GENE-021226-1" style="font-size:270%;">lamb1</a> <a href="/search/gene/ZFIN:ZDB-GENE-021226-3" style="font-size:417%;">lamc1</a> <a href="/search/gene/ZFIN:ZDB-GENE-070117-2175" style="font-size:103%;">lok</a> <a href="/search/gene/ZFIN:ZDB-GENE-060125-1" style="font-size:123%;">med12</a> <a href="/search/gene/ZFIN:ZDB-GENE-030404-2" style="font-size:258%;">mib</a> <a href="/search/gene/ZFIN:ZDB-GENE-030616-132" style="font-size:152%;">mycbp2</a> <a href="/search/gene/ZFIN:ZDB-GENE-070117-2220" style="font-size:135%;">nag</a> <a href="/search/gene/ZFIN:ZDB-GENE-990415-181" style="font-size:139%;">ndr2</a> <a href="/search/gene/ZFIN:ZDB-GENE-980526-437" style="font-size:198%;">ntla</a> <a href="/search/gene/ZFIN:ZDB-GENE-990415-198" style="font-size:119%;">oep</a> <a href="/search/gene/ZFIN:ZDB-GENE-990415-8" style="font-size:280%;">pax2a</a> <a href="/search/gene/ZFIN:ZDB-GENE-980526-485" style="font-size:182%;">pou5f1</a> <a href="/search/gene/ZFIN:ZDB-GENE-980526-44" style="font-size:103%;">ptc1</a> <a href="/search/gene/ZFIN:ZDB-GENE-060718-1" style="font-size:101%;">rerea</a> <a href="/search/gene/ZFIN:ZDB-GENE-980526-166" style="font-size:147%;">shha</a> <a href="/search/gene/ZFIN:ZDB-GENE-980526-89" style="font-size:211%;">smo</a> <a href="/search/gene/ZFIN:ZDB-GENE-011207-1" style="font-size:296%;">sox10</a> <a href="/search/gene/ZFIN:ZDB-GENE-001103-1" style="font-size:229%;">sox9a</a> <a href="/search/gene/ZFIN:ZDB-GENE-070117-2385" style="font-size:200%;">spi</a> <a href="/search/gene/ZFIN:ZDB-GENE-040426-2169" style="font-size:111%;">spint1a</a> <a href="/search/gene/ZFIN:ZDB-GENE-070117-2434" style="font-size:156%;">tdo</a> <a href="/search/gene/ZFIN:ZDB-GENE-990415-270" style="font-size:162%;">tp53</a> <a href="/search/gene/ZFIN:ZDB-GENE-030131-2773" style="font-size:133%;">trim33</a> <a href="/search/gene/ZFIN:ZDB-GENE-021115-2" style="font-size:149%;">trpm7</a> <a href="/search/gene/ZFIN:ZDB-GENE-070117-2442" style="font-size:137%;">tur</a> <a href="/search/gene/ZFIN:ZDB-GENE-020507-3" style="font-size:162%;">vangl2</a> <a href="/search/gene/ZFIN:ZDB-GENE-990603-12" style="font-size:166%;">wnt11</a> <a href="/search/gene/ZFIN:ZDB-GENE-980526-87" style="font-size:176%;">wnt5b</a>
-			
+			<a href="/search/gene/ZFIN:ZDB-GENE-010906-1" style="font-size:115%;" class="gene-tag">ache</a> <a href="/search/gene/ZFIN:ZDB-GENE-070521-2" style="font-size:112%;" class="gene-tag">ahctf1</a> <a href="/search/taxon/TTO:1049089" style="font-size:114%;" class="taxon-tag">Amblyceps mangois</a> <a href="/search/taxon/TTO:1054196" style="font-size:115%;" class="taxon-tag">Ameiurus nebulosus</a> <a href="/search/taxon/TTO:1045515" style="font-size:112%;" class="taxon-tag">Amphilius atesuensis</a> <a href="/search/entity/TAO:0002044" style="font-size:149%;" class="entity-tag">anterior limb of parapophysis 4</a> <a href="/search/taxon/TTO:1004676" style="font-size:102%;" class="taxon-tag">Ariopsis felis</a> <a href="/search/taxon/TTO:1005605" style="font-size:107%;" class="taxon-tag">Aspredinichthys tibicen</a> <a href="/search/taxon/TTO:1005467" style="font-size:107%;" class="taxon-tag">Aspredo aspredo</a> <a href="/search/gene/ZFIN:ZDB-GENE-001212-1" style="font-size:125%;" class="gene-tag">atp1a1</a> <a href="/search/taxon/TTO:1008785" style="font-size:100%;" class="taxon-tag">Austroglanis barnardi</a> <a href="/search/entity/TAO:0000620" style="font-size:370%;" class="entity-tag">autopalatine</a> <a href="/search/entity/TAO:0001608" style="font-size:220%;" class="entity-tag">autopalatine-lateral ethmoid joint</a> <a href="/search/taxon/TTO:1005554" style="font-size:101%;" class="taxon-tag">Bagre marinus</a> <a href="/search/taxon/TTO:1005552" style="font-size:124%;" class="taxon-tag">Bagroides melapterus</a> <a href="/search/taxon/TTO:1005482" style="font-size:100%;" class="taxon-tag">Bagrus bajad</a> <a href="/search/taxon/TTO:1045692" style="font-size:124%;" class="taxon-tag">Batasio batasio</a> <a href="/search/gene/ZFIN:ZDB-GENE-990415-171" style="font-size:215%;" class="gene-tag">cdh2</a> <a href="/search/gene/ZFIN:ZDB-GENE-980526-330" style="font-size:161%;" class="gene-tag">cdx4</a> <a href="/search/taxon/TTO:1046540" style="font-size:100%;" class="taxon-tag">Cetopsis coecutiens</a> <a href="/search/taxon/TTO:1006047" style="font-size:100%;" class="taxon-tag">Chaca chaca</a> <a href="/search/gene/ZFIN:ZDB-GENE-990415-33" style="font-size:176%;" class="gene-tag">chd</a> <a href="/search/taxon/TTO:1005577" style="font-size:191%;" class="taxon-tag">Chrysichthys auratus</a> <a href="/search/taxon/TTO:1048743" style="font-size:103%;" class="taxon-tag">Chrysichthys longipinnis</a> <a href="/search/taxon/TTO:1005576" style="font-size:103%;" class="taxon-tag">Chrysichthys nigrodigitatus</a> <a href="/search/taxon/TTO:1005561" style="font-size:103%;" class="taxon-tag">Clarotes laticeps</a> <a href="/search/entity/TAO:0001274" style="font-size:180%;" class="entity-tag">coronomeckelian</a> <a href="/search/entity/TAO:0001628" style="font-size:139%;" class="entity-tag">dentary tooth</a> <a href="/search/taxon/TTO:1046341" style="font-size:120%;" class="taxon-tag">Diplomystes chilensis</a> <a href="/search/entity/TAO:0001789" style="font-size:110%;" class="entity-tag">dorsal fin spine 1</a> <a href="/search/entity/TAO:0001905" style="font-size:136%;" class="entity-tag">epibranchial 1 element</a> <a href="/search/entity/TAO:0001906" style="font-size:126%;" class="entity-tag">epibranchial 2 element</a> <a href="/search/entity/TAO:0001822" style="font-size:100%;" class="entity-tag">epibranchial 3 bone uncinate process</a> <a href="/search/entity/TAO:0001244" style="font-size:116%;" class="entity-tag">epibranchial 5 cartilage</a> <a href="/search/entity/TAO:0001405" style="font-size:122%;" class="entity-tag">ethmoid cartilage</a> <a href="/search/gene/ZFIN:ZDB-GENE-041124-2" style="font-size:136%;" class="gene-tag">extl3</a> <a href="/search/gene/ZFIN:ZDB-GENE-990712-18" style="font-size:180%;" class="gene-tag">eya1</a> <a href="/search/gene/ZFIN:ZDB-GENE-990415-72" style="font-size:152%;" class="gene-tag">fgf8a</a> <a href="/search/entity/TAO:0000514" style="font-size:115%;" class="entity-tag">frontal bone</a> <a href="/search/entity/TAO:0000356" style="font-size:130%;" class="entity-tag">gill raker</a> <a href="/search/gene/ZFIN:ZDB-GENE-011119-1" style="font-size:129%;" class="gene-tag">gpc4</a> <a href="/search/gene/ZFIN:ZDB-GENE-020419-32" style="font-size:121%;" class="gene-tag">hdac1</a> <a href="/search/taxon/TTO:1005665" style="font-size:103%;" class="taxon-tag">Hemibagrus nemurus</a> <a href="/search/entity/TAO:0000672" style="font-size:140%;" class="entity-tag">hyomandibula</a> <a href="/search/taxon/TTO:1054206" style="font-size:121%;" class="taxon-tag">Ictalurus punctatus</a> <a href="/search/entity/TAO:0000223" style="font-size:133%;" class="entity-tag">infraorbital 1</a> <a href="/search/gene/ZFIN:ZDB-GENE-980526-464" style="font-size:108%;" class="gene-tag">kita</a> <a href="/search/gene/ZFIN:ZDB-GENE-060118-1" style="font-size:433%;" class="gene-tag">lama1</a> <a href="/search/gene/ZFIN:ZDB-GENE-021226-1" style="font-size:194%;" class="gene-tag">lamb1</a> <a href="/search/gene/ZFIN:ZDB-GENE-021226-3" style="font-size:300%;" class="gene-tag">lamc1</a> <a href="/search/entity/TAO:0000226" style="font-size:224%;" class="entity-tag">lateral ethmoid</a> <a href="/search/taxon/TTO:1005496" style="font-size:108%;" class="taxon-tag">Loricaria cataphracta</a> <a href="/search/gene/ZFIN:ZDB-GENE-040827-2" style="font-size:118%;" class="gene-tag">lrrc6</a> <a href="/search/entity/TAO:0000270" style="font-size:217%;" class="entity-tag">maxilla</a> <a href="/search/entity/TAO:0001205" style="font-size:179%;" class="entity-tag">Meckel's cartilage</a> <a href="/search/entity/TAO:0000323" style="font-size:163%;" class="entity-tag">mesethmoid bone</a> <a href="/search/entity/TAO:0000240" style="font-size:150%;" class="entity-tag">metapterygoid</a> <a href="/search/gene/ZFIN:ZDB-GENE-030404-2" style="font-size:185%;" class="gene-tag">mib</a> <a href="/search/gene/ZFIN:ZDB-GENE-030616-132" style="font-size:109%;" class="gene-tag">mycbp2</a> <a href="/search/taxon/TTO:1049792" style="font-size:151%;" class="taxon-tag">Mystus nigriceps</a> <a href="/search/gene/ZFIN:ZDB-GENE-990415-181" style="font-size:100%;" class="gene-tag">ndr2</a> <a href="/search/taxon/TTO:1005555" style="font-size:107%;" class="taxon-tag">Nematogenys inermis</a> <a href="/search/taxon/TTO:1005484" style="font-size:129%;" class="taxon-tag">Noturus flavus</a> <a href="/search/gene/ZFIN:ZDB-GENE-980526-437" style="font-size:142%;" class="gene-tag">ntla</a> <a href="/search/entity/TAO:0000250" style="font-size:111%;" class="entity-tag">opercle</a> <a href="/search/entity/TAO:0001171" style="font-size:100%;" class="entity-tag">os suspensorium</a> <a href="/search/taxon/TTO:1056294" style="font-size:120%;" class="taxon-tag">Pangasianodon hypophthalmus</a> <a href="/search/taxon/TTO:1005926" style="font-size:114%;" class="taxon-tag">Parakysis verrucosus</a> <a href="/search/entity/TAO:0001362" style="font-size:183%;" class="entity-tag">parapophysis</a> <a href="/search/gene/ZFIN:ZDB-GENE-990415-8" style="font-size:207%;" class="gene-tag">pax2a</a> <a href="/search/entity/TAO:0001734" style="font-size:103%;" class="entity-tag">posterior process of basipterygium</a> <a href="/search/gene/ZFIN:ZDB-GENE-980526-485" style="font-size:130%;" class="gene-tag">pou5f1</a> <a href="/search/entity/TAO:0000567" style="font-size:178%;" class="entity-tag">premaxilla</a> <a href="/search/entity/TAO:0001626" style="font-size:116%;" class="entity-tag">premaxillary tooth</a> <a href="/search/entity/TAO:0001834" style="font-size:1350%;" class="entity-tag">process</a> <a href="/search/taxon/TTO:1005455" style="font-size:100%;" class="taxon-tag">Pseudolaguvia shawi</a> <a href="/search/taxon/TTO:1003957" style="font-size:113%;" class="taxon-tag">Rhabdalestes septentrionalis</a> <a href="/search/taxon/TTO:1067751" style="font-size:106%;" class="taxon-tag">Rhamdia laticauda</a> <a href="/search/taxon/TTO:1050828" style="font-size:131%;" class="taxon-tag">Rhamdia quelen</a> <a href="/search/entity/TAO:0000538" style="font-size:156%;" class="entity-tag">rib</a> <a href="/search/taxon/TTO:1005579" style="font-size:134%;" class="taxon-tag">Rita rita</a> <a href="/search/entity/TAO:0000277" style="font-size:288%;" class="entity-tag">scale</a> <a href="/search/taxon/TTO:1005481" style="font-size:157%;" class="taxon-tag">Schilbe mystus</a> <a href="/search/entity/TAO:0001612" style="font-size:129%;" class="entity-tag">sensory canal</a> <a href="/search/gene/ZFIN:ZDB-GENE-980526-166" style="font-size:105%;" class="gene-tag">shha</a> <a href="/search/gene/ZFIN:ZDB-GENE-980526-89" style="font-size:152%;" class="gene-tag">smo</a> <a href="/search/gene/ZFIN:ZDB-GENE-011207-1" style="font-size:212%;" class="gene-tag">sox10</a> <a href="/search/gene/ZFIN:ZDB-GENE-001103-1" style="font-size:164%;" class="gene-tag">sox9a</a> <a href="/search/gene/ZFIN:ZDB-GENE-070117-2385" style="font-size:143%;" class="gene-tag">spi</a> <a href="/search/entity/TAO:0000076" style="font-size:101%;" class="entity-tag">swim bladder</a> <a href="/search/taxon/TTO:1004595" style="font-size:124%;" class="taxon-tag">Tachysurus fulvidraco</a> <a href="/search/gene/ZFIN:ZDB-GENE-070117-2434" style="font-size:112%;" class="gene-tag">tdo</a> <a href="/search/gene/ZFIN:ZDB-GENE-990415-270" style="font-size:116%;" class="gene-tag">tp53</a> <a href="/search/entity/TAO:0001683" style="font-size:126%;" class="entity-tag">transcapular ligament</a> <a href="/search/gene/ZFIN:ZDB-GENE-021115-2" style="font-size:107%;" class="gene-tag">trpm7</a> <a href="/search/gene/ZFIN:ZDB-GENE-020507-3" style="font-size:116%;" class="gene-tag">vangl2</a> <a href="/search/entity/TAO:0000308" style="font-size:103%;" class="entity-tag">vomer</a> <a href="/search/gene/ZFIN:ZDB-GENE-990603-12" style="font-size:119%;" class="gene-tag">wnt11</a> <a href="/search/gene/ZFIN:ZDB-GENE-980526-87" style="font-size:126%;" class="gene-tag">wnt5b</a>	
 		</div>
 	</div>
 </div>
 
 <script type="text/javascript">
-	var shownSearch = "anatomy_search";
+//	var shownSearch = "term_search";
 
-	var selectedAnatomy = {"id":null, "name":null};
-	var selectedGene = {"id":null, "name":null};
-	var selectedTaxon = {"id":null, "name":null};
-
-	var entityAC = initAutocomplete($("entityChoice"), $("entityComplete"), ONTOLOGY.TAO);
-	var geneAC = initAutocomplete($("geneChoice"), $("geneComplete"), ONTOLOGY.ZFIN);
-	var taxonAC = initAutocomplete($("taxonChoice"), $("taxonComplete"), ONTOLOGY.TTO);
+	var selectedTerm = {"id":null, "name":null};
+//	var selectedAnatomy = {"id":null, "name":null};
+//	var selectedGene = {"id":null, "name":null};
+//	var selectedTaxon = {"id":null, "name":null};
+	
+	var termAC = initAutocomplete($("termChoice"), $("termComplete"), [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO]);
+	//var entityAC = initAutocomplete($("entityChoice"), $("entityComplete"), [ONTOLOGY.TAO]);
+	//var geneAC = initAutocomplete($("geneChoice"), $("geneComplete"), [ONTOLOGY.ZFIN]);
+	//var taxonAC = initAutocomplete($("taxonChoice"), $("taxonComplete"), [ONTOLOGY.TTO]);
 	var selectItem = function(storage, event, item) {
 		var data = item[2];
 		storage.id = data[1];
 		storage.name = data[0];
 	}
-	entityAC.itemSelectEvent.subscribe(partial(selectItem, selectedAnatomy));
-	geneAC.itemSelectEvent.subscribe(partial(selectItem, selectedGene));
-	taxonAC.itemSelectEvent.subscribe(partial(selectItem, selectedTaxon));
+	termAC.itemSelectEvent.subscribe(partial(selectItem, selectedTerm));
+	//entityAC.itemSelectEvent.subscribe(partial(selectItem, selectedAnatomy));
+	//geneAC.itemSelectEvent.subscribe(partial(selectItem, selectedGene));
+	//taxonAC.itemSelectEvent.subscribe(partial(selectItem, selectedTaxon));
 	
-	function submitAnatomy() {
-		var href = "/search/entity/";
-		if ((selectedAnatomy.id == null) || ($("entityChoice").value != selectedAnatomy.name)) {
-			href += $("entityChoice").value + "?find=true";
-		} else {
-			href += selectedAnatomy.id;
+	// function submitAnatomy() {
+	// 	var href = "/search/entity/";
+	// 	if ((selectedAnatomy.id == null) || ($("entityChoice").value != selectedAnatomy.name)) {
+	// 		href += $("entityChoice").value + "?find=true";
+	// 	} else {
+	// 		href += selectedAnatomy.id;
+	// 	}
+	// 	location.href = (href);
+	// }
+	// 
+	// function submitGene() {
+	// 	var href = "/search/gene/";
+	// 	if ((selectedGene.id == null) || ($("geneChoice").value != selectedGene.name)) {
+	// 		href += $("geneChoice").value + "?find=true";
+	// 	} else {
+	// 		href += selectedGene.id;
+	// 	}
+	// 	location.href = (href);
+	// }
+	// 
+	// function submitTaxon() {
+	// 	var href = "/search/taxon/";
+	// 	if ((selectedTaxon.id == null) || ($("taxonChoice").value != selectedTaxon.name)) {
+	// 		href += $("taxonChoice").value + "?find=true";
+	// 	} else {
+	// 		href += selectedTaxon.id;
+	// 	}
+	// 	location.href = (href);
+	// }
+	
+	function submitTerm() {
+		//in progress
+		var href = null;
+		if ((selectedTerm.id == null) || ($("termChoice").value != selectedTerm.name)) {
+			href = URL.generalTerm($("termChoice").value);
+		} else if (selectedTerm.id.indexOf(ONTOLOGY.TAO) == 0) {
+			href = URL.entity(selectedTerm.id);
+		} else if (selectedTerm.id.indexOf(ONTOLOGY.TTO) == 0) {
+			href = URL.taxon(selectedTerm.id);
+		} else if (selectedTerm.id.indexOf(ONTOLOGY.ZFIN) == 0) {
+			href = URL.gene(selectedTerm.id);
 		}
-		location.href = (href);
+		location.href = href;
 	}
 	
-	function submitGene() {
-		var href = "/search/gene/";
-		if ((selectedGene.id == null) || ($("geneChoice").value != selectedGene.name)) {
-			href += $("geneChoice").value + "?find=true";
-		} else {
-			href += selectedGene.id;
-		}
-		location.href = (href);
-	}
-	
-	function submitTaxon() {
-		var href = "/search/taxon/";
-		if ((selectedTaxon.id == null) || ($("taxonChoice").value != selectedTaxon.name)) {
-			href += $("taxonChoice").value + "?find=true";
-		} else {
-			href += selectedTaxon.id;
-		}
-		location.href = (href);
-	}
-	
-	function showSearch(divID) {
-		if (divID == shownSearch) return;
-		logDebug("Showing " + divID);
-		hideElement(shownSearch);
- 		appear(divID);
-		//showElement(divID);
-		shownSearch = divID;
-		logDebug(getFirstElementByTagAndClassName("div", "tag-cloud"));
-	}
+	// function showSearch(divID) {
+	// 	if (divID == shownSearch) return;
+	// 	logDebug("Showing " + divID);
+	// 	hideElement(shownSearch);
+	//  		appear(divID);
+	// 	//showElement(divID);
+	// 	shownSearch = divID;
+	// 	logDebug(getFirstElementByTagAndClassName("div", "tag-cloud"));
+	// }
 	
 </script>

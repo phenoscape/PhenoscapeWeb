@@ -101,6 +101,27 @@ class SearchController < ApplicationController
     end
   end
   
+  def general
+    #in progress
+    match_id = find_match(params[:id], "TTO,TAO,ZFIN")
+    if match_id
+      if match_id.index("TAO") == 0:
+        redirect_to(:action => :entity, :id => match_id)
+        return
+      elsif match_id.index("TTO") == 0:
+        redirect_to(:action => :taxon, :id => match_id)
+        return
+      elsif match_id.index("ZFIN") == 0:
+        redirect_to(:action => :gene, :id => match_id)
+        return
+      end
+    else
+      @input = params[:id]
+      render(:action => "unknown_term")
+      return
+    end
+  end
+  
   # try to find an exact term match for the given input in the given ontology
   private
   def find_match(input, ontology)

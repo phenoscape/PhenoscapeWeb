@@ -45,9 +45,16 @@ div#term_info {border: 4px solid #74c4ab; margin-left: 3px; padding: 3px;}
 
 .yui-skin-sam .yui-ac-input { position: static; width: 100%;}
 .tag-cloud {font-size: 8pt; }
-.tag-cloud a {display: block; float: left; margin: -0.1em 0.25em -0.1em 0.25em; text-decoration: none; color: #0a3a34;}
+.tag-cloud a {display: block; float: left; margin: -0.1em 0.25em -0.1em 0.25em; text-decoration: none;}
 .tag-cloud a:hover {background-color: #74c4ab;}
 .tag-cloud a:visited {color: #0a3a34;}
+.tag-cloud a.entity-tag {color: #127e3f;}
+.tag-cloud a.taxon-tag {color: #0f4081;}
+.tag-cloud a.gene-tag {color: #7f7f00;}
+.tag-cloud a.entity-tag:hover {background-color: #c4dfcf;}
+.tag-cloud a.taxon-tag:hover {background-color: #c3cfdf;}
+.tag-cloud a.gene-tag:hover {background-color: #dfdfbf;}
+
 #search-forms {width: 80%; margin-left: auto; margin-right: auto;}
 #search-forms h2 {}
 #search-buttons {text-align: center;}

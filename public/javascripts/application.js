@@ -91,13 +91,13 @@ TermInfoPanelDataSource.prototype.update = function(data) {
 }
 
 // FIXME function documentation for what this does and how is missing
-function initAutocomplete(input, div, ontologyPrefix) {
+function initAutocomplete(input, div, ontologyPrefixes) {
 	var dataSource = new YAHOO.util.XHRDataSource(URL.autocomplete());
 	dataSource.responseSchema = { resultsList:"matches", fields:[{key:"match_text"}, {key:"id"}, {key:"match_type"}] };
 	dataSource.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
 	var autocomplete = new YAHOO.widget.AutoComplete(input, div, dataSource);
     autocomplete.generateRequest = function(query) {
-        return "?text=" + query + "&ontology=" + ontologyPrefix + "&syn=true";
+        return "?text=" + query + "&ontology=" + ontologyPrefixes.join(",") + "&syn=true";
     };
     autocomplete.maxResultsDisplayed = 100;
     autocomplete.queryDelay = 0.3;
@@ -123,6 +123,22 @@ var URL = {
     
     autocomplete : function() {
         return OBDWS + "/term/search";
+    },
+    
+    generalTerm : function(termName) {
+        return HOST + "/search/general/" + escape(termName);
+    },
+    
+    entity : function(termID) {
+        return HOST + "/search/entity/" + termID;
+    },
+    
+    taxon : function(termID) {
+        return HOST + "/search/taxon/" + termID;        
+    },
+    
+    gene : function(termID) {
+        return HOST + "/search/gene/" + termID;
     }
 };
 

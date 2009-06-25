@@ -34,7 +34,7 @@
 	</div>
 </div>
 <div id="main">
-	<div class="feedback"><form action="/contact"><input type="submit" value="Provide Feedback"></input><input type="hidden" name="page" value="<%= @title%>"></input></form></div>
+	<div class="feedback"><form action="/contact"><input type="submit" value="Provide Feedback"><input type="hidden" name="page" value="<%= @title%>"></form></div>
 	<h2>Phenotypes</h2>
 	<% if @summary["characters"].empty? %>
 	<p>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</p>
@@ -47,7 +47,7 @@
 		<tr>
 			<td><%=h character["entity"]["name"] %></td>
 			<td><%=h character["character_quality"]["name"] %><br>Values include:
-				<%=h (character["qualities"]["examples"].collect {|item| item["name"]}).join(", ") %> and <%=h character["qualities"]["count"] - character["qualities"]["examples"].length %> more
+				<%=h list_more((character["qualities"]["examples"].collect {|item| item["name"]}), character["qualities"]["count"]) %>
 			</td>
 			<td>
 				<% if character["genes"]["count"] > 0 %>
