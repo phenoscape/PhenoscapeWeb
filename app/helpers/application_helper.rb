@@ -39,7 +39,7 @@ module ApplicationHelper
   end
   
   def empty(text)
-    return (text != nil or text != "")
+    return (text == nil or text == "")
   end
   
   def textOrNone(text)
