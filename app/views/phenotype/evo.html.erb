@@ -15,12 +15,10 @@ in <span class="term-name" title="<%=h @subject["id"] %>"><a href="/search/taxon
 			<ul>
 				<% for phenotype in taxon["phenotypes"]%>
 				<li>
-				<%=h phenotype["entity"]["name"] %> <%=h phenotype["quality"]["name"] %>
+				<%=h phenotype["entity"]["name"] %> <%=h phenotype["quality"]["name"] %> [<a href="#" onclick="showSource([<%= (phenotype["reified_link"]).join(",") 	%>], this); return false;">Source</a>]
 				</li>
 				<% end %>
 			</ul>
-		</td>
-		<td><a href="#" onclick="showSource(<%= phenotype["reified_link"]["reif_id"]%>, this); return false;">Source</a>
 		</td>
 	</tr>
 	<% end %>
@@ -42,7 +40,7 @@ function showSource(id, element) {
 	sourcePanel.setBody(div);
 	sourcePanel.setHeader("Loading...");
 	if (deferred) { deferred.cancel(); }
-	deferred = loadJSONDoc(HOST + "/OBD-WS/phenotypes/source/" + id);
+	deferred = loadJSONDoc(URL.source([id]));
 	deferred.addCallback(partial(fillInSource, sourcePanel));
 	logDebug(id);
 	logDebug(element);
@@ -73,8 +71,7 @@ function fillInSource(panel, content) {
 			appendChildNodes(characterTable, commentRow);
 		}
 		appendChildNodes(characterTable, TR(null, TD(null, "state:"), TD(null, item["state_text"])));
-		var curator = P({"class":"curator"}, "curated by ", item["curated_by"]);
-		return DIV(null, citation, characterTable, curator);
+		return DIV(null, citation, characterTable);
 	}, content["sources"]);
 	replaceChildNodes(panel.body, sources);
 }

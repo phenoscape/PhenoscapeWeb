@@ -139,6 +139,10 @@ var URL = {
     
     gene : function(termID) {
         return HOST + "/search/gene/" + termID;
+    },
+    
+    source : function(sourcesList) {
+        return OBDWS + "/phenotypes/source/" + sourcesList.join(",");
     }
 };
 
