@@ -34,7 +34,6 @@
 	</div>
 </div>
 <div id="main">
-	<div class="feedback"><form action="/contact"><input type="submit" value="Provide Feedback"><input type="hidden" name="page" value="<%= @title%>"></form></div>
 	<h2>Phenotypes</h2>
 	<% if @summary["characters"].empty? %>
 	<p>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</p>

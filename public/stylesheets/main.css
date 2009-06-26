@@ -11,6 +11,7 @@ table.annotations th a {color: white; background-color: #033; text-decoration: n
 */
 
 h1 img {border: none;}
+.top_logo {height: 100px;}
 #navbar {background-color: #74c4ab; text-align: right; color: #0a3a34;}
 #navbar a {color: inherit; margin: 0.5em;}
 .clear {clear: both;}
