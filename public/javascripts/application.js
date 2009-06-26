@@ -97,7 +97,7 @@ function initAutocomplete(input, div, ontologyPrefixes) {
 	dataSource.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
 	var autocomplete = new YAHOO.widget.AutoComplete(input, div, dataSource);
     autocomplete.generateRequest = function(query) {
-        return "?text=" + query + "&ontology=" + ontologyPrefixes.join(",") + "&syn=true";
+        return "?text=" + query + "&ontology=" + ontologyPrefixes.join(",") + "&syn=true" + "&limit=30";
     };
     autocomplete.maxResultsDisplayed = 100;
     autocomplete.queryDelay = 0.3;
