@@ -45,3 +45,5 @@ div#term_info {border: 4px solid #74c4ab; margin-left: 3px; padding: 3px;}
 #search-forms h2 {}
 #search-buttons {text-align: center;}
 #search-buttons input {margin-left: 2em; margin-right: 2em;}
+
+p.phenoscape-citation {width: 85%; margin-left: auto; margin-right: auto; background-color: #c4dfcf; border: 2px dotted #0a3a34; padding: 0.5em;}
