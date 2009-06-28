@@ -56,7 +56,13 @@ function fillInSource(panel, content) {
 	replaceChildNodes(panel.header, taxon, " ", entity, " ", quality);
 	var sources = map(function(item) {
 		var citation = P(null, item["publication"]);
-		var characterTable = TABLE(null, TR(null, TD(null, "character:"), TD(null, item["character_text"])));
+		var number = item["character_number"];
+		var characterLabel = "character";
+		if ((number != null) && (number != "")) {
+			characterLabel += " " + number;
+		}
+		characterLabel += ":";
+		var characterTable = TABLE(null, TR(null, TD(null, characterLabel), TD(null, item["character_text"])));
 		if (item["character_comment"].length > 0) {
 			logDebug("setting up comment");
 			var comment = P({"style":"display: none;", "class":"character_comment"}, item["character_comment"]);
@@ -66,6 +72,7 @@ function fillInSource(panel, content) {
 				logDebug("Running onclick");
 				hideElement(revealerBlock);
 				blindDown(comment);
+				return false;
 			});
 			var commentRow = TR(null, TD({"colspan":"2"}, revealerBlock, comment));
 			appendChildNodes(characterTable, commentRow);
