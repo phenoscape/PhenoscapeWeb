@@ -110,6 +110,22 @@ function initAutocomplete(input, div, ontologyPrefixes) {
     return autocomplete;
 }
 
+function getParameters() {
+    // get the current URL
+     var url = window.location.toString();
+     //get the parameters
+     url.match(/\?(.+)$/);
+     var params = RegExp.$1;
+     // split up the query string and store in a dictionary
+     var params = params.split("&");
+     var queryStringList = {};
+     for (var i=0; i<params.length; i++) {
+         var tmp = params[i].split("=");
+         queryStringList[tmp[0]] = unescape(tmp[1]);
+     }
+     return queryStringList;
+}
+
 
 var HOST = "http://" + window.location.hostname;
 
