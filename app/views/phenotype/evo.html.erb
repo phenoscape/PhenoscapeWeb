@@ -33,16 +33,25 @@ in <span class="term-name" title="<%=h @subject["id"] %>"><a href="/search/taxon
 <div id="phenotype-tree">
 </div>
 
+
 <script type="text/javascript">
 var entity = <%= @entity.to_json %>;
 var quality = <%= @quality.to_json %>;
 var rootData = <%= @root.to_json %>;
 var childrenData = <%= @children.to_json %>;
-var root = {"label" : rootData["name"], "type" : "text", "data" : rootData, "expanded" : true};
+var root = {"label" : rootData["name"], "type" : "text", "data" : rootData, "expanded" : false};
 var tree = new YAHOO.widget.TreeView("phenotype-tree", [root]);
 tree.setDynamicLoad(requestDataForChildren);
 tree.render();
+YAHOO.util.Event.onDOMReady(function() {
+	expandRoot();
+});
 
+function expandRoot() {
+	for (var i = 0; i < tree.getRoot().children.length; i++) {
+		tree.getRoot().children[i].expand();
+	}
+}
 
 
 function requestDataForChildren(parentNode, callback) {
