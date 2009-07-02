@@ -25,6 +25,8 @@ td {border: 1px solid black;}
 #footer > div {background-color: #74c4ab; color: #0a3a34; text-align: right;}
 #footer a {color: inherit; margin: 0.5em;}
 
+h2 {font-size: 250%;}
+
 div#term_info {border: 4px solid #74c4ab; margin-left: 3px; padding: 3px;}
 .term-info-header {background-color: #74c4ab; color: #0a3a34;}
 .term-info-field-label {font-weight: bold; color: #0a3a34;;}

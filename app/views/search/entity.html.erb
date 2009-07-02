@@ -31,10 +31,14 @@
 			<span class="term-info-field-label relation_name">possible homologs:</span> <span><%= list_more(format_homologies(@homology), 0) %></span>
 		</div>
 		<% end %>
+		<h4 class="term-info-header">More information</h4>
+		<div>
+			<a href="<%= bioportal_tao_url(@term_info) %>">View at NCBO Bioportal</a>
+		</div>
 	</div>
 </div>
 <div id="main">
-	<h2>Phenotypes</h2>
+	<h3>Phenotypes</h3>
 	<% if @summary["characters"].empty? %>
 	<p>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</p>
 	<% else %>

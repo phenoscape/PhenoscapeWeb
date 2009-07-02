@@ -3,12 +3,16 @@
 <div id="sidebar">
 	<div id="term_info">
 		<h3>ZFIN Gene</h3>
+		<h4 class="term-info-header">More information</h4>
+		<div>
+			<a href="<%= zfin_url(@term_info) %>">View at ZFIN</a>
+		</div>
 	</div>
 </div>
 <div id="main">
-	<h2>Phenotypes</h2>
+	<h3>Phenotypes</h3>
 	<% if @summary["characters"].empty? %>
-	<h2>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</h2>
+	<p>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</p>
 	<% else %>
 	<table class="annotations sortable" id="datatable">
 		<tr>

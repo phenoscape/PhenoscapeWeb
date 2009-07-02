@@ -61,4 +61,20 @@ module SearchHelper
     return %Q'<a href="/search/entity/#{id}" title="#{id}">#{name}</a>'
   end
   
+  def zfin_url(term)
+    id = term["id"]
+    fixed_id = id.sub(/^ZFIN:/, "")
+    return "http://zfin.org/cgi-bin/webdriver?MIval=aa-markerview.apg&OID=#{fixed_id}"
+  end
+  
+  def bioportal_tao_url(term)
+    id = term["id"]
+    return "http://bioportal.bioontology.org/virtual/1110/" + id
+  end
+  
+  def bioportal_tto_url(term)
+    id = term["id"]
+    return "http://bioportal.bioontology.org/virtual/1081/" + id
+  end
+  
 end

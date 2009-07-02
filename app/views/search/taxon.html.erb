@@ -12,16 +12,20 @@
 		<div>
 			<span class="term-info-field-label">Children:</span> <span><%= ((@term_info["children"].sort_by {|item| item["target"]["name"]}).collect {|item| taxon_link(item["target"]) }).join(", ") %></span>
 		</div>
+		<h4 class="term-info-header">More information</h4>
+		<div>
+			<a href="<%= bioportal_tto_url(@term_info) %>">View at NCBO Bioportal</a>
+		</div>
 	</div>
 </div>
 <div id="main">
 	<% if @summary["characters"].empty? %>
 
-	<h2>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</h2>
+	<p>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</p>
 
 	<% else %>
 
-	<h2>Phenotypes</h2>
+	<h3>Phenotypes</h3>
 	<table class="annotations sortable" id="datatable">
 		<tr>
 			<th>Anatomy</th><th>Quality</th><th>Zebrafish Data</th><th>Evolutionary Data</th>

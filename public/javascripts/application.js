@@ -131,6 +131,8 @@ var HOST = "http://" + window.location.hostname;
 
 var OBDWS = HOST + "/OBD-WS";
 
+var BIOPORTAL = "http://bioportal.bioontology.org/virtual"
+
 var URL = {
     
     homology : function(termID) {
@@ -150,7 +152,7 @@ var URL = {
     },
     
     taxon : function(termID) {
-        return HOST + "/search/taxon/" + termID;        
+        return HOST + "/search/taxon/" + termID;
     },
     
     gene : function(termID) {
@@ -158,7 +160,7 @@ var URL = {
     },
     
     quality : function(termID) {
-        return "http://bioportal.bioontology.org/virtual/1107/" + termID;
+        return BIOPORTAL + "/1107/" + termID;
     },
     
     source : function(sourcesList) {
@@ -167,7 +169,20 @@ var URL = {
     
     childPhenotypes : function(entity, quality, taxon) {
         return OBDWS + "/phenotypes?type=evo&entity=" + entity + "&quality=" + quality + "&subject=" + taxon + "&group=" + taxon;
+    },
+    
+    bioportalTAO : function(termID) {
+        return BIOPORTAL + "/1110/" + termID;
+    },
+    
+    bioportalTTO : function(termID) {
+        return BIOPORTAL + "/1081/" + termID;
+    },
+    
+    zfinGene : function(geneID) {
+        return "http://zfin.org/cgi-bin/webdriver?MIval=aa-markerview.apg&OID=" + geneID;
     }
+    
 };
 
 var ONTOLOGY = {

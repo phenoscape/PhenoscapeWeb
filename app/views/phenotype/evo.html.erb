@@ -89,9 +89,6 @@ function createNodeForTaxon(taxonData, parentNode) {
 		var phenotype = phenotypes[i];
 		var phenotypeItem = createListItemForPhenotype(phenotype);
 		appendChildNodes(phenotypesContainer, phenotypeItem);
-		// if ((i + 1) < phenotypes.length) {
-		// 			appendChildNodes(phenotypesContainer, "; ");
-		// 		}
 	}
 	var container = DIV({"class": "tree-row"}, taxonName, phenotypesContainer);
 	var outer = DIV(null, container);
