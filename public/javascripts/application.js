@@ -157,6 +157,10 @@ var URL = {
         return HOST + "/search/gene/" + termID;
     },
     
+    quality : function(termID) {
+        return "http://bioportal.bioontology.org/virtual/1107/" + termID;
+    },
+    
     source : function(sourcesList) {
         return OBDWS + "/phenotypes/source/" + sourcesList.join(",");
     },

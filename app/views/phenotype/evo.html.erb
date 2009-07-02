@@ -4,6 +4,7 @@ in <span class="term-name" title="<%=h @subject["id"] %>"><a href="/search/taxon
 <% end %>
 </h2>
 
+<% if false %> <!-- commented out -->
 <table class="annotations sortable" id="datatable">
 	<tr>
 		<th>Taxon</th>
@@ -29,6 +30,7 @@ in <span class="term-name" title="<%=h @subject["id"] %>"><a href="/search/taxon
 	</tr>
 	<% end %>
 </table>
+<% end %>
 
 <div id="phenotype-tree">
 </div>
@@ -38,10 +40,15 @@ in <span class="term-name" title="<%=h @subject["id"] %>"><a href="/search/taxon
 var entity = <%= @entity.to_json %>;
 var quality = <%= @quality.to_json %>;
 var rootData = <%= @root.to_json %>;
-var childrenData = <%= @children.to_json %>;
-var root = {"label" : rootData["name"], "type" : "text", "data" : rootData, "expanded" : false};
-var tree = new YAHOO.widget.TreeView("phenotype-tree", [root]);
+//var childrenData = <%= @children.to_json %>;
+//var root = {"label" : rootData["name"], "type" : "text", "data" : rootData, "expanded" : false};
+var tree = new YAHOO.widget.TreeView("phenotype-tree");
+createNodeForTaxon(rootData, tree.getRoot());
 tree.setDynamicLoad(requestDataForChildren);
+tree.subscribe("clickEvent", function(node) {
+	//disable clicking on whole node to expand/collapse - this allows links inside node to work properly
+	return false;
+});
 tree.render();
 YAHOO.util.Event.onDOMReady(function() {
 	expandRoot();
@@ -53,14 +60,14 @@ function expandRoot() {
 	}
 }
 
-
 function requestDataForChildren(parentNode, callback) {
+	logDebug(keys(parentNode.data.phenotypes[0]));
 	var dataGetter = loadJSONDoc(URL.childPhenotypes(entity["id"], quality["id"], parentNode["data"]["id"]));
 	dataGetter.addCallback(function(result) {
 		loadDataForChildren(parentNode, callback, result);
 	});
 	dataGetter.addErrback(function(result) {
-		//TODO - should put some kind of data error alert next to taxon
+		//TODO - should put some kind of data error alert next to taxon - and remove alert
 		alert(result);
 		callback();
 	});
@@ -69,10 +76,49 @@ function requestDataForChildren(parentNode, callback) {
 function loadDataForChildren(parentNode, callback, result) {
 	for (var i = 0; i < result["subjects"].length; i++) {
 		var taxon = result["subjects"][i];
-		new YAHOO.widget.TextNode({"label" : taxon["name"], "data" : taxon}, parentNode);
+		createNodeForTaxon(taxon, parentNode);
 	}
 	callback();
 }
+
+function createNodeForTaxon(taxonData, parentNode) {
+	var phenotypes = taxonData.phenotypes;
+	var taxonName = A({href: URL.taxon(taxonData["id"]), title: taxonData["id"]}, taxonData["name"]);
+	var phenotypesContainer = UL({"class": "phenotype-block"});
+	for (var i = 0; i < phenotypes.length; i++) {
+		var phenotype = phenotypes[i];
+		var phenotypeItem = createListItemForPhenotype(phenotype);
+		appendChildNodes(phenotypesContainer, phenotypeItem);
+		// if ((i + 1) < phenotypes.length) {
+		// 			appendChildNodes(phenotypesContainer, "; ");
+		// 		}
+	}
+	var container = DIV({"class": "tree-row"}, taxonName, phenotypesContainer);
+	var outer = DIV(null, container);
+	var node = new YAHOO.widget.HTMLNode({"html" : outer.innerHTML, "data" : taxonData, "href": null}, parentNode);
+	// don't allow blue focus color
+	node.focus = function() {return true;};
+	if (node.depth % 2 == 0) {
+		node["className"] = "tree-depth-even";
+	} else {
+		node["className"] = "tree-depth-odd";
+	}
+	return node;
+}
+
+function createListItemForPhenotype(phenotypeData) {
+	var entity = phenotypeData.entity;
+	var quality = phenotypeData.quality;
+	var count = phenotypeData.count;
+	var entityName = A({href: URL.entity(entity["id"]), title: entity["id"]}, entity["name"]);
+	var qualityName = A({href: URL.quality(quality["id"]), title: quality["id"]}, quality["name"]);
+	var container = LI(null, entityName, " ", qualityName);
+	if ((count != null) && (count != "")) {
+		appendChildNodes(container, ", " + count);
+	}
+	return container;
+}
+
 
 var deferred = null;
 

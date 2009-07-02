@@ -11,7 +11,7 @@
 <ul>
 	<% for child_term in @term_info["children"] %>
 	<li>
-		entity_link(child_term)
+		<%= entity_link(child_term) %>
 	</li>
 	<% end %>
 </ul>
