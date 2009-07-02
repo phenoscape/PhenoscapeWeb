@@ -10,7 +10,7 @@
 			<% definition = @term_info["definition"]%>
 			<span class="term-info-field-label">Definition:</span> <span><%= textOrNone(definition)%></span>
 		</div>
-		<% if not empty(@term_info["comment"]) %>
+		<% if not empty?(@term_info["comment"]) %>
 		<div>
 			<span class="term-info-field-label">Comment:</span> <span><%=h @term_info["comment"]%></span>
 		</div>

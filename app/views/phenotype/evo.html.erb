@@ -8,14 +8,20 @@ in <span class="term-name" title="<%=h @subject["id"] %>"><a href="/search/taxon
 	<tr>
 		<th>Taxon</th>
 	</tr>
-	<% for taxon in @phenotypes.values %>
+	<% for taxon in @taxa %>
 	<tr>
-		<td><%= taxon_link(taxon["subject"]) %></td>
+		<td><%= taxon_link(taxon) %></td>
 		<td>
 			<ul>
 				<% for phenotype in taxon["phenotypes"]%>
 				<li>
-				<%=h phenotype["entity"]["name"] %> <%=h phenotype["quality"]["name"] %> [<a href="#" onclick="showSource([<%= (phenotype["reified_link"]).join(",") 	%>], this); return false;">Source</a>]
+				<%=h phenotype["entity"]["name"] %> <%=h phenotype["quality"]["name"] %>
+				<% if not empty?(phenotype["count"]) %>
+				<span class="phenotype-count">, <%= phenotype["count"] %></span>
+				<% end %>
+				<% if false %> <!-- commented out -->
+				 [<a href="#" onclick="showSource([<%= (phenotype["reified_link"]).join(",") 	%>], this); return false;">Source</a>]
+				<% end %>
 				</li>
 				<% end %>
 			</ul>
@@ -24,7 +30,40 @@ in <span class="term-name" title="<%=h @subject["id"] %>"><a href="/search/taxon
 	<% end %>
 </table>
 
+<div id="phenotype-tree">
+</div>
+
 <script type="text/javascript">
+var entity = <%= @entity.to_json %>;
+var quality = <%= @quality.to_json %>;
+var rootData = <%= @root.to_json %>;
+var childrenData = <%= @children.to_json %>;
+var root = {"label" : rootData["name"], "type" : "text", "data" : rootData, "expanded" : true};
+var tree = new YAHOO.widget.TreeView("phenotype-tree", [root]);
+tree.setDynamicLoad(requestDataForChildren);
+tree.render();
+
+
+
+function requestDataForChildren(parentNode, callback) {
+	var dataGetter = loadJSONDoc(URL.childPhenotypes(entity["id"], quality["id"], parentNode["data"]["id"]));
+	dataGetter.addCallback(function(result) {
+		loadDataForChildren(parentNode, callback, result);
+	});
+	dataGetter.addErrback(function(result) {
+		//TODO - should put some kind of data error alert next to taxon
+		alert(result);
+		callback();
+	});
+}
+
+function loadDataForChildren(parentNode, callback, result) {
+	for (var i = 0; i < result["subjects"].length; i++) {
+		var taxon = result["subjects"][i];
+		new YAHOO.widget.TextNode({"label" : taxon["name"], "data" : taxon}, parentNode);
+	}
+	callback();
+}
 
 var deferred = null;
 

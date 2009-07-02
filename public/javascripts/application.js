@@ -159,6 +159,10 @@ var URL = {
     
     source : function(sourcesList) {
         return OBDWS + "/phenotypes/source/" + sourcesList.join(",");
+    },
+    
+    childPhenotypes : function(entity, quality, taxon) {
+        return OBDWS + "/phenotypes?type=evo&entity=" + entity + "&quality=" + quality + "&subject=" + taxon + "&group=" + taxon;
     }
 };
 

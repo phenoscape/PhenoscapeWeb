@@ -39,30 +39,32 @@ class PhenotypeController < ApplicationController
      @quality = ActiveSupport::JSON.decode(quality_response.body)
      #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_annotation_results.js")
      url = "/OBD-WS/phenotypes?entity=" + params[:entity] + "&quality=" + params[:quality] + "&type=" + type
+     url += "&group=root" if type == "evo"
      if params[:subject] != nil
        subject_response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + params[:subject])
        @subject = ActiveSupport::JSON.decode(subject_response.body)
-       # FIXME this sounds like debugging information - should really use
-       # logger.debug() then
-       logger.info("Adding subject to URL")
        url += "&subject=" + params[:subject]
      else
        @subject = nil
      end
-    # FIXME this sounds like debugging information - should really use
-    # logger.debug() then
-     logger.info("URL is: " + url)
      response = Net::HTTP.get_response(self.request.host, url)
-     logger.info("The response was" + response.body)
      result = ActiveSupport::JSON.decode(response.body)
-     bySubject = Hash.new {|hash, key| hash[key] = {"subject" => {}, "phenotypes" => []} }
-     for item in result["phenotypes"]
-       key = item["subject"]["id"]
-       bySubject[key]["subject"] = item["subject"]
-       bySubject[key]["phenotypes"].push(item)
+     # bySubject = Hash.new {|hash, key| hash[key] = {"subject" => {}, "phenotypes" => []} }
+     #  for item in result["phenotypes"]
+     #    key = item["subject"]["id"]
+     #    bySubject[key]["subject"] = item["subject"]
+     #    bySubject[key]["phenotypes"].push(item)
+     #  end
+     @taxa = result["subjects"]
+     if not @taxa.empty?
+       @root = @taxa[0]
+       # children_url = "/OBD-WS/phenotypes?entity=" + params[:entity] + "&quality=" + params[:quality] + "&type=evo&group=" + @root["id"]
+       #        children_response = Net::HTTP.get_response(self.request.host, children_url)
+       #        @children = ActiveSupport::JSON.decode(children_response.body)["subjects"]
+       #        @children = @children.sort_by {|item| item["name"].downcase}
+     else
+       @root = nil
      end
-     @phenotypes = bySubject
-  end
-  
+  end  
   
 end
