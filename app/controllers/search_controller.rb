@@ -41,6 +41,7 @@ class SearchController < ApplicationController
     begin
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&entity=" + @term)
       @summary = ActiveSupport::JSON.decode(response.body)
+      sort_summary_characters!(@summary["characters"])
     rescue Timeout::Error
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
       @term_info = ActiveSupport::JSON.decode(response.body)
@@ -69,6 +70,7 @@ class SearchController < ApplicationController
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&subject=" + @term)
       #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_summary_results.js")
       @summary = ActiveSupport::JSON.decode(response.body)
+      sort_summary_characters!(@summary["characters"])
     rescue Timeout::Error
       render(:action => "generic_timeout")
     end
@@ -94,6 +96,7 @@ class SearchController < ApplicationController
     begin
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&subject=" + @term)
       @summary = ActiveSupport::JSON.decode(response.body)
+      sort_summary_characters!(@summary["characters"])
     rescue Timeout::Error
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
       @term_info = ActiveSupport::JSON.decode(response.body)
@@ -152,6 +155,10 @@ class SearchController < ApplicationController
       entry["sources"].push({"source" => entry["source"], "evidence" => entry["evidence"]})
     end
     return homologs.values.sort_by {|item| item["target"]["entity"]["name"]}
+  end
+  
+  def sort_summary_characters!(characters)
+    characters.sort! {|x,y| x["entity"]["name"] <=> y["entity"]["name"]}
   end
   
 end

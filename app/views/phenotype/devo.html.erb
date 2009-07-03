@@ -1,21 +1,22 @@
-<h2>All zebrafish phenotypes for <span class="term-name" title="<%=h @entity["id"] %>"><a href="/search/entity/<%=h @entity["id"] %>"><%=h @entity["name"] %></a></span> <span class="term-name" title="<%=h @quality["id"] %>"><%=h @quality["name"] %></span>
+<h3>All zebrafish phenotypes for <span class="term-name" title="<%=h @entity["id"] %>"><a href="/search/entity/<%=h @entity["id"] %>"><%=h @entity["name"] %></a></span> <%= quality_link(@quality) %>
 <% if @subject != nil %>
 in <span class="term-name" title="<%=h @subject["id"] %>"><a href="/search/taxon/<%=h @subject["id"] %>"><%= format_taxon(h @subject["name"]) %></a></span>
 <% end %>
-</h2>
+</h3>
 
 <table class="annotations sortable" id="datatable">
 	<tr>
 		<th>Gene</th>
+		<th>Phenotypes</th>
 	</tr>
-	<% for gene in @phenotypes.values %>
+	<% for gene in @subjects %>
 	<tr>
-		<td><%=h gene["subject"]["name"]%></td>
+		<td><%= gene_link(gene) %></td>
 		<td>
 			<ul>
 				<% for phenotype in gene["phenotypes"]%>
 				<li>
-				<%=h phenotype["entity"]["name"] %> <%=h phenotype["quality"]["name"] %>
+				<%=h phenotype["entity"]["name"] %> <%= quality_link(phenotype["quality"]) %>
 				</li>
 				<% end %>
 			</ul>

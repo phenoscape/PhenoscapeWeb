@@ -14,7 +14,7 @@ module SearchHelper
   #length parameter of zero always just leaves off the "n more"
   def list_more(list, length)
     if list.empty?
-      return "<i>None</i>"
+      return nil
     elsif length > list.length
       return list.join(", ") + " and " + (length - list.length).to_s + " more"
     else
@@ -55,26 +55,10 @@ module SearchHelper
     end
     end
     
-  def entity_link(term)
-    id = term["id"]
-    name = term["name"]
-    return %Q'<a href="/search/entity/#{id}" title="#{id}">#{name}</a>'
-  end
-  
-  def zfin_url(term)
-    id = term["id"]
-    fixed_id = id.sub(/^ZFIN:/, "")
-    return "http://zfin.org/cgi-bin/webdriver?MIval=aa-markerview.apg&OID=#{fixed_id}"
-  end
-  
-  def bioportal_tao_url(term)
-    id = term["id"]
-    return "http://bioportal.bioontology.org/virtual/1110/" + id
-  end
-  
-  def bioportal_tto_url(term)
-    id = term["id"]
-    return "http://bioportal.bioontology.org/virtual/1081/" + id
+  def filter_out_attribute(attribute, examples)
+    return examples.find_all do |item|
+      item["id"] != attribute["id"]
+    end
   end
   
 end

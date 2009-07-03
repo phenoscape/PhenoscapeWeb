@@ -55,10 +55,10 @@ class PhenotypeController < ApplicationController
      #    bySubject[key]["subject"] = item["subject"]
      #    bySubject[key]["phenotypes"].push(item)
      #  end
-     @taxa = result["subjects"]
-     if not @taxa.empty?
-       @root = @taxa[0]
-       # children_url = "/OBD-WS/phenotypes?entity=" + params[:entity] + "&quality=" + params[:quality] + "&type=evo&group=" + @root["id"]
+     @subjects = result["subjects"]
+     if not @subjects.empty?
+       @root = @subjects[0]
+       # children_url = "/OBD-WS/phenotypes?entity=" + params[:entity] + "&quality=" + params[:quality] + "&g=evo&group=" + @root["id"]
        #        children_response = Net::HTTP.get_response(self.request.host, children_url)
        #        @children = ActiveSupport::JSON.decode(children_response.body)["subjects"]
        #        @children = @children.sort_by {|item| item["name"].downcase}

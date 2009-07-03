@@ -20,9 +20,14 @@
 		</tr>
 		<% for character in @summary["characters"] %>
 		<tr>
-			<td><%=h character["entity"]["name"] %></td>
-			<td><%=h character["character_quality"]["name"] %><br>Values include: 
-				<%=h list_more((character["qualities"]["examples"].collect {|item| item["name"]}), character["qualities"]["count"]) %>
+			<td><%= entity_link(character["entity"]) %></td>
+			<td><%= quality_link(character["character_quality"]) %> 
+				<% filtered_examples = filter_out_attribute(character["character_quality"], character["qualities"]["examples"]) %>
+				<% character["qualities"]["count"] -= 1 if filtered_examples.length < character["qualities"]["examples"].length %>
+				<% formatted_list = list_more((filtered_examples.collect {|item| item["name"]}), character["qualities"]["count"]) %>
+				<% if formatted_list %>
+				<span class="example-values">: <%= formatted_list %></span>
+				<% end %>
 			</td>
 			<td>
 				<% if character["genes"]["count"] > 0 %>

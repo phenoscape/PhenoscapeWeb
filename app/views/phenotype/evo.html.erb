@@ -1,15 +1,15 @@
-<h2>All phenotypes for <span class="term-name" title="<%=h @entity["id"] %>"><a href="/search/entity/<%=h @entity["id"] %>"><%=h @entity["name"] %></a></span> <span class="term-name" title="<%=h @quality["id"] %>"><%=h @quality["name"] %></span>
+<h3>All phenotypes for <span class="term-name" title="<%=h @entity["id"] %>"><a href="/search/entity/<%=h @entity["id"] %>"><%=h @entity["name"] %></a></span> <%= quality_link(@quality) %>
 <% if @subject != nil %>
 in <span class="term-name" title="<%=h @subject["id"] %>"><a href="/search/taxon/<%=h @subject["id"] %>"><%= format_taxon(h @subject["name"]) %></a></span>
 <% end %>
-</h2>
+</h3>
 
 <% if false %> <!-- commented out -->
 <table class="annotations sortable" id="datatable">
 	<tr>
 		<th>Taxon</th>
 	</tr>
-	<% for taxon in @taxa %>
+	<% for taxon in @subjects %>
 	<tr>
 		<td><%= taxon_link(taxon) %></td>
 		<td>

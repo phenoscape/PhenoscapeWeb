@@ -16,7 +16,10 @@ h1 img {border: none;}
 #navbar a {color: inherit; margin: 0.5em;}
 .clear {clear: both;}
 body {font-family: Helvetica, sans-serif;}
-td {border: 1px solid black;}
+th {background-color: #74c4ab; border: none; color: #0a3a34;}
+th a {color: inherit;}
+td {border: none;}
+tr.odd {background-color: #ccc;}
 .relation-name {font-style: italic;}
 
 #sidebar {float: left; width: 30%;}
