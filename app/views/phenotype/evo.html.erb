@@ -92,7 +92,7 @@ function createNodeForTaxon(taxonData, parentNode) {
 	}
 	var container = DIV({"class": "tree-row"}, taxonName, phenotypesContainer);
 	var outer = DIV(null, container);
-	var node = new YAHOO.widget.HTMLNode({"html" : outer.innerHTML, "data" : taxonData, "href": null}, parentNode);
+	var node = new YAHOO.widget.HTMLNode({"html" : outer.innerHTML, "data" : taxonData, "href": null, "isLeaf" : taxonData["leaf"]}, parentNode);
 	// don't allow blue focus color
 	node.focus = function() {return true;};
 	if (node.depth % 2 == 0) {
