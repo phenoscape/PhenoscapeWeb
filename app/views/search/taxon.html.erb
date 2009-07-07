@@ -4,7 +4,7 @@
 		<h3>Taxonomic Group</h3>
 		<h4 class="term-info-header">Properties</h4>
 		<div>
-			<span class="term-info-field-label">Synonyms:</span> <span><%=h (@term_info["synonyms"].collect {|item| item["name"]}).sort.join(", ") %></span>
+			<span class="term-info-field-label">Synonyms:</span> <span><%= textOrNone((@term_info["synonyms"].collect {|item| item["name"]}).join(", ")) %></span>
 		</div>
 		<div>
 			<span class="term-info-field-label">Parent:</span> <span><%= ((@term_info["parents"].sort_by {|item| item["target"]["name"]}).collect {|item| taxon_link(item["target"]) }).join(", ") %></span>
