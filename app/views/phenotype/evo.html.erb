@@ -20,7 +20,7 @@ in <span class="term-name" title="<%=h @subject["id"] %>"><a href="/search/taxon
 				<% if not empty?(phenotype["count"]) %>
 				<span class="phenotype-count">, <%= phenotype["count"] %></span>
 				<% end %>
-				<% if false %> <!-- commented out -->
+				<% if not phenotype["id"].empty? %>
 				 [<a href="#" onclick="showSource([<%= (phenotype["reified_link"]).join(",") 	%>], this); return false;">Source</a>]
 				<% end %>
 				</li>
@@ -45,7 +45,11 @@ var rootData = <%= @root.to_json %>;
 var tree = new YAHOO.widget.TreeView("phenotype-tree");
 createNodeForTaxon(rootData, tree.getRoot());
 tree.setDynamicLoad(requestDataForChildren);
-tree.subscribe("clickEvent", function(node) {
+tree.subscribe("clickEvent", function(arg) {
+	var targetID = arg["event"]["target"]["id"];
+	if ((targetID != null) && (sourceLinks[targetID] != null)) {
+		sourceLinks[targetID]();
+	}
 	//disable clicking on whole node to expand/collapse - this allows links inside node to work properly
 	return false;
 });
@@ -61,7 +65,6 @@ function expandRoot() {
 }
 
 function requestDataForChildren(parentNode, callback) {
-	logDebug(keys(parentNode.data.phenotypes[0]));
 	var dataGetter = loadJSONDoc(URL.childPhenotypes(entity["id"], quality["id"], parentNode["data"]["id"]));
 	dataGetter.addCallback(function(result) {
 		loadDataForChildren(parentNode, callback, result);
@@ -113,9 +116,31 @@ function createListItemForPhenotype(phenotypeData) {
 	if ((count != null) && (count != "")) {
 		appendChildNodes(container, ", " + count);
 	}
+	if ((phenotypeData["id"] != null) && (phenotypeData["id"].length != 0)) {
+		var idList = phenotypeData["id"];
+		var sourceLinkID = sourceLinkIDGenerator.next();
+		var sourceLink = A({"href": "#", "id": sourceLinkID}, "[Source]");
+		sourceLinks[sourceLinkID] = function() {
+			showSource(idList, $(sourceLinkID));
+		}
+		appendChildNodes(container, " ", sourceLink);
+	}
 	return container;
 }
 
+/*
+Functions for displaying annotation sources need to be stored in a dictionary and referenced later by matching with A element ID.
+This is because the Yahoo tree widget requires content HTML to be provided with text, preventing attaching functions as click listeners to the A elements as they are added to the DOM.
+*/
+var sourceLinks = {};
+
+var sourceLinkIDGenerator = {
+	"i" : 0,
+	
+	"next" : function() {
+		return "sourcelinkID" + this["i"]++;
+	}
+};
 
 var deferred = null;
 
@@ -133,14 +158,11 @@ function showSource(id, element) {
 	if (deferred) { deferred.cancel(); }
 	deferred = loadJSONDoc(URL.source([id]));
 	deferred.addCallback(partial(fillInSource, sourcePanel));
-	logDebug(id);
-	logDebug(element);
 	sourcePanel.render(document.body);
 	sourcePanel.show();
 }
 
 function fillInSource(panel, content) {
-	logDebug("Fill in source: " + content);
 	var taxon = A(null, content["phenotype"]["subject"]["name"]);
 	var entity = A(null, content["phenotype"]["entity"]["name"]);
 	var quality = A(null, content["phenotype"]["quality"]["name"]);	
@@ -155,12 +177,10 @@ function fillInSource(panel, content) {
 		characterLabel += ":";
 		var characterTable = TABLE(null, TR(null, TD(null, characterLabel), TD(null, item["character_text"])));
 		if (item["character_comment"].length > 0) {
-			logDebug("setting up comment");
 			var comment = P({"style":"display: none;", "class":"character_comment"}, item["character_comment"]);
 			var revealer = A({"href":"#"}, "View comment");
 			var revealerBlock = P(null, revealer);
 			connect(revealer, "onclick", function() {
-				logDebug("Running onclick");
 				hideElement(revealerBlock);
 				blindDown(comment);
 				return false;
