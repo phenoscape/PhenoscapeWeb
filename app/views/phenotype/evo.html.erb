@@ -87,13 +87,16 @@ function loadDataForChildren(parentNode, callback, result) {
 function createNodeForTaxon(taxonData, parentNode) {
 	var phenotypes = taxonData.phenotypes;
 	var taxonName = A({href: URL.taxon(taxonData["id"]), title: taxonData["id"]}, taxonData["name"]);
-	var phenotypesContainer = UL({"class": "phenotype-block"});
+	var phenotypesContainer = SPAN({"class": "phenotype-block"});
 	for (var i = 0; i < phenotypes.length; i++) {
 		var phenotype = phenotypes[i];
 		var phenotypeItem = createListItemForPhenotype(phenotype);
 		appendChildNodes(phenotypesContainer, phenotypeItem);
+		if ((i + 1) < phenotypes.length) {
+			appendChildNodes(phenotypesContainer, ", ");
+		}
 	}
-	var container = DIV({"class": "tree-row"}, taxonName, phenotypesContainer);
+	var container = DIV({"class": "tree-row"}, taxonName, SPAN({"class": "dotted-line"}, "........................."), phenotypesContainer);
 	var outer = DIV(null, container);
 	var node = new YAHOO.widget.HTMLNode({"html" : outer.innerHTML, "data" : taxonData, "href": null, "isLeaf" : taxonData["leaf"]}, parentNode);
 	// don't allow blue focus color
@@ -112,14 +115,14 @@ function createListItemForPhenotype(phenotypeData) {
 	var count = phenotypeData.count;
 	var entityName = A({href: URL.entity(entity["id"]), title: entity["id"]}, entity["name"]);
 	var qualityName = A({href: URL.quality(quality["id"]), title: quality["id"]}, quality["name"]);
-	var container = LI(null, entityName, " ", qualityName);
+	var container = SPAN(null, entityName, " ", qualityName);
 	if ((count != null) && (count != "")) {
 		appendChildNodes(container, ", " + count);
 	}
 	if ((phenotypeData["id"] != null) && (phenotypeData["id"].length != 0)) {
 		var idList = phenotypeData["id"];
 		var sourceLinkID = sourceLinkIDGenerator.next();
-		var sourceLink = A({"href": "#", "id": sourceLinkID}, "[Source]");
+		var sourceLink = A({"href": "#", "id": sourceLinkID, "class": "squarebutton"}, "?");
 		sourceLinks[sourceLinkID] = function() {
 			showSource(idList, $(sourceLinkID));
 		}

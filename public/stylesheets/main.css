@@ -56,6 +56,10 @@ p.phenoscape-citation {width: 85%; margin-left: auto; margin-right: auto; backgr
 
 /* tree views */
 .ygtvtable {width: 100%;}
-.phenotype-block {float: right;}
+/*.phenotype-block {float: right;}*/
 .tree-depth-even .ygtvcontent {background-color: #ccc;}
 .ygtvhighlight1 {background-color: none;}
+div.tree-row {text-indent: -3em; margin-left: 3em;}
+
+.squarebutton {border: 1px outset; border-right-color: #0a3a34; border-left-color: #45ae94; border-top-color: #a1d8c0; border-bottom-color: #000; text-transform: uppercase; font-size: 50%; font-family: verdana, sans-serif; padding: 0 3px; text-decoration: none; background-color: #74c4ab; color: white; margin: 0 0; letter-spacing: 1px; vertical-align: 2px;}
+.squarebutton:hover {background-color: white; color: #0a3a34;}
