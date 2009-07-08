@@ -72,7 +72,7 @@ module ApplicationHelper
   def quality_link(term)
     id = term["id"]
     name = term["name"]
-    return %Q'<a href="http://bioportal.bioontology.org/virtual/1107/#{id}" title="#{id}">#{name}</a>'
+    return %Q'<a href="http://bioportal.bioontology.org/virtual/1107/#{id}" title="#{id}" target="_blank">#{name}</a>'
   end
   
   def zfin_url(term)

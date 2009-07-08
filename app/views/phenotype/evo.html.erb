@@ -37,11 +37,26 @@ in <span class="term-name" title="<%=h @subject["id"] %>"><a href="/search/taxon
 
 
 <script type="text/javascript">
+
+/*
+Functions for displaying annotation sources need to be stored in a dictionary and referenced later by matching with A element ID.
+This is because the Yahoo tree widget requires content HTML to be provided with text, preventing attaching functions as click listeners to the A elements as they are added to the DOM.
+*/
+var sourceLinks = {};
+
+var sourceLinkIDGenerator = {
+	"i" : 0,
+	
+	"next" : function() {
+		alert("Running generator");
+		return "sourcelinkID" + this["i"]++;
+	}
+};
+
 var entity = <%= @entity.to_json %>;
 var quality = <%= @quality.to_json %>;
 var rootData = <%= @root.to_json %>;
-//var childrenData = <%= @children.to_json %>;
-//var root = {"label" : rootData["name"], "type" : "text", "data" : rootData, "expanded" : false};
+
 var tree = new YAHOO.widget.TreeView("phenotype-tree");
 createNodeForTaxon(rootData, tree.getRoot());
 tree.setDynamicLoad(requestDataForChildren);
@@ -114,7 +129,7 @@ function createListItemForPhenotype(phenotypeData) {
 	var quality = phenotypeData.quality;
 	var count = phenotypeData.count;
 	var entityName = A({href: URL.entity(entity["id"]), title: entity["id"]}, entity["name"]);
-	var qualityName = A({href: URL.quality(quality["id"]), title: quality["id"]}, quality["name"]);
+	var qualityName = A({href: URL.quality(quality["id"]), title: quality["id"], "target": "_blank"}, quality["name"]);
 	var container = SPAN(null, entityName, " ", qualityName);
 	if ((count != null) && (count != "")) {
 		appendChildNodes(container, ", " + count);
@@ -130,20 +145,6 @@ function createListItemForPhenotype(phenotypeData) {
 	}
 	return container;
 }
-
-/*
-Functions for displaying annotation sources need to be stored in a dictionary and referenced later by matching with A element ID.
-This is because the Yahoo tree widget requires content HTML to be provided with text, preventing attaching functions as click listeners to the A elements as they are added to the DOM.
-*/
-var sourceLinks = {};
-
-var sourceLinkIDGenerator = {
-	"i" : 0,
-	
-	"next" : function() {
-		return "sourcelinkID" + this["i"]++;
-	}
-};
 
 var deferred = null;
 
