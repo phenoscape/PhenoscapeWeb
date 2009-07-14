@@ -24,8 +24,9 @@ tr.odd {background-color: #ccc;}
 
 #sidebar {float: left; width: 30%;}
 #main {margin-left: 3px; margin-right: 3px;}
-#footer {clear: both; margin-top: 1em; padding-top: 2em;}
-#footer > div {background-color: #74c4ab; color: #0a3a34; text-align: right;}
+#footer {clear: both; margin-top: 1em; padding-top: 2em; font-size: 75%;}
+#footer > div {background-color: #74c4ab; color: #0a3a34;}
+#footer p {padding: 0.35em;}
 #footer a {color: inherit; margin: 0.5em;}
 
 h2 {font-size: 250%;}
@@ -51,7 +52,7 @@ div#term_info {border: 4px solid #74c4ab; margin-left: 3px; padding: 3px;}
 #search-buttons {text-align: center;}
 #search-buttons input {margin-left: 2em; margin-right: 2em;}
 
-p.phenoscape-citation {width: 85%; margin-left: auto; margin-right: auto; background-color: #c4dfcf; border: 2px dotted #0a3a34; padding: 0.5em;}
+p.phenoscape-citation {font-style: italic;}
 
 
 /* tree views */
