@@ -10,9 +10,9 @@ table.annotations th a {color: white; background-color: #033; text-decoration: n
 .sortarrow img {border: none;}
 */
 
-h1 img {border: none;}
+h1 img {border: none; float: left;}
 .top_logo {height: 100px;}
-#navbar {background-color: #74c4ab; text-align: right; color: #0a3a34;}
+#navbar {background-color: #74c4ab; text-align: right; color: #0a3a34; clear: both;}
 #navbar a {color: inherit; margin: 0.5em;}
 .clear {clear: both;}
 body {font-family: Helvetica, sans-serif;}
@@ -22,6 +22,9 @@ td {border: none;}
 tr.odd {background-color: #ccc;}
 .relation-name {font-style: italic;}
 
+.search-label {font-weight: bold; margin-bottom: 0;}
+#upperTermForm {text-align: right;}
+#upperTermChoiceGroup {float: right; width: 25%;}
 #sidebar {float: left; width: 30%;}
 #main {margin-left: 3px; margin-right: 3px;}
 #footer {clear: both; margin-top: 1em; padding-top: 2em; font-size: 75%;}

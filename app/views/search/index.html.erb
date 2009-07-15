@@ -23,59 +23,20 @@
 </div>
 
 <script type="text/javascript">
-//	var shownSearch = "term_search";
+
+	hideElement("upperTermForm");
 
 	var selectedTerm = {"id":null, "name":null};
-//	var selectedAnatomy = {"id":null, "name":null};
-//	var selectedGene = {"id":null, "name":null};
-//	var selectedTaxon = {"id":null, "name":null};
-	
 	var termAC = initAutocomplete($("termChoice"), $("termComplete"), [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO]);
-	//var entityAC = initAutocomplete($("entityChoice"), $("entityComplete"), [ONTOLOGY.TAO]);
-	//var geneAC = initAutocomplete($("geneChoice"), $("geneComplete"), [ONTOLOGY.ZFIN]);
-	//var taxonAC = initAutocomplete($("taxonChoice"), $("taxonComplete"), [ONTOLOGY.TTO]);
-	var selectItem = function(storage, event, item) {
+	
+	function selectItem(storage, event, item) {
 		var data = item[2];
 		storage.id = data[1];
 		storage.name = data[0];
 	}
 	termAC.itemSelectEvent.subscribe(partial(selectItem, selectedTerm));
-	//entityAC.itemSelectEvent.subscribe(partial(selectItem, selectedAnatomy));
-	//geneAC.itemSelectEvent.subscribe(partial(selectItem, selectedGene));
-	//taxonAC.itemSelectEvent.subscribe(partial(selectItem, selectedTaxon));
-	
-	// function submitAnatomy() {
-	// 	var href = "/search/entity/";
-	// 	if ((selectedAnatomy.id == null) || ($("entityChoice").value != selectedAnatomy.name)) {
-	// 		href += $("entityChoice").value + "?find=true";
-	// 	} else {
-	// 		href += selectedAnatomy.id;
-	// 	}
-	// 	location.href = (href);
-	// }
-	// 
-	// function submitGene() {
-	// 	var href = "/search/gene/";
-	// 	if ((selectedGene.id == null) || ($("geneChoice").value != selectedGene.name)) {
-	// 		href += $("geneChoice").value + "?find=true";
-	// 	} else {
-	// 		href += selectedGene.id;
-	// 	}
-	// 	location.href = (href);
-	// }
-	// 
-	// function submitTaxon() {
-	// 	var href = "/search/taxon/";
-	// 	if ((selectedTaxon.id == null) || ($("taxonChoice").value != selectedTaxon.name)) {
-	// 		href += $("taxonChoice").value + "?find=true";
-	// 	} else {
-	// 		href += selectedTaxon.id;
-	// 	}
-	// 	location.href = (href);
-	// }
 	
 	function submitTerm() {
-		//in progress
 		var href = null;
 		if ((selectedTerm.id == null) || ($("termChoice").value != selectedTerm.name)) {
 			href = URL.generalTerm($("termChoice").value);
@@ -88,15 +49,5 @@
 		}
 		location.href = href;
 	}
-	
-	// function showSearch(divID) {
-	// 	if (divID == shownSearch) return;
-	// 	logDebug("Showing " + divID);
-	// 	hideElement(shownSearch);
-	//  		appear(divID);
-	// 	//showElement(divID);
-	// 	shownSearch = divID;
-	// 	logDebug(getFirstElementByTagAndClassName("div", "tag-cloud"));
-	// }
 	
 </script>

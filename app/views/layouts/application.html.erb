@@ -21,7 +21,19 @@
 </head>
 <body class="yui-skin-sam">
 <h1><a href="/"><img class="top_logo" src="/images/phenoscape.png" alt="Phenoscape logo"></a></h1>
-<div id="navbar"><a a href="/">Search</a> <a href="mailto:<%= obscure_email("help@phenoscape.org") %>?subject=<%= fulltitle %>">Provide Feedback</a> <a href="/about/">About</a> <a href="/contributors/">Contributors</a></div>
+<form id="upperTermForm" action="" onsubmit="upperSubmitTerm(); return false;">
+	<div>
+		<p class="search-label">Search:</p>
+		<div id="upperTermChoiceGroup">
+			<input type="text" id="upperTermChoice">
+			<div id="upperTermComplete"></div>
+		</div>
+	</div>
+</form>
+<div id="navbar">
+	<a href="mailto:<%= obscure_email("help@phenoscape.org") %>?subject=<%= fulltitle %>">Provide Feedback</a> 
+	<a href="/about/">About</a> <a href="/contributors/">Contributors</a>
+</div>
 <div class="clear"></div>
 <%= yield  %>
 <div id="footer">
@@ -32,4 +44,32 @@
 	<div>
 </div>
 </body>
+<script type="text/javascript">
+
+	var upperSelectedTerm = {"id":null, "name":null};
+	var upperTermAC = initAutocomplete($("upperTermChoice"), $("upperTermComplete"), [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO]);
+	
+	function upperSelectItem(storage, event, item) {
+		var data = item[2];
+		storage.id = data[1];
+		storage.name = data[0];
+	}
+	upperTermAC.itemSelectEvent.subscribe(partial(upperSelectItem, upperSelectedTerm));
+	
+	function upperSubmitTerm() {
+		var href = null;
+		if ((upperSelectedTerm.id == null) || ($("upperTermChoice").value != upperSelectedTerm.name)) {
+			href = URL.generalTerm($("upperTermChoice").value);
+		} else if (upperSelectedTerm.id.indexOf(ONTOLOGY.TAO) == 0) {
+			href = URL.entity(upperSelectedTerm.id);
+		} else if (upperSelectedTerm.id.indexOf(ONTOLOGY.TTO) == 0) {
+			href = URL.taxon(upperSelectedTerm.id);
+		} else if (upperSelectedTerm.id.indexOf(ONTOLOGY.ZFIN) == 0) {
+			href = URL.gene(upperSelectedTerm.id);
+		}
+		location.href = href;
+	}
+	
+</script>
+
 </html>
