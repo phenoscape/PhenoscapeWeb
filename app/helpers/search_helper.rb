@@ -1,6 +1,6 @@
 module SearchHelper
   
-  IS_A = "OBO_REL:is_a"
+  @@IS_A = "OBO_REL:is_a"
   
   def truncate_list(list, length)
     if list.length <= length
@@ -45,9 +45,9 @@ module SearchHelper
       relation["targets"].sort! {|x,y| x["name"] <=> y["name"]}
     end
     return relations.values.sort do |x,y|
-      if x["relation"]["id"] == IS_A
+      if x["relation"]["id"] == @@IS_A
         -1
-      elsif y["relation"]["id"] == IS_A
+      elsif y["relation"]["id"] == @@IS_A
         1
       else
         x["relation"]["name"] <=> y["relation"]["name"]

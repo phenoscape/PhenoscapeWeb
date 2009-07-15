@@ -126,6 +126,27 @@ function getParameters() {
      return queryStringList;
 }
 
+//takes a taxon structure or term info structure and determines if possesses an italic rank
+function italicTaxon(taxon) {
+    var rank_id = null
+    if (isUndefinedOrNull(taxon["rank"])) {
+        if (!isUndefinedOrNull(taxon["parents"])) {
+            for (var i = 0; i < taxon["parents"].length; i++) {
+                var link = taxon["parents"][i];
+                if (link["relation"]["id"] == HAS_RANK) {
+                    rank_id = link["target"]["id"]
+                }
+            }
+        }
+    } else {
+        rank_id = taxon["rank"]["id"];
+    }
+    return findValue([GENUS_ID, SPECIES_ID], rank_id) != -1;
+}
+
+var HAS_RANK = "has_rank";
+var SPECIES_ID = "TTO:species";
+var GENUS_ID = "TTO:genus";
 
 var HOST = "http://" + window.location.hostname;
 

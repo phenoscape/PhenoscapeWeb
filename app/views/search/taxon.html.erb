@@ -1,16 +1,24 @@
-<h2><span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h2>
+<% isa = "OBO_REL:is_a" %>
+<h2><%= taxon_name(@term_info) %></h2>
 <div id="sidebar">
 	<div id="term_info">
 		<h3>Taxonomic Group</h3>
 		<h4 class="term-info-header">Properties</h4>
+		<% if @term_info.has_key?("rank") %>
+		<div>
+			<span class="term-info-field-label">Rank:</span> <span><%= textOrNone(@term_info["rank"]["name"]) %></span>
+		</div>
+		<% end %>
 		<div>
 			<span class="term-info-field-label">Synonyms:</span> <span><%= textOrNone((@term_info["synonyms"].collect {|item| item["name"]}).join(", ")) %></span>
 		</div>
 		<div>
-			<span class="term-info-field-label">Parent:</span> <span><%= ((@term_info["parents"].sort_by {|item| item["target"]["name"]}).collect {|item| taxon_link(item["target"]) }).join(", ") %></span>
+			<% isa_parents = @term_info["parents"].find_all {|item| item["relation"]["id"] == isa} %>
+			<span class="term-info-field-label">Parent:</span> <span><%= ((isa_parents.sort_by {|item| item["target"]["name"]}).collect {|item| taxon_link(item["target"]) }).join(", ") %></span>
 		</div>
 		<div>
-			<span class="term-info-field-label">Children:</span> <span><%= ((@term_info["children"].sort_by {|item| item["target"]["name"]}).collect {|item| taxon_link(item["target"]) }).join(", ") %></span>
+			<% isa_children = @term_info["children"].find_all {|item| item["relation"]["id"] == isa} %>
+			<span class="term-info-field-label">Children:</span> <span><%= ((isa_children.sort_by {|item| item["target"]["name"]}).collect {|item| taxon_link(item["target"]) }).join(", ") %></span>
 		</div>
 		<h4 class="term-info-header">More information</h4>
 		<div>
@@ -28,7 +36,7 @@
 	<h3>Phenotypes</h3>
 	<table class="annotations sortable" id="datatable">
 		<tr>
-			<th id="click-me">Anatomy</th><th>Quality</th><th>Zebrafish Data</th><th>Evolutionary Data within <%= format_taxon(@term_info["name"]) %></th>
+			<th id="click-me">Anatomy</th><th>Quality</th><th>Zebrafish Data</th><th>Evolutionary Data within <%= taxon_name(@term_info) %></th>
 		</tr>
 		<% for character in @summary["characters"] %>
 		<tr>

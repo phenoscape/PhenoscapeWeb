@@ -1,7 +1,12 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   
-  def format_taxon(name)
+  @@GENUS_ID = "TTO:genus"
+  @@SPECIES_ID = "TTO:species"
+  @@HAS_RANK = "has_rank"
+  
+  def format_taxon(taxon)
+    name = taxon["name"]
     if name.include? " "
       return "<i>" + name + "</i>"
     else
@@ -9,11 +14,33 @@ module ApplicationHelper
     end
   end
   
+  # takes a taxon structure or term info structure and determines if possesses an italic rank
+  def italicize_taxon?(taxon)
+    rank_id = nil
+    if taxon.has_key?("rank")
+      rank_id = taxon["rank"]
+    elsif taxon.has_key?("parents")
+      for link in taxon["parents"]
+        if link["relation"]["id"] == @@HAS_RANK
+          rank_id = link["target"]["id"]
+        end
+      end
+    end
+    return [@@GENUS_ID, @@SPECIES_ID].include?(rank_id)
+  end
+  
   def taxon_link(term)
     id = term["id"]
     name = term["name"]
-    name = "<i>" + name + "</i>" if name.include? " "
-    return %Q'<a href="/search/taxon/#{id}" title="#{id}">#{name}</a>'
+    clazz = italicize_taxon?(term) ? 'class="italic-taxon"' : ""
+    return %Q'<a #{clazz} href="/search/taxon/#{id}" title="#{id}">#{name}</a>'
+  end
+  
+  def taxon_name(term)
+    id = term["id"]
+    name = term["name"]
+    clazz = italicize_taxon?(term) ? 'class="italic-taxon"' : ""
+    return %Q'<span #{clazz} title="#{id}">#{name}</span>'
   end
   
   @@subject_relation_mappings = {
