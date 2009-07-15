@@ -35,9 +35,14 @@ class SearchController < ApplicationController
     @term_info = ActiveSupport::JSON.decode(response.body)
     @title = @term_info["name"]
     homology_response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term + "/homology")
-    @homology_json = homology_response.body
-    homology_data = ActiveSupport::JSON.decode(@homology_json)
-    @homology = lump_homologies(homology_data)
+    if homology_response.kind_of?(Net::HTTPOK)
+      @homology_json = homology_response.body
+      homology_data = ActiveSupport::JSON.decode(@homology_json)
+      @homology = lump_homologies(homology_data)
+    else
+      @homology_json = ActiveResource::Formats::JsonFormat.encode({"homology" => []})
+      @homology = []
+    end
     begin
       response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&entity=" + @term)
       @summary = ActiveSupport::JSON.decode(response.body)
