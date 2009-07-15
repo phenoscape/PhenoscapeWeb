@@ -5,15 +5,6 @@ module ApplicationHelper
   @@SPECIES_ID = "TTO:species"
   @@HAS_RANK = "has_rank"
   
-  def format_taxon(taxon)
-    name = taxon["name"]
-    if name.include? " "
-      return "<i>" + name + "</i>"
-    else
-      return name
-    end
-  end
-  
   # takes a taxon structure or term info structure and determines if possesses an italic rank
   def italicize_taxon?(taxon)
     rank_id = nil
