@@ -36,7 +36,7 @@
 	<h3>Phenotypes</h3>
 	<table class="annotations sortable" id="datatable">
 		<tr>
-			<th id="click-me">Anatomy</th><th>Quality</th><th>Zebrafish Data</th><th>Evolutionary Data within <%= taxon_name(@term_info) %></th>
+			<th id="click-me">Anatomy</th><th>Quality</th><th>Zebrafish Genes</th><th>Taxa within <%= taxon_name(@term_info) %></th>
 		</tr>
 		<% for character in @summary["characters"] %>
 		<tr>
@@ -51,14 +51,14 @@
 			</td>
 			<td>
 				<% if character["genes"]["count"] > 0 %>
-					<a href="/phenotype/devo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"><%=h character["genes"]["count"] %> genes
+					<a href="/phenotype/devo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"><%=h character["genes"]["count"] %>
 				<% else %>
 					None
 				<% end %>
 			</td>
 			<td>
 				<% if character["taxa"]["count"] > 0 %>
-					<a href="/phenotype/evo/<%=h @term %>/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"> <%=h character["taxa"]["count"] %> taxa
+					<a href="/phenotype/evo/<%=h @term %>/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"> <%=h character["taxa"]["count"] %>
 				<% else %>
 					None
 				<% end %>
