@@ -15,7 +15,7 @@
 			<span class="term-info-field-label">Comment:</span> <span><%=h @term_info["comment"]%></span>
 		</div>
 		<% end %>
-		<h4 class="term-info-header">Relationships</h4>
+		<h4 class="term-info-header">Relationships (<a href="/about/ontology_relationships/">about</a>)</h4>
 		<% for relation in lump_relations(@term_info["parents"]) %>
 		<div>
 			<span class="term-info-field-label relation_name" title="<%=h relation["relation"]["id"] %>"><%=h subject_rel(relation["relation"]["id"], relation["relation"]["name"]) %>:</span> <span><%= (relation["targets"].collect {|item| entity_link(item) }).join(", ") %></span>
