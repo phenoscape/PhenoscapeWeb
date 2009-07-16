@@ -38,6 +38,11 @@ div#term_info {border: 4px solid #74c4ab; margin-left: 3px; padding: 3px;}
 .term-info-field-label {font-weight: bold; color: #0a3a34;;}
 
 .yui-skin-sam .yui-ac-input { position: static; width: 100%;}
+.yui-skin-sam .yui-ac-container {max-height: 400px;}
+#termComplete {max-height: 400px;}
+.yui-skin-sam .yui-ac-content ul {max-height: 400px; overflow: scroll;}
+.yui-ac-ft {color: red;}
+
 .tag-cloud {font-size: 8pt; }
 .tag-cloud a {display: block; float: left; margin: -0.1em 0.25em -0.1em 0.25em; text-decoration: none;}
 .tag-cloud a:hover {background-color: #74c4ab;}

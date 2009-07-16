@@ -97,16 +97,26 @@ function initAutocomplete(input, div, ontologyPrefixes) {
 	dataSource.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
 	var autocomplete = new YAHOO.widget.AutoComplete(input, div, dataSource);
     autocomplete.generateRequest = function(query) {
-        return "?text=" + query + "&ontology=" + ontologyPrefixes.join(",") + "&syn=true" + "&limit=30";
+        return "?text=" + query + "&ontology=" + ontologyPrefixes.join(",") + "&syn=true" + "&limit=101";
     };
     autocomplete.maxResultsDisplayed = 100;
-    autocomplete.queryDelay = 0.3;
-    autocomplete.minQueryLength = 3;
+    autocomplete.queryDelay = 0.2;
+    autocomplete.minQueryLength = 4;
     autocomplete.forceSelection = false;
     autocomplete.formatResult = function(resultData , query , resultMatch) {
         var matchType = resultData[2];
         return resultMatch + ((matchType != "name") ? " <span class=\"match_type\">" + matchType + "</span>" : "");
     }
+    autocomplete.dataReturnEvent.subscribe(function(theEvent, data) {
+        var autocompleteObject = data[0];
+        var queryText = data[1];
+        var results = data[2];
+        if (results.length > autocomplete.maxResultsDisplayed) {
+            autocomplete.setFooter("results truncated at " + autocomplete.maxResultsDisplayed + " matches");
+        } else {
+            autocomplete.setFooter(null);
+        }
+    });
     return autocomplete;
 }
 
