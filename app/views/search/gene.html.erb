@@ -28,7 +28,7 @@
 			<td><%= quality_link(character["character_quality"]) %> 
 				<% filtered_examples = filter_out_attribute(character["character_quality"], character["qualities"]["examples"]) %>
 				<% character["qualities"]["count"] -= 1 if filtered_examples.length < character["qualities"]["examples"].length %>
-				<% formatted_list = list_more((filtered_examples.collect {|item| item["name"]}), character["qualities"]["count"]) %>
+				<% formatted_list = list_more((filtered_examples.collect {|item| item["name"]}).sort!, character["qualities"]["count"]) %>
 				<% if formatted_list %>
 				<span class="example-values">: <%= formatted_list %></span>
 				<% end %>
