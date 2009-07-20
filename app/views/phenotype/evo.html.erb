@@ -156,18 +156,30 @@ function fillInSource(panel, content) {
 		characterLabel += ":";
 		var characterTable = TABLE(null, TR(null, TD(null, characterLabel), TD(null, item["character_text"])));
 		if (item["character_comment"].length > 0) {
-			var comment = P({"style":"display: none;", "class":"character_comment"}, item["character_comment"]);
-			var revealer = A({"href":"#"}, "View comment");
-			var revealerBlock = P(null, revealer);
-			connect(revealer, "onclick", function() {
-				hideElement(revealerBlock);
-				blindDown(comment);
+			var character_comment = P({"style":"display: none;", "class":"character_comment"}, item["character_comment"]);
+			var character_revealer = A({"href":"#"}, "View comment");
+			var character_revealerBlock = P(null, character_revealer);
+			connect(character_revealer, "onclick", function() {
+				hideElement(character_revealerBlock);
+				blindDown(character_comment);
 				return false;
 			});
-			var commentRow = TR(null, TD({"colspan":"2"}, revealerBlock, comment));
-			appendChildNodes(characterTable, commentRow);
+			var character_commentRow = TR(null, TD({"colspan":"2"}, character_revealerBlock, character_comment));
+			appendChildNodes(characterTable, character_commentRow);
 		}
 		appendChildNodes(characterTable, TR(null, TD(null, "state:"), TD(null, item["state_text"])));
+		if (item["state_comment"].length > 0) {
+			var state_comment = P({"style":"display: none;", "class":"character_comment"}, item["state_comment"]);
+			var state_revealer = A({"href":"#"}, "View comment");
+			var state_revealerBlock = P(null, state_revealer);
+			connect(state_revealer, "onclick", function() {
+				hideElement(state_revealerBlock);
+				blindDown(state_comment);
+				return false;
+			});
+			var state_commentRow = TR(null, TD({"colspan":"2"}, state_revealerBlock, state_comment));
+			appendChildNodes(characterTable, state_commentRow);
+		}
 		return DIV(null, citation, characterTable);
 	}, content["sources"]);
 	replaceChildNodes(panel.body, sources);
