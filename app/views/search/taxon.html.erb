@@ -2,7 +2,11 @@
 <h2><%= taxon_name(@term_info) %></h2>
 <div id="sidebar">
 	<div id="term_info">
-		<h3>Taxonomic Group</h3>
+		<h3>Taxonomic Group
+			<% if @term_info["extinct"] %>
+			<%= "(extinct)"%>
+			<% end %>
+		</h3>
 		<h4 class="term-info-header">Properties</h4>
 		<% if @term_info.has_key?("rank") %>
 		<div>
