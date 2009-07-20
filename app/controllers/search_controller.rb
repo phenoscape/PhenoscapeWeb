@@ -1,3 +1,5 @@
+require "json"
+
 ## FIXME class-level documentation missing
 class SearchController < ApplicationController
   
@@ -32,19 +34,19 @@ class SearchController < ApplicationController
     end
     @term = params[:id]
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
-    @term_info = ActiveSupport::JSON.decode(response.body)
+    @term_info = JSON.parse(response.body)
     @title = @term_info["name"]
     homology_response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term + "/homology")
     if homology_response.kind_of?(Net::HTTPOK)
       @homology_json = homology_response.body
-      homology_data = ActiveSupport::JSON.decode(@homology_json)
+      homology_data = JSON.parse(@homology_json)
       @homology = lump_homologies(homology_data)
     else
       @homology_json = ActiveResource::Formats::JsonFormat.encode({"homology" => []})
       @homology = []
     end
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&entity=" + @term)
-    @summary = ActiveSupport::JSON.decode(response.body)
+    @summary = JSON.parse(response.body)
     sort_summary_characters!(@summary["characters"])
   end
   
@@ -64,9 +66,9 @@ class SearchController < ApplicationController
     end
     @term = params[:id]
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
-    @term_info = ActiveSupport::JSON.decode(response.body)
+    @term_info = JSON.parse(response.body)
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&subject=" + @term)
-    @summary = ActiveSupport::JSON.decode(response.body)
+    @summary = JSON.parse(response.body)
     sort_summary_characters!(@summary["characters"])
   end
   
@@ -86,9 +88,9 @@ class SearchController < ApplicationController
     end
     @term = params[:id]
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
-    @term_info = ActiveSupport::JSON.decode(response.body)
+    @term_info = JSON.parse(response.body)
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&subject=" + @term)
-    @summary = ActiveSupport::JSON.decode(response.body)
+    @summary = JSON.parse(response.body)
     sort_summary_characters!(@summary["characters"])
   end
   
@@ -117,7 +119,7 @@ class SearchController < ApplicationController
   private
   def find_match(input, ontology)
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/search?ontology=#{ontology}&name=true&syn=true&text=#{input}")
-    matches = ActiveSupport::JSON.decode(response.body)["matches"]
+    matches = JSON.parse(response.body)["matches"]
     if not matches.empty?
      exact_name_matches = matches.find_all {|item| item["match_type"] == "name" and item["name"].downcase == input.downcase}
      if not exact_name_matches.empty?
