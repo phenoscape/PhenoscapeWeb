@@ -22,6 +22,7 @@ tr.odd {background-color: #ccc;}
 .relation-name {font-style: italic;}
 
 .search-label {font-weight: bold; margin-bottom: 0;}
+.search-instructions {margin-top: 0; font-size: 80%; font-style: italic;}
 #upperTermForm {text-align: right;}
 #upperTermChoiceGroup {float: right; width: 25%;}
 #sidebar {float: left; width: 30%;}
