@@ -99,9 +99,17 @@ function showSource(anatomyID, taxonID, element) {
 		var subject = item["subject"];
 		var target = item["target"];
 		var source = item["source"];
-		var subjectP = P(null, subject["entity"]["name"] + " in " + subject["taxon"]["name"]);
+		var subjectTaxonClass = "";
+		if (italicTaxon(subject["taxon"])) {
+			targetTaxonClass = "italic-taxon";
+		}
+		var targetTaxonClass = "";
+		if (italicTaxon(target["taxon"])) {
+			targetTaxonClass = "italic-taxon";
+		}
+		var subjectP = P(null, subject["entity"]["name"] + " in ", SPAN({"class": subjectTaxonClass}, subject["taxon"]["name"]));
 		var homologous_toP = P(null, SPAN({"class":"relation-name"}, "homologous to"));
-		var targetP = P(null, target["entity"]["name"] + " in " + target["taxon"]["name"]);
+		var targetP = P(null, target["entity"]["name"] + " in ", SPAN({"class": targetTaxonClass}, target["taxon"]["name"]));
 		var evidenceP = P(null, "Evidence: " + source["evidence"]["name"]);
 		var citationP = P(null, source["publication"]);
 		var chunk = DIV(null, subjectP, homologous_toP, targetP, evidenceP, citationP);
