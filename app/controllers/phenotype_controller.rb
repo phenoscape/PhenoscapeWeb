@@ -1,3 +1,5 @@
+require "json"
+
 ## FIXME class-level documentation missing
 class PhenotypeController < ApplicationController
   
