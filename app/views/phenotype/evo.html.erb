@@ -112,7 +112,7 @@ function createListItemForPhenotype(phenotypeData) {
 	if ((phenotypeData["id"] != null) && (phenotypeData["id"].length != 0)) {
 		var idList = phenotypeData["id"];
 		var sourceLinkID = sourceLinkIDGenerator.next();
-		var sourceLink = A({"href": "#", "id": sourceLinkID, "class": "squarebutton"}, "?");
+		var sourceLink = A({"href": "#"}, IMG({"src": "/images/page_text.gif", "id": sourceLinkID}));
 		sourceLinks[sourceLinkID] = function() {
 			showSource(idList, $(sourceLinkID));
 		}

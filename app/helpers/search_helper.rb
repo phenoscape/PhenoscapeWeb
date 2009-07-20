@@ -29,8 +29,8 @@ module SearchHelper
       entity_id = target["entity"]["id"]
       entity_name = target["entity"]["name"]
       taxon_id = target["taxon"]["id"]
-      taxon_name = format_taxon(target["taxon"]["name"])
-      %Q|<a href="/search/entity/#{entity_id}" title="#{entity_id}">#{entity_name}</a> in <a href="/search/taxon/#{taxon_id}" title="#{taxon_id}">#{taxon_name}</a> <a href="#" title="View Source" class="squarebutton" onclick="showSource('#{entity_id}', '#{taxon_id}', this); return false;">?</a>|
+      taxon_link = taxon_link(target["taxon"])
+      %Q|<a href="/search/entity/#{entity_id}" title="#{entity_id}">#{entity_name}</a> in #{taxon_link} <a href="#" title="View Source" onclick="showSource('#{entity_id}', '#{taxon_id}', this); return false;"><img src="/images/page_text.gif"></a>|
 		end
   end
   
