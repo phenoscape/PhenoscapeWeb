@@ -5,7 +5,7 @@
 		<h3>ZFIN Gene</h3>
 		<h4 class="term-info-header">Properties</h4>
 		<div>
-			<span class="term-info-field-label">Synonyms:</span> <span><%= textOrNone((@term_info["synonyms"].collect {|item| item["name"]}).join(", ")) %></span>
+			<span class="term-info-field-label">Synonyms:</span> <span><%= textOrNone((@term_info["synonyms"].collect {|item| item["name"]}).sort.join(", ")) %></span>
 		</div>
 		<h4 class="term-info-header">More information</h4>
 		<div>
