@@ -12,4 +12,31 @@ class ApplicationController < ActionController::Base
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
+  
+  def render_optional_error_file(status_code)
+    if status_code == :not_found
+      render_404
+    else
+      render_error
+    end
+  end
+  
+  def render_404
+    respond_to do |type|
+      @title = "The page you were looking for doesn't exist (404)"
+      type.html { render :template => "errors/error_404", :layout => "application", :status => 404 }
+      type.all { render :nothing => true, :status => 404 }
+    end
+  end
+  true
+  
+  def render_error
+    respond_to do |type|
+      @title = "We're sorry, but something went wrong (500)"
+      type.html { render :template => "errors/error", :layout => "application", :status => 500 }
+      type.all { render :nothing => true, :status => 500 }
+    end
+  end
+  
 end
+

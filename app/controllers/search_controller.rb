@@ -1,7 +1,7 @@
 ## FIXME class-level documentation missing
 class SearchController < ApplicationController
   
-  caches_page :anatomy
+  caches_page :entity
   caches_page :gene
   caches_page :taxon
   
@@ -43,15 +43,9 @@ class SearchController < ApplicationController
       @homology_json = ActiveResource::Formats::JsonFormat.encode({"homology" => []})
       @homology = []
     end
-    begin
-      response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&entity=" + @term)
-      @summary = ActiveSupport::JSON.decode(response.body)
-      sort_summary_characters!(@summary["characters"])
-    rescue Timeout::Error
-      response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
-      @term_info = ActiveSupport::JSON.decode(response.body)
-      render(:action => "anatomy_timeout")
-    end
+    response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&entity=" + @term)
+    @summary = ActiveSupport::JSON.decode(response.body)
+    sort_summary_characters!(@summary["characters"])
   end
   
   ## FIXME Should have method (and parameter!) documentation as to
@@ -71,14 +65,9 @@ class SearchController < ApplicationController
     @term = params[:id]
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
     @term_info = ActiveSupport::JSON.decode(response.body)
-    begin
-      response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&subject=" + @term)
-      #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_summary_results.js")
-      @summary = ActiveSupport::JSON.decode(response.body)
-      sort_summary_characters!(@summary["characters"])
-    rescue Timeout::Error
-      render(:action => "generic_timeout")
-    end
+    response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&subject=" + @term)
+    @summary = ActiveSupport::JSON.decode(response.body)
+    sort_summary_characters!(@summary["characters"])
   end
   
   ## FIXME Should have method (and parameter!) documentation as to
@@ -98,15 +87,9 @@ class SearchController < ApplicationController
     @term = params[:id]
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
     @term_info = ActiveSupport::JSON.decode(response.body)
-    begin
-      response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&subject=" + @term)
-      @summary = ActiveSupport::JSON.decode(response.body)
-      sort_summary_characters!(@summary["characters"])
-    rescue Timeout::Error
-      response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
-      @term_info = ActiveSupport::JSON.decode(response.body)
-      render(:action => "anatomy_timeout")
-    end
+    response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&subject=" + @term)
+    @summary = ActiveSupport::JSON.decode(response.body)
+    sort_summary_characters!(@summary["characters"])
   end
   
   def general
