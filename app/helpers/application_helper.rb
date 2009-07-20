@@ -9,7 +9,7 @@ module ApplicationHelper
   def italicize_taxon?(taxon)
     rank_id = nil
     if taxon.has_key?("rank")
-      rank_id = taxon["rank"]
+      rank_id = taxon["rank"]["id"]
     elsif taxon.has_key?("parents")
       for link in taxon["parents"]
         if link["relation"]["id"] == @@HAS_RANK
@@ -21,6 +21,7 @@ module ApplicationHelper
   end
   
   def taxon_link(term)
+    logger.debug("Taxon: " + term.to_s)
     id = term["id"]
     name = term["name"]
     clazz = italicize_taxon?(term) ? 'class="italic-taxon"' : ""
