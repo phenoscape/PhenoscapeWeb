@@ -99,7 +99,11 @@ function createNodeForTaxon(taxonData, parentNode) {
 			appendChildNodes(phenotypesContainer, ", ");
 		}
 	}
-	var container = DIV({"class": "tree-row"}, taxonName, SPAN({"class": "dotted-line"}, "........................."), phenotypesContainer);
+	var subtaxaCount = "";
+	if (!taxonData["leaf"]) {
+		subtaxaCount = " (" + taxonData["annotated_taxa_count"] + ")";
+	}
+	var container = DIV({"class": "tree-row"}, taxonName, subtaxaCount, SPAN({"class": "dotted-line"}, "........................."), phenotypesContainer);
 	var outer = DIV(null, container);
 	var node = new YAHOO.widget.HTMLNode({"html" : outer.innerHTML, "data" : taxonData, "href": null, "isLeaf" : taxonData["leaf"]}, parentNode);
 	// don't allow blue focus color
