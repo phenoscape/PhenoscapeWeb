@@ -22,10 +22,9 @@ td {border: none;}
 tr.odd {background-color: #ccc;}
 .relation-name {font-style: italic;}
 
-.search-label {font-weight: bold; margin-bottom: 0;}
 .search-instructions {margin-top: 0; font-size: 80%; font-style: italic;}
-#upperTermForm {text-align: right;}
-#upperTermChoiceGroup {float: right; width: 25%;}
+#upperTermChoiceGroup {float: right; width: 33em; margin-right: 0; text-align: right; font-family: Helvetica, sans-serif;}
+#upperTermChoice {width: 17em;}
 #sidebar {float: left; width: 30%;}
 #main {margin-left: 3px; margin-right: 3px;}
 #footer {clear: both; margin-top: 1em; padding-top: 2em; font-size: 75%;}
@@ -58,6 +57,10 @@ div#term_info {border: 4px solid #74c4ab; margin-left: 3px; padding: 3px;}
 .tag-cloud a.entity-tag:hover {background-color: #c4dfcf;}
 .tag-cloud a.taxon-tag:hover {background-color: #c3cfdf;}
 .tag-cloud a.gene-tag:hover {background-color: #dfdfbf;}
+
+span.entity-tag {color: #127e3f;}
+span.taxon-tag {color: #0f4081;}
+span.gene-tag {color: #7f7f00;}
 
 #search-forms {width: 80%; margin-left: auto; margin-right: auto;}
 #search-forms h2 {}

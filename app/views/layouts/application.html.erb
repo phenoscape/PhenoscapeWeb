@@ -21,15 +21,12 @@
 </head>
 <body class="yui-skin-sam">
 <h1><a href="/"><img class="top_logo" src="/images/phenoscape.png" alt="Phenoscape logo"></a></h1>
-<form id="upperTermForm" action="" onsubmit="upperSubmitTerm(); return false;">
-	<div>
-		<p class="search-label">Search:</p>
+	<form id="upperTermForm" action="" onsubmit="upperSubmitTerm(); return false;">
 		<div id="upperTermChoiceGroup">
-			<input type="text" id="upperTermChoice">
+			<span class="search-label">New search (anatomy, taxon, gene): </span><input type="text" id="upperTermChoice"><input id="upperSearchSubmit" type="submit" value="Go">
 			<div id="upperTermComplete"></div>
 		</div>
-	</div>
-</form>
+	</form>
 <div id="navbar">
 	<a href="/">Home</a>
 	<a href="mailto:<%= obscure_email("help@phenoscape.org") %>?subject=<%= fulltitle %>">Provide Feedback</a> 
