@@ -6,6 +6,7 @@ class AboutController < ApplicationController
   caches_page :ontology_relationships
   
   def index
+    @title = "About"
   end
   
   

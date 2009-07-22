@@ -67,6 +67,7 @@ class SearchController < ApplicationController
     @term = params[:id]
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
     @term_info = JSON.parse(response.body)
+    @title = @term_info["name"]
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&subject=" + @term)
     @summary = JSON.parse(response.body)
     sort_summary_characters!(@summary["characters"])
@@ -89,6 +90,7 @@ class SearchController < ApplicationController
     @term = params[:id]
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + @term)
     @term_info = JSON.parse(response.body)
+    @title = @term_info["name"]
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&subject=" + @term)
     @summary = JSON.parse(response.body)
     sort_summary_characters!(@summary["characters"])

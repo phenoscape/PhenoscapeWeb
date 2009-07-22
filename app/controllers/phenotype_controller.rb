@@ -42,10 +42,13 @@ class PhenotypeController < ApplicationController
      #response = Net::HTTP.get_response(self.request.host, "/javascripts/dummy_annotation_results.js")
      url = "/OBD-WS/phenotypes?entity=" + params[:entity] + "&quality=" + params[:quality] + "&type=" + type
      url += "&group=root" if type == "evo"
+     prefix = type == "evo" ? "Taxa " : "Genes "
+     @title = prefix + "with phenotypes for " + @entity["name"] + " " + @quality["name"]
      if params[:subject] != nil
        subject_response = Net::HTTP.get_response(self.request.host, "/OBD-WS/term/" + params[:subject])
        @subject = JSON.parse(subject_response.body)
        url += "&subject=" + params[:subject]
+       @title += " in " + @subject["name"]
      else
        @subject = nil
      end
