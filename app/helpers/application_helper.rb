@@ -20,6 +20,19 @@ module ApplicationHelper
     return [@@GENUS_ID, @@SPECIES_ID].include?(rank_id)
   end
   
+  def taxon_rank(taxon)
+    if taxon.has_key?("rank")
+      return taxon["rank"]
+    elsif taxon.has_key?("parents")
+      for link in taxon["parents"]
+        if link["relation"]["id"] == @@HAS_RANK
+          return link["target"]
+        end
+      end
+    end
+    return nil
+  end
+  
   def taxon_link(term)
     logger.debug("Taxon: " + term.to_s)
     id = term["id"]
@@ -109,5 +122,20 @@ module ApplicationHelper
     id = term["id"]
     return "http://bioportal.bioontology.org/virtual/1081/" + id
   end
+  
+  def ontology(term)
+    id = term["id"]
+    ontology = case
+    when id.index("^") != nil: "None"
+    when id.index("TAO") == 0: "Teleost Anatomy"
+    when id.index("TTO") == 0: "Teleost Taxonomy"
+    when id.index("PATO") == 0: "Quality"
+    when id.index("GO") == 0: "Gene Ontology"
+    when id.index("BSPO") == 0: "Spatial Ontology"
+    else ""
+    end
+    return ontology
+  end
+  
   
 end

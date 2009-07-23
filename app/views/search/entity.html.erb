@@ -4,6 +4,12 @@
 		<h3>Anatomical Term</h3>
 		<h4 class="term-info-header">Properties</h4>
 		<div>
+			<span class="term-info-field-label">ID:</span> <span><%= @term_info["id"] %></span>
+		</div>
+		<div>
+			<span class="term-info-field-label">Ontology:</span> <span><%= ontology(@term_info) %></span>
+		</div>
+		<div>
 			<span class="term-info-field-label">Synonyms:</span> <span><%= textOrNone((@term_info["synonyms"].collect {|item| item["name"]}).sort.join(", ")) %></span>
 		</div>
 		<div>

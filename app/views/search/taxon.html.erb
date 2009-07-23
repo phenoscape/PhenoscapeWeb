@@ -8,9 +8,16 @@
 			<% end %>
 		</h3>
 		<h4 class="term-info-header">Properties</h4>
-		<% if @term_info.has_key?("rank") %>
 		<div>
-			<span class="term-info-field-label">Rank:</span> <span><%= textOrNone(@term_info["rank"]["name"]) %></span>
+			<span class="term-info-field-label">ID:</span> <span><%= @term_info["id"] %></span>
+		</div>
+		<div>
+			<span class="term-info-field-label">Ontology:</span> <span><%= ontology(@term_info) %></span>
+		</div>
+		<% rank = taxon_rank(@term_info) %>
+		<% if rank %>
+		<div>
+			<span class="term-info-field-label">Rank:</span> <span><%= textOrNone(rank["name"]) %></span>
 		</div>
 		<% end %>
 		<div>
