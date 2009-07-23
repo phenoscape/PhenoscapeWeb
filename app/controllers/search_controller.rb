@@ -42,7 +42,7 @@ class SearchController < ApplicationController
       homology_data = JSON.parse(@homology_json)
       @homology = lump_homologies(homology_data)
     else
-      @homology_json = ActiveResource::Formats::JsonFormat.encode({"homology" => []})
+      @homology_json = JSON.generate({"homology" => []})
       @homology = []
     end
     response = Net::HTTP.get_response(self.request.host, "/OBD-WS/phenotypes/summary?examples=5&entity=" + @term)
