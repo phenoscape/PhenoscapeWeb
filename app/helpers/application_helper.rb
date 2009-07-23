@@ -75,7 +75,7 @@ module ApplicationHelper
   end
   
   def textOrNone(text)
-    return empty?(text) ? "<i>None</i>" : h(text)
+    return empty?(text) ? "<i>None</i>" : (text)
   end
   
   def obscure_email(email)

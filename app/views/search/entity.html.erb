@@ -1,7 +1,6 @@
-<h2><span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h2>
+<h2>anatomical term: <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h2>
 <div id="sidebar">
 	<div id="term_info">
-		<h3>Anatomical Term</h3>
 		<h4 class="term-info-header">Properties</h4>
 		<div>
 			<span class="term-info-field-label">ID:</span> <span><%= @term_info["id"] %></span>
@@ -67,14 +66,14 @@
 				<% if character["genes"]["count"] > 0 %>
 					<a href="/phenotype/devo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"><%=h character["genes"]["count"] %>
 				<% else %>
-					None
+					0
 				<% end %>
 			</td>
 			<td>
 				<% if character["taxa"]["count"] > 0 %>
 					<a href="/phenotype/evo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"> <%=h character["taxa"]["count"] %>
 				<% else %>
-					None
+					0
 				<% end %>
 			</td>
 		</tr>

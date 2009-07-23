@@ -1,12 +1,9 @@
 <% isa = "OBO_REL:is_a" %>
-<h2><%= taxon_name(@term_info) %></h2>
+<h2>taxon: <%= taxon_name(@term_info) %><% if @term_info["extinct"] %>
+<%= " (extinct)"%>
+<% end %></h2>
 <div id="sidebar">
 	<div id="term_info">
-		<h3>Taxonomic Group
-			<% if @term_info["extinct"] %>
-			<%= "(extinct)"%>
-			<% end %>
-		</h3>
 		<h4 class="term-info-header">Properties</h4>
 		<div>
 			<span class="term-info-field-label">ID:</span> <span><%= @term_info["id"] %></span>
@@ -25,11 +22,11 @@
 		</div>
 		<div>
 			<% isa_parents = @term_info["parents"].find_all {|item| item["relation"]["id"] == isa} %>
-			<span class="term-info-field-label">Parent:</span> <span><%= ((isa_parents.sort_by {|item| item["target"]["name"]}).collect {|item| taxon_link(item["target"]) }).join(", ") %></span>
+			<span class="term-info-field-label">Parent:</span> <span><%= textOrNone(((isa_parents.sort_by {|item| item["target"]["name"]}).collect {|item| taxon_link(item["target"]) }).join(", ")) %></span>
 		</div>
 		<div>
 			<% isa_children = @term_info["children"].find_all {|item| item["relation"]["id"] == isa} %>
-			<span class="term-info-field-label">Children:</span> <span><%= ((isa_children.sort_by {|item| item["target"]["name"]}).collect {|item| taxon_link(item["target"]) }).join(", ") %></span>
+			<span class="term-info-field-label">Children:</span> <span><%= textOrNone(((isa_children.sort_by {|item| item["target"]["name"]}).collect {|item| taxon_link(item["target"]) }).join(", ")) %></span>
 		</div>
 		<h4 class="term-info-header">More information</h4>
 		<div>
@@ -64,14 +61,14 @@
 				<% if character["genes"]["count"] > 0 %>
 					<a href="/phenotype/devo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"><%=h character["genes"]["count"] %>
 				<% else %>
-					None
+					0
 				<% end %>
 			</td>
 			<td>
 				<% if character["taxa"]["count"] > 0 %>
 					<a href="/phenotype/evo/<%=h @term %>/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"> <%=h character["taxa"]["count"] %>
 				<% else %>
-					None
+					0
 				<% end %>
 			</td>
 		</tr>
