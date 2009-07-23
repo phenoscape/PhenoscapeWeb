@@ -9,6 +9,9 @@ class AboutController < ApplicationController
     @title = "About"
   end
   
+  def bibliography
+    @title = "Bibliography"
+  end
   
   def services
   end
