@@ -159,14 +159,15 @@ function showSource(id, element) {
 }
 
 function fillInSource(panel, content) {
+	replaceChildNodes(panel.header, "Source Data");
 	var taxonClass = "";
 	if (italicTaxon(content["phenotype"]["subject"])) {
 		taxonClass = "italic-taxon";
 	}
-	var taxon = A({"class": taxonClass}, content["phenotype"]["subject"]["name"]);
-	var entity = A(null, content["phenotype"]["entity"]["name"]);
-	var quality = A(null, content["phenotype"]["quality"]["name"]);	
-	replaceChildNodes(panel.header, taxon, " ", entity, " ", quality);
+	var taxon = SPAN({"class": taxonClass}, content["phenotype"]["subject"]["name"]);
+	var entity = SPAN(null, content["phenotype"]["entity"]["name"]);
+	var quality = SPAN(null, content["phenotype"]["quality"]["name"]);	
+	var statement = P({"class": "phenotype-statement-source"}, entity, " ", quality, " in ", taxon);
 	var sources = map(function(item) {
 		var citation = P(null, item["publication"]);
 		var number = item["character_number"];
@@ -175,7 +176,7 @@ function fillInSource(panel, content) {
 			characterLabel += " " + number;
 		}
 		characterLabel += ":";
-		var characterTable = TABLE(null, TR(null, TD(null, characterLabel), TD(null, item["character_text"])));
+		var characterTable = TABLE(null, TR(null, TD({"class": "label"}, characterLabel), TD(null, item["character_text"])));
 		if (item["character_comment"].length > 0) {
 			var character_comment = P({"style":"display: none;", "class":"character_comment"}, item["character_comment"]);
 			var character_revealer = A({"href":"#"}, "View comment");
@@ -188,7 +189,7 @@ function fillInSource(panel, content) {
 			var character_commentRow = TR(null, TD({"colspan":"2"}, character_revealerBlock, character_comment));
 			appendChildNodes(characterTable, character_commentRow);
 		}
-		appendChildNodes(characterTable, TR(null, TD(null, "state:"), TD(null, item["state_text"])));
+		appendChildNodes(characterTable, TR(null, TD({"class": "label"}, "state:"), TD(null, item["state_text"])));
 		if (item["state_comment"].length > 0) {
 			var state_comment = P({"style":"display: none;", "class":"character_comment"}, item["state_comment"]);
 			var state_revealer = A({"href":"#"}, "View comment");
@@ -201,9 +202,9 @@ function fillInSource(panel, content) {
 			var state_commentRow = TR(null, TD({"colspan":"2"}, state_revealerBlock, state_comment));
 			appendChildNodes(characterTable, state_commentRow);
 		}
-		return DIV(null, citation, characterTable);
+		return DIV({"class": "citation-item"}, citation, characterTable);
 	}, content["sources"]);
-	replaceChildNodes(panel.body, sources);
+	replaceChildNodes(panel.body, statement, sources);
 }
 
 function destroyPanel(type, args, obj) {

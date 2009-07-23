@@ -83,7 +83,7 @@ var homologies = <%= @homology_json %>["homologies"];
 
 function showSource(anatomyID, taxonID, element) {
 	var sourcePanel = new YAHOO.widget.Panel("source_panel", {
-		"context" : [element, YAHOO.widget.Overlay.TOP_RIGHT, YAHOO.widget.Overlay.BOTTOM_LEFT],
+		"context" : [element, YAHOO.widget.Overlay.TOP_LEFT, YAHOO.widget.Overlay.BOTTOM_RIGHT],
 		"constraintoviewport" : true,
 		"visible" : false
 		});
@@ -107,12 +107,13 @@ function showSource(anatomyID, taxonID, element) {
 		if (italicTaxon(target["taxon"])) {
 			targetTaxonClass = "italic-taxon";
 		}
-		var subjectP = P(null, subject["entity"]["name"] + " in ", SPAN({"class": subjectTaxonClass}, subject["taxon"]["name"]));
-		var homologous_toP = P(null, SPAN({"class":"relation-name"}, "homologous to"));
-		var targetP = P(null, target["entity"]["name"] + " in ", SPAN({"class": targetTaxonClass}, target["taxon"]["name"]));
+		var subjectP = SPAN(null, subject["entity"]["name"] + " in ", SPAN({"class": subjectTaxonClass}, subject["taxon"]["name"]));
+		var homologous_toP = SPAN(null, SPAN({"class":"relation-name"}, "homologous to"));
+		var targetP = SPAN(null, target["entity"]["name"] + " in ", SPAN({"class": targetTaxonClass}, target["taxon"]["name"]));
+		var statementP = P({"class": "homology-statement"}, subjectP, BR(null), homologous_toP, BR(null), targetP);
 		var evidenceP = P(null, "Evidence: " + source["evidence"]["name"]);
-		var citationP = P(null, source["publication"]);
-		var chunk = DIV(null, subjectP, homologous_toP, targetP, evidenceP, citationP);
+		var citationP = P(null, "Citation: " + source["publication"]);
+		var chunk = DIV({"class": "homology-item"}, statementP, evidenceP, citationP);
 		return chunk;
 	}, sources);
 	

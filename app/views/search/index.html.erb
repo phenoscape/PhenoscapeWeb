@@ -9,11 +9,10 @@
 		<div class="clear"></div>
 		<form id="termForm" action="" onsubmit="submitTerm(); return false;">
 			<div id="termChoiceGroup">
-				<input type="text" id="termChoice">
+				<input type="text" id="termChoice"><input id="termSubmit" type="submit" value="Search">
 				<div id="termComplete"></div>
 			</div>
 			<p class="search-instructions">Type at least 4 characters to choose a search term from the popup menu.  If there are many matches, the autocomplete menu may take a few seconds to respond.</p>
-			<input type="submit" value="Search">
 		</form>
 		<p>Most frequently used terms (<span class="entity-tag">anatomy</span>, <span class="taxon-tag">taxon</span>, <span class="gene-tag">gene</span>):</p>
 		<div class="tag-cloud">
