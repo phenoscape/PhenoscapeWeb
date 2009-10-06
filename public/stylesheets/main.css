@@ -9,7 +9,7 @@ table.annotations th a {color: white; background-color: #033; text-decoration: n
 .sortarrow img {border: none;}
 */
 img {border: none;}
-
+h1 {margin-bottom: 0; color: rgb(159, 0, 2); font-size: 12pt;}
 h1 img {float: left;}
 body h2 {font-size: 165%;}
 .top_logo {height: 100px;}
