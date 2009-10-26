@@ -24,7 +24,7 @@
 
 <script type="text/javascript">
 
-	hideElement("upperTermForm");
+	MochiKit.DOM.hideElement("upperTermForm");
 
 	var selectedTerm = {"id":null, "name":null};
 	var termAC = initAutocomplete($("termChoice"), $("termComplete"), [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO]);
@@ -34,7 +34,7 @@
 		storage.id = data[1];
 		storage.name = data[0];
 	}
-	termAC.itemSelectEvent.subscribe(partial(selectItem, selectedTerm));
+	termAC.itemSelectEvent.subscribe(MochiKit.Base.partial(selectItem, selectedTerm));
 	
 	function submitTerm() {
 		var href = null;

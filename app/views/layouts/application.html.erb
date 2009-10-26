@@ -9,6 +9,7 @@
 	<% fulltitle = fulltitle + ": " + @title %>
 	<% end %>
 	<title><%= fulltitle %></title>
+	<script type="text/javascript">MochiKit = {__export__: false};</script>
 	<%= javascript_include_tag :defaults %>
 	<%= javascript_include_tag "MochiKit" %>
 	<%= javascript_include_tag "sortable" %>	
@@ -18,6 +19,7 @@
 	<%= stylesheet_link_tag "main" %>
 	<!-- Combo-handled YUI JS files: --> 
 	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.7.0/build/utilities/utilities.js&amp;2.7.0/build/datasource/datasource-min.js&amp;2.7.0/build/autocomplete/autocomplete-min.js&amp;2.7.0/build/button/button-min.js&amp;2.7.0/build/container/container-min.js&amp;2.7.0/build/datatable/datatable-min.js&amp;2.7.0/build/json/json-min.js&amp;2.7.0/build/selector/selector-min.js&amp;2.7.0/build/stylesheet/stylesheet-min.js&amp;2.7.0/build/treeview/treeview-min.js"></script>
+	<%= feedback_includes %>
 </head>
 <body class="yui-skin-sam">
 <h1><a href="/"><img class="top_logo" src="/images/phenoscape_beta.png" alt="Phenoscape logo"></a><span>The Phenoscape Knowledgebase is currently in BETA testing - we would greatly value your feedback as we continue its development.</span></h1>
@@ -29,7 +31,7 @@
 	</form>
 <div id="navbar">
 	<a href="/">Home</a>
-	<a href="mailto:<%= obscure_email("help@phenoscape.org") %>?subject=<%= fulltitle %>">Provide Feedback</a> 
+	<%= feedback_link "Provide Feedback" %>
 	<a href="/about/">About</a> <a href="/contributors/">Contributors</a>
 </div>
 <div class="clear"></div>
@@ -43,7 +45,7 @@
 </div>
 </body>
 <script type="text/javascript">
-
+Feedback.init({tabPosition: null});
 	var upperSelectedTerm = {"id":null, "name":null};
 	var upperTermAC = initAutocomplete($("upperTermChoice"), $("upperTermComplete"), [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO]);
 	
@@ -52,7 +54,7 @@
 		storage.id = data[1];
 		storage.name = data[0];
 	}
-	upperTermAC.itemSelectEvent.subscribe(partial(upperSelectItem, upperSelectedTerm));
+	upperTermAC.itemSelectEvent.subscribe(MochiKit.Base.partial(upperSelectItem, upperSelectedTerm));
 	
 	function upperSubmitTerm() {
 		var href = null;

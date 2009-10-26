@@ -51,7 +51,7 @@ function expandRoot() {
 }
 
 function requestDataForChildren(parentNode, callback) {
-	var dataGetter = loadJSONDoc(URL.childPhenotypes(entity["id"], quality["id"], parentNode["data"]["id"]));
+	var dataGetter = MochiKit.Async.loadJSONDoc(URL.childPhenotypes(entity["id"], quality["id"], parentNode["data"]["id"]));
 	dataGetter.addCallback(function(result) {
 		loadDataForChildren(parentNode, callback, result);
 	});
@@ -73,11 +73,11 @@ function loadDataForChildren(parentNode, callback, result) {
 function createNodeForTaxon(taxonData, parentNode) {
 	var phenotypes = taxonData.phenotypes;
 	phenotypes.sort(function(a, b) {
-		var entity = compare(a["entity"]["name"], b["entity"]["name"]);
+		var entity = MochiKit.Base.compare(a["entity"]["name"], b["entity"]["name"]);
 		if (entity == 0) {
-			var quality = compare(a["quality"]["name"], b["quality"]["name"]);
+			var quality = MochiKit.Base.compare(a["quality"]["name"], b["quality"]["name"]);
 			if (quality == 0) {
-				return compare(a["count"], b["count"]);
+				return MochiKit.Base.compare(a["count"], b["count"]);
 			} else {
 				return quality;
 			}
@@ -89,22 +89,22 @@ function createNodeForTaxon(taxonData, parentNode) {
 	if (italicTaxon(taxonData)) {
 		clazz = "italic-taxon"
 	}
-	var taxonName = A({href: URL.taxon(taxonData["id"]), title: taxonData["id"], "class": clazz}, taxonData["name"]);
-	var phenotypesContainer = SPAN({"class": "phenotype-block"});
+	var taxonName = MochiKit.DOM.A({href: URL.taxon(taxonData["id"]), title: taxonData["id"], "class": clazz}, taxonData["name"]);
+	var phenotypesContainer = MochiKit.DOM.SPAN({"class": "phenotype-block"});
 	for (var i = 0; i < phenotypes.length; i++) {
 		var phenotype = phenotypes[i];
 		var phenotypeItem = createListItemForPhenotype(phenotype);
-		appendChildNodes(phenotypesContainer, phenotypeItem);
+		MochiKit.DOM.appendChildNodes(phenotypesContainer, phenotypeItem);
 		if ((i + 1) < phenotypes.length) {
-			appendChildNodes(phenotypesContainer, ", ");
+			MochiKit.DOM.appendChildNodes(phenotypesContainer, ", ");
 		}
 	}
 	var subtaxaCount = "";
 	if (!taxonData["leaf"]) {
 		subtaxaCount = " (" + taxonData["annotated_taxa_count"] + ")";
 	}
-	var container = DIV({"class": "tree-row"}, taxonName, subtaxaCount, SPAN({"class": "dotted-line"}, "........................."), phenotypesContainer);
-	var outer = DIV(null, container);
+	var container = MochiKit.DOM.DIV({"class": "tree-row"}, taxonName, subtaxaCount, MochiKit.DOM.SPAN({"class": "dotted-line"}, "........................."), phenotypesContainer);
+	var outer = MochiKit.DOM.DIV(null, container);
 	var node = new YAHOO.widget.HTMLNode({"html" : outer.innerHTML, "data" : taxonData, "href": null, "isLeaf" : taxonData["leaf"]}, parentNode);
 	// don't allow blue focus color
 	node.focus = function() {return true;};
@@ -120,20 +120,20 @@ function createListItemForPhenotype(phenotypeData) {
 	var entity = phenotypeData.entity;
 	var quality = phenotypeData.quality;
 	var count = phenotypeData.count;
-	var entityName = A({href: URL.entity(entity["id"]), title: entity["id"]}, entity["name"]);
-	var qualityName = A({href: URL.quality(quality["id"]), title: quality["id"], "target": "_blank"}, quality["name"]);
-	var container = SPAN(null, entityName, " ", qualityName);
+	var entityName = MochiKit.DOM.A({href: URL.entity(entity["id"]), title: entity["id"]}, entity["name"]);
+	var qualityName = MochiKit.DOM.A({href: URL.quality(quality["id"]), title: quality["id"], "target": "_blank"}, quality["name"]);
+	var container = MochiKit.DOM.SPAN(null, entityName, " ", qualityName);
 	if ((count != null) && (count != "")) {
-		appendChildNodes(container, ", " + count);
+		MochiKit.DOM.appendChildNodes(container, ", " + count);
 	}
 	if ((phenotypeData["id"] != null) && (phenotypeData["id"].length != 0)) {
 		var idList = phenotypeData["id"];
 		var sourceLinkID = sourceLinkIDGenerator.next();
-		var sourceLink = A({"href": "#"}, IMG({"src": "/images/page_text.gif", "id": sourceLinkID}));
+		var sourceLink = MochiKit.DOM.A({"href": "#"}, MochiKit.DOM.IMG({"src": "/images/page_text.gif", "id": sourceLinkID}));
 		sourceLinks[sourceLinkID] = function() {
 			showSource(idList, $(sourceLinkID));
 		}
-		appendChildNodes(container, " ", sourceLink);
+		MochiKit.DOM.appendChildNodes(container, " ", sourceLink);
 	}
 	return container;
 }
@@ -147,68 +147,68 @@ function showSource(id, element) {
 		"visible" : false
 		});
 	sourcePanel.hideEvent.subscribe(destroyPanel, sourcePanel);
-	var img = IMG({"src":"/images/rotation.gif", "alt":"loading"});
-	var div = DIV(null, img);
+	var img = MochiKit.DOM.IMG({"src":"/images/rotation.gif", "alt":"loading"});
+	var div = MochiKit.DOM.DIV(null, img);
 	sourcePanel.setBody(div);
 	sourcePanel.setHeader("Loading...");
 	if (deferred) { deferred.cancel(); }
-	deferred = loadJSONDoc(URL.source([id]));
-	deferred.addCallback(partial(fillInSource, sourcePanel));
+	deferred = MochiKit.Async.loadJSONDoc(URL.source([id]));
+	deferred.addCallback(MochiKit.Base.partial(fillInSource, sourcePanel));
 	sourcePanel.render(document.body);
 	sourcePanel.show();
 }
 
 function fillInSource(panel, content) {
-	replaceChildNodes(panel.header, "Source Data");
+	MochiKit.DOM.replaceChildNodes(panel.header, "Source Data");
 	var taxonClass = "";
 	if (italicTaxon(content["phenotype"]["subject"])) {
 		taxonClass = "italic-taxon";
 	}
-	var taxon = SPAN({"class": taxonClass}, content["phenotype"]["subject"]["name"]);
-	var entity = SPAN(null, content["phenotype"]["entity"]["name"]);
-	var quality = SPAN(null, content["phenotype"]["quality"]["name"]);	
-	var statement = P({"class": "phenotype-statement-source"}, entity, " ", quality, " in ", taxon);
-	var sources = map(function(item) {
-		var citation = P(null, item["publication"]);
+	var taxon = MochiKit.DOM.SPAN({"class": taxonClass}, content["phenotype"]["subject"]["name"]);
+	var entity = MochiKit.DOM.SPAN(null, content["phenotype"]["entity"]["name"]);
+	var quality = MochiKit.DOM.SPAN(null, content["phenotype"]["quality"]["name"]);	
+	var statement = MochiKit.DOM.P({"class": "phenotype-statement-source"}, entity, " ", quality, " in ", taxon);
+	var sources = MochiKit.Base.map(function(item) {
+		var citation = MochiKit.DOM.P(null, item["publication"]);
 		var number = item["character_number"];
 		var characterLabel = "character";
 		if ((number != null) && (number != "")) {
 			characterLabel += " " + number;
 		}
 		characterLabel += ":";
-		var characterTable = TABLE(null, TR(null, TD({"class": "label"}, characterLabel), TD(null, item["character_text"])));
+		var characterTable = MochiKit.DOM.TABLE(null, MochiKit.DOM.TR(null, MochiKit.DOM.TD({"class": "label"}, characterLabel), MochiKit.DOM.TD(null, item["character_text"])));
 		if (item["character_comment"].length > 0) {
-			var character_comment = P({"style":"display: none;", "class":"character_comment"}, item["character_comment"]);
-			var character_revealer = A({"href":"#"}, "View comment");
-			var character_revealerBlock = P(null, character_revealer);
-			connect(character_revealer, "onclick", function() {
-				hideElement(character_revealerBlock);
-				blindDown(character_comment);
+			var character_comment = MochiKit.DOM.P({"style":"display: none;", "class":"character_comment"}, item["character_comment"]);
+			var character_revealer = MochiKit.DOM.A({"href":"#"}, "View comment");
+			var character_revealerBlock = MochiKit.DOM.P(null, character_revealer);
+			MochiKit.Signal.connect(character_revealer, "onclick", function() {
+				MochiKit.DOM.hideElement(character_revealerBlock);
+				MochiKit.Visual.blindDown(character_comment);
 				return false;
 			});
-			var character_commentRow = TR(null, TD({"colspan":"2"}, character_revealerBlock, character_comment));
-			appendChildNodes(characterTable, character_commentRow);
+			var character_commentRow = MochiKit.DOM.TR(null, MochiKit.DOM.TD({"colspan":"2"}, character_revealerBlock, character_comment));
+			MochiKit.DOM.appendChildNodes(characterTable, character_commentRow);
 		}
-		appendChildNodes(characterTable, TR(null, TD({"class": "label"}, "state:"), TD(null, item["state_text"])));
+		MochiKit.DOM.appendChildNodes(characterTable, MochiKit.DOM.TR(null, MochiKit.DOM.TD({"class": "label"}, "state:"), MochiKit.DOM.TD(null, item["state_text"])));
 		if (item["state_comment"].length > 0) {
-			var state_comment = P({"style":"display: none;", "class":"character_comment"}, item["state_comment"]);
-			var state_revealer = A({"href":"#"}, "View comment");
-			var state_revealerBlock = P(null, state_revealer);
-			connect(state_revealer, "onclick", function() {
-				hideElement(state_revealerBlock);
-				blindDown(state_comment);
+			var state_comment = MochiKit.DOM.P({"style":"display: none;", "class":"character_comment"}, item["state_comment"]);
+			var state_revealer = MochiKit.DOM.A({"href":"#"}, "View comment");
+			var state_revealerBlock = MochiKit.DOM.P(null, state_revealer);
+			MochiKit.Signal.connect(state_revealer, "onclick", function() {
+				MochiKit.DOM.hideElement(state_revealerBlock);
+				MochiKit.Visual.blindDown(state_comment);
 				return false;
 			});
-			var state_commentRow = TR(null, TD({"colspan":"2"}, state_revealerBlock, state_comment));
-			appendChildNodes(characterTable, state_commentRow);
+			var state_commentRow = MochiKit.DOM.TR(null, MochiKit.DOM.TD({"colspan":"2"}, state_revealerBlock, state_comment));
+			MochiKit.DOM.appendChildNodes(characterTable, state_commentRow);
 		}
-		return DIV({"class": "citation-item"}, citation, characterTable);
-	}, content["sources"]);
-	replaceChildNodes(panel.body, statement, sources);
+		return MochiKit.DOM.DIV({"class": "citation-item"}, citation, characterTable);
+	}, content["sources"]);	
+	MochiKit.DOM.replaceChildNodes(panel.body, statement, sources);
 }
 
 function destroyPanel(type, args, obj) {
-	logDebug("Destroy");
+	MochiKit.Logging.logDebug("Destroy");
 	if (deferred) { deferred.cancel(); }
 	obj.destroy();
 }

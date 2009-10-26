@@ -9,28 +9,28 @@
 // class TermInfoPanel
 function TermInfoPanel(divNode) {
     this.div = $(divNode);
-    this.infoTable = TABLE(null);
-    appendChildNodes(this.div, this.infoTable);
-    this.nameNode = TD({"class":"TermInfoPanel-name", "colspan":"2"});
-    appendChildNodes(this.infoTable, TR(null, this.nameNode));
-    this.idNode = TD(null);
-    appendChildNodes(this.infoTable, TR(null, TD({"class":"TermInfoPanel-field-label"}, "ID:"), this.idNode));
-    this.synonymsData = TD(null);
-    appendChildNodes(this.infoTable, TR(null, TD({"class":"TermInfoPanel-field-label"}, "Synonyms:"), this.synonymsData));
-    this.defNode = TD(null);
-    appendChildNodes(this.infoTable, TR(null, TD({"class":"TermInfoPanel-field-label"}, "Definition:"), this.defNode));
-    this.parentsRow = TR(null, TD({"colspan":"2", "class":"TermInfoPanel-header-label"}, "Parents"));
-    appendChildNodes(this.infoTable, this.parentsRow);
-    this.childrenRow = TR(null, TD({"colspan":"2", "class":"TermInfoPanel-header-label"}, "Children"));
-    appendChildNodes(this.infoTable, this.childrenRow);
+    this.infoTable = MochiKit.DOM.TABLE(null);
+    MochiKit.DOM.appendChildNodes(this.div, this.infoTable);
+    this.nameNode = MochiKit.DOM.TD({"class":"TermInfoPanel-name", "colspan":"2"});
+    MochiKit.DOM.appendChildNodes(this.infoTable, MochiKit.DOM.TR(null, this.nameNode));
+    this.idNode = MochiKit.DOM.TD(null);
+    MochiKit.DOM.appendChildNodes(this.infoTable, MochiKit.DOM.TR(null, MochiKit.DOM.TD({"class":"TermInfoPanel-field-label"}, "ID:"), this.idNode));
+    this.synonymsData = MochiKit.DOM.TD(null);
+    MochiKit.DOM.appendChildNodes(this.infoTable, MochiKit.DOM.TR(null, TD({"class":"TermInfoPanel-field-label"}, "Synonyms:"), this.synonymsData));
+    this.defNode = MochiKit.DOM.TD(null);
+    MochiKit.DOM.appendChildNodes(this.infoTable, MochiKit.DOM.TR(null, MochiKit.DOM.TD({"class":"TermInfoPanel-field-label"}, "Definition:"), this.defNode));
+    this.parentsRow = MochiKit.DOM.TR(null, MochiKit.DOM.TD({"colspan":"2", "class":"TermInfoPanel-header-label"}, "Parents"));
+    MochiKit.DOM.appendChildNodes(this.infoTable, this.parentsRow);
+    this.childrenRow = MochiKit.DOM.TR(null, MochiKit.DOM.TD({"colspan":"2", "class":"TermInfoPanel-header-label"}, "Children"));
+    MochiKit.DOM.appendChildNodes(this.infoTable, this.childrenRow);
 }
 
 // FIXME method documentation for what this does and how is missing
 TermInfoPanel.prototype.setTerm = function(data) {
-    replaceChildNodes(this.nameNode, data.name);
-    replaceChildNodes(this.idNode, data.id);
-    replaceChildNodes(this.synonymsData, this.formatSynonyms(data.synonyms));
-    replaceChildNodes(this.defNode, data.definition);
+    MochiKit.DOM.replaceChildNodes(this.nameNode, data.name);
+    MochiKit.DOM.replaceChildNodes(this.idNode, data.id);
+    MochiKit.DOM.replaceChildNodes(this.synonymsData, this.formatSynonyms(data.synonyms));
+    MochiKit.DOM.replaceChildNodes(this.defNode, data.definition);
     var rows = this.infoTable.childNodes;
     for (var i = rows.length; i > 0; i--) {
         var child = rows.item(i - 1);
@@ -40,7 +40,7 @@ TermInfoPanel.prototype.setTerm = function(data) {
         this.infoTable.removeChild(child);
     }
     this.displayRelationships(this.infoTable, data.parents);
-    appendChildNodes(this.infoTable, this.childrenRow);
+    MochiKit.DOM.appendChildNodes(this.infoTable, this.childrenRow);
     this.displayRelationships(this.infoTable, data.children);
 }
 
@@ -60,7 +60,7 @@ TermInfoPanel.prototype.formatSynonyms = function(synonyms) {
 TermInfoPanel.prototype.displayRelationships = function(table, links) {
     for (var i = 0; i < links.length; i++) {
         var link = links[i];
-        appendChildNodes(table, TR(null, TD({"class":"TermInfoPanel-field-label relation_name", "title":link.relation.id}, (link.relation.name ? link.relation.name : link.relation.id) + ":"), TD({"title":link.target.id}, (link.target.name ? link.target.name : link.target.id))));
+        MochiKit.DOM.appendChildNodes(table, MochiKit.DOM.TR(null, MochiKit.DOM.TD({"class":"TermInfoPanel-field-label relation_name", "title":link.relation.id}, (link.relation.name ? link.relation.name : link.relation.id) + ":"), MochiKit.DOM.TD({"title":link.target.id}, (link.target.name ? link.target.name : link.target.id))));
     }
 }
 
@@ -76,11 +76,11 @@ function TermInfoPanelDataSource(panelObj) {
 // FIXME method documentation for what this does and how is missing
 TermInfoPanelDataSource.prototype.loadTerm = function(termURL) {
     if (this.deferred) { this.deferred.cancel(); }
-    this.deferred = loadJSONDoc(termURL);
-    this.deferred.addCallback(bind(this.update, this));
+    this.deferred = MochiKit.Async.loadJSONDoc(termURL);
+    this.deferred.addCallback(MochiKit.Base.bind(this.update, this));
     this.deferred.addErrback(function(error) { 
-        if (!(error instanceof CancelledError)) {
-            logError("Couldn't load term info:", error);
+        if (!(error instanceof MochiKit.Async.CancelledError)) {
+            MochiKit.Logging.logError("Couldn't load term info:", error);
         }
     });
 }
@@ -139,8 +139,8 @@ function getParameters() {
 //takes a taxon structure or term info structure and determines if possesses an italic rank
 function italicTaxon(taxon) {
     var rank_id = null
-    if (isUndefinedOrNull(taxon["rank"])) {
-        if (!isUndefinedOrNull(taxon["parents"])) {
+    if (MochiKit.Base.isUndefinedOrNull(taxon["rank"])) {
+        if (!MochiKit.Base.isUndefinedOrNull(taxon["parents"])) {
             for (var i = 0; i < taxon["parents"].length; i++) {
                 var link = taxon["parents"][i];
                 if (link["relation"]["id"] == HAS_RANK) {
@@ -151,7 +151,7 @@ function italicTaxon(taxon) {
     } else {
         rank_id = taxon["rank"]["id"];
     }
-    return findValue([GENUS_ID, SPECIES_ID], rank_id) != -1;
+    return MochiKit.Base.findValue([GENUS_ID, SPECIES_ID], rank_id) != -1;
 }
 
 var HAS_RANK = "has_rank";

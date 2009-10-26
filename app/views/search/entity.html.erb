@@ -93,14 +93,14 @@ function showSource(anatomyID, taxonID, element) {
 		"visible" : false
 		});
 	sourcePanel.hideEvent.subscribe(destroyPanel, sourcePanel);
-	var sources = filter(function(item) {
+	var sources = MochiKit.Base.filter(function(item) {
 		return ((item["target"]["entity"]["id"] == anatomyID) && (item["target"]["taxon"]["id"] == taxonID));
 	}, homologies);
 	if (sources.length == 0) {
 		// this should never happen
 		return;
 	}
-	var chunks = map(function(item) {
+	var chunks = MochiKit.Base.map(function(item) {
 		var subject = item["subject"];
 		var target = item["target"];
 		var source = item["source"];
@@ -112,24 +112,24 @@ function showSource(anatomyID, taxonID, element) {
 		if (italicTaxon(target["taxon"])) {
 			targetTaxonClass = "italic-taxon";
 		}
-		var subjectP = SPAN(null, subject["entity"]["name"] + " in ", SPAN({"class": subjectTaxonClass}, subject["taxon"]["name"]));
-		var homologous_toP = SPAN(null, SPAN({"class":"relation-name"}, "homologous to"));
-		var targetP = SPAN(null, target["entity"]["name"] + " in ", SPAN({"class": targetTaxonClass}, target["taxon"]["name"]));
-		var statementP = P({"class": "homology-statement"}, subjectP, BR(null), homologous_toP, BR(null), targetP);
-		var evidenceP = P(null, "Evidence: " + source["evidence"]["name"]);
-		var citationP = P(null, "Citation: " + source["publication"]);
-		var chunk = DIV({"class": "homology-item"}, statementP, evidenceP, citationP);
+		var subjectP = MochiKit.DOM.SPAN(null, subject["entity"]["name"] + " in ", MochiKit.DOM.SPAN({"class": subjectTaxonClass}, subject["taxon"]["name"]));
+		var homologous_toP = MochiKit.DOM.SPAN(null, MochiKit.DOM.SPAN({"class":"relation-name"}, "homologous to"));
+		var targetP = MochiKit.DOM.SPAN(null, target["entity"]["name"] + " in ", MochiKit.DOM.SPAN({"class": targetTaxonClass}, target["taxon"]["name"]));
+		var statementP = MochiKit.DOM.P({"class": "homology-statement"}, subjectP, MochiKit.DOM.BR(null), homologous_toP, MochiKit.DOM.BR(null), targetP);
+		var evidenceP = MochiKit.DOM.P(null, "Evidence: " + source["evidence"]["name"]);
+		var citationP = MochiKit.DOM.P(null, "Citation: " + source["publication"]);
+		var chunk = MochiKit.DOM.DIV({"class": "homology-item"}, statementP, evidenceP, citationP);
 		return chunk;
 	}, sources);
 	
-	sourcePanel.setBody(DIV(null, chunks));
+	sourcePanel.setBody(MochiKit.DOM.DIV(null, chunks));
 	sourcePanel.setHeader("Source Data");
 	sourcePanel.render(document.body);
 	sourcePanel.show();
 }
 
 function destroyPanel(type, args, obj) {
-	logDebug("Destroy");
+	MochiKit.Logging.logDebug("Destroy");
 	if (deferred) { deferred.cancel(); }
 	obj.destroy();
 }
