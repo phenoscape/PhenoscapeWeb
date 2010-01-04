@@ -18,7 +18,13 @@
 		</div>
 		<% end %>
 		<div>
-			<span class="term-info-field-label">Synonyms:</span> <span><%= textOrNone((@term_info["synonyms"].collect {|item| item["name"]}).sort.join(", ")) %></span>
+			<span class="term-info-field-label">Synonyms:</span> <span>
+				<% names = @term_info["synonyms"].collect {|item| item["name"]} %>
+				<% if italicize_taxon?(@term_info) %>
+					<% names = names.collect {|item| "<i>" + item + "</i>"} %>
+				<% end %>
+				<%= textOrNone(names.sort.join(", ")) %>
+			</span>
 		</div>
 		<div>
 			<% isa_parents = @term_info["parents"].find_all {|item| item["relation"]["id"] == isa} %>
