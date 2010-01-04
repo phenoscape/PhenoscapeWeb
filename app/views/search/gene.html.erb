@@ -15,13 +15,13 @@
 	</div>
 </div>
 <div id="main">
-	<h3>Phenotypes</h3>
+	<h3>Zebrafish Phenotypes</h3>
 	<% if @summary["characters"].empty? %>
 	<p>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</p>
 	<% else %>
 	<table class="annotations sortable" id="datatable">
 		<tr>
-			<th>Anatomy</th><th>Quality</th><th>Zebrafish Genes</th><th>Taxa</th>
+			<th>Anatomy</th><th>Quality</th><th>Other Genes</th><th>Taxa</th>
 		</tr>
 		<% for character in @summary["characters"] %>
 		<tr>
