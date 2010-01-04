@@ -1,4 +1,4 @@
-<h2>anatomical term: <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h2>
+<h2>entity term: <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h2>
 <div id="sidebar">
 	<div id="term_info">
 		<h4 class="term-info-header">Properties</h4>
@@ -49,7 +49,7 @@
 	<% else %>
 	<table class="annotations sortable" id="datatable">
 		<tr>
-			<th>Anatomy</th><th>Quality</th><th>Zebrafish Genes</th><th>Taxa</th>
+			<th>Entity</th><th>Quality</th><th>Zebrafish Genes</th><th>Taxa</th>
 		</tr>
 		<% for character in @summary["characters"] %>
 		<tr>
