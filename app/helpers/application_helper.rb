@@ -20,6 +20,14 @@ module ApplicationHelper
     return [@@GENUS_ID, @@SPECIES_ID].include?(rank_id)
   end
   
+  def extinct_taxon?(taxon)
+    if taxon.has_key?("extinct")
+      return taxon["extinct"]
+    else
+      return false
+    end
+  end
+  
   def taxon_rank(taxon)
     if taxon.has_key?("rank")
       return taxon["rank"]
@@ -37,14 +45,28 @@ module ApplicationHelper
     logger.debug("Taxon: " + term.to_s)
     id = term["id"]
     name = term["name"]
-    clazz = italicize_taxon?(term) ? 'class="italic-taxon"' : ""
+    classes = []
+    if italicize_taxon?(term)
+      classes.push("italic-taxon")
+    end
+    if extinct_taxon?(term)
+      classes.push("extinct-taxon")
+    end
+    clazz = classes.empty? ? "" : 'class="' + classes.join(" ") + '"'
     return %Q'<a #{clazz} href="/search/taxon/#{id}" title="#{id}">#{name}</a>'
   end
   
   def taxon_name(term)
     id = term["id"]
     name = term["name"]
-    clazz = italicize_taxon?(term) ? 'class="italic-taxon"' : ""
+    classes = []
+    if italicize_taxon?(term)
+      classes.push("italic-taxon")
+    end
+    if extinct_taxon?(term)
+      classes.push("extinct-taxon")
+    end
+    clazz = classes.empty? ? "" : 'class="' + classes.join(" ") + '"'
     return %Q'<span #{clazz} title="#{id}">#{name}</span>'
   end
   
