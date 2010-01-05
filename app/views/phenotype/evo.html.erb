@@ -177,7 +177,7 @@ function fillInSource(panel, content) {
 		}
 		characterLabel += ":";
 		var characterTable = MochiKit.DOM.TABLE(null, MochiKit.DOM.TR(null, MochiKit.DOM.TD({"class": "label"}, characterLabel), MochiKit.DOM.TD(null, item["character_text"])));
-		if (item["character_comment"].length > 0) {
+		if (!MochiKit.Base.isUndefinedOrNull(item["character_comment"]) && (item["character_comment"].length > 0)) {
 			var character_comment = MochiKit.DOM.P({"style":"display: none;", "class":"character_comment"}, item["character_comment"]);
 			var character_revealer = MochiKit.DOM.A({"href":"#"}, "View comment");
 			var character_revealerBlock = MochiKit.DOM.P(null, character_revealer);
@@ -190,7 +190,7 @@ function fillInSource(panel, content) {
 			MochiKit.DOM.appendChildNodes(characterTable, character_commentRow);
 		}
 		MochiKit.DOM.appendChildNodes(characterTable, MochiKit.DOM.TR(null, MochiKit.DOM.TD({"class": "label"}, "state:"), MochiKit.DOM.TD(null, item["state_text"])));
-		if (item["state_comment"].length > 0) {
+		if (!MochiKit.Base.isUndefinedOrNull(item["state_comment"]) && (item["state_comment"].length > 0)) {
 			var state_comment = MochiKit.DOM.P({"style":"display: none;", "class":"character_comment"}, item["state_comment"]);
 			var state_revealer = MochiKit.DOM.A({"href":"#"}, "View comment");
 			var state_revealerBlock = MochiKit.DOM.P(null, state_revealer);
@@ -203,7 +203,7 @@ function fillInSource(panel, content) {
 			MochiKit.DOM.appendChildNodes(characterTable, state_commentRow);
 		}
 		return MochiKit.DOM.DIV({"class": "citation-item"}, citation, characterTable);
-	}, content["sources"]);	
+	}, content["sources"]);
 	MochiKit.DOM.replaceChildNodes(panel.body, statement, sources);
 }
 
