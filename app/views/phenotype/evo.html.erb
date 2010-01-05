@@ -169,7 +169,8 @@ function fillInSource(panel, content) {
 	var quality = MochiKit.DOM.SPAN(null, content["phenotype"]["quality"]["name"]);	
 	var statement = MochiKit.DOM.P({"class": "phenotype-statement-source"}, entity, " ", quality, " in ", taxon);
 	var sources = MochiKit.Base.map(function(item) {
-		var citation = MochiKit.DOM.P(null, item["publication"]);
+		var citation = MochiKit.DOM.P(null);
+		citation.innerHTML = item["publication"]; //using innerHTML here to make use of HTML formatting in publication titles
 		var number = item["character_number"];
 		var characterLabel = "character";
 		if ((number != null) && (number != "")) {
