@@ -129,11 +129,11 @@ function ts_resortTable(lnk, clid) {
 	}
 	newRows.sort(sortfn);
 	if (span.getAttribute("sortdir") == 'down') {
-			ARROW = ' &uarr;';
+			ARROW = '&nbsp;&uarr;';
 			newRows.reverse();
 			span.setAttribute('sortdir','up');
 	} else {
-			ARROW = ' &darr;';
+			ARROW = '&nbsp;&darr;';
 			span.setAttribute('sortdir','down');
 	} 
     // We appendChild rows that already exist to the tbody, so it moves them rather than creating new ones
