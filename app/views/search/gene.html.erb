@@ -36,14 +36,14 @@
 			</td>
 			<td>
 				<% if character["genes"]["count"] > 0 %>
-					<a href="/phenotype/devo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"><%=h character["genes"]["count"] %>
+					<a href="/phenotype/devo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"><%=h character["genes"]["count"] %></a>
 				<% else %>
 					0
 				<% end %>
 			</td>
 			<td>
 				<% if character["taxa"]["count"] > 0 %>
-					<a href="/phenotype/evo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"> <%=h character["taxa"]["count"] %>
+					<a href="/phenotype/evo/<%=h character["entity"]["id"]%>/<%=h character["character_quality"]["id"]%>/"> <%=h character["taxa"]["count"] %></a>
 				<% else %>
 					0
 				<% end %>
