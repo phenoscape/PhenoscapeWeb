@@ -48,9 +48,9 @@ function ts_makeSortable(t) {
 	// We have a first row: assume it's the header, and make its contents clickable links
 	for (var i=0;i<firstRow.cells.length;i++) {
 		var cell = firstRow.cells[i];
-		var txt = ts_getInnerText(cell);
+		//var txt = ts_getInnerText(cell); // instead of using text, should just use innerHTML to allow internal formatting --Jim
 		if (cell.className != "unsortable" && cell.className.indexOf("unsortable") == -1) {
-			cell.innerHTML = '<a href="#" class="sortheader" onclick="ts_resortTable(this, '+i+');return false;">'+txt+'<span class="sortarrow">&nbsp;&nbsp;<img src="'+ image_path + image_none + '" alt="&darr;"/></span></a>';
+			cell.innerHTML = '<a href="#" class="sortheader" onclick="ts_resortTable(this, '+i+');return false;">'+cell.innerHTML+'<span class="sortarrow">&nbsp;&nbsp;</span></a>';
 		}
 	}
 	if (alternate_row_colors) {

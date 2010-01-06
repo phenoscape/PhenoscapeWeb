@@ -41,7 +41,7 @@
 <div id="main">
 	<% if @summary["characters"].empty? %>
 
-	<p>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</p>
+	<p>No phenotypes were found involving <%= taxon_name(@term_info) %>.</p>
 
 	<% else %>
 
