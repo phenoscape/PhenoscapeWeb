@@ -92,6 +92,12 @@ module ApplicationHelper
     return (@@object_relation_mappings.has_key? id) ? @@object_relation_mappings[id] : default
   end
   
+  def postcomposition?(term_info)
+    # this is not a reliable means to determine if post-composition
+    #TODO should replace with flag in term info data
+    return term_info["id"].include?("^")
+  end
+  
   def empty?(text)
     return (text == nil or text == "")
   end
@@ -148,7 +154,7 @@ module ApplicationHelper
   def ontology(term)
     id = term["id"]
     ontology = case
-    when id.index("^") != nil: "None"
+    when id.index("^") != nil: ""
     when id.index("TAO") == 0: "Teleost Anatomy"
     when id.index("TTO") == 0: "Teleost Taxonomy"
     when id.index("PATO") == 0: "Quality"

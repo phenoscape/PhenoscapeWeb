@@ -3,10 +3,15 @@
 	<div id="term_info">
 		<h4 class="term-info-header">Properties</h4>
 		<div>
-			<span class="term-info-field-label">ID:</span> <span><%= @term_info["id"] %></span>
+			<span class="term-info-field-label">ID:</span><span> </span>
+			<% if postcomposition?(@term_info)%>
+				<span><i>post-composition (<a href="/about/postcompositions/">about</a>)</i></span>
+			<% else %>
+				<span><%= @term_info["id"] %></span>
+			<% end %>
 		</div>
 		<div>
-			<span class="term-info-field-label">Ontology:</span> <span><%= ontology(@term_info) %></span>
+			<span class="term-info-field-label">Ontology:</span> <span><%= textOrNone(ontology(@term_info)) %></span>
 		</div>
 		<div>
 			<span class="term-info-field-label">Synonyms:</span> <span><%= textOrNone((@term_info["synonyms"].collect {|item| item["name"]}).sort.join(", ")) %></span>
@@ -36,10 +41,12 @@
 			<span class="term-info-field-label relation_name">possible homologs:</span> <span><%= list_more(format_homologies(@homology), 0) %></span>
 		</div>
 		<% end %>
+		<%  if not postcomposition?(@term_info) %>
 		<h4 class="term-info-header">More information</h4>
 		<div>
 			<a href="<%= bioportal_tao_url(@term_info) %>" target="_blank">View at NCBO Bioportal</a>
 		</div>
+		<% end %>
 	</div>
 </div>
 <div id="main">

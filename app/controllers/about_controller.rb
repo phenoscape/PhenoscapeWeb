@@ -20,4 +20,8 @@ class AboutController < ApplicationController
     @title = "Ontology Relationship Info"
   end
   
+  def postcompositions
+    @title = "Post-compositions"
+  end
+  
 end
