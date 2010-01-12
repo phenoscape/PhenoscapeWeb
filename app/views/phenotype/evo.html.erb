@@ -121,7 +121,7 @@ function createListItemForPhenotype(phenotypeData) {
 	var quality = phenotypeData.quality;
 	var count = phenotypeData.count;
 	var entityName = MochiKit.DOM.A({href: URL.entity(entity["id"]), title: entity["id"]}, entity["name"]);
-	var qualityName = MochiKit.DOM.A({href: URL.quality(quality["id"]), title: quality["id"], "target": "_blank"}, quality["name"]);
+	var qualityName = MochiKit.DOM.SPAN({title: quality["id"]}, quality["name"]);
 	var container = MochiKit.DOM.SPAN(null, entityName, " ", qualityName);
 	if ((count != null) && (count != "")) {
 		MochiKit.DOM.appendChildNodes(container, ", " + count);
