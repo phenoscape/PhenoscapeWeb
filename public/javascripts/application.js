@@ -154,6 +154,15 @@ function italicTaxon(taxon) {
     return MochiKit.Base.findValue([GENUS_ID, SPECIES_ID], rank_id) != -1;
 }
 
+//takes a taxon structure or term info structure and determines if the taxon should be marked as extinct
+function extinctTaxon(taxon) {
+	if (MochiKit.Base.isUndefinedOrNull(taxon["extinct"])) {
+		return false;
+	} else {
+		return taxon["extinct"];
+	}
+}
+
 var HAS_RANK = "has_rank";
 var SPECIES_ID = "TTO:species";
 var GENUS_ID = "TTO:genus";

@@ -85,9 +85,12 @@ function createNodeForTaxon(taxonData, parentNode) {
 			return entity;
 		}
 	});
-	var clazz = null;
+	var clazz = "";
 	if (italicTaxon(taxonData)) {
 		clazz = "italic-taxon"
+	}
+	if (extinctTaxon(taxonData)) {
+		clazz += " extinct-taxon";
 	}
 	var taxonName = MochiKit.DOM.A({href: URL.taxon(taxonData["id"]), title: taxonData["id"], "class": clazz}, taxonData["name"]);
 	var phenotypesContainer = MochiKit.DOM.SPAN({"class": "phenotype-block"});
@@ -163,6 +166,9 @@ function fillInSource(panel, content) {
 	var taxonClass = "";
 	if (italicTaxon(content["phenotype"]["subject"])) {
 		taxonClass = "italic-taxon";
+	}
+	if (extinctTaxon(content["phenotype"]["subject"])) {
+		taxonClass += " extinct-taxon";
 	}
 	var taxon = MochiKit.DOM.SPAN({"class": taxonClass}, content["phenotype"]["subject"]["name"]);
 	var entity = MochiKit.DOM.SPAN(null, content["phenotype"]["entity"]["name"]);
