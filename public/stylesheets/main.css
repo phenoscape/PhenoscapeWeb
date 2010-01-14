@@ -27,6 +27,7 @@ tr.odd {background-color: #ccc;}
 
 .search-instructions {margin-top: 0; font-size: 80%; font-style: italic;}
 #upperTermChoiceGroup {float: right; width: 33em; margin-right: 0; text-align: right; font-family: Helvetica, sans-serif;}
+#upperSearchExamples {width: 33em; float: right; font-size: 75%; font-style: italic;}
 #upperTermChoice {width: 17em;}
 #sidebar {float: left; width: 30%;}
 #main {margin-left: 3px; margin-right: 3px;}
