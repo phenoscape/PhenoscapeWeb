@@ -15,10 +15,11 @@
 	</div>
 </div>
 <div id="main">
-	<h3>Zebrafish Phenotypes: <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h3>
 	<% if @summary["characters"].empty? %>
 	<p>No phenotypes were found involving <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</p>
 	<% else %>
+	<h3>Zebrafish Phenotypes: <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h3>
+	<p>This table lists phenotypes, categorized by entity and type of quality, which are exhibited by <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span>.</p>
 	<table class="annotations sortable" id="datatable">
 		<tr>
 			<th>Entity</th><th>Quality</th><th>All Zebrafish Genes Affecting Phenotype</th><th>Taxa</th>

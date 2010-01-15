@@ -45,7 +45,8 @@
 
 	<% else %>
 
-	<h3>Phenotypes</h3>
+	<h3>Phenotypes: <span class="term-name" title="<%=h @term_info["id"] %>"><%=h @term_info["name"] %></span></h3>
+	<p>This table lists phenotypes, categorized by entity and type of quality, which are exhibited by <%= taxon_name(@term_info) %> or its member taxa.</p>
 	<table class="annotations sortable" id="datatable">
 		<tr>
 			<th id="click-me">Entity</th><th>Quality</th><th>Zebrafish Genes</th><th>Taxa within <%= taxon_name(@term_info) %></th>
