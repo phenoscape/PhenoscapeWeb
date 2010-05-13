@@ -174,7 +174,11 @@ var OBDWS = HOST + "/OBD-WS";
 var BIOPORTAL = "http://bioportal.bioontology.org/virtual"
 
 var URL = {
-    
+
+    term : function(termID) {
+		return OBDWS + "/term/" + termID;
+	},
+
     homology : function(termID) {
         return OBDWS + "/term/" + termID + "/homology";
     },
