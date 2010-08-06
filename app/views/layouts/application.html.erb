@@ -20,6 +20,20 @@
 	<!-- Combo-handled YUI JS files: --> 
 	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.7.0/build/utilities/utilities.js&amp;2.7.0/build/datasource/datasource-min.js&amp;2.7.0/build/autocomplete/autocomplete-min.js&amp;2.7.0/build/button/button-min.js&amp;2.7.0/build/container/container-min.js&amp;2.7.0/build/datatable/datatable-min.js&amp;2.7.0/build/json/json-min.js&amp;2.7.0/build/selector/selector-min.js&amp;2.7.0/build/stylesheet/stylesheet-min.js&amp;2.7.0/build/treeview/treeview-min.js"></script>
 	<%= feedback_includes %>
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-12026969-1']);
+	  _gaq.push(['_setDomainName', '.phenoscape.org']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
 </head>
 <body class="yui-skin-sam">
 <h1><a href="/"><img class="top_logo" src="/images/phenoscape_beta.png" alt="Phenoscape logo"></a><span>The Phenoscape Knowledgebase is currently in BETA testing - we would greatly value your feedback as we continue its development.</span></h1>
