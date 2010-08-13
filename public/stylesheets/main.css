@@ -1,13 +1,13 @@
-/*
-td {padding-left: 0.5em;}
-td.or {text-align: center;}
-tr.odd {background-color: #6c9;}
-table.annotations {border: 2px solid #033; width: 100%;}
-table.annotations th {font-size: 125%; color: white; background-color: #033; text-decoration: none;}
-table.annotations th a {color: white; background-color: #033; text-decoration: none;}
+div#sidebar {float: right; width: 15em;}
+div#main {padding-right: 15em;}
+div#main #termFormContent {max-width: 50em;}
+div#main #termFormContent .search-instructions {width: 80%;}
+.navigation-group {width: 40%; display: inline-block; vertical-align: top; margin-right: 3em;}
+.navigation-group h3 {background-color: #74c4ab; color: #0a3a34;}
+.navigation-group ul {margin: 0; padding: 0;}
+.navigation-group li {list-style-type: none; list-style-image: none;}
 
-.sortarrow img {border: none;}
-*/
+
 img {border: none;}
 h1 {margin-bottom: 0; color: rgb(159, 0, 2); font-size: 12pt;}
 h1 img {float: left;}
@@ -36,7 +36,7 @@ tr.odd {background-color: #ccc;}
 #footer p {padding-left: 0.35em; padding-right: 0.35em;}
 #footer a {color: inherit;}
 
-#wiki-advertisement {float: right; width: 10em; margin: 0.5em; border: 2px solid #0a3a34; background-color: #74c4ab; padding: 0.25em;}
+.sidebar-box {margin: 0.5em; border: 2px solid #0a3a34; background-color: #74c4ab; padding: 0.25em;}
 
 h2 {font-size: 250%;}
 
@@ -50,9 +50,9 @@ div#term_info div {margin-bottom: 0.25em;}
 #termComplete {max-height: 400px;}
 .yui-skin-sam .yui-ac-content ul {max-height: 400px; overflow: scroll;}
 .yui-ac-ft {color: red;}
-#termForm {width: 40em; margin-left: auto; margin-right: auto;}
-#termChoice {width: 75%;}
-#termComplete {width: 75%;}
+#termForm { }
+#termChoice {width: 80%;}
+#termComplete {width: 80%;}
 
 .tag-cloud {font-size: 8pt; }
 .tag-cloud a {display: block; float: left; margin: -0.1em 0.25em -0.1em 0.25em; text-decoration: none;}
@@ -69,8 +69,7 @@ span.entity-tag {color: #127e3f;}
 span.taxon-tag {color: #0f4081;}
 span.gene-tag {color: #7f7f00;}
 
-#search-forms {width: 80%; margin-left: auto; margin-right: auto;}
-#search-forms h2 {}
+
 #search-buttons {text-align: center;}
 #search-buttons input {margin-left: 2em; margin-right: 2em;}
 
