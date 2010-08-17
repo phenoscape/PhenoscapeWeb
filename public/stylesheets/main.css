@@ -6,6 +6,10 @@ div#main #termFormContent .search-instructions {width: 80%;}
 .navigation-group h3 {background-color: #74c4ab; color: #0a3a34;}
 .navigation-group ul {margin: 0; padding: 0;}
 .navigation-group li {list-style-type: none; list-style-image: none;}
+.gfc-tabsArea {display: none;}
+.gfc-resultsHeader {display: none;}
+#feed {font-size: 75%; margin: 1em;}
+#feedHeader {margin: 1em;}
 
 
 img {border: none;}

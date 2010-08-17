@@ -2,6 +2,10 @@
 	<div class="sidebar-box">
 		<p>For further information about the Phenoscape project and project partners, please see our <a href="https://www.phenoscape.org/wiki/Main_Page">project wiki</a>.</p>
 	</div>
+	<h3 id="feedHeader">Phenoscape News</h3>
+	<div id="feed">
+	    <a class="feed" href="http://blog.phenoscape.org/feed/">Phenoscape News</a> 
+	</div>
 	<div class="sidebar-box">
 		<p>The Knowledgebase currently contains <span class="count">333,987</span> phenotype statements about <span class="count">2310</span> taxa, sourced from <span class="count">51</span> <a href="/about/bibliography/">publications</a>. as well as <span class="count">11,267</span> phenotype statements about <span class="count">2953</span> genes, retrieved from <a href="http://zfin.org">ZFIN</a>.  The data were last loaded into the Knowledgebase on <span class="timestamp"><%=h @timestamp %></span>.</p>
 	</div>
@@ -9,7 +13,7 @@
 <div id="main">
 	<div id="search-forms">
 		<div id="term_search">
-			<h3 class="field_label">Search the Phenoscape Knowledgebase</h3>			
+			<h3 class="field_label">Search the Phenoscape Knowledgebase</h3>
 			<form id="termForm" action="" onsubmit="submitTerm(); return false;">
 				<div id="termFormContent">
 					<div id="termChoiceGroup">
@@ -42,12 +46,25 @@
 		</ul>
 	</div>
 </div>
+<!-- include Google Feed API --> 
+<!-- <script type="text/javascript" src="http://www.google.com/jsapi?key=[your API key]"></script>  -->
+<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
+ 
+<!-- include this plugin --> 
+<script type="text/javascript" src="/javascripts/jquery.gfeed.js"></script> 
+ 
+<script type="text/javascript"> 
+    // when the DOM is ready, convert the feed anchors into feed content 
+    jQuery(document).ready(function() { 
+        jQuery('a.feed').gFeed( { target: '#feed', tabs: true } ); 
+    }); 
+</script>
 <script type="text/javascript">
 
 	MochiKit.DOM.hideElement("upperTermForm");
 
 	var selectedTerm = {"id":null, "name":null};
-	var termAC = initAutocomplete($("termChoice"), $("termComplete"), [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO]);
+	var termAC = initAutocomplete(YAHOO.util.Dom.get("termChoice"), YAHOO.util.Dom.get("termComplete"), [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO]);
 	
 	function selectItem(storage, event, item) {
 		var data = item[2];
@@ -58,8 +75,8 @@
 	
 	function submitTerm() {
 		var href = null;
-		if ((selectedTerm.id == null) || ($("termChoice").value != selectedTerm.name)) {
-			href = URL.generalTerm($("termChoice").value);
+		if ((selectedTerm.id == null) || (YAHOO.util.Dom.get("termChoice").value != selectedTerm.name)) {
+			href = URL.generalTerm(YAHOO.util.Dom.get("termChoice").value);
 		} else if (selectedTerm.id.indexOf(ONTOLOGY.TAO) == 0) {
 			href = URL.entity(selectedTerm.id);
 		} else if (selectedTerm.id.indexOf(ONTOLOGY.TTO) == 0) {
