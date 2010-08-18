@@ -9,7 +9,7 @@ module FeedbacksHelper
     
     options['position'] = "'#{options['position']}'" unless options['position'].blank? || options['position'] == 'null'
     content_tag 'script', :type => "text/javascript" do
-      "$(document).ready(function() { $('.feedback_link').feedback({tabPosition: #{options["position"]}}); });"
+      "jQuery(document).ready(function() { jQuery('.feedback_link').feedback({tabPosition: #{options["position"]}}); });"
     end  
     
   end
