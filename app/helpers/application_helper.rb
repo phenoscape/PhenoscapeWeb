@@ -166,4 +166,50 @@ module ApplicationHelper
   end
   
   
+  def sort_column(link_text, sort_field, shared_locals={})
+    render :partial => "/shared/sort_column", :locals => {:link_text => link_text, :sort_by => sort_field}.merge(shared_locals)
+  end
+  
+  
+  def link_to_source_popup(annotation)
+    url_hash = {:controller => :annotation_sources, :action => :popup}
+    url_hash[:node_type] = annotation['gene'] ? 'gene' : 'taxon'
+    url_hash[:node_id] = annotation[url_hash[:node_type]]['id']
+    ['entity', 'quality', 'related_entity'].each{|field| url_hash["#{field}_id"] = annotation[field]['id'] if annotation[field] }
+    url_hash[:include_inferred] = (params[:filter] && params[:filter][:include_inferred])
+    url_hash[:publications] = params[:filter][:publications] if params[:filter]
+    return link_to_remote(image_tag('page_text.gif', :alt => 'Source data'), :url => url_hash)
+  end
+  
+  
+  def link_submit_to(text, url_options={}, options={})
+    options[:function] ||= 'link_to_function'
+    options[:method] ||= 'get'
+    options[:form_name] ||= 'complex_query_form'
+    action = url_options.is_a?(String) ? url_options : url_for(url_options)
+    
+    js =  "document.#{options[:form_name]}.action = '#{action}';"
+    js += "document.#{options[:form_name]}.method = '#{options[:method]}';"
+    js += "document.#{options[:form_name]}.submit();"
+    
+    send(options[:function], text, js)
+  end
+  
+  
+  def button_submit_to(text, type, options={})
+    link_submit_to(text, type, options.merge({:function => 'button_to_function'}))
+  end
+  
+  
+  def filter_term_name(id)
+    return @filter_term_names[id.to_s]['name'] if @filter_term_names[id.to_s]
+    return ''
+  end
+  
+  
+  def filter_operator(index, section_name)
+    operator = (params[:filter] && params[:filter]["#{section_name}_match_type"] == 'all') ? 'and' : 'or'
+    return (index.to_i > 0 ? "<div class='#{section_name} filter_operator'>#{operator}</div>" : '')
+  end
+  
 end
