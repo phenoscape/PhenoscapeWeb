@@ -1,0 +1,52 @@
+#root-menu-div ul {
+  border: 3px solid #115A50;
+}
+#root-menu-div li{
+  white-space:nowrap;
+}
+* html #root-menu-div li{
+  height: 1.5em; /* fixing ie6 problem */
+}
+ul.menu, #root-menu-div ul {
+  background-color: #fff;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+li.menu-separator.active{
+  background-color: transparent;
+}
+li.active {
+  background-color: #115A50;
+  color: white;
+}
+.activetarget{
+  background-color: white;
+}
+
+* html div.menu-item {
+  display: inline; /* fixes problem in ie6 */
+}
+
+li.menumain {
+  float: left;
+  padding: 0 10px;
+}
+div.menu-item {
+  padding: 5px 0px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 80%;
+}
+img.menu-item-arrow{
+  position: absolute;
+  right: 4px;
+  top: 8px;
+}
+li.menu-separator{
+  border-bottom: 3px solid #115A50;
+  font-size: 0; /* for ie */
+  height: 0;
+  line-height: 0; /* for ie */
+  margin: 0;
+}

@@ -1,3 +1,4 @@
+body {font-family: Helvetica, sans-serif;}
 div#sidebar {float: right; width: 15em;}
 div#main {padding-right: 15em;}
 div#main #termFormContent {max-width: 50em;}
@@ -15,18 +16,30 @@ div#main #termFormContent .search-instructions {width: 80%;}
 img {border: none;}
 h1 {margin-bottom: 0; color: rgb(159, 0, 2); font-size: 12pt;}
 h1 img {float: left;}
+h2 {font-size: 250%;}
 body h2 {font-size: 165%;}
-.top_logo {height: 100px;}
-#navbar {background-color: #74c4ab; text-align: right; color: #0a3a34; clear: both;}
-#navbar a {color: inherit; margin: 0.5em; text-decoration: none; font-weight: bold;}
-#navbar a:hover {color: white; background-color: #0a3a34;}
+a {text-decoration: none; color: #3C57A7;}
+a:hover {text-decoration: underline;}
+th {background-color: #74c4ab; border: none; color: #0a3a34;}
+th a {color: #0a3a34;}
+td {border: none;}
+
+
 .count {color: #0a3a34;}
 .clear {clear: both;}
-body {font-family: Helvetica, sans-serif;}
-th {background-color: #74c4ab; border: none; color: #0a3a34;}
-th a {color: inherit;}
-td {border: none;}
-tr.odd {background-color: #ccc;}
+.right {float: right;}
+.left {float: left;}
+.center {text-align: center;}
+.info {color: gray;font-size: 70%;}
+
+
+th.no_color {background-color: #fff;}
+tr.odd {background-color: #EBECEE;}
+
+#navbar {background-color: #74c4ab; text-align: right; color: #0a3a34; clear: both;}
+#navbar a {color: #0a3a34; margin: 0.5em; text-decoration: none; font-weight: bold;}
+#navbar a:hover {color: white; background-color: #0a3a34;}
+.top_logo {height: 100px;}
 .relation-name {font-style: italic;}
 
 .search-instructions {margin-top: 0; font-size: 80%; font-style: italic;}
@@ -35,28 +48,33 @@ tr.odd {background-color: #ccc;}
 #upperTermChoice {width: 17em;}
 #sidebar {float: left; width: 30%;}
 #main {margin-left: 3px; margin-right: 3px;}
+#search_sidebar {float: left; width: 30%; margin-top: 10px;}
+#search_main {margin-top: 10px; margin-left: 30%;}
 #footer {clear: both; margin-top: 1em; padding-top: 2em; font-size: 75%;}
 #footer > div {color: #0a3a34; border-top: 5px solid #74c4ab;}
 #footer p {padding-left: 0.35em; padding-right: 0.35em;}
 #footer a {color: inherit;}
 
-.sidebar-box {margin: 0.5em; border: 2px solid #0a3a34; background-color: #74c4ab; padding: 0.25em;}
+#wiki-advertisement {float: right; width: 10em; margin: 0.5em; border: 2px solid #0a3a34; background-color: #74c4ab; padding: 0.25em;}
 
-h2 {font-size: 250%;}
-
-div#term_info {border: 4px solid #74c4ab; margin-left: 3px; padding: 3px; margin-right: 1em;}
+div#term_info {border: 3px solid #115A50; margin-left: 3px; margin-right: 1em;}
+div#term_info .section {padding: 5px 10px 5px 5px;}
+div#term_info .section.top_border {border-top: 3px solid #115A50;}
 div#term_info div {margin-bottom: 0.25em;}
 .term-info-header {background-color: #74c4ab; color: #0a3a34;}
+div#term_info .header {font-weight: bold;font-size:120%;margin-bottom: 10px; padding: 5px;}
 .term-info-field-label {font-weight: bold; color: #0a3a34;;}
+#term_info .green_heading {color: #115A50; font-weight: bold; font-size: 17px; letter-spacing: -1px;}
+
 
 .yui-skin-sam .yui-ac-input { position: static; width: 100%;}
 .yui-skin-sam .yui-ac-container {max-height: 400px;}
 #termComplete {max-height: 400px;}
 .yui-skin-sam .yui-ac-content ul {max-height: 400px; overflow: scroll;}
 .yui-ac-ft {color: red;}
-#termForm { }
-#termChoice {width: 80%;}
-#termComplete {width: 80%;}
+#termForm {width: 40em; margin-left: auto; margin-right: auto;}
+#termChoice {width: 75%;}
+#termComplete {width: 75%;}
 
 .tag-cloud {font-size: 8pt; }
 .tag-cloud a {display: block; float: left; margin: -0.1em 0.25em -0.1em 0.25em; text-decoration: none;}
@@ -73,7 +91,8 @@ span.entity-tag {color: #127e3f;}
 span.taxon-tag {color: #0f4081;}
 span.gene-tag {color: #7f7f00;}
 
-
+#search-forms {width: 80%; margin-left: auto; margin-right: auto;}
+#search-forms h2 {}
 #search-buttons {text-align: center;}
 #search-buttons input {margin-left: 2em; margin-right: 2em;}
 
@@ -99,3 +118,46 @@ div.tree-row {text-indent: -3em; margin-left: 3em;}
 .homology-statement {font-weight: bold;}
 .phenotype-statement-source {background-color: #9ed9c1; padding: 0.2em; font-weight: bold;}
 .citation-item td.label {text-align: right;}
+
+
+.filter_operator {color: #6B6868; font-weight: bold;}
+.any_or_all {font-size: 90%; font-weight: normal;}
+.any_or_all input {vertical-align: top;}
+#search_sidebar img {vertical-align: top;}
+
+table.search_results {width: 100%;}
+table.search_results td, table.search_results th {text-align: center; padding: 6px 0px; font-size: 90%;}
+table.search_results .less_padding th, table.search_results tr.less_padding td { padding: 2px 0px;}
+
+.pagination {margin: 20px 0px 20px 0px; padding: 5px;}
+.pagination div {float: left; width: 33%;}
+.pagination div.results {text-align: center;}
+.pagination div.next {text-align: right;}
+
+.sort_column img {vertical-align: middle;}
+.sort_column a {text-decoration: none;}
+.sort_column a:hover {color: white;}
+.sort_column:hover {background-color:#249B90;}
+
+#phenotype_filter .including_parts {margin-left: 20px;}
+#phenotype_filter .including_parts input {vertical-align: middle;}
+#phenotype_filter .broaden_refine_link {font-size: 70%;}
+
+table.popup_table th {background-color: white; color: black; text-align: right; font-weight: normal;}
+
+.download_links {margin: 20px 0px 0px 10px; font-size: 90%;}
+.download_links ul {margin: 0px; padding: 0px;}
+.download_links li {margin: 2px 0px 2px 20px; padding: 0px;}
+
+#annotation_source_popup .header {background-color: #74c4ab; margin-bottom: 15px;}
+#annotation_source_popup .header .section {border-right: 1px solid white; float: left; padding: 10px 15px;}
+#annotation_source_popup .source {padding: 15px 0px;}
+#annotation_source_popup .source.dotted_border {border-top: 2px dotted black;}
+#annotation_source_popup .subheader {background-color: #74c4ab; margin: 0px 20px 10px 20px; font-size: 80%;}
+#annotation_source_popup .subheader .section {border-right: 1px solid white; float: left; padding: 4px 5px;}
+#annotation_source_popup .source .character_state {margin-top: 5px;}
+#annotation_source_popup .source .character_state th {background-color: white;font-weight: normal; text-align: left;}
+
+#related_query_links {margin: 15px 0px 0px 15px;}
+#related_query_links ul {margin: 0px 0px 0px 10px; padding: 0px;}
+#related_query_links li {margin: 2px 0px 2px 20px; padding: 0px;}

@@ -1,35 +1,125 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
-// FIXME function documentation for what this does and how is missing
-function initAutocomplete(input, div, ontologyPrefixes) {
-	var dataSource = new YAHOO.util.XHRDataSource(URL.autocomplete());
-	dataSource.responseSchema = { resultsList:"matches", fields:[{key:"match_text"}, {key:"id"}, {key:"match_type"}] };
-	dataSource.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
-	var autocomplete = new YAHOO.widget.AutoComplete(input, div, dataSource);
-    autocomplete.generateRequest = function(query) {
-        return "?text=" + query + "&ontology=" + ontologyPrefixes.join(",") + "&syn=true" + "&limit=101";
-    };
-    autocomplete.maxResultsDisplayed = 100;
-    autocomplete.queryDelay = 0.2;
-    autocomplete.minQueryLength = 4;
-    autocomplete.forceSelection = false;
-    autocomplete.formatResult = function(resultData , query , resultMatch) {
-        var matchType = resultData[2];
-        return resultMatch + ((matchType != "name") ? " <span class=\"match_type\">" + matchType + "</span>" : "");
+
+// initializes an autocomplete text field using jquery
+function initAutocomplete(input_id, ontologyPrefixes, query_type, min_chars, width){
+  if(!query_type){query_type='';}
+  if(!min_chars){min_chars=4;}
+  if(!width){width=400;}
+  
+  var ac = jQuery("#"+input_id).autocomplete(OBDWS + "/term/search", {
+    width: width,
+    selectFirst: false,
+    minChars: min_chars,
+    dataType: 'json',
+    max: 100,
+    delay: 20,
+    extraParams: {
+      q: '',
+      ontology: ontologyPrefixes,
+      text: function(){ return jQuery("#"+input_id).val(); },
+      syn: 'true',
+      limit: '101',
+      type: query_type
+    },
+    formatItem: function(item) {
+      return item.name + ((item.match_type != "name") ? " <span class=\"match_type\">" + item.match_type + "</span>" : "");
+    },
+    parse: function(data){
+      var parsed = [];
+      data = data.matches;
+      for (var i = 0; i < data.length; i++) {
+        parsed[parsed.length] = {
+          data: data[i],
+          value: data[i].name,
+          result: data[i].name
+        };
+      }
+      return parsed;
     }
-    autocomplete.dataReturnEvent.subscribe(function(theEvent, data) {
-        var autocompleteObject = data[0];
-        var queryText = data[1];
-        var results = data[2];
-        if (results.length > autocomplete.maxResultsDisplayed) {
-            autocomplete.setFooter("results truncated at " + autocomplete.maxResultsDisplayed + " matches");
-        } else {
-            autocomplete.setFooter(null);
-        }
-    });
-    return autocomplete;
+  });
+  return ac;
 }
+
+
+function setNextIndex(index_id, input_starts_with){
+  var inputs = jQuery("input[name*=" + input_starts_with + "]");
+  var max_index = -1;
+  inputs.each(function(i, el) {
+    //example: filter_phenotype_1_entity
+    element_id = parseInt(el.id.split("_")[2]);
+    if (element_id > max_index){ max_index = element_id; }
+  });
+  jQuery("#" + index_id).val(max_index + 1);
+}
+
+
+function clearInputs(inputs){
+  var inputs = jQuery.isArray(inputs) ? inputs : [inputs]
+  for(var x=0; x < inputs.length; x++){ 
+    jQuery(inputs[x]).attr('value','');
+  }
+}
+
+
+function buildBroadenRefineMenu(link, terms, element_index){
+  var options = {minWidth: 120, onClick: function(e, menuItem){  
+    //setup data with existing phenotype
+    var data = {replace_phenotype_index: element_index}
+    jQuery.each(['entity', 'quality', 'related_entity'], function(index, phenotype_component){
+      if(terms[phenotype_component]){
+        data[phenotype_component+"_id"] = terms[phenotype_component];
+      }
+    });
+    //overwrite phenotype with new term
+    data[menuItem.data.term_type+"_id"] = menuItem.data.id;
+    jQuery.ajax({url: '/search/phenotype_filter', data: data});
+  }};
+  
+  var items = [];
+  index = 0;
+  jQuery.each(terms, function(term_type, term_id){
+    if(term_id != ''){
+      if(index > 0){ items.push({src: ''}); } //add seperator line
+      var section = {src: term_type, subMenu: [{src: 'broaden'}, {src: ''}, {src: 'refine'}]};
+      jQuery.ajax({url: OBDWS + "/term/" + term_id, dataType: 'json', async: false,
+        success: function(data){
+          if(data.parents.length > 0){ section['subMenu'][0]['subMenu'] = []; }
+          jQuery.each(data.parents, function(i,item){
+            if(i > 0){ section['subMenu'][0]['subMenu'].push({src: ''}); } //add seperator line
+            //item.target.id
+            section['subMenu'][0]['subMenu'].push({src: item.target.name, data: {id: item.target.id, term_type: term_type}});
+          });
+          if(data.children.length > 0){ section['subMenu'][2]['subMenu'] = []; }
+          jQuery.each(data.children, function(i,item){
+            if(i > 0){ section['subMenu'][2]['subMenu'].push({src: ''}); } //add seperator line
+            //item.target.id
+            section['subMenu'][2]['subMenu'].push({src: item.target.name, data: {id: item.target.id, term_type: term_type}});
+          });
+        } 
+      });
+      items.push(section);
+    }
+    index++;
+  });
+  
+  jQuery('#broaden_refine_menu').menu(options, items);
+  link_element = jQuery('#'+link.id);
+  var pos = link_element.offset();  
+  var width = link_element.width();
+  jQuery('#broaden_refine_menu').css( { "left": (pos.left + width) + "px", "top":pos.top + "px" } );
+  jQuery('#broaden_refine_menu').click();
+}
+
+
+function changeSectionFilterOperators(filter_section) {
+  radio_btn = jQuery('#filter_' + filter_section + '_match_type_any');
+  content = (radio_btn.is(':checked')) ? 'or' : 'and';
+  jQuery('.' + filter_section + '.filter_operator').html(content);
+}
+
+
 
 function getParameters() {
     // get the current URL
@@ -79,9 +169,7 @@ var SPECIES_ID = "TTO:species";
 var GENUS_ID = "TTO:genus";
 
 var HOST = "http://" + window.location.hostname;
-
 var OBDWS = HOST + "/OBD-WS";
-
 var BIOPORTAL = "http://bioportal.bioontology.org/virtual"
 
 var URL = {
