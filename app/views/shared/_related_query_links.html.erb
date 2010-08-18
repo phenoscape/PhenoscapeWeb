@@ -1,0 +1,24 @@
+<div id='related_query_links'>
+  Related query for:
+  <ul>
+    <% unless controller.controller_name == 'taxon_annotations' %>
+      <li><%= link_submit_to 'taxon phenotype annotations', '/taxon_annotations' %></li>
+    <% end %>
+    
+    <% unless controller.controller_name == 'gene_annotations' %>
+      <li><%= link_submit_to 'gene phenotype annotations', '/gene_annotations' %></li>
+    <% end %>
+    
+    <% unless controller.controller_name == 'taxa' %>
+      <li><%= link_submit_to 'taxa', '/taxa' %></li>
+    <% end %>
+    
+    <% unless controller.controller_name == 'genes' %>
+      <li><%= link_submit_to 'genes', '/genes' %></li>
+    <% end %>
+    
+    <% unless controller.controller_name == 'publications' %>
+      <li><%= link_submit_to 'comparative publications', '/publications' %></li>
+    <% end %>
+  </ul>
+</div>

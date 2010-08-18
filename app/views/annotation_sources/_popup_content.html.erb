@@ -1,0 +1,47 @@
+<div class='annotation_source_popup_content'>
+  <div class='header'>
+    <div class='section'>
+      <%=h filter_term_name(params[:node_id]) %>
+    </div>
+    <% [:entity, :quality, :related_entity].each do |field| %>
+      <% unless phenotype[field].blank? %>
+        <div class='section'>
+          <%=h filter_term_name(phenotype[field]) %>
+        </div>
+      <% end %>
+    <% end %>
+    <div class='clear'></div>
+  </div>
+  
+  <% annotation_sources['annotations'].each_with_index do |annotation_source, index| %>
+    <% if annotation_source['publication'] %>
+      <div class="source <%= 'dotted_border' if index > 0 %>">
+        <%=h annotation_source['publication']['name'] %>
+        
+        <% if annotation_source['character'] %>
+          <table class='character_state'>
+            <tr>
+              <th>character <%=h annotation_source['character']['character_number'] %>:</th>
+              <td><%=h annotation_source['character']['text'] %></td>
+            </tr>
+            <tr>
+              <th>state:</th>
+              <td><%=h annotation_source['state']['text'] %></td>
+            </tr>
+          </table>
+        <% end %>
+        <% if params[:include_inferred] == 'true' %>
+          <div class='subheader'>
+            <div class='section'><%=h annotation_source[params[:node_type]]['name'] %></div>
+            <% [:entity, :quality, :related_entity].each do |field| %>
+              <% if annotation_source[field.to_s] %>
+                <div class='section'><%=h annotation_source[field.to_s]['name'] %></div>
+              <% end %>
+            <% end %>
+            <div class='clear'></div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

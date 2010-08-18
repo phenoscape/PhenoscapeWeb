@@ -1,0 +1,44 @@
+<div id="publication_filter_container" title="Choose Publication">
+  <% form_remote_tag :url => {:controller => :search, :action => :publication_filter}, :html => {:id => 'publication_filter_form', 
+       :onsubmit => "setNextIndex('next_publication_index', 'filter\\[publications\\]');"} do %>
+    <%= hidden_field_tag :next_publication_index %>
+    
+    <label for="name">Publication:</label>
+    <%= text_field_tag :publication_name, '', :id => 'publicationChoice' %>
+    <%= hidden_field_tag :publication_id %>
+    
+    <%= submit_tag "Select Publication", :style => 'display:none', :id => 'publication_submit_button' %>
+  <% end %>
+</div>
+
+<% content_for :javascript do %>
+  <script type='text/javascript'>
+    jQuery(function(){
+      var dlg = jQuery("#publication_filter_container").dialog({
+        autoOpen: false,
+        height: 200,
+        width: 500,
+        modal: true,
+        buttons: {
+          'Select Publication': function() {
+            jQuery('#publication_submit_button').click();
+            jQuery(this).dialog('close');
+          },
+          Cancel: function() {
+            jQuery(this).dialog('close');
+          }
+        },
+        close: function() {}
+      });
+    });
+  </script>
+<% end %>
+
+<% content_for :footer_javascript do %>
+  <script type="text/javascript">
+    var ac = initAutocomplete("publicationChoice", [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO], 'pub', 2);
+    ac.result(function(event, data, formatted) {
+      if(data){ jQuery("#publication_id").attr('value', data.id); }
+    });
+  </script>
+<% end %>

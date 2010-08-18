@@ -1,0 +1,45 @@
+<div id="term_filter_container" title="Choose <%= label %>">
+  <% form_remote_tag :url => {:controller => :search, :action => :term_filter}, :html => {:id => 'term_filter_form', 
+       :onsubmit => "setNextIndex('next_term_index', 'filter\\[#{field_name}\\]');"} do %>
+    <%= hidden_field_tag :next_term_index %>
+    
+    <label for="name"><%= label %>:</label>
+    <%= text_field_tag :term_name, '', :id => 'popupTermChoice' %>
+    <%= hidden_field_tag :term_id %>
+    <%= hidden_field_tag :field_name, field_name %>
+    
+    <%= submit_tag "Select #{label}", :style => 'display:none', :id => 'term_submit_button' %>
+  <% end %>
+</div>
+
+<% content_for :javascript do %>
+  <script type='text/javascript'>
+    jQuery(function(){
+      var dlg = jQuery("#term_filter_container").dialog({
+        autoOpen: false,
+        height: 200,
+        width: 500,
+        modal: true,
+        buttons: {
+          'Select <%= label %>': function() {
+            jQuery('#term_submit_button').click();
+            jQuery(this).dialog('close');
+          },
+          Cancel: function() {
+            jQuery(this).dialog('close');
+          }
+        },
+        close: function() {}
+      });
+    });
+  </script>
+<% end %>
+
+<% content_for :footer_javascript do %>
+  <script type="text/javascript">
+    var ac = initAutocomplete("popupTermChoice", [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO], '<%= label.downcase %>', 2);
+    ac.result(function(event, data, formatted) {
+      if(data){ jQuery("#term_id").attr('value', data.id); }
+    });
+  </script>
+<% end %>

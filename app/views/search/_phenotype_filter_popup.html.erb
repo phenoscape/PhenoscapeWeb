@@ -1,0 +1,64 @@
+<div id="phenotype_filter_container" title="Choose Phenotype">
+  <% form_remote_tag :url => {:controller => :search, :action => :phenotype_filter}, :html => {:id => 'phenotype_filter_form', 
+       :onsubmit => "setNextIndex('next_phenotype_index','filter\\[phenotypes\\]');"} do %>
+    <%= hidden_field_tag :next_phenotype_index %>
+    <table class='popup_table'>
+      <tr>
+        <th><label for="entity">Entity:</label></th>
+        <td><%= text_field_tag :entity_name, '', :id => 'entityChoice' %>
+            <%= hidden_field_tag :entity_id %></td>
+      </tr><tr>
+        <th><label for="quality">Quality:</label></th>
+        <td><%= text_field_tag :quality_name, '', :id => 'qualityChoice' %>
+            <%= hidden_field_tag :quality_id %></td>
+      </tr><tr>
+        <th><label for="related_entity">Related Entity:</label></th>
+        <td><%= text_field_tag :related_entity_name, '', :id => 'relatedEntityChoice' %>
+            <%= hidden_field_tag :related_entity_id %></td>
+      </tr>
+    </table>
+    <%= submit_tag "Select Phenotype", :style => 'display:none', :id => 'phenotype_submit_button' %>
+  <% end %>
+</div>
+<% content_for :javascript do %>
+  <script type='text/javascript'>
+    jQuery(function(){
+      var dlg = jQuery("#phenotype_filter_container").dialog({
+        autoOpen: false,
+        height: 250,
+        width: 400,
+        modal: true,
+        buttons: {
+          'Select Phenotype': function() {
+            jQuery('#phenotype_submit_button').click();
+            jQuery(this).dialog('close');
+          },
+          Cancel: function() {
+            jQuery(this).dialog('close');
+          }
+        },
+        close: function() {}
+      });
+    });
+  </script>
+<% end %>
+
+<% content_for :footer_javascript do %>
+  <script type="text/javascript">
+    //Entity Autocomplete
+    var entity_ac = initAutocomplete("entityChoice", [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO], 'entity', 2);
+    entity_ac.result(function(event, data, formatted) {
+      if(data){ jQuery("#entity_id").attr('value', data.id); }
+    });
+    //Quality Autocomplete
+    var quality_ac = initAutocomplete("qualityChoice", [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO], 'quality', 2);
+    quality_ac.result(function(event, data, formatted) {
+      if(data){ jQuery("#quality_id").attr('value', data.id); }
+    });
+    //Related Entity Autocomplete
+    var related_entity_ac = initAutocomplete("relatedEntityChoice", [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO], 'entity', 2);
+    related_entity_ac.result(function(event, data, formatted) {
+      if(data){ jQuery("#related_entity_id").attr('value', data.id); }
+    });
+  </script>
+<% end %>

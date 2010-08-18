@@ -1,0 +1,24 @@
+<% unless phenotype.blank? %>
+  <div class="phenotype" id="phenotype_filter_item_<%= index %>">
+    <%= filter_operator(index, 'phenotypes') %>
+    
+    <% component_used = false %>
+    <% [:entity, :quality, :related_entity].each do |phenotype_component| %>
+      <% if phenotype[phenotype_component] %>
+        <%= '&bull;' if component_used %> <% component_used = true %>
+        <%= hidden_field_tag "filter[phenotypes][#{index}][#{phenotype_component}]", phenotype[phenotype_component] %>
+        <%=h filter_term_name(phenotype[phenotype_component]) %>
+      <% end %>
+    <% end %>
+    
+    <%= link_to_function '[broaden/refine]', "buildBroadenRefineMenu(this, #{phenotype.to_json}, #{index})", 
+          :class => 'broaden_refine_link', :id => "broaden_refine_link_#{index}" %>
+    
+    <%= link_to_function image_tag("remove.png"), "$(this).up('.phenotype').remove()" %><br/>
+    
+    <div class='including_parts'>
+      <%= check_box_tag "filter[phenotypes][#{index}][including_parts]", true, phenotype[:including_parts] %>
+      <span class='info'>including parts</span>
+    </div>
+  </div>
+<% end %>

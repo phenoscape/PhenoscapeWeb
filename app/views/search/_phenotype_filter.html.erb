@@ -1,0 +1,10 @@
+<% if phenotypes.blank? %>
+  <strong>Any</strong>
+<% else %>
+  <% count = 0 %> 
+  <% phenotypes.each do |index, phenotype| %>
+    <%= render :partial => 'search/phenotype_filter_item', :locals => {:phenotype => phenotype, :index => count} %>
+    <% count += 1 %>
+  <% end %>
+<% end %>
+<div id='broaden_refine_menu' style='position: absolute;'></div>

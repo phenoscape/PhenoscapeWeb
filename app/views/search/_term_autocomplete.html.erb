@@ -1,0 +1,17 @@
+<% width = defined?(width) && !width.blank? ? width : '400' %>
+<input type="text" id="termChoice" style='width: <%= width %>px'>
+<%= hidden_field_tag :ac_term_id %>
+<%= hidden_field_tag :ac_term_source %>
+
+<% content_for :footer_javascript do %>
+  <script type="text/javascript">
+    var ac = initAutocomplete("termChoice", [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO], '', 4, <%= width %>);
+    ac.result(function(event, data, formatted) {
+      if(data){ 
+        jQuery("#ac_term_id").attr('value', data.id); 
+        jQuery("#ac_term_source").attr('value', data.source);
+      }
+    });
+    
+  </script>
+<% end %>

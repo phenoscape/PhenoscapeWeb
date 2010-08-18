@@ -1,0 +1,15 @@
+<div id="annotation_source_popup" title='Source Data'>
+</div>
+
+<% content_for :javascript do %>
+  <script type='text/javascript'>
+    jQuery(function(){
+      var dlg = jQuery("#annotation_source_popup").dialog({
+        autoOpen: false,
+        height: 500,
+        width: 700,
+        modal: true
+      });
+    });
+  </script>
+<% end %>

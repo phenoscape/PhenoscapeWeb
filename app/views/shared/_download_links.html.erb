@@ -1,0 +1,9 @@
+<% if total > 0 %>
+  <div class='download_links'>
+    Download all <%= pluralize(total, 'result') %> as:
+    <ul>
+      <li><%= link_to 'tab-delimited text', :action => :download, :media => 'text', :filter => params[:filter] %></li>
+      <li><%= link_to 'JSON', :action => :download, :media => 'json', :filter => params[:filter] %></li>
+    </ul>
+  </div>
+<% end %>

@@ -1,0 +1,10 @@
+<% if terms.blank? %>
+  <strong>Any</strong>
+<% else %>
+  <% count = 0 %> 
+  <% terms.each do |index, term_id| %>
+    <%= render :partial => 'search/term_filter_item', :locals => {:term_id => term_id, :index => count, 
+          :field_name => field_name} %>
+    <% count += 1 %>
+  <% end %>
+<% end %>

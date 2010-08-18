@@ -1,0 +1,28 @@
+<div class='pagination'>
+  <div class='previous'>
+    <% filter = params[:filter].clone
+       filter[:index] = filter[:index].to_i - filter[:limit].to_i %>
+    <% if filter[:index].to_i >= 0 %>
+      <%= link_to "&laquo; Previous", :controller => controller_name, :action => action_name, :filter => filter %>
+    <% else %>
+      &laquo; Previous
+    <% end %>
+  </div>
+  
+  <div class='results'>
+    Results <%= total == 0 ? 0 : params[:filter][:index].to_i + 1 %> - 
+    <%= total == 0 ? 0 : params[:filter][:index].to_i + collection.length %> of <%= total %> 
+  </div>
+  
+  <div class='next'>
+    <% filter = params[:filter].clone
+       filter[:index] = filter[:index].to_i + filter[:limit].to_i %>
+    <% if filter[:index].to_i < total %>
+      <%= link_to "Next &raquo;", :controller => controller_name, :action => action_name, :filter => filter %>
+    <% else %>
+      Next &raquo;
+    <% end %>
+  </div>
+  
+  <div class='clear'></div>
+</div>

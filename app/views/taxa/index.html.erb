@@ -1,0 +1,80 @@
+<div id="search_sidebar">
+  <% form_tag '', :method => :get, :name => 'complex_query_form' do %>
+    <div id="term_info">
+      <div class='header'>Complex query for:<br /> taxa</div>
+        
+      <!-- Taxon Filter -->
+      <div class='section'>
+        <div class='right'><%= button_to_function 'Add', "clearInputs(['#popupTermChoice','#term_id']);jQuery('#term_filter_container').dialog('open');" %></div>
+        <div class='green_heading'>Taxon is:</div>
+        <div id='term_filter'>
+          <%= render :partial => '/search/term_filter', :locals => {:terms => params[:filter][:taxa], :field_name => "taxa"} %>
+        </div>
+      </div>
+      
+      <div class='filter_operator section'>and</div>
+      
+      <!-- Phenotype Filter -->
+      <div class='section'>
+        <div class='right'><%= button_to_function 'Add', "clearInputs(['#entityChoice','#entity_id','#qualityChoice'," +
+          "'#quality_id','#relatedEntityChoice','#related_entity_id']);jQuery('#phenotype_filter_container').dialog('open');" %></div>
+        <div class='green_heading'>Phenotype is
+          <%= render :partial => 'shared/any_or_all', :locals => {:section => 'phenotypes'} %>:</div>
+        <div id='phenotype_filter'>
+          <%= render :partial => '/search/phenotype_filter', :locals => {:phenotypes => params[:filter][:phenotypes]} %>
+        </div>
+      </div>
+      
+      <div class='filter_operator section'>and</div>
+      
+      <!-- Publication Filter -->
+      <div class='section'>
+        <div class='right'><%= button_to_function 'Add', "clearInputs(['#publicationChoice','#publication_id']);jQuery('#publication_filter_container').dialog('open');" %></div>
+        <div class='green_heading'>Publication is
+          <%= render :partial => 'shared/any_or_all', :locals => {:section => 'publications'} %>:</div>
+        <div id='publication_filter'>
+          <%= render :partial => '/search/publication_filter', :locals => {:publications => params[:filter][:publications]} %>
+        </div>
+      </div><br />
+      
+      <div class='section top_border'>
+        <%= check_box_tag 'filter[include_inferred]', true, params[:filter][:include_inferred] %>
+        <span class='green_heading'>Include inferred annotations</span>
+      </div>
+      <div class='section top_border center'>
+        <%= submit_tag 'Apply Filter' %>
+      </div>
+    
+    </div>
+    <%= render :partial => 'shared/related_query_links' %>
+  <% end %>
+</div>
+
+<%= render :partial => 'search/term_filter_popup', :locals => {:label => "Taxon", :field_name => 'taxa'} %>
+<%= render :partial => 'search/phenotype_filter_popup' %>
+<%= render :partial => 'search/publication_filter_popup' %>
+
+<div id="search_main">
+  
+  <%= render :partial => 'shared/pagination', :locals => {:collection => @taxa['taxa'], :total => @taxa['total']} %>
+  
+  <table class="search_results sortable">
+    <tr>
+      <% shared_locals = {:controller => "taxa", :action => "index"} %>
+      <%= sort_column 'Order', 'order', shared_locals %>
+      <%= sort_column 'Family', 'entity', shared_locals %>
+      <%= sort_column 'Taxon', 'taxon', shared_locals %>
+    </tr>
+    <% for taxon in @taxa['taxa'] %>
+      <tr class="<%= cycle('odd','even') %>">
+        <td><%=h taxon['order']['name'] if taxon['order'] %></td>
+        <td><%=h taxon['family']['name'] if taxon['family'] %></td>
+        <td><%=h taxon['name'] %></td>
+      </tr>
+    <% end %>
+  </table>
+  
+  <%= render :partial => 'shared/download_links', :locals => {:total => @taxa['total']} %>
+</div>
+
+<div class='clear'></div>
