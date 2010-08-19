@@ -32,7 +32,7 @@
   <table class="search_results sortable">
     <tr>
       <% shared_locals = {:controller => "genes", :action => "index"} %>
-      <%= sort_column 'Gene Symbol', 'name', shared_locals %>
+      <%= sort_column 'Gene Symbol', 'gene', shared_locals %>
       <%= sort_column 'Gene Name', 'fullname', shared_locals %>
     </tr>
     <% for gene in @genes['genes'] %>
