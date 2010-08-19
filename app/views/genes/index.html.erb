@@ -9,7 +9,7 @@
           "'#quality_id','#relatedEntityChoice','#related_entity_id']);jQuery('#phenotype_filter_container').dialog('open');" %></div>
         <div class='green_heading'>Phenotype is
           <%= render :partial => 'shared/any_or_all', :locals => {:section => 'phenotypes'} %>:</div>
-        <div id='phenotype_filter'>
+        <div id='phenotype_filter' class='section_indent'>
           <%= render :partial => '/search/phenotype_filter', :locals => {:phenotypes => params[:filter][:phenotypes]} %>
         </div>
       </div>

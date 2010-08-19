@@ -124,6 +124,7 @@ div.tree-row {text-indent: -3em; margin-left: 3em;}
 .any_or_all {font-size: 90%; font-weight: normal;}
 .any_or_all input {vertical-align: top;}
 #search_sidebar img {vertical-align: top;}
+.section_indent {margin-left: 15px;}
 
 table.search_results {width: 100%;}
 table.search_results td, table.search_results th {text-align: center; padding: 6px 0px; font-size: 90%;}

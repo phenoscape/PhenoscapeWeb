@@ -7,7 +7,7 @@
       <div class='section'>
         <div class='right'><%= button_to_function 'Add', "clearInputs(['#popupTermChoice','#term_id']);jQuery('#term_filter_container').dialog('open');" %></div>
         <div class='green_heading'>Taxon is:</div>
-        <div id='term_filter'>
+        <div id='term_filter' class='section_indent'>
           <%= render :partial => '/search/term_filter', :locals => {:terms => params[:filter][:taxa], :field_name => "taxa"} %>
         </div>
       </div>
@@ -19,7 +19,7 @@
         <div class='right'><%= button_to_function 'Add', "clearInputs(['#entityChoice','#entity_id','#qualityChoice'," +
           "'#quality_id','#relatedEntityChoice','#related_entity_id']);jQuery('#phenotype_filter_container').dialog('open');" %></div>
         <div class='green_heading'>Phenotype is:</div>
-        <div id='phenotype_filter'>
+        <div id='phenotype_filter' class='section_indent'>
           <%= render :partial => '/search/phenotype_filter', :locals => {:phenotypes => params[:filter][:phenotypes]} %>
         </div>
       </div>
@@ -30,7 +30,7 @@
       <div class='section'>
         <div class='right'><%= button_to_function 'Add', "clearInputs(['#publicationChoice','#publication_id']);jQuery('#publication_filter_container').dialog('open');" %></div>
         <div class='green_heading'>Publication is:</div>
-        <div id='publication_filter'>
+        <div id='publication_filter' class='section_indent'>
           <%= render :partial => '/search/publication_filter', :locals => {:publications => params[:filter][:publications]} %>
         </div>
       </div><br />

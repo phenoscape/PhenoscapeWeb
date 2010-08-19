@@ -7,7 +7,7 @@
       <div class='section'>
         <div class='right'><%= button_to_function 'Add', "clearInputs(['#popupTermChoice','#term_id']);jQuery('#term_filter_container').dialog('open');" %></div>
         <div class='green_heading'>Taxon is:</div>
-        <div id='term_filter'>
+        <div id='term_filter' class='section_indent'>
           <%= render :partial => '/search/term_filter', :locals => {:terms => params[:filter][:taxa], :field_name => "taxa"} %>
         </div>
       </div>
@@ -20,7 +20,7 @@
           "'#quality_id','#relatedEntityChoice','#related_entity_id']);jQuery('#phenotype_filter_container').dialog('open');" %></div>
         <div class='green_heading'>Phenotype is
           <%= render :partial => 'shared/any_or_all', :locals => {:section => 'phenotypes'} %>:</div>
-        <div id='phenotype_filter'>
+        <div id='phenotype_filter' class='section_indent'>
           <%= render :partial => '/search/phenotype_filter', :locals => {:phenotypes => params[:filter][:phenotypes]} %>
         </div>
       </div>
