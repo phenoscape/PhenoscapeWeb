@@ -100,7 +100,7 @@ class ApplicationController < ActionController::Base
     if params[:media] == 'json'
       send_data(model_class.find(q_params, :format => :plain), :filename => "#{filename}.json", :type => :json)
     else #tab-delimited text
-      query_params[:media] = 'txt'
+      q_params[:media] = 'txt'
       send_data(model_class.find(q_params, :format => :plain), :filename => "#{filename}.txt", :type => :text)
     end
   end
