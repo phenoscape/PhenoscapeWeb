@@ -6,7 +6,8 @@
       <!-- Taxon Filter -->
       <div class='section'>
         <div class='right'><%= button_to_function 'Add', "clearInputs(['#popupTermChoice','#term_id']);jQuery('#term_filter_container').dialog('open');" %></div>
-        <div class='green_heading'>Taxon is:</div>
+        <div class='green_heading'>Taxon is
+          <%= render :partial => 'shared/any_or_all', :locals => {:section => 'taxa'} %>:</div>
         <div id='term_filter' class='section_indent'>
           <%= render :partial => '/search/term_filter', :locals => {:terms => params[:filter][:taxa], :field_name => "taxa"} %>
         </div>

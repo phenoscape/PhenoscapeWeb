@@ -1,6 +1,6 @@
 <% unless term_id.blank? %>
   <div class="term">
-    <%= "<div class='filter_operator'>or</div>" if index.to_i > 0 %>
+    <%= filter_operator(index, field_name) %>
     <%= hidden_field_tag "filter[#{field_name}][#{index}]", term_id %>
     <%=h filter_term_name(term_id) %>
     <%= link_to_function image_tag("remove.png"), "$(this).up('.term').remove()" %>
