@@ -17,7 +17,7 @@ class TaxonAnnotationsController < ApplicationController
   
   
     def query_params
-      setup_query_params('taxon', [:taxa, :publications])
+      setup_query_params('taxon', [:taxa, :publications], :inferred => true)
     end
     
 end

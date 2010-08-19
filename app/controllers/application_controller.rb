@@ -67,7 +67,6 @@ class ApplicationController < ActionController::Base
   
   #builds json query specification
   def build_json_query(additional_param_items=[], options={})
-    options[:inferred] = true if options[:inferred]
     options[:any_or_all_sections] ||= []
     
     query = {:phenotype => []}

@@ -17,7 +17,8 @@ class TaxaController < ApplicationController
   
     
     def query_params
-      setup_query_params('order', [:taxa, :publications], :any_or_all_sections => [:phenotypes, :publications])
+      setup_query_params('order', [:taxa, :publications], 
+        :any_or_all_sections => [:phenotypes, :publications], :inferred => true)
     end
 
 end

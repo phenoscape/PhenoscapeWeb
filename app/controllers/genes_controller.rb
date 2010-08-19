@@ -17,7 +17,7 @@ class GenesController < ApplicationController
   
     
     def query_params
-      setup_query_params('gene', [], :any_or_all_sections => [:phenotypes], :inferred => false)
+      setup_query_params('gene', [], :any_or_all_sections => [:phenotypes])
     end
 
 end
