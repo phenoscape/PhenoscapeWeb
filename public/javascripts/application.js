@@ -14,7 +14,7 @@ function initAutocomplete(input_id, ontologyPrefixes, query_type, min_chars, wid
     minChars: min_chars,
     dataType: 'json',
     max: 100,
-    delay: 20,
+    //delay: 20,
     extraParams: {
       q: '',
       ontology: ontologyPrefixes,
@@ -24,7 +24,7 @@ function initAutocomplete(input_id, ontologyPrefixes, query_type, min_chars, wid
       type: query_type
     },
     formatItem: function(item) {
-      return item.name + ((item.match_type != "name") ? " <span class=\"match_type\">" + item.match_type + "</span>" : "");
+      return item.match_text + ((item.match_type != "name") ? " <span class=\"match_type\">synonym for " + item.name + "</span>" : "");
     },
     parse: function(data){
       var parsed = [];
