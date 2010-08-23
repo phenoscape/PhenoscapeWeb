@@ -115,8 +115,10 @@ function buildBroadenRefineMenu(link, terms, element_index){
 
 function changeSectionFilterOperators(filter_section) {
   radio_btn = jQuery('#filter_' + filter_section + '_match_type_any');
-  content = (radio_btn.is(':checked')) ? 'or' : 'and';
-  jQuery('.' + filter_section + '.filter_operator').html(content);
+  if(radio_btn.length > 0){
+    content = (radio_btn.is(':checked')) ? 'or' : 'and';
+    jQuery('.' + filter_section + '.filter_operator').html(content);
+  }
 }
 
 
