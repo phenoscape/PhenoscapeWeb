@@ -62,7 +62,7 @@
     <tr>
       <% shared_locals = {:controller => "taxa", :action => "index"} %>
       <%= sort_column 'Order', 'order', shared_locals %>
-      <%= sort_column 'Family', 'entity', shared_locals %>
+      <%= sort_column 'Family', 'family', shared_locals %>
       <%= sort_column 'Taxon', 'taxon', shared_locals %>
     </tr>
     <% for taxon in @taxa['taxa'] %>
