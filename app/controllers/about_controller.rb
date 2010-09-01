@@ -13,9 +13,6 @@ class AboutController < ApplicationController
     @title = "Bibliography"
   end
   
-  def services
-  end
-  
   def ontology_relationships
     @title = "Ontology Relationship Info"
   end
