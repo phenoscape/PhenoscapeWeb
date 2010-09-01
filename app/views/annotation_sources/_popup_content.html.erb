@@ -28,6 +28,12 @@
               <th>state:</th>
               <td><%=h annotation_source['state']['text'] %></td>
             </tr>
+			<% if annotation_source['otu'] and (annotation_source['otu'] != filter_term_name(params[:node_id])) %>
+			<tr>
+				<th>as taxon:</th>
+				<td><%=h annotation_source['otu'] %></td>
+			</tr>
+			<% end %>
           </table>
         <% end %>
         <% if params[:include_inferred] == 'true' %>
