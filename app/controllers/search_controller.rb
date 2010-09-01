@@ -7,6 +7,7 @@ class SearchController < ApplicationController
   def index
     response = Net::HTTP.get_response(self.request.host, timestamp_path())
     @timestamp = Date.strptime(JSON.parse(response.body)["refresh_date"])
+    @statistics = Statistics.find()
   end
   
   
