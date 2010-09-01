@@ -3,14 +3,15 @@ div#sidebar {float: right; width: 15em;}
 div#main {padding-right: 15em;}
 div#main #termFormContent {max-width: 50em;}
 div#main #termFormContent .search-instructions {width: 80%;}
-.navigation-group {width: 40%; display: inline-block; vertical-align: top; margin-right: 3em;}
+.navigation-group {width: 42%; display: inline-block; vertical-align: top; margin-right: 3em;}
 .navigation-group h3 {background-color: #74c4ab; color: #0a3a34;}
+h3#feedHeader {background-color: #74c4ab; color: #0a3a34; width: 42%;}
 .navigation-group ul {margin: 0; padding: 0;}
 .navigation-group li {list-style-type: none; list-style-image: none;}
 .gfc-tabsArea {display: none;}
 .gfc-resultsHeader {display: none;}
-#feed {font-size: 75%; margin: 1em;}
-#feedHeader {margin: 1em;}
+#feed {font-size: 75%; width: 42%}
+
 
 
 img {border: none;}
@@ -55,7 +56,7 @@ tr.odd {background-color: #EBECEE;}
 #footer p {padding-left: 0.35em; padding-right: 0.35em;}
 #footer a {color: inherit;}
 
-#wiki-advertisement {float: right; width: 10em; margin: 0.5em; border: 2px solid #0a3a34; background-color: #74c4ab; padding: 0.25em;}
+.sidebar-box { background-color: #74c4ab; padding: 0.5em; margin-top: 1em;}
 
 div#term_info {border: 3px solid #115A50; margin-left: 3px; margin-right: 1em;}
 div#term_info .section {padding: 5px 10px 5px 5px;}
@@ -72,7 +73,7 @@ div#term_info .header {font-weight: bold;font-size:120%;margin-bottom: 10px; pad
 #termComplete {max-height: 400px;}
 .yui-skin-sam .yui-ac-content ul {max-height: 400px; overflow: scroll;}
 .yui-ac-ft {color: red;}
-#termForm {width: 40em; margin-left: auto; margin-right: auto;}
+#termForm {margin-left: auto; margin-right: auto;}
 #termChoice {width: 75%;}
 #termComplete {width: 75%;}
 
@@ -91,7 +92,7 @@ span.entity-tag {color: #127e3f;}
 span.taxon-tag {color: #0f4081;}
 span.gene-tag {color: #7f7f00;}
 
-#search-forms {width: 80%; margin-left: auto; margin-right: auto;}
+#search-forms {margin-left: auto; margin-right: auto;}
 #search-forms h2 {}
 #search-buttons {text-align: center;}
 #search-buttons input {margin-left: 2em; margin-right: 2em;}

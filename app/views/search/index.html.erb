@@ -18,10 +18,7 @@
 	<div class="sidebar-box">
 		<p>For further information about the Phenoscape project and project partners, please see our <a href="https://www.phenoscape.org/wiki/Main_Page">project wiki</a>.</p>
 	</div>
-	<h3 id="feedHeader">Phenoscape News</h3>
-	<div id="feed">
-	    <a class="feed" href="http://blog.phenoscape.org/feed/">Phenoscape News</a> 
-	</div>
+	
 	<div class="sidebar-box">
 		<p>The Knowledgebase currently contains <span class="count"><%=h number_with_delimiter(@statistics["taxon_annotations"], ',') %></span> phenotype statements about <span class="count"><%=h number_with_delimiter(@statistics["annotated_taxa"], ',') %></span> taxa, sourced from <span class="count"><%=h number_with_delimiter(@statistics["annotated_publications"], ',') %></span> <a href="/about/bibliography/">publications</a>. as well as <span class="count"><%=h number_with_delimiter(@statistics["gene_annotations"], ',') %></span> phenotype statements about <span class="count"><%=h number_with_delimiter(@statistics["annotated_genes"], ',') %></span> genes, retrieved from <a href="http://zfin.org">ZFIN</a>.  The data were last loaded into the Knowledgebase on <span class="timestamp"><%=h @timestamp %></span>.</p>
 	</div>
@@ -61,5 +58,9 @@
 			<li><%= link_to 'Genes', :controller => :genes %></li>
 			<li><%= link_to 'Publications', :controller => :publications %></li>
 		</ul>
+	</div>
+	<h3 id="feedHeader">Phenoscape News</h3>
+	<div id="feed">
+	    <a class="feed" href="http://blog.phenoscape.org/feed/">Phenoscape News</a> 
 	</div>
 </div>
