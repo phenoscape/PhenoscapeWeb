@@ -10,28 +10,33 @@
   
   <!-- jQuery libraries -->
   <%= javascript_include_tag "jquery-1.4.2.min.js" %>
-<script type="text/javascript">
-$.noConflict();
-</script>
+  <script type="text/javascript">
+    $.noConflict();
+  </script>
   <%= javascript_include_tag "jquery-ui-1.8.2.custom.min.js" %>
   <%= javascript_include_tag "jquery.autocomplete.min.js" %>
   <%= javascript_include_tag "jquery.menu.min.js" %>
+  <%= javascript_include_tag "jquery.simple.tree.js" %>
+  <%= javascript_include_tag "jquery.bt.min.js" %>
+  <%= javascript_include_tag "jquery.scrollTo-min.js" %>
+  <!--[if IE]><%= javascript_include_tag "excanvas.js" %><![endif]-->
   
-<script type="text/javascript">MochiKit = {__export__: false};</script>
-<%= javascript_include_tag "MochiKit" %>
-<%= javascript_include_tag "sortable" %>
-<%= javascript_include_tag "prototype" %>
-<%= javascript_include_tag "application" %>
-
-  <!-- jQuery styles -->
-  <%= stylesheet_link_tag "jquery_themes/jquery-ui-1.8.2.custom.css" %>
+  <script type="text/javascript">MochiKit = {__export__: false};</script>
+  <%= javascript_include_tag "MochiKit" %>
+  <%= javascript_include_tag "sortable" %>
+  <%= javascript_include_tag "prototype" %>
+  <%= javascript_include_tag "application" %>
   
   <%= yield :javascript %>
+  
+  <!-- jQuery styles -->
+  <%= stylesheet_link_tag "jquery_themes/jquery-ui-1.8.2.custom.css" %>
   
   <!-- Stylesheets --> 
 	<%= stylesheet_link_tag "autocomplete" %>
 	<%= stylesheet_link_tag "main" %>
   <%= stylesheet_link_tag "submenu" %>
+  <%= stylesheet_link_tag "simpletree" %>
 	
   <%= feedback_includes %>
   <%= feedback_init %>
@@ -76,7 +81,7 @@ $.noConflict();
 <div id="footer">
 	<div>
 		<p>The Phenoscape project is funded by NSF grant BDI-0641025, and supported by the National Evolutionary Synthesis Center (NESCent), NSF #EF-0423641</p>
-	<div>
+	</div>
 </div>
 </body>
 <%= yield :footer_javascript %>

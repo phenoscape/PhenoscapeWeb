@@ -1,12 +1,12 @@
 <div class='annotation_source_popup_content'>
   <div class='header'>
     <div class='section'>
-      <%=h filter_term_name(params[:node_id]) %>
+      <%= filter_term_page_link(params[:node_id]) %>
     </div>
     <% [:entity, :quality, :related_entity].each do |field| %>
       <% unless phenotype[field].blank? %>
         <div class='section'>
-          <%=h filter_term_name(phenotype[field]) %>
+          <%= filter_term_page_link(phenotype[field]) %>
         </div>
       <% end %>
     <% end %>
@@ -38,10 +38,10 @@
         <% end %>
         <% if params[:include_inferred] == 'true' %>
           <div class='subheader'>
-            <div class='section'><%=h annotation_source[params[:node_type]]['name'] %></div>
+            <div class='section'><%= term_page_link(annotation_source[params[:node_type]]) %></div>
             <% [:entity, :quality, :related_entity].each do |field| %>
               <% if annotation_source[field.to_s] %>
-                <div class='section'><%=h annotation_source[field.to_s]['name'] %></div>
+                <div class='section'><%= term_page_link(annotation_source[field.to_s]) %></div>
               <% end %>
             <% end %>
             <div class='clear'></div>

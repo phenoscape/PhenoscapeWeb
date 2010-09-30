@@ -1,49 +1,51 @@
-<div id="search_sidebar">
-  <% form_tag '', :method => :get, :name => 'complex_query_form' do %>
-    <div id="term_info">
-      <div class='header'>Complex query for:<br /> annotated genes</div>
-        
-      <!-- Phenotype Filter -->
-      <div class='section'>
-        <div class='right'><%= button_to_function 'Add', "clearInputs(['#entityChoice','#entity_id','#qualityChoice'," +
-          "'#quality_id','#relatedEntityChoice','#related_entity_id']);jQuery('#phenotype_filter_container').dialog('open');" %></div>
-        <div class='green_heading'>Phenotype is
-          <%= render :partial => 'shared/any_or_all', :locals => {:section => 'phenotypes'} %>:</div>
-        <div id='phenotype_filter' class='section_indent'>
-          <%= render :partial => '/search/phenotype_filter', :locals => {:phenotypes => params[:filter][:phenotypes]} %>
+<div>
+  <div id="search_sidebar">
+    <% form_tag '', :method => :get, :name => 'complex_query_form' do %>
+      <div id="term_info">
+        <div class='header'>Complex query for:<br /> annotated genes</div>
+          
+        <!-- Phenotype Filter -->
+        <div class='section'>
+          <div class='right'><%= button_to_function 'Add', "clearInputs(['#entityChoice','#entity_id','#qualityChoice'," +
+            "'#quality_id','#relatedEntityChoice','#related_entity_id']);jQuery('#phenotype_filter_container').dialog('open');" %></div>
+          <div class='green_heading'>Phenotype is
+            <%= render :partial => 'shared/any_or_all', :locals => {:section => 'phenotypes'} %>:</div>
+          <div id='phenotype_filter' class='section_indent'>
+            <%= render :partial => '/search/phenotype_filter', :locals => {:phenotypes => params[:filter][:phenotypes], :any_or_all => true} %>
+          </div>
         </div>
-      </div>
+        
+        <div class='section top_border center'>
+          <%= submit_tag 'Apply Filter' %>
+        </div>
       
-      <div class='section top_border center'>
-        <%= submit_tag 'Apply Filter' %>
       </div>
-    
-    </div>
-    <%= render :partial => 'shared/related_query_links' %>
-  <% end %>
-</div>
-
-<%= render :partial => 'search/phenotype_filter_popup' %>
-
-<div id="search_main">
-  
-  <%= render :partial => 'shared/pagination', :locals => {:collection => @genes['genes'], :total => @genes['total']} %>
-  
-  <table class="search_results sortable">
-    <tr>
-      <% shared_locals = {:controller => "genes", :action => "index"} %>
-      <%= sort_column 'Gene Symbol', 'gene', shared_locals %>
-      <%= sort_column 'Gene Name', 'fullname', shared_locals %>
-    </tr>
-    <% for gene in @genes['genes'] %>
-      <tr class="<%= cycle('odd','even') %>">
-        <td><%=h gene['name'] %></td>
-        <td><%=h gene['fullname'] %></td>
-      </tr>
+      <%= render :partial => 'shared/related_query_links' %>
     <% end %>
-  </table>
+  </div>
   
-  <%= render :partial => 'shared/download_links', :locals => {:total => @genes['total']} %>
+  <%= render :partial => 'search/phenotype_filter_popup' %>
+  
+  <div id="search_main">
+    
+    <%= render :partial => 'shared/pagination', :locals => {:collection => @genes['genes'], :total => @genes['total']} %>
+    
+    <table class="search_results sortable">
+      <tr>
+        <% shared_locals = {:controller => "genes", :action => "index"} %>
+        <%= sort_column 'Gene Symbol', 'gene', shared_locals %>
+        <%= sort_column 'Gene Name', 'fullname', shared_locals %>
+      </tr>
+      <% for gene in @genes['genes'] %>
+        <tr class="<%= cycle('odd','even') %>">
+          <td><%= term_link(gene) %></td>
+          <td><%=h gene['fullname'] %></td>
+        </tr>
+      <% end %>
+    </table>
+    
+    <%= render :partial => 'shared/download_links', :locals => {:total => @genes['total']} %>
+  </div>
+  
+  <div class='clear'></div>
 </div>
-
-<div class='clear'></div>
