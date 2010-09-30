@@ -7,7 +7,7 @@ class Request
     if params.is_a?(Hash)
       params[:media] ||= 'json'
       params_str = params.blank? ? '' : params.to_params
-      url += "?" + params_str
+      url += "?" + params_str unless params_str.blank?
     else
       url += "/#{params}" #ex: 'term/1'
     end

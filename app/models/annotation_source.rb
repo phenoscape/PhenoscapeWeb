@@ -12,6 +12,7 @@ class AnnotationSource
   
   def self.find(node_type=:gene, params={}, result_options={})
     node_type = :taxon unless node_type == :gene
+    params[:postcompositions] = 'structure'
     Request.find("annotation/#{node_type}/source", params, result_options)
   end
   
