@@ -2,7 +2,7 @@
   <div class="term">
     <%= filter_operator(index, field_name) %>
     <%= hidden_field_tag "filter[#{field_name}][#{index}]", term_id %>
-    <%=h filter_term_name(term_id) %>
+    <%= filter_term_link(term_id) %>
     <%= link_to_function image_tag("remove.png"), "$(this).up('.term').remove()" %>
   </div>
 <% end %>

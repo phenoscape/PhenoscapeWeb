@@ -1,0 +1,28 @@
+<div id='tree_container'>
+  <ul class="simpleTree">
+    <li class="root">
+      <ul>
+        <%= render :partial => 'term_tree_node', :locals => {:path => Term.path(term['id'])['path'], :active_id => term['id']} %>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<% content_for :footer_javascript do %>
+  <script type="text/javascript">
+    var simpleTreeCollection;
+    jQuery(document).ready(function(){
+      jQuery('#tree_container').scrollTo('.active', 500);
+      
+      simpleTreeCollection = jQuery('.simpleTree').simpleTree({
+        autoclose: false, 
+        drag: false,
+        afterClick:function(node){
+          node_obj = jQuery(node);
+          window.location = '/term/' + node_obj.attr("term_type") + '/' + node_obj.attr("term_id");
+        },
+        animate:true
+      });
+    });
+  </script>
+<% end %>

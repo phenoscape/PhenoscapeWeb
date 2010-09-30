@@ -9,7 +9,7 @@
     ac.result(function(event, data, formatted) {
       if(data){ 
         jQuery("#ac_term_id").attr('value', data.id); 
-        jQuery("#ac_term_source").attr('value', data.source);
+        jQuery("#ac_term_source").attr('value', data.source.id);
       }
     });
     

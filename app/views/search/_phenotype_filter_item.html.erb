@@ -7,7 +7,7 @@
       <% if phenotype[phenotype_component] %>
         <%= '&bull;' if component_used %> <% component_used = true %>
         <%= hidden_field_tag "filter[phenotypes][#{index}][#{phenotype_component}]", phenotype[phenotype_component] %>
-        <%=h filter_term_name(phenotype[phenotype_component]) %>
+        <%= filter_term_link(phenotype[phenotype_component]) %>
       <% end %>
     <% end %>
     

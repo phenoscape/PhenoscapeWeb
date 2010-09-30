@@ -1,0 +1,9 @@
+<div class='section'>
+  <h3>Data in the Knowledgebase</h3>
+  <div class='content'>
+    <% seach_params = search_params_for_term(term_type, term_id) %>
+    <%= link_to 'Taxon phenotype annotations', :controller => :taxon_annotations, :action => :index, :params => seach_params %><br />
+    <%= link_to 'Gene phenotype annotations', :controller => :gene_annotations, :action => :index, :params => seach_params %><br />
+    <%= link_to 'Publications', :controller => :publications, :action => :index, :params => seach_params %>
+  </div>
+</div>

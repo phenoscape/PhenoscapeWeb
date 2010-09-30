@@ -1,0 +1,23 @@
+<div id='term'>
+  <h2 class='header'>quality: <%= display_term(@quality) %></h2>
+  <h4 class='subheader'>source: <%=h @quality['source']['name'] if @quality['source'] %></h4>
+  
+  <%= render :partial => 'term_tree', :locals => {:term => @quality} %>
+  
+  <div id='info_container'>
+    <div class='section'>
+      <h3>Properties</h3>
+      <div class='content'>
+        <strong>Synonyms:</strong> <%= @quality['synonyms'].any? ? comma_separated_list(@quality['synonyms'].map{|syn| h(syn['name'])}.sort) : '<i>none</i>' %><br />
+        <strong>Definition:</strong> <%= !@quality['definition'].blank? ? h(@quality['definition']) : '<i>none</i>' %><br />
+        <strong>ID:</strong> <%=h @quality['id'] %>
+      </div>
+    </div>
+    
+    <%= render :partial => 'relationships', :locals => {:term => @quality} %>
+    
+    <%= render :partial => 'data_in_the_knowledgebase', :locals => {:term_type => :quality, :term_id => @quality['id']} %>
+    
+  </div>
+  <div class='clear'></div>
+</div>

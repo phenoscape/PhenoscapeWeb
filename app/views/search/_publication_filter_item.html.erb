@@ -2,7 +2,7 @@
   <div class="publication">
     <%= filter_operator(index, 'publications') %>
     <%= hidden_field_tag "filter[publications][#{index}]", publication_id %>
-    <%=h filter_term_name(publication_id) %>
+    <%= filter_term_link(publication_id) %>
     <%= link_to_function image_tag("remove.png"), "$(this).up('.publication').remove()" %>
   </div>
 <% end %>

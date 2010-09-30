@@ -1,7 +1,9 @@
 <% if terms.blank? %>
   <strong>Any</strong>
 <% else %>
-  <% count = 0 %> 
+  <% count = 0
+     #unset match type if not activated for this section; could be set coming from a related query page but not used.
+     params[:filter]["#{field_name}_match_type"] = nil if !defined?(any_or_all) || !any_or_all %> 
   <% terms.each do |index, term_id| %>
     <%= render :partial => 'search/term_filter_item', :locals => {:term_id => term_id, :index => count, 
           :field_name => field_name} %>

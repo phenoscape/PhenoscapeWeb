@@ -1,87 +1,89 @@
-<div id="search_sidebar">
-  <% form_tag '', :method => :get, :name => 'complex_query_form' do %>
-    <div id="term_info">
-      <div class='header'>Complex query for:<br /> taxon phenotype annotations</div>
+<div>
+  <div id="search_sidebar">
+    <% form_tag '', :method => :get, :name => 'complex_query_form' do %>
+      <div id="term_info">
+        <div class='header'>Complex query for:<br /> taxon phenotype annotations</div>
+          
+        <!-- Taxon Filter -->
+        <div class='section'>
+          <div class='right'><%= button_to_function 'Add', "clearInputs(['#popupTermChoice','#term_id']);jQuery('#term_filter_container').dialog('open');" %></div>
+          <div class='green_heading'>Taxon is:</div>
+          <div id='term_filter' class='section_indent'>
+            <%= render :partial => '/search/term_filter', :locals => {:terms => params[:filter][:taxa], :field_name => "taxa"} %>
+          </div>
+        </div>
         
-      <!-- Taxon Filter -->
-      <div class='section'>
-        <div class='right'><%= button_to_function 'Add', "clearInputs(['#popupTermChoice','#term_id']);jQuery('#term_filter_container').dialog('open');" %></div>
-        <div class='green_heading'>Taxon is:</div>
-        <div id='term_filter' class='section_indent'>
-          <%= render :partial => '/search/term_filter', :locals => {:terms => params[:filter][:taxa], :field_name => "taxa"} %>
+        <div class='filter_operator section'>and</div>
+        
+        <!-- Phenotype Filter -->
+        <div class='section'>
+          <div class='right'><%= button_to_function 'Add', "clearInputs(['#entityChoice','#entity_id','#qualityChoice'," +
+            "'#quality_id','#relatedEntityChoice','#related_entity_id']);jQuery('#phenotype_filter_container').dialog('open');" %></div>
+          <div class='green_heading'>Phenotype is:</div>
+          <div id='phenotype_filter' class='section_indent'>
+            <%= render :partial => '/search/phenotype_filter', :locals => {:phenotypes => params[:filter][:phenotypes]} %>
+          </div>
         </div>
-      </div>
-      
-      <div class='filter_operator section'>and</div>
-      
-      <!-- Phenotype Filter -->
-      <div class='section'>
-        <div class='right'><%= button_to_function 'Add', "clearInputs(['#entityChoice','#entity_id','#qualityChoice'," +
-          "'#quality_id','#relatedEntityChoice','#related_entity_id']);jQuery('#phenotype_filter_container').dialog('open');" %></div>
-        <div class='green_heading'>Phenotype is:</div>
-        <div id='phenotype_filter' class='section_indent'>
-          <%= render :partial => '/search/phenotype_filter', :locals => {:phenotypes => params[:filter][:phenotypes]} %>
+        
+        <div class='filter_operator section'>and</div>
+        
+        <!-- Publication Filter -->
+        <div class='section'>
+          <div class='right'><%= button_to_function 'Add', "clearInputs(['#publicationChoice','#publication_id']);jQuery('#publication_filter_container').dialog('open');" %></div>
+          <div class='green_heading'>Publication is:</div>
+          <div id='publication_filter' class='section_indent'>
+            <%= render :partial => '/search/publication_filter', :locals => {:publications => params[:filter][:publications]} %>
+          </div>
+        </div><br />
+        
+        <div class='section top_border'>
+          <%= check_box_tag 'filter[include_inferred]', true, params[:filter][:include_inferred] %>
+          <span class='green_heading'>Include inferred annotations</span>
         </div>
-      </div>
-      
-      <div class='filter_operator section'>and</div>
-      
-      <!-- Publication Filter -->
-      <div class='section'>
-        <div class='right'><%= button_to_function 'Add', "clearInputs(['#publicationChoice','#publication_id']);jQuery('#publication_filter_container').dialog('open');" %></div>
-        <div class='green_heading'>Publication is:</div>
-        <div id='publication_filter' class='section_indent'>
-          <%= render :partial => '/search/publication_filter', :locals => {:publications => params[:filter][:publications]} %>
+        <div class='section top_border center'>
+          <%= submit_tag 'Apply Filter' %>
         </div>
-      </div><br />
       
-      <div class='section top_border'>
-        <%= check_box_tag 'filter[include_inferred]', true, params[:filter][:include_inferred] %>
-        <span class='green_heading'>Include inferred annotations</span>
       </div>
-      <div class='section top_border center'>
-        <%= submit_tag 'Apply Filter' %>
-      </div>
-    
-    </div>
-    <%= render :partial => 'shared/related_query_links' %>
-  <% end %>
-</div>
-
-<%= render :partial => 'search/term_filter_popup', :locals => {:label => "Taxon", :field_name => 'taxa'} %>
-<%= render :partial => 'search/phenotype_filter_popup' %>
-<%= render :partial => 'search/publication_filter_popup' %>
-<%= render :partial => 'annotation_sources/popup' %>
-
-<div id="search_main">
-  
-  <%= render :partial => 'shared/pagination', :locals => {:collection => @taxon_annotations['annotations'], 
-        :total => @taxon_annotations['total']} %>
-  
-  <table class="search_results sortable">
-    <tr class='no_padding'>
-      <th class='no_color'></th><th colspan='3'>Phenotype</th><th class='no_color'></th>
-    </tr>
-    <tr>
-      <% shared_locals = {:controller => "taxon_annotations", :action => "index"} %>
-      <%= sort_column 'Taxon', 'taxon', shared_locals %>
-      <%= sort_column 'Entity', 'entity', shared_locals %>
-      <%= sort_column 'Quality', 'quality', shared_locals %>
-      <%= sort_column 'Related Entity', 'relatedentity', shared_locals %>
-      <th>Source</th>
-    </tr>
-    <% for taxon_annotation in @taxon_annotations['annotations'] %>
-      <tr class="<%= cycle('odd','even') %>">
-        <td><%= taxon_annotation['taxon']['name'] if taxon_annotation['taxon'] %></td>
-        <td><%= taxon_annotation['entity']['name'] if taxon_annotation['entity'] %></td>
-        <td><%= taxon_annotation['quality']['name'] if taxon_annotation['quality'] %></td>
-        <td><%= taxon_annotation['related_entity']['name'] if taxon_annotation['related_entity'] %></td>
-        <td><%= link_to_source_popup(taxon_annotation) %></td>
-      </tr>
+      <%= render :partial => 'shared/related_query_links' %>
     <% end %>
-  </table>
+  </div>
   
-  <%= render :partial => 'shared/download_links', :locals => {:total => @taxon_annotations['total']} %>
+  <%= render :partial => 'search/term_filter_popup', :locals => {:label => "Taxon", :field_name => 'taxa'} %>
+  <%= render :partial => 'search/phenotype_filter_popup' %>
+  <%= render :partial => 'search/publication_filter_popup' %>
+  <%= render :partial => 'annotation_sources/popup' %>
+  
+  <div id="search_main">
+    
+    <%= render :partial => 'shared/pagination', :locals => {:collection => @taxon_annotations['annotations'], 
+          :total => @taxon_annotations['total']} %>
+    
+    <table class="search_results sortable">
+      <tr class='no_padding'>
+        <th class='no_color'></th><th colspan='3'>Phenotype</th><th class='no_color'></th>
+      </tr>
+      <tr>
+        <% shared_locals = {:controller => "taxon_annotations", :action => "index"} %>
+        <%= sort_column 'Taxon', 'taxon', shared_locals %>
+        <%= sort_column 'Entity', 'entity', shared_locals %>
+        <%= sort_column 'Quality', 'quality', shared_locals %>
+        <%= sort_column 'Related Entity', 'relatedentity', shared_locals %>
+        <th>Source</th>
+      </tr>
+      <% for taxon_annotation in @taxon_annotations['annotations'] %>
+        <tr class="<%= cycle('odd','even') %>">
+          <td><%= term_link(taxon_annotation['taxon']) if taxon_annotation['taxon'] %></td>
+          <td><%= term_link(taxon_annotation['entity']) if taxon_annotation['entity'] %></td>
+          <td><%= term_link(taxon_annotation['quality']) if taxon_annotation['quality'] %></td>
+          <td><%= term_link(taxon_annotation['related_entity']) if taxon_annotation['related_entity'] %></td>
+          <td><%= link_to_source_popup(taxon_annotation) %></td>
+        </tr>
+      <% end %>
+    </table>
+    
+    <%= render :partial => 'shared/download_links', :locals => {:total => @taxon_annotations['total']} %>
+  </div>
+  
+  <div class='clear'></div>
 </div>
-
-<div class='clear'></div>

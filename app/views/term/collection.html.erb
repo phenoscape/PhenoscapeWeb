@@ -1,0 +1,22 @@
+<div id='term'>
+  <h2 class='header'>collection: <%= display_term(@collection) %></h2>
+  <h4 class='subheader'>source: <%=h @collection['source']['name'] if @collection['source'] %></h4>
+  
+  <div>
+    <div class='section'>
+      <h3>Properties</h3>
+      <div class='content'>
+        <strong>Full name:</strong> <i><%= @collection['synonyms'].any? ? comma_separated_list(@collection['synonyms'].map{|syn| h(syn['name'])}.sort) : 'none' %></i><br />
+        <strong>ID:</strong> <%=h @collection['id'] %>
+      </div>
+    </div>
+    
+    <div class='section'>
+      <h3>Elsewhere</h3>
+      <div class='content'>
+        <%= external_link_to 'View at Biodiversity Collections Index', '#' %><br />
+      </div>
+    </div>
+  </div>
+  <div class='clear'></div>
+</div>

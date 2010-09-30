@@ -1,0 +1,23 @@
+<% level = (defined?(level) && !level.nil?) ? level : 0
+   active_id = (defined?(active_id) && !active_id.nil?) ? active_id : 0 %>
+<% if path[level]['children'].any? %>
+  <ul>
+    <% path[level]['children'].sort{|a,b| a['target']['name'] <=> b['target']['name']}.each do |child| %>
+      <% if path[level+1] && child['target']['id'] == path[level+1]['id'] %>
+        <%= render :partial => 'term_tree_node', :locals => {:path => path, :level => level + 1, :active_id => active_id, 
+              :relation_id => child['relation']['id']} %>
+      <% else %>
+        <li id="term_tree_<%=h child['target']['id'] %>" term_id="<%= child['target']['id'] %>" 
+            term_type="<%= Term.type(child['target']) %>">
+          <span id="node_content_<%= child['target']['id'] %>" <%= "class='active'" if active_id == child['target']['id'] %>>
+            <%= relationship_image_tag(child['relation']['id']) %>
+            <%= display_term(child['target']) %>
+          </span>
+          <ul class="ajax">
+            <li>{url:/term/tree/<%= child['target']['id'] %>}</li>
+          </ul>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>

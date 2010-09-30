@@ -1,0 +1,31 @@
+<div class='term_tooltip'>
+  <div class='header'><%= display_term(@term) %></div>
+  
+  <strong>Source:</strong> <%=h @term['source']['name'] if @term['source'] %><br />
+  <% if @term_type == :taxon %>
+    <strong>Rank:</strong> <%=h @term['rank']['name'] if @term['rank'] %><br />
+    <strong>Common names:</strong> <%= @term['common_names'].any? ? @term['common_names'].map{|cn| h(cn['name'])}.join(', ') : '<i>none</i>' %><br />
+  <% end %>
+  <% if [:taxon, :entity, :quality].include?(@term_type) %>
+    <strong>Synonyms:</strong> <%= @term['synonyms'].any? ? comma_separated_list(@term['synonyms'].map{|syn| h(syn['name'])}.sort, :tooltip => @term) : '<i>none</i>' %><br />
+  <% end %>
+  <% if @term_type == :taxon && @term.has_key?('species_count') %>
+    <strong>Species count:</strong> <%=h @term['species_count'] %><br />
+  <% end %>
+  <% if [:entity, :quality].include?(@term_type) %>
+    <strong>Definition:</strong> <%= !@term['definition'].blank? ? h(@term['definition']) : '<i>none</i>' %><br />
+  <% end%>
+  <% if @term_type == :gene %>
+    <strong>Full name:</strong> <i><%= @term['synonyms'].any? ? comma_separated_list(@term['synonyms'].map{|syn| h(syn['name'])}.sort) : 'none' %></i><br />
+  <% end %>
+  <strong>ID:</strong> <%=h @term['id'] %><br />
+  <% if [:taxon, :entity, :quality].include?(@term_type) %>
+    <% group_relationships(@term).each do |relationships| %>
+      <% relationships.each do |relation_type, targets| %>
+        <strong><%= relation_type %>:</strong> <%= targets.empty? ? '<i>none</i>' : 
+          comma_separated_list(targets.sort{|a,b| a['name'] <=> b['name'] }, :tooltip => @term, :helper_per_item => 'term_page_link') %><br />
+      <% end %>
+    <% end %>
+  <% end %><br />
+  <%= term_page_link(@term, 'View term page') %>
+</div>

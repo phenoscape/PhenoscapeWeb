@@ -1,0 +1,11 @@
+<div class='section'>
+  <h3 id='test'>Relationships (<%= link_to 'about', '/about/ontology_relationships' %>)</h3>
+  <div class='content'>
+    <% group_relationships(term).each do |relationships| %>
+      <% relationships.each do |relation_type, targets| %>
+        <strong><%= relation_type %>:</strong> <%= targets.empty? ? '<i>none</i>' : 
+          comma_separated_list(targets.sort{|a,b| a['name'] <=> b['name'] }, :helper_per_item => 'term_link') %><br />
+      <% end %>
+    <% end %>
+  </div>
+</div>

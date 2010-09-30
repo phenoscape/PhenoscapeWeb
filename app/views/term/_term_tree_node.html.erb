@@ -1,0 +1,14 @@
+<% level = (defined?(level) && !level.nil?) ? level : 0
+   active_id = (defined?(active_id) && !active_id.nil?) ? active_id : 0
+   relation_id = (defined?(relation_id) && !relation_id.nil?) ? relation_id : nil %>
+<% unless path[level].nil? %>
+  <li id="term_tree_<%=h path[level]['id'] %>" <%= "class='open'" if path[level]['children'].any? %> 
+      term_id="<%= path[level]['id'] %>" term_type="<%= Term.type(path[level]) %>">
+    <span id="node_content_<%= path[level]['id'] %>" <%= "class='active'" if active_id == path[level]['id'] %>>
+      <%= relationship_image_tag(relation_id) if relation_id %>
+      <%= display_term(path[level]) %>
+    </span>
+    
+    <%= render :partial => 'term_tree_children', :locals => {:path => path, :level => level, :active_id => active_id} %>
+  </li>
+<% end %>

@@ -1,0 +1,33 @@
+<div id='term'>
+  <h2 class='header'>entity: <%= display_term(@entity) %></h2>
+  <h4 class='subheader'>source: <%=h @entity['source']['name'] if @entity['source'] %></h4>
+  
+  <%= render :partial => 'term_tree', :locals => {:term => @entity} %>
+  
+  <div id='info_container'>
+    <div class='section'>
+      <h3>Properties</h3>
+      <div class='content'>
+        <strong>Synonyms:</strong> <%= @entity['synonyms'].any? ? comma_separated_list(@entity['synonyms'].map{|syn| h(syn['name'])}.sort) : '<i>none</i>' %><br />
+        <strong>Definition:</strong> <%= !@entity['definition'].blank? ? h(@entity['definition']) : '<i>none</i>' %><br />
+        <strong>ID:</strong> <%=h @entity['id'] %>
+      </div>
+    </div>
+    
+    <%= render :partial => 'relationships', :locals => {:term => @entity} %>
+    
+    <%= render :partial => 'data_in_the_knowledgebase', :locals => {:term_type => :entity, :term_id => @entity['id']} %>
+    
+    <% xref_id = @entity['xrefs'].any? ? @entity['xrefs'].first{|xref| xref['id'].starts_with?("ZFIN:ZDB-ANAT-")} : {} %>
+    <% if !xref_id['id'].blank? %>
+    <div class='section'>
+      <h3>Elsewhere</h3>
+      <div class='content'>
+          <%= external_link_to 'View at ZFIN', "http://zfin.org/action/anatomy/term-detail?anatomyItem.zdbID=" + 
+            xref_id['id'][5..-1] %><br />
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class='clear'></div>
+</div>

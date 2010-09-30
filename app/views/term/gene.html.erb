@@ -1,0 +1,26 @@
+<div id='term'>
+  <h2 class='header'>gene: <%= display_term(@gene) %></h2>
+  <h4 class='subheader'>source: <%=h @gene['source']['name'] if @gene['source'] %></h4>
+  
+  <div>
+    <div class='section'>
+      <h3>Properties</h3>
+      <div class='content'>
+        <strong>Full name:</strong> <i><%= @gene['synonyms'].any? ? comma_separated_list(@gene['synonyms'].map{|syn| h(syn['name'])}.sort) : 'none' %></i><br />
+        <strong>ID:</strong> <%=h @gene['id'] %>
+      </div>
+    </div>
+    
+    <%= render :partial => 'data_in_the_knowledgebase', :locals => {:term_type => :gene, :term_id => @gene['id']} %>
+    
+    <div class='section'>
+      <h3>Elsewhere</h3>
+      <div class='content'>
+        <%= external_link_to 'View at ZFIN', "http://zfin.org/cgi-bin/webdriver?MIval=aa-markerview.apg&OID=" + 
+          @gene['id'][5..-1] %><br />
+        <%= external_link_to 'GenBank search', 'http://www.ncbi.nlm.nih.gov/gquery/?term=' + CGI::escape(@gene['name']) %>
+      </div>
+    </div>
+  </div>
+  <div class='clear'></div>
+</div>

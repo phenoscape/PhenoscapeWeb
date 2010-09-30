@@ -1,0 +1,44 @@
+<div id='term'>
+  <h2 class='header'>taxon: <%= display_term(@taxon) %></h2>
+  <h4 class='subheader'>source: <%=h @taxon['source']['name'] if @taxon['source'] %></h4>
+  
+  <%= render :partial => 'term_tree', :locals => {:term => @taxon} %>
+  
+  <div id='info_container'>
+    <div class='section'>
+      <h3>Properties</h3>
+      <div class='content'>
+        <strong>Rank:</strong> <%=h @taxon['rank']['name'] if @taxon['rank'] %><br />
+        <strong>Common names:</strong> <%= @taxon['common_names'].any? ? @taxon['common_names'].map{|cn| h(cn['name'])}.join(', ') : '<i>none</i>' %><br />
+        <strong>Synonyms:</strong> <span class="<%= term_css_classes(@taxon) %>"><%= @taxon['synonyms'].any? ? 
+          comma_separated_list(@taxon['synonyms'].map{|syn| h(syn['name'])}.sort) : '<i>none</i>' %></span><br />
+        <% if @taxon.has_key?('species_count') %>
+          <strong>Species count:</strong> <%=h @taxon['species_count'] %><br />
+        <% end %>
+        <strong>ID:</strong> <%=h @taxon['id'] %>
+      </div>
+    </div>
+    
+    <%= render :partial => 'relationships', :locals => {:term => @taxon} %>
+    
+    <%= render :partial => 'data_in_the_knowledgebase', :locals => {:term_type => :taxon, :term_id => @taxon['id']} %>
+    
+    <div class='section'>
+      <h3>Elsewhere</h3>
+      <div class='content'>
+        <% if @taxon['xrefs'].any? && @taxon['xrefs'].first{|xref| xref['id'].starts_with?("urn:lsid:globalnames.org:index:")}%>
+          <%= external_link_to 'View in Global Names Index', "http://gni.globalnames.org/name_strings?search_term=" + 
+                CGI::escape(@taxon['name']) %><br />
+        <% end %>
+        <% if @taxon['xrefs'].any? && ncbi_taxon = @taxon['xrefs'].first{|xref| xref['id'].starts_with?("NCBITaxon:")} %>
+          <%= external_link_to 'View in NCBI taxonomy', "http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=" + 
+                CGI::escape(ncbi_taxon['id'][10..-1]) %><br />
+        <% end %>
+        <%= external_link_to 'View at EoL', 'http://www.eol.org/search?q=' + CGI::escape(@taxon['name']) %><br />
+        <%= external_link_to 'View at Wikipedia', 'http://en.wikipedia.org/wiki/Special:Search?go=Go&search=' + 
+          CGI::escape(@taxon['name']) %>
+      </div>
+    </div>
+  </div>
+  <div class='clear'></div>
+</div>

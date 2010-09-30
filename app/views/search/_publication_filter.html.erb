@@ -1,7 +1,9 @@
 <% if publications.blank? %>
   <strong>Any</strong>
 <% else %>
-  <% count = 0 %> 
+  <% count = 0
+     #unset match type if not activated for this section; could be set coming from a related query page but not used.
+     params[:filter][:publications_match_type] = nil if !defined?(any_or_all) || !any_or_all %> 
   <% publications.each do |index, publication_id| %>
     <%= render :partial => 'search/publication_filter_item', :locals => {:publication_id => publication_id, :index => count} %>
     <% count += 1 %>

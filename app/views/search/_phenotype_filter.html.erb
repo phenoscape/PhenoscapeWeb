@@ -1,7 +1,9 @@
 <% if phenotypes.blank? %>
   <strong>Any</strong>
 <% else %>
-  <% count = 0 %> 
+  <% count = 0
+     #unset match type if not activated for this section; could be set coming from a related query page but not used.
+     params[:filter][:phenotypes_match_type] = nil if !defined?(any_or_all) || !any_or_all %> 
   <% phenotypes.each do |index, phenotype| %>
     <%= render :partial => 'search/phenotype_filter_item', :locals => {:phenotype => phenotype, :index => count} %>
     <% count += 1 %>
