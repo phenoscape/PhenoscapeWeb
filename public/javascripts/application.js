@@ -10,7 +10,8 @@ function initAutocomplete(input_id, ontologyPrefixes, query_type, min_chars, wid
   
   var ac = jQuery("#"+input_id).autocomplete(OBDWS + "/term/search", {
     width: width,
-    selectFirst: false,
+    //autoFill: true,
+    //selectFirst: false,
     minChars: min_chars,
     dataType: 'json',
     max: 100,
@@ -121,6 +122,42 @@ function changeSectionFilterOperators(filter_section) {
   }
 }
 
+
+function initializeTooltip(element_id, term_id) {
+  jQuery(element_id).bt({trigger: 'click',
+                         ajaxPath: '/search/term_tooltip/' + term_id,
+                         width: 325,
+                         fill: '#FFF',
+                         cornerRadius: 10,
+                         strokeWidth: 0,
+                         shadow: true,
+                         shadowOffsetX: 3,
+                         shadowOffsetY: 3,
+                         shadowBlur: 8,
+                         shadowColor: 'rgba(0,0,0,.9)',
+                         shadowOverlap: false,
+                         noShadowOpts: {strokeStyle: '#999', strokeWidth: 2},
+                         spikeGirth: 15,
+                         spikeLength: 30,
+                         closeWhenOthersOpen: true
+  });
+}
+
+
+/*function updateTooltipHeight(){
+  setTimeout(function(){
+    var tt_height = jQuery('.term_tooltip').height();
+    var canvas = jQuery('.bt-wrapper').find('canvas:first')
+    canvas.css('height', tt_height + 60);
+    canvas.css('width', canvas.attr('width'));
+  }, 300);
+}*/
+
+
+function toggleCommaSeparatedList(suffix) {
+  jQuery('#less_content_' + suffix).toggle(300);
+  jQuery('#more_content_' + suffix).toggle(300);
+}
 
 
 function getParameters() {

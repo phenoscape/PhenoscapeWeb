@@ -50,7 +50,7 @@ tr.odd {background-color: #EBECEE;}
 #sidebar {float: left; width: 30%;}
 #main {margin-left: 3px; margin-right: 3px;}
 #search_sidebar {float: left; width: 30%; margin-top: 10px;}
-#search_main {margin-top: 10px; margin-left: 30%;}
+#search_main {float: right; width: 70%; margin-top: 10px;}
 #footer {clear: both; margin-top: 1em; padding-top: 2em; font-size: 75%;}
 #footer > div {color: #0a3a34; border-top: 5px solid #74c4ab;}
 #footer p {padding-left: 0.35em; padding-right: 0.35em;}
@@ -161,3 +161,22 @@ table.popup_table th {background-color: white; color: black; text-align: right; 
 #related_query_links {margin: 15px 0px 0px 15px;}
 #related_query_links ul {margin: 0px 0px 0px 10px; padding: 0px;}
 #related_query_links li {margin: 2px 0px 2px 20px; padding: 0px;}
+
+#term .header { margin: 15px 0px 3px 0px;}
+#term .subheader { margin: 3px 0px;}
+#term #tree_container {float: left; width: 350px; height: 400px; border: 1px solid #74c4ab; padding: 10px 5px 10px 10px; overflow: scroll;}
+#term #info_container {margin-left: 400px;}
+#term .section {margin-bottom: 18px;}
+#term .section h3 {background-color: #74c4ab; color: #0a3a34; padding: 2px; font-size: 98%; margin: 0px 0px 10px 0px;}
+#term .section strong {color: #0a3a34;}
+#term .section .content {margin-left: 10px;}
+
+.term_link {color: #3C57A7;}
+.term_link:hover {text-decoration: underline; cursor: pointer;}
+a.toggle_link {text-decoration: none; color: #0a3a34; font-size: 70%; float: right;}
+a.toggle_link:hover {text-decoration: underline;}
+
+.term_tooltip {margin: 5px;}
+.term_tooltip .header {color: #115A50; font-weight: bold; font-size: 115%; margin-bottom: 10px;}
+.term_tooltip strong {color: #0a3a34;}
+
