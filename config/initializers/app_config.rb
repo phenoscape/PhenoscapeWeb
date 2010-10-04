@@ -18,7 +18,8 @@ SUBJECT_RELATION_MAPPINGS = {
   "OBO_REL:part_of"       => "is part of",
   "part_of"               => "is part of",
   "OBO_REL:develops_from" => "develops from",
-  "develops_from"         => "develops from"
+  "develops_from"         => "develops from",
+  "overlaps"              => "overlaps"
 }
 
 
@@ -27,7 +28,8 @@ OBJECT_RELATION_MAPPINGS = {
   "OBO_REL:part_of"       => "may have part",
   "part_of"               => "may have part",
   "OBO_REL:develops_from" => "develops into",
-  "develops_from"         => "develops into"
+  "develops_from"         => "develops into",
+  "overlaps"              => "overlaps"
 }
 
 
