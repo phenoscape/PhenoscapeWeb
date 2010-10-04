@@ -18,9 +18,10 @@
         <div class='section top_border center'>
           <%= submit_tag 'Apply Filter' %>
         </div>
-      
+      	<div class='section top_border'>
+	      <%= render :partial => 'shared/related_query_links' %>
+        </div>
       </div>
-      <%= render :partial => 'shared/related_query_links' %>
     <% end %>
   </div>
   
