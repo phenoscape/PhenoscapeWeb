@@ -9,7 +9,7 @@
   <% if [:taxon, :entity, :quality].include?(@term_type) %>
     <strong>Synonyms:</strong> <%= @term['synonyms'].any? ? comma_separated_list(@term['synonyms'].map{|syn| h(syn['name'])}.sort, :tooltip => @term) : '<i>none</i>' %><br />
   <% end %>
-  <% if @term_type == :taxon && @term.has_key?('species_count') %>
+  <% if @term_type == :taxon && @term.has_key?('species_count') && @term['species_count'] > 0 %>
     <strong>Species count:</strong> <%=h @term['species_count'] %><br />
   <% end %>
   <% if [:entity, :quality].include?(@term_type) %>

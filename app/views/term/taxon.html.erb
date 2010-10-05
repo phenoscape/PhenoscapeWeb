@@ -12,7 +12,7 @@
         <strong>Common names:</strong> <%= @taxon['common_names'].any? ? @taxon['common_names'].map{|cn| h(cn['name'])}.join(', ') : '<i>none</i>' %><br />
         <strong>Synonyms:</strong> <span class="<%= term_css_classes(@taxon) %>"><%= @taxon['synonyms'].any? ? 
           comma_separated_list(@taxon['synonyms'].map{|syn| h(syn['name'])}.sort) : '<i>none</i>' %></span><br />
-        <% if @taxon.has_key?('species_count') %>
+        <% if @taxon.has_key?('species_count') && @taxon['species_count'] > 0 %>
           <strong>Species count:</strong> <%=h @taxon['species_count'] %><br />
         <% end %>
         <strong>ID:</strong> <%=h @taxon['id'] %>
