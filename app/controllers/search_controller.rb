@@ -44,6 +44,12 @@ class SearchController < ApplicationController
     set_filter_term_names_for_ids(term_ids)
     
     render :update do |page|
+      # if !params[:move_last_phenotype_index].blank?
+      #        page.replace_html "phenotype_filter_item_#{params[:move_last_phenotype_index]}", :partial => 'phenotype_filter_item', 
+      #          :locals => {:phenotype => phenotype, :index => params[:move_last_phenotype_index].to_i}
+      #          page.remove "phenotype_filter_item_#{params[:last_phenotype_index]}"
+      #        page << "jQuery('#broaden_refine_menu').click();"
+      #      els
       if !params[:replace_phenotype_index].blank?
         page.replace_html "phenotype_filter_item_#{params[:replace_phenotype_index]}", :partial => 'phenotype_filter_item', 
           :locals => {:phenotype => phenotype, :index => params[:replace_phenotype_index].to_i}

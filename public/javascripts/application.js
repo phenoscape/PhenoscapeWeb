@@ -114,6 +114,47 @@ function buildBroadenRefineMenu(link, terms, element_index){
 }
 
 
+function setPhenotypeInputs(data) {
+    if (data['entity']) {
+        console.log("setting entity: " + data);
+        jQuery('#entity_id').attr('value', data['entity']['id']);
+        jQuery('#entityChoice').attr('value', data['entity']['name']);
+    }
+    if (data['quality']) {
+        jQuery('#quality_id').attr('value', data['quality']['id']);
+        jQuery('#qualityChoice').attr('value', data['quality']['name']);
+    }
+    if (data['related_entity']) {
+        jQuery('#related_entity_id').attr('value', data['related_entity']['id']);
+        jQuery('#relatedEntityChoice').attr('value', data['related_entity']['name']);
+    }
+}
+
+
+function moveLastPhenotypeToIndex(element_index) {
+    var lastPhenotypeIndex = jQuery('#phenotype_filter .phenotype').length - 1;
+    console.log(lastPhenotypeIndex);
+    //setup data with existing phenotype
+    var data = {move_last_phenotype_index: element_index, last_phenotype_index: lastPhenotypeIndex};
+    jQuery.each(['entity_id', 'quality_id', 'related_entity_id'], function(index, phenotype_component) {
+        data[phenotype_component] = jQuery("#" + phenotype_component).attr('value');
+    });
+    jQuery.ajax({url: '/search/phenotype_filter', data: data});
+}
+
+
+function editPhenotype(link, terms, element_index) {
+    console.log(terms);
+   clearInputs(['#entityChoice','#entity_id','#qualityChoice', '#quality_id','#relatedEntityChoice','#related_entity_id']);
+   setPhenotypeInputs(terms);
+   jQuery('#phenotype_filter_container').dialog({'close': function(event, ui) { 
+       jQuery('#phenotype_filter_container').dialog({'close': null});
+       //moveLastPhenotypeToIndex(element_index);
+       }});
+   jQuery('#phenotype_filter_container').dialog('open');
+}
+
+
 function changeSectionFilterOperators(filter_section) {
   radio_btn = jQuery('#filter_' + filter_section + '_match_type_any');
   if(radio_btn.length > 0){

@@ -258,6 +258,15 @@ module ApplicationHelper
   end
   
   
+  def add_names_to_filter_terms(terms)
+    newTerms = {}
+    terms.each do |term, id|
+      newTerms[term] = {'id' => id, 'name' => filter_term_name(id)}
+    end
+    return newTerms
+  end
+  
+  
   def filter_term_link(id)
     return term_link(@filter_term_names[id.to_s]) if @filter_term_names[id.to_s]
     return ''
