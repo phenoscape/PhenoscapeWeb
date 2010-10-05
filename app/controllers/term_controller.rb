@@ -14,8 +14,8 @@ class TermController < ApplicationController
   
   
     def validate_term_type
-      if action_name == 'taxon'
-        term = Term.find_taxon(params[:id])
+      if ['taxon','publication'].include?(action_name)
+        term = Term.send("find_#{action_name}", params[:id])
       else
         term = Term.find(params[:id])
       end

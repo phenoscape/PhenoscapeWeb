@@ -1,5 +1,15 @@
 <div id='term'>
   <h2 class='header'>publication: <%= display_term(@publication) %></h2>
+  <h4 class='subheader'>source: <%=h @publication['source']['name'] if @publication['source'] %></h4>
   
+  <p><%=h @publication['citation'] %></p>
+  
+  <% unless @publication['doi'].blank? %>
+    <p>DOI: <%=h @publication['doi'] %></p>
+  <% end %>
+  
+  <h3>Abstract</h3>
+  
+  <p><%=h @publication['abstract'] %></p>
   
 </div>
