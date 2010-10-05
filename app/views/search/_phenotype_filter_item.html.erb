@@ -15,8 +15,9 @@
           :class => 'broaden_refine_link', :id => "broaden_refine_link_#{index}" %>
 
 	<% phenotype_object =  add_names_to_filter_terms(phenotype) %>
+	<% if false # intentionally disabled %>
 	<%= link_to_function '[edit]', "editPhenotype(this, #{phenotype_object.to_json}, #{index})", :class => 'broaden_refine_link', :id => "edit_phenotype_link_#{index}" %>
-    
+    <% end %>
     <%= link_to_function image_tag("remove.png"), "$(this).up('.phenotype').remove()" %><br/>
     
     <div class='including_parts'>
