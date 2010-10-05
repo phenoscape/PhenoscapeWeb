@@ -155,6 +155,17 @@ function editPhenotype(link, terms, element_index) {
 }
 
 
+function performRelatedQuery(selectElement) {
+    var target = jQuery(selectElement).val();
+    if (target != "") {
+        document.complex_query_form.action = target;
+        document.complex_query_form.method = 'get';
+        document.complex_query_form.submit();
+    }
+    return false;
+}
+
+
 function changeSectionFilterOperators(filter_section) {
   radio_btn = jQuery('#filter_' + filter_section + '_match_type_any');
   if(radio_btn.length > 0){

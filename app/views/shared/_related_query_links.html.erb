@@ -1,24 +1,7 @@
-<div id='related_query_links'>
-  Related query for:
-  <ul>
-    <% unless controller.controller_name == 'taxon_annotations' %>
-      <li><%= link_submit_to 'taxon phenotype annotations', '/taxon_annotations' %></li>
-    <% end %>
-    
-    <% unless controller.controller_name == 'gene_annotations' %>
-      <li><%= link_submit_to 'gene phenotype annotations', '/gene_annotations' %></li>
-    <% end %>
-    
-    <% unless controller.controller_name == 'taxa' %>
-      <li><%= link_submit_to 'taxa', '/taxa' %></li>
-    <% end %>
-    
-    <% unless controller.controller_name == 'genes' %>
-      <li><%= link_submit_to 'genes', '/genes' %></li>
-    <% end %>
-    
-    <% unless controller.controller_name == 'publications' %>
-      <li><%= link_submit_to 'comparative publications', '/publications' %></li>
-    <% end %>
-  </ul>
-</div>
+	<select id='related_query_links' onchange="performRelatedQuery(this);">
+		<option <% unless controller.controller_name == 'taxon_annotations' %>value="/taxon_annotations" <% else %> value="" selected="selected" <% end %>>comparative phenotype annotations</option>
+		<option <% unless controller.controller_name == 'taxa' %>value="/taxa" <% else %> value="" selected="selected" <% end %>>taxa</option>
+		<option <% unless controller.controller_name == 'gene_annotations' %>value="/gene_annotations" <% else %> value="" selected="selected" <% end %>>gene phenotype annotations</option>
+		<option <% unless controller.controller_name == 'genes' %>value="/genes" <% else %> value="" selected="selected" <% end %>>genes</option>
+		<option <% unless controller.controller_name == 'publications' %>value="/publications" <% else %> value="" selected="selected" <% end %>>comparative publications</option>
+	</select>

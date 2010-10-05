@@ -2,8 +2,8 @@
   <div id="search_sidebar">
     <% form_tag '', :method => :get, :name => 'complex_query_form' do %>
       <div id="term_info">
-        <div class='header'>Complex query for:<br /> annotated genes</div>
-          
+		<div class='header'>Query for: <%= render :partial => 'shared/related_query_links' %>
+	    </div>          
         <!-- Phenotype Filter -->
         <div class='section'>
           <div class='right'><%= button_to_function 'Add', "clearInputs(['#entityChoice','#entity_id','#qualityChoice'," +
@@ -17,9 +17,6 @@
         
         <div class='section top_border center'>
           <%= submit_tag 'Apply Filter' %>
-        </div>
-      	<div class='section top_border'>
-	      <%= render :partial => 'shared/related_query_links' %>
         </div>
       </div>
     <% end %>

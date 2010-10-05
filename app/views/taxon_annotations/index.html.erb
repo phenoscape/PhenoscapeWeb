@@ -2,7 +2,9 @@
   <div id="search_sidebar">
     <% form_tag '', :method => :get, :name => 'complex_query_form' do %>
       <div id="term_info">
-        <div class='header'>Complex query for:<br /> taxon phenotype annotations</div>
+        <div class='header'>Query for: <%= render :partial => 'shared/related_query_links' %>
+	    </div>
+
           
         <!-- Taxon Filter -->
         <div class='section'>
@@ -42,9 +44,6 @@
         </div>
         <div class='section top_border center'>
           <%= submit_tag 'Apply Filter' %>
-        </div>
-      	<div class='section top_border'>
-	      <%= render :partial => 'shared/related_query_links' %>
         </div>
       </div>
     <% end %>
