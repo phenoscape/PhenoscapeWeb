@@ -3,7 +3,9 @@
   <div class='content'>
     <% seach_params = search_params_for_term(term_type, term_id) %>
     <%= link_to 'Comparative phenotype annotations', :controller => :taxon_annotations, :action => :index, :params => seach_params %><br />
+	<% unless controller.action_name == 'taxon' %>
     <%= link_to 'Gene phenotype annotations', :controller => :gene_annotations, :action => :index, :params => seach_params %><br />
+	<% end %>
     <%= link_to 'Comparative publications', :controller => :publications, :action => :index, :params => seach_params %>
   </div>
 </div>
