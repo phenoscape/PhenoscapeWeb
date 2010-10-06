@@ -16,8 +16,7 @@
   <% annotation_sources['annotations'].each_with_index do |annotation_source, index| %>
     <% if annotation_source['publication'] %>
       <div class="source <%= 'dotted_border' if index > 0 %>">
-	    <%= term_page_link annotation_source['publication'] %>
-        <%=h annotation_source['publication']['name'] %>
+	    <%= term_link(annotation_source['publication']) %>
         
         <% if annotation_source['character'] %>
           <table class='character_state'>
