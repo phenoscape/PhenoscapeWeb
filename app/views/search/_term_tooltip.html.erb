@@ -2,6 +2,9 @@
   <div class='header'><%= display_term(@term) %></div>
   
   <strong>Source:</strong> <%=h @term['source']['name'] if @term['source'] %><br />
+  <% if @term_type == :publication %>
+  <strong>Citation:</strong> <%=h @term['citation'] %><br />
+  <% end %>
   <% if @term_type == :taxon %>
     <strong>Rank:</strong> <%=h @term['rank']['name'] if @term['rank'] %><br />
     <strong>Common names:</strong> <%= @term['common_names'].any? ? @term['common_names'].map{|cn| h(cn['name'])}.join(', ') : '<i>none</i>' %><br />

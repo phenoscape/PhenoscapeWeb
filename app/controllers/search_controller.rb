@@ -85,6 +85,7 @@ class SearchController < ApplicationController
     @term = Term.find(params[:id])
     @term_type = Term.type(@term)
     @term = Term.find_taxon(params[:id]) if @term_type == :taxon
+    @term = Term.find_publication(params[:id]) if @term_type == :publication
     render :partial => 'term_tooltip'
   end
   
