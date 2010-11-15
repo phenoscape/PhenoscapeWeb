@@ -34,12 +34,15 @@ OBJECT_RELATION_MAPPINGS = {
 
 
 POSTCOMPOSTION_RELATION_MAPPINGS = {
-  "OBO_REL:connected_to"  => "on",
-  "connected_to"          => "on",
-  "anterior_to"           => "anterior to",
-  "BSPO:0000096"          => "anterior to",
-  "posterior_to"          => "posterior to",
-  "BSPO:0000099"          => "posterior to",
-  "adjacent_to"           => "adjacent to",
-  "OBO_REL:adjacent_to"   => "adjacent to"
+  "OBO_REL:connected_to"               => "on",
+  "connected_to"                       => "on",
+  "anterior_to"                        => "anterior to",
+  "BSPO:0000096"                       => "anterior to",
+  "posterior_to"                       => "posterior to",
+  "BSPO:0000099"                       => "posterior to",
+  "adjacent_to"                        => "adjacent to",
+  "OBO_REL:adjacent_to"                => "adjacent to",
+  "increased_in_magnitude_relative_to" => "increased in magnitude relative to",
+  "decreased_in_magnitude_relative_to" => "decreased in magnitude relative to",
+  "similar_in_magnitude_relative_to"   => "similar in magnitude relative to"
 }

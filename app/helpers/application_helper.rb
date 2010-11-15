@@ -317,7 +317,8 @@ module ApplicationHelper
         end
         return send(link_method, genus) + differentia.join(", ");
       else
-        return send(link_method, term, 'unnamed')
+        term['name'] = 'unnamed'
+        return send(link_method, term)
       end
     else
       send(link_method, term)
