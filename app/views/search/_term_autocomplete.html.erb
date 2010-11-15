@@ -5,7 +5,7 @@
 
 <% content_for :footer_javascript do %>
   <script type="text/javascript">
-    var ac = initAutocomplete("termChoice", [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO], '', 4, <%= width %>);
+    var ac = initAutocomplete("termChoice", [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO], '', 3, <%= width %>);
     ac.result(function(event, data, formatted) {
       if(data){ 
         jQuery("#ac_term_id").attr('value', data.id); 

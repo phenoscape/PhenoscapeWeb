@@ -5,7 +5,7 @@
 // initializes an autocomplete text field using jquery
 function initAutocomplete(input_id, ontologyPrefixes, query_type, min_chars, width){
   if(!query_type){query_type='';}
-  if(!min_chars){min_chars=4;}
+  if(!min_chars){min_chars=3;}
   if(!width){width=400;}
   
   var ac = jQuery("#"+input_id).autocomplete(OBDWS + "/term/search", {
