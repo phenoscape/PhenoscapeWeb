@@ -6,7 +6,7 @@
     <div class='section'>
       <h3>Properties</h3>
       <div class='content'>
-        <strong>Full name:</strong> <i><%= @collection['synonyms'].any? ? comma_separated_list(@collection['synonyms'].map{|syn| h(syn['name'])}.sort) : 'none' %></i><br />
+        <strong>Full name:</strong> <%= @collection['synonyms'].any? ? comma_separated_list(@collection['synonyms'].map{|syn| h(syn['name'])}.sort) : 'none' %><br />
         <strong>ID:</strong> <%=h @collection['id'] %>
       </div>
     </div>

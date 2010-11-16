@@ -33,6 +33,7 @@ td {border: none;}
 .center {text-align: center;}
 .info {color: gray;font-size: 70%;}
 .italic {font-style: italic;}
+.no_italic {font-style: normal;}
 
 
 th.no_color {background-color: #fff;}
@@ -120,7 +121,7 @@ div.tree-row {text-indent: -3em; margin-left: 3em;}
 .citation-item td.label {text-align: right;}
 
 
-.filter_operator {color: #6B6868; font-weight: bold;}
+.filter_operator {color: #6B6868; font-weight: bold; font-style: normal;}
 .any_or_all {font-size: 90%; font-weight: normal;}
 .any_or_all input {vertical-align: top;}
 #search_sidebar img {vertical-align: top;}

@@ -340,7 +340,7 @@ module ApplicationHelper
     css_class = ''
     css_class += ' extinct-taxon' if term['extinct']
     css_class += ' italic-taxon' if term['rank'] && ['genus', 'species'].include?(term['rank']['name'])
-    css_class += ' italic' if Term.type(term) == :gene || term['id'].starts_with?("ZFIN:ZDB-GENE")
+    css_class += ' italic' if Term.type(term) == :gene
     return css_class
   end
   

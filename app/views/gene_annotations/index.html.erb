@@ -8,7 +8,7 @@
         <div class='section'>
           <div class='right'><%= button_to_function 'Add', "clearInputs(['#popupTermChoice','#term_id']);jQuery('#term_filter_container').dialog('open');" %></div>
           <div class='green_heading'>Gene is:</div>
-          <div id='term_filter' class='section_indent'>
+          <div id='term_filter' class='section_indent italic'>
             <%= render :partial => '/search/term_filter', :locals => {:terms => params[:filter][:genes], :field_name => "genes"} %>
           </div>
         </div>
@@ -56,7 +56,7 @@
       </tr>
       <% for gene_annotation in @gene_annotations['annotations'] %>
         <tr class="<%= cycle('odd','even') %>">
-          <td><%= term_link(gene_annotation['gene']) if gene_annotation['gene'] %></td>
+          <td class='italic'><%= term_link(gene_annotation['gene']) if gene_annotation['gene'] %></td>
           <td><%= term_link(gene_annotation['entity']) if gene_annotation['entity'] %></td>
           <td><%= term_link(gene_annotation['quality']) if gene_annotation['quality'] %></td>
           <td><%= term_link(gene_annotation['related_entity']) if gene_annotation['related_entity'] %></td>
