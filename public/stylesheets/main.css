@@ -32,6 +32,7 @@ td {border: none;}
 .left {float: left;}
 .center {text-align: center;}
 .info {color: gray;font-size: 70%;}
+.italic {font-style: italic;}
 
 
 th.no_color {background-color: #fff;}

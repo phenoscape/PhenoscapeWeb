@@ -280,17 +280,20 @@ module ApplicationHelper
   
   
   def term_page_link(term, link_text=nil, html_options={})
-    if term['name'].blank?
+    if term['name'].blank? && !term['parents'].blank?
       format_term(term, 'term_page_link')
     else
-      link_to((link_text ? link_text : display_term(term)), {:controller => :term, :action => Term.type(term), 
-        :id => term['id']}, html_options)
+      type = Term.type(term)
+      if type
+        link_to((link_text ? link_text : display_term(term)), {:controller => :term, :action => type, :id => term['id']}, 
+          html_options)
+      end
     end
   end
   
   
   def term_link(term)
-    if term['name'].blank?
+    if term['name'].blank? && !term['parents'].blank?
       format_term(term, 'term_link')
     else
       element_id = "term_link_#{unique_id}"
@@ -328,7 +331,7 @@ module ApplicationHelper
   
   def display_term(term)
     content_tag :span, :class => term_css_classes(term) do
-      h(term['name'])
+      h(term['name'].blank? ? 'unnamed' : term['name'])
     end
   end
   
@@ -337,6 +340,7 @@ module ApplicationHelper
     css_class = ''
     css_class += ' extinct-taxon' if term['extinct']
     css_class += ' italic-taxon' if term['rank'] && ['genus', 'species'].include?(term['rank']['name'])
+    css_class += ' italic' if Term.type(term) == :gene || term['id'].starts_with?("ZFIN:ZDB-GENE")
     return css_class
   end
   

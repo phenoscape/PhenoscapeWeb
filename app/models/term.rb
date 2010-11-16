@@ -27,7 +27,7 @@ class Term
   
   
   def self.type(term)
-    return (term['source'] ? SOURCE_KEYS[term['source']['id']] : :entity)
+    return (term['source'] ? SOURCE_KEYS[term['source']['id']] : nil)
   end
   
 end

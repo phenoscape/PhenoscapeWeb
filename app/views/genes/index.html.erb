@@ -37,7 +37,7 @@
       <% for gene in @genes['genes'] %>
         <tr class="<%= cycle('odd','even') %>">
           <td><%= term_link(gene) %></td>
-          <td><%=h gene['fullname'] %></td>
+          <td class='italic'><%=h gene['fullname'] %></td>
         </tr>
       <% end %>
     </table>

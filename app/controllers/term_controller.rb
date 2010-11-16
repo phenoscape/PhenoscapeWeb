@@ -14,6 +14,8 @@ class TermController < ApplicationController
   
   
     def validate_term_type
+      redirect_to :controller => :search, :action => :index and return if params[:id].blank?
+      
       if ['taxon','publication'].include?(action_name)
         term = Term.send("find_#{action_name}", params[:id])
       else
