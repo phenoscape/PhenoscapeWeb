@@ -8,7 +8,7 @@
     <div class='section'>
       <h3>Properties</h3>
       <div class='content'>
-        <strong>Synonyms:</strong> <%= @entity['synonyms'].any? ? comma_separated_list(@entity['synonyms'].map{|syn| h(syn['name'])}.sort) : '<i>none</i>' %><br />
+        <strong>Synonyms:</strong> <%= @entity['synonyms'].any? ? comma_separated_list(@entity['synonyms'].map{|syn| formatted_synonym(syn)}.sort) : '<i>none</i>' %><br />
         <strong>Definition:</strong> <%= !@entity['definition'].blank? ? h(@entity['definition']) : '<i>none</i>' %><br />
         <strong>ID:</strong> <%=h @entity['id'] %>
       </div>
