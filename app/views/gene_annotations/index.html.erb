@@ -57,9 +57,9 @@
       <% for gene_annotation in @gene_annotations['annotations'] %>
         <tr class="<%= cycle('odd','even') %>">
           <td class='italic'><%= term_link(gene_annotation['gene']) if gene_annotation['gene'] %></td>
-          <td><%= term_link(gene_annotation['entity']) if gene_annotation['entity'] %></td>
-          <td><%= term_link(gene_annotation['quality']) if gene_annotation['quality'] %></td>
-          <td><%= term_link(gene_annotation['related_entity']) if gene_annotation['related_entity'] %></td>
+          <td class="post-composable"><%= term_link(gene_annotation['entity']) if gene_annotation['entity'] %></td>
+          <td class="post-composable"><%= term_link(gene_annotation['quality']) if gene_annotation['quality'] %></td>
+          <td class="post-composable"><%= term_link(gene_annotation['related_entity']) if gene_annotation['related_entity'] %></td>
           <td><%= link_to_source_popup(gene_annotation) %></td>
         </tr>
       <% end %>

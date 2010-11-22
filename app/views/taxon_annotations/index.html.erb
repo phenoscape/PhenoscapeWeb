@@ -74,9 +74,9 @@
       <% for taxon_annotation in @taxon_annotations['annotations'] %>
         <tr class="<%= cycle('odd','even') %>">
           <td><%= term_link(taxon_annotation['taxon']) if taxon_annotation['taxon'] %></td>
-          <td><%= term_link(taxon_annotation['entity']) if taxon_annotation['entity'] %></td>
-          <td><%= term_link(taxon_annotation['quality']) if taxon_annotation['quality'] %></td>
-          <td><%= term_link(taxon_annotation['related_entity']) if taxon_annotation['related_entity'] %></td>
+          <td class="post-composable"><%= term_link(taxon_annotation['entity']) if taxon_annotation['entity'] %></td>
+          <td class="post-composable"><%= term_link(taxon_annotation['quality']) if taxon_annotation['quality'] %></td>
+          <td class="post-composable"><%= term_link(taxon_annotation['related_entity']) if taxon_annotation['related_entity'] %></td>
           <td><%= link_to_source_popup(taxon_annotation) %></td>
         </tr>
       <% end %>
