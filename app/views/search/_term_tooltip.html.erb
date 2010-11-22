@@ -6,7 +6,7 @@
   <strong>Citation:</strong> <%=h @term['citation'] %><br />
   <% end %>
   <% if @term_type == :taxon %>
-    <strong>Rank:</strong> <%=h @term['rank']['name'] if @term['rank'] %><br />
+    <strong>Rank:</strong> <%= @term['rank'] ?  h(@term['rank']['name']) : '<i>none</i>' %><br />
     <strong>Common names:</strong> <%= @term['common_names'].any? ? @term['common_names'].map{|cn| h(cn['name'])}.join(', ') : '<i>none</i>' %><br />
   <% end %>
   <% if [:taxon, :entity, :quality].include?(@term_type) %>
