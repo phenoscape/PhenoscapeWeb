@@ -80,21 +80,22 @@ function buildBroadenRefineMenu(link, terms, element_index){
   
   var items = [];
   index = 0;
+  var validTermTypes = ["entity", "quality", "related_entity"];
   jQuery.each(terms, function(term_type, term_id){
-    if(term_id != ''){
-      if(index > 0){ items.push({src: ''}); } //add seperator line
+    if (term_id != '' && _(validTermTypes).include(term_type)) {
+      if(index > 0){ items.push({src: ''}); } //add separator line
       var section = {src: term_type, subMenu: [{src: 'broaden'}, {src: ''}, {src: 'refine'}]};
       jQuery.ajax({url: OBDWS + "/term/" + term_id, dataType: 'json', async: false,
         success: function(data){
           if(data.parents.length > 0){ section['subMenu'][0]['subMenu'] = []; }
           jQuery.each(data.parents, function(i,item){
-            if(i > 0){ section['subMenu'][0]['subMenu'].push({src: ''}); } //add seperator line
+            if(i > 0){ section['subMenu'][0]['subMenu'].push({src: ''}); } //add separator line
             //item.target.id
             section['subMenu'][0]['subMenu'].push({src: item.target.name, data: {id: item.target.id, term_type: term_type}});
           });
           if(data.children.length > 0){ section['subMenu'][2]['subMenu'] = []; }
           jQuery.each(data.children, function(i,item){
-            if(i > 0){ section['subMenu'][2]['subMenu'].push({src: ''}); } //add seperator line
+            if(i > 0){ section['subMenu'][2]['subMenu'].push({src: ''}); } //add separator line
             //item.target.id
             section['subMenu'][2]['subMenu'].push({src: item.target.name, data: {id: item.target.id, term_type: term_type}});
           });
