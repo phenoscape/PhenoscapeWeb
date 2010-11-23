@@ -83,7 +83,7 @@ module ApplicationHelper
   
   def relationship(id, type='subject')
     mapping = type.to_s == 'subject' ? SUBJECT_RELATION_MAPPINGS : OBJECT_RELATION_MAPPINGS
-    return (mapping.has_key? id) ? mapping[id] : ''
+    return (mapping.has_key? id) ? mapping[id] : id
   end
   
   
