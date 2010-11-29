@@ -40,7 +40,7 @@
         
         <div class='section top_border'>
           <%= check_box_tag 'filter[include_inferred]', true, params[:filter][:include_inferred] %>
-          <span class='green_heading'>Include inferred annotations</span>
+          <span class='green_heading'>Include inferred annotations <%= help_link "Inferred annotations" %></span>
         </div>
         <div class='section top_border center'>
           <%= submit_tag 'Apply Filter' %>
@@ -61,7 +61,7 @@
     
     <table class="search_results sortable">
       <tr class='no_padding'>
-        <th class='no_color'></th><th colspan='3'>Phenotype</th><th class='no_color'></th>
+        <th class='no_color'></th><th colspan='3'>Phenotype <%= help_link "Phenotypes" %></th><th class='no_color'></th>
       </tr>
       <tr>
         <% shared_locals = {:controller => "taxon_annotations", :action => "index"} %>

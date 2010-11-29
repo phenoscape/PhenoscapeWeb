@@ -230,6 +230,10 @@ module ApplicationHelper
   end
   
   
+  def help_link(topic)
+    link_to "[help]", "http://www.phenoscape.org/wiki/Knowledgebase:#{topic}", :popup => true, :class => "kb-help"
+  end
+  
   def filter_operator(index, section_name)
     operator = (params[:filter] && params[:filter]["#{section_name}_match_type"] == 'all') ? 'and' : 'or'
     return (index.to_i > 0 ? "<div class='#{section_name} filter_operator'>#{operator}</div>" : '')
@@ -303,7 +307,6 @@ module ApplicationHelper
   
   
   def format_term(term, link_method='term_link')
-    logger.info("Term: " + term.to_s)
     if term['name'].blank?
       if term['parents']
         genus = {}
