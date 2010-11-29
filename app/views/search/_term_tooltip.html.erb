@@ -30,5 +30,6 @@
       <% end %>
     <% end %>
   <% end %><br />
-  <%= term_page_link(@term, 'View term page') %>
+ <% term_name = @term["name"]%>
+  <%= term_page_link(@term, "View details for <b>#{display_term(@term)}</b>") %>
 </div>
