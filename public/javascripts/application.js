@@ -176,9 +176,15 @@ function changeSectionFilterOperators(filter_section) {
 }
 
 
-function replaceAny(filter_section_id) {
+function updateFilterSection(filter_section_id) {
   if(jQuery("#"+filter_section_id+" > div").size() == 0){
     jQuery("#"+filter_section_id).html("<strong class='no_italic'>Any</strong>");
+  }
+  else {
+    first_div = jQuery("#"+filter_section_id+" div:first-child")
+    if(first_div.has("div.filter_operator")){
+      first_div.find("div.filter_operator").remove();
+    }
   }
 }
 
