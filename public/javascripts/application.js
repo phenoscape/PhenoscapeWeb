@@ -176,6 +176,13 @@ function changeSectionFilterOperators(filter_section) {
 }
 
 
+function replaceAny(filter_section_id) {
+  if(jQuery("#"+filter_section_id+" > div").size() == 0){
+    jQuery("#"+filter_section_id).html("<strong class='no_italic'>Any</strong>");
+  }
+}
+
+
 function initializeTooltip(element_id, term_id) {
   jQuery(element_id).bt({trigger: 'click',
                          ajaxPath: '/search/term_tooltip/' + term_id,

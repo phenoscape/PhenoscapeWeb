@@ -18,7 +18,7 @@
 	<% if false # intentionally disabled %>
 	<%= link_to_function '[edit]', "editPhenotype(this, #{phenotype_object.to_json}, #{index})", :class => 'broaden_refine_link', :id => "edit_phenotype_link_#{index}" %>
     <% end %>
-    <%= link_to_function image_tag("remove.png"), "$(this).up('.phenotype').remove()" %><br/>
+    <%= link_to_function image_tag("remove.png"), "$(this).up('.phenotype').remove(); replaceAny('phenotype_filter');" %><br/>
     
     <div class='including_parts'>
       <%= check_box_tag "filter[phenotypes][#{index}][including_parts]", true, phenotype[:including_parts] %>
