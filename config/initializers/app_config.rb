@@ -51,5 +51,6 @@ POSTCOMPOSTION_RELATION_MAPPINGS = {
   "OBO_REL:adjacent_to"                => "adjacent to",
   "increased_in_magnitude_relative_to" => "increased in magnitude relative to",
   "decreased_in_magnitude_relative_to" => "decreased in magnitude relative to",
-  "similar_in_magnitude_relative_to"   => "similar in magnitude relative to"
+  "similar_in_magnitude_relative_to"   => "similar in magnitude relative to",
+  "PHENOSCAPE:complement_of"           => "not"
 }
