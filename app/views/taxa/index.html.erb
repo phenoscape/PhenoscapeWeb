@@ -72,6 +72,8 @@
         </tr>
       <% end %>
     </table>
+
+	<%= render :partial => 'shared/pagination', :locals => {:collection => @taxa['taxa'], :total => @taxa['total']} %>
     
     <%= render :partial => 'shared/download_links', :locals => {:total => @taxa['total']} %>
   </div>

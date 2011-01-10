@@ -53,6 +53,9 @@
         </tr>
       <% end %>
     </table>
+
+	<%= render :partial => 'shared/pagination', :locals => {:collection => @publications['publications'], 
+          :total => @publications['total']} %>
     
     <%= render :partial => 'shared/download_links', :locals => {:total => @publications['total']} %>
   </div>

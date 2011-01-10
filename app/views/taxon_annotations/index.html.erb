@@ -81,6 +81,9 @@
         </tr>
       <% end %>
     </table>
+
+	<%= render :partial => 'shared/pagination', :locals => {:collection => @taxon_annotations['annotations'], 
+          :total => @taxon_annotations['total']} %>
     
     <%= render :partial => 'shared/download_links', :locals => {:total => @taxon_annotations['total']} %>
   </div>

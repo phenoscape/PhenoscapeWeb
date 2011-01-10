@@ -64,6 +64,9 @@
         </tr>
       <% end %>
     </table>
+
+	<%= render :partial => 'shared/pagination', :locals => {:collection => @gene_annotations['annotations'], 
+          :total => @gene_annotations['total']} %>
     
     <%= render :partial => 'shared/download_links', :locals => {:total => @gene_annotations['total']} %>
   </div>

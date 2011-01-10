@@ -41,6 +41,8 @@
         </tr>
       <% end %>
     </table>
+
+	<%= render :partial => 'shared/pagination', :locals => {:collection => @genes['genes'], :total => @genes['total']} %>
     
     <%= render :partial => 'shared/download_links', :locals => {:total => @genes['total']} %>
   </div>
