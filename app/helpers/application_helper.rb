@@ -280,34 +280,35 @@ module ApplicationHelper
     return term_page_link(@filter_term_names[id.to_s]) if @filter_term_names[id.to_s]
     return ''
   end
+  
    
   def term_page_link(term, link_text=nil, html_options={})
-      if term['name'].blank? && !term['parents'].blank?
-        format_term(term, 'term_page_link')
-      else
-        type = Term.type(term)
-        if type
-          link_to((link_text ? link_text : display_term(term)), {:controller => :term, :action => type, :id => term['id']}, 
-            html_options)
-        end
+    if (term['name'].blank? && term['label'].blank?) && !term['parents'].blank?
+      format_term(term, 'term_page_link')
+    else
+      type = Term.type(term)
+      if type
+        link_to((link_text ? link_text : display_term(term)), {:controller => :term, :action => type, :id => term['id']}, 
+          html_options)
       end
     end
-    
-    
-    def term_link(term)
-      if term['name'].blank? && !term['parents'].blank?
-        format_term(term, 'term_link')
-      else
-        element_id = "term_link_#{unique_id}"
-        str = "<span id='#{element_id}' class='term_link'>#{display_term(term)}</span>"
-        str += "<script>jQuery(document).ready(function(){initializeTooltip('##{element_id}', '#{term['id']}');})</script>"
-        return str
-      end
+  end
+  
+  
+  def term_link(term)
+    if (term['name'].blank? && term['label'].blank?) && !term['parents'].blank?
+      format_term(term, 'term_link')
+    else
+      element_id = "term_link_#{unique_id}"
+      str = "<span id='#{element_id}' class='term_link'>#{display_term(term)}</span>"
+      str += "<script>jQuery(document).ready(function(){initializeTooltip('##{element_id}', '#{term['id']}');})</script>"
+      return str
     end
+  end
   
   
   def format_term(term, link_method='term_link')
-    if term['name'].blank?
+    if term['name'].blank? && term['label'].blank?
       if term['parents']
         genus = {}
         differentia = []
@@ -333,7 +334,7 @@ module ApplicationHelper
   
   def display_term(term)
     content_tag :span, :class => term_css_classes(term) do
-      h(term['name'].blank? ? 'unnamed' : term['name'])
+      h(term['name'].blank? && term['label'].blank? ? 'unnamed' : (term['name'] || term['label']))
     end
   end
   

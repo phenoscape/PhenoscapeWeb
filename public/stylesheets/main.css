@@ -34,10 +34,12 @@ td {border: none;}
 .info {color: gray;font-size: 70%;}
 .italic {font-style: italic;}
 .no_italic {font-style: normal;}
+.nowrap {white-space: nowrap;}
 
 
 th.no_color {background-color: #fff;}
 tr.odd {background-color: #EBECEE;}
+
 
 #navbar {background-color: #74c4ab; text-align: right; color: #0a3a34; clear: both;}
 #navbar a {color: #0a3a34; margin: 0.5em; text-decoration: none; font-weight: bold;}
@@ -185,3 +187,15 @@ a.toggle_link:hover {text-decoration: underline;}
 .synonym-scope {color: #999;}
 .post-composable {color: #666;}
 .kb-help {font-size: 70%; color: #3C57A7;}
+
+.ui-tabs-nav a {color: #0A3A34 !important;}
+.ui-tabs-panel {font-family: Helvetica, sans-serif; font-size: 17px;}
+
+
+
+.tableBoxOuter {width:90%; height: 500px; background: #FFFFFF;}
+.tableBoxOuter table {border-collapse: collapse;}
+.scrolltable td, .scrolltable th {font-size: 12px; margin: 0em; padding: 4px; table-layout: automatic; white-space: nowrap; border: 1px solid gray; min-height: 30px;}
+.tableBoxOuter .top_left_cell {border-right: 1px solid gray; border-bottom: 1px solid gray;}
+.tableBoxOuter .first_col a {color: #3C57A7;}
+

@@ -14,7 +14,9 @@
     <div class='section'>
       <h3>Elsewhere</h3>
       <div class='content'>
-        <%= external_link_to 'View at Biodiversity Collections Index', '#' %><br />
+        <% if @collection['xrefs'].any? && xref_collection = @collection['xrefs'].first{|xref| xref['id'].starts_with?('urn:lsid:biocol.org:col:')} %>
+          <%= external_link_to 'View at Biodiversity Collections Index', "http://biocol.org/#{xref_collection['id']}" %><br />
+        <% end %>
       </div>
     </div>
   </div>

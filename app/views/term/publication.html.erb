@@ -1,15 +1,92 @@
 <div id='term'>
   <h2 class='header'>publication: <%= display_term(@publication) %></h2>
-  <h4 class='subheader'>source: <%=h @publication['source']['name'] if @publication['source'] %></h4>
+  <h4 class='subheader'>source: <%=h @publication['source']['name'] if @publication['source'] %></h4><br />
   
-  <p><%=h @publication['citation'] %></p>
-  
-  <% unless @publication['doi'].blank? %>
-    <p>DOI: <%=h @publication['doi'] %></p>
+  <% content_for :javascript do %>
+    <%= javascript_include_tag "jquery.ui.widget.js" %>
+    <%= javascript_include_tag "jquery.ui.tabs.js" %>
+    <%= javascript_include_tag "scrollable_table.js" %>
+    
+    <script type='text/javascript'>
+      jQuery(function() { jQuery("#tabs").tabs(); });
+    </script>
   <% end %>
   
-  <h3>Abstract</h3>
-  
-  <p><%=h @publication['abstract'] %></p>
-  
+  <div id="tabs">
+    <ul>
+      <li><a href="#tabs-1">Overview</a></li>
+      <li><a href="#tabs-2">Data Matrix</a></li>
+      <li><a href="#tabs-3">Specimens</a></li>
+    </ul>
+    
+    <div id="tabs-1">
+      <p><%=h @publication['citation'] %></p>
+      
+      <% unless @publication['doi'].blank? %>
+        <p>DOI: <%=h @publication['doi'] %></p>
+      <% end %>
+      
+      <h3>Abstract</h3>
+      
+      <p><%=h @publication['abstract'] %></p>
+    </div>
+    
+    <div id="tabs-2">
+      <p>Original character-by-taxon data matrix from publication <strong><%=h @publication['name'] %></strong>. You can also 
+         query for all phenotype annotations curated from this matrix.</p>
+      <% matrix = Term.find_publication_matrix(@publication['id'], :media => 'json') %>
+      
+      <% unless matrix['otus'].empty? %>
+        <table id='scrollableTable' class="scrolltable">
+          <thead>
+            <tr>
+              <th class='top_left_cell'>&nbsp;</th>
+              <% matrix['characters'].each do |character| %>
+                <th><%=h "#{character['num']}. #{character['label']}" %></th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <% matrix['otus'].each do |otu| %>
+              <tr>
+                <th class='first_col'>
+                  <%= term_page_link(otu['taxon']) %>
+                  <% if otu['label'] != otu['taxon']['label'] %>
+                    <br />as <%=h otu['label'] %>
+                  <% end %>
+                </th>
+                <% matrix['characters'].each do |character| %>
+                  <td><%=h matrix['matrix'][otu['id']][character['id']] %></td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <script type="text/javascript">
+          if(typeof tableScroll == 'function'){tableScroll('scrollableTable');}
+        </script>
+      <% end %>
+    </div>
+    
+    <div id="tabs-3">
+      <strong>Taxa and specimens used in this study</strong>
+      
+      <% otus = Term.find_publication_otus(@publication['id'], :media => 'json') %>
+      <table class='search_results'>
+        <tr>
+          <th class='nowrap'>Taxon name used in publication</th>
+          <th class='nowrap'>Taxon</th>
+          <th>Specimens</th>
+        </tr>
+        <% otus['otus'].each do |otu| %>
+          <tr class="<%= cycle('odd','even') %>">
+            <td><i><%=h otu['label'] %></i></td>
+            <td><%= term_link(otu['taxon']) %></td>
+            <td><%= otu['specimens'].map{|s| term_link(s['collection']) + " #{s['catalog_number']}" }.join(", ") %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
 </div>
+

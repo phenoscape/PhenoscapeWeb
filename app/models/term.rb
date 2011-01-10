@@ -15,6 +15,16 @@ class Term
   end
   
   
+  def self.find_publication_matrix(id, params={}, result_options={})
+    Request.find("term/publication/#{id}/matrix", params, result_options)
+  end
+  
+  
+  def self.find_publication_otus(id, params={}, result_options={})
+    Request.find("term/publication/#{id}/otus", params, result_options)
+  end
+  
+  
   def self.names(ids, result_options={})
     ids = [ids] unless ids.is_a?(Array)
     Request.post('term/names', JSON.generate({:ids => ids, :render_postcompositions => 'structure'}), result_options)
