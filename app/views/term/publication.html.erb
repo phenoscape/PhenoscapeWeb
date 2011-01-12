@@ -32,8 +32,9 @@
     </div>
     
     <div id="tabs-2">
+	  <% seach_params = search_params_for_term(:publication, @publication['id']) %>
       <p>Original character-by-taxon data matrix from publication <strong><%=h @publication['name'] %></strong>. You can also 
-         query for all phenotype annotations curated from this matrix.</p>
+         <%= link_to 'query for all phenotype annotations', :controller => :taxon_annotations, :action => :index, :params => seach_params %> curated from this matrix.</p>
       <% matrix = Term.find_publication_matrix(@publication['id'], :media => 'json') %>
       
       <% unless matrix['otus'].empty? %>
