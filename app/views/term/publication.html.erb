@@ -23,7 +23,7 @@
       <p><%=h @publication['citation'] %></p>
       
       <% unless @publication['doi'].blank? %>
-        <p>DOI: <%=h @publication['doi'] %></p>
+        <p>DOI: <%= link_to @publication['doi'], "http://dx.doi.org/#{@publication['doi']}" %></p>
       <% end %>
       
       <h3>Abstract</h3>
