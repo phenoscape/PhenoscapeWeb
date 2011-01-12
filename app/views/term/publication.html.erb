@@ -56,7 +56,7 @@
                   <% end %>
                 </th>
                 <% matrix['characters'].each do |character| %>
-                  <td><%=h matrix['matrix'][otu['id']][character['id']] %></td>
+                  <td><%=h matrix['matrix'][otu['id']].fetch(character['id'], {'label' => '?'})['label']  %></td>
                 <% end %>
               </tr>
             <% end %>
