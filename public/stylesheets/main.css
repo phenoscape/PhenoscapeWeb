@@ -143,6 +143,9 @@ table.search_results .less_padding th, table.search_results tr.less_padding td {
 .sort_column a:hover {color: white;}
 .sort_column:hover {background-color:#249B90;}
 
+.tablesorter .headerSortDown:after { content: " " url("../images/down.png");}
+.tablesorter .headerSortUp:after { content: " " url("../images/up.png");}
+
 #phenotype_filter .including_parts {margin-left: 20px;}
 #phenotype_filter .including_parts input {vertical-align: middle;}
 #phenotype_filter .broaden_refine_link {font-size: 70%;}

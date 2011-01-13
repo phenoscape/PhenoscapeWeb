@@ -6,6 +6,7 @@
     <%= javascript_include_tag "jquery.ui.widget.js" %>
     <%= javascript_include_tag "jquery.ui.tabs.js" %>
     <%= javascript_include_tag "scrollable_table.js" %>
+    <%= javascript_include_tag "jquery.tablesorter.min.js" %>
     
     <script type='text/javascript'>
       jQuery(function() { jQuery("#tabs").tabs(); });
@@ -73,20 +74,33 @@
       <strong>Taxa and specimens used in this study</strong>
       
       <% otus = Term.find_publication_otus(@publication['id'], :media => 'json') %>
-      <table class='search_results'>
-        <tr>
-          <th class='nowrap'>Taxon name used in publication</th>
-          <th class='nowrap'>Taxon</th>
-          <th>Specimens</th>
-        </tr>
-        <% otus['otus'].each do |otu| %>
-          <tr class="<%= cycle('odd','even') %>">
-            <td><i><%=h otu['label'] %></i></td>
-            <td><%= term_link(otu['taxon']) %></td>
-            <td><%= otu['specimens'].map{|s| term_link(s['collection']) + " #{s['catalog_number']}" }.join(", ") %></td>
+      <table id='speciments_table' class='search_results tablesorter'>
+        <thead>
+          <tr>
+            <th class='nowrap sort_column'>Taxon name used in publication</th>
+            <th class='nowrap sort_column'>Taxon</th>
+            <th class='sort_column'>Specimens</th>
           </tr>
-        <% end %>
+        </thead>
+        <tbody>
+          <% otus['otus'].each do |otu| %>
+            <tr class="<%= cycle('odd','even') %>">
+              <td><i><%=h otu['label'] %></i></td>
+              <td><%= term_link(otu['taxon']) %></td>
+              <td><%= otu['specimens'].map{|s| term_link(s['collection']) + " #{s['catalog_number']}" }.join(", ") %></td>
+            </tr>
+          <% end %>
+        </tbody>
       </table>
+      <% content_for :javascript do %>
+        <script type='text/javascript'>
+          jQuery(document).ready(function() 
+            {
+              jQuery("#speciments_table").tablesorter();
+            }
+          );
+        </script>
+      <% end %>
     </div>
   </div>
 </div>
