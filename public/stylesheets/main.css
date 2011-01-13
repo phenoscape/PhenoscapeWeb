@@ -196,7 +196,7 @@ a.toggle_link:hover {text-decoration: underline;}
 
 
 
-.tableBoxOuter {width:90%; height: 500px; background: #FFFFFF;}
+.tableBoxOuter {width:99%; height: 500px; background: #FFFFFF;}
 .tableBoxOuter table {border-collapse: collapse;}
 .scrolltable td, .scrolltable th {font-size: 12px; margin: 0em; padding: 4px; table-layout: automatic; white-space: nowrap; border: 1px solid gray; min-height: 30px;}
 .tableBoxOuter .top_left_cell {border-right: 1px solid gray; border-bottom: 1px solid gray;}
