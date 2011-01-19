@@ -74,7 +74,7 @@
       <strong>Taxa and specimens used in this study</strong>
       
       <% otus = Term.find_publication_otus(@publication['id'], :media => 'json') %>
-      <table id='speciments_table' class='search_results tablesorter'>
+      <table id='specimens_table' class='search_results tablesorter'>
         <thead>
           <tr>
             <th class='nowrap sort_column'>Taxon name used in publication</th>
@@ -96,7 +96,7 @@
         <script type='text/javascript'>
           jQuery(document).ready(function() 
             {
-              jQuery("#speciments_table").tablesorter();
+              jQuery("#specimens_table").tablesorter();
             }
           );
         </script>
