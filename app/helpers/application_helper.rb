@@ -95,8 +95,8 @@ module ApplicationHelper
   def group_relationships(term)
     relationships = []
     if Term.type(term) == :taxon
-      relationships[0] = {'Parent' => [term['parent']]}
-      relationships[1] = {'Children' => []}
+      relationships << {'Parent' => (term['parent'] ? [term['parent']] : []) }
+      relationships << {'Children' => []}
       term['children'].each{|element| relationships[1]['Children'] << element if element }
     else
       ['parents', 'children'].each_with_index do |rel_type, rel_index|
