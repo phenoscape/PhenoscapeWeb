@@ -1,7 +1,7 @@
 	<select id='related_query_links' onchange="performRelatedQuery(this);">
-		<option <% unless controller.controller_name == 'taxon_annotations' %>value="/taxon_annotations" <% else %> value="" selected="selected" <% end %>>comparative phenotype annotations</option>
-		<option <% unless controller.controller_name == 'taxa' %>value="/taxa" <% else %> value="" selected="selected" <% end %>>taxa</option>
-		<option <% unless controller.controller_name == 'gene_annotations' %>value="/gene_annotations" <% else %> value="" selected="selected" <% end %>>gene phenotype annotations</option>
-		<option <% unless controller.controller_name == 'genes' %>value="/genes" <% else %> value="" selected="selected" <% end %>>genes</option>
-		<option <% unless controller.controller_name == 'publications' %>value="/publications" <% else %> value="" selected="selected" <% end %>>comparative publications</option>
+		<option <% unless controller.controller_name == 'taxon_annotations' %>value="/taxon_annotations" <% else %> value="" selected="selected" <% end %>>Phenotype annotations to taxa</option>
+		<option <% unless controller.controller_name == 'taxa' %>value="/taxa" <% else %> value="" selected="selected" <% end %>>Taxa</option>
+		<option <% unless controller.controller_name == 'gene_annotations' %>value="/gene_annotations" <% else %> value="" selected="selected" <% end %>>Phenotype annotations to genes</option>
+		<option <% unless controller.controller_name == 'genes' %>value="/genes" <% else %> value="" selected="selected" <% end %>>Genes</option>
+		<option <% unless controller.controller_name == 'publications' %>value="/publications" <% else %> value="" selected="selected" <% end %>>Comparative publications</option>
 	</select>
