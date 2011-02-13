@@ -61,6 +61,7 @@ class ApplicationController < ActionController::Base
     #Compile query params and send request
     query_params = {:query => build_json_query(additional_param_items, options)}
     [:index, :limit, :sortby, :desc].each{|f| query_params[f] = params[:filter][f] }
+    query_params[:postcompositions] = 'structure'
     return query_params
   end
   
@@ -95,7 +96,7 @@ class ApplicationController < ActionController::Base
   def download_query_results(model_class, q_params)
     q_params[:index] = 0
     q_params[:limit] = nil
-    
+    q_params[:postcompositions] = 'none'
     filename = model_class.to_s.pluralize.titleize
     if params[:media] == 'json'
       send_data(model_class.find(q_params, :format => :plain), :filename => "#{filename}.json", :type => :json)
