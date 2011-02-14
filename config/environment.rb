@@ -59,6 +59,8 @@ Rails::Initializer.run do |config|
     :session_key => '_PhenoscapeWeb_session',
     :secret      => '87ad2f8b1f04aeeb744ceac6d7bf72c9e92bb4d9682d47dfef3cdc322e753f692e30e21e2e173ea56987d05b8cc5fb9b32703a8617f94e63f542adb8310f7b63'
   }
+  
+  ActionController::Base.cache_store = :file_store, "#{RAILS_ROOT}/tmp/cache"
 
   # Use the database for sessions instead of the cookie-based default,
   # which shouldn't be used to store highly confidential information

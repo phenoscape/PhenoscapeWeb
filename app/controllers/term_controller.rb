@@ -1,6 +1,11 @@
 class TermController < ApplicationController
   
   before_filter :validate_term_type, :except => :tree
+  caches_action :entity
+  caches_action :publication
+  caches_action :taxon
+  caches_action :quality
+  caches_action :gene
   
   def tree
     path = Term.path(params[:id])['path']
