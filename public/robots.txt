@@ -2,6 +2,7 @@
 #
 # To ban all spiders from the entire site uncomment the next two lines:
 User-Agent: *
+Disallow: /OBD-WS
 Disallow: /taxon_annotations/download
 Disallow: /taxa/download
 Disallow: /gene_annotations/download
