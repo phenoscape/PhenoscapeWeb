@@ -1,0 +1,44 @@
+<div id="gene_filter_container" title="Choose Gene">
+  <% form_remote_tag :url => {:controller => :search, :action => :gene_filter}, :html => {:id => 'gene_filter_form', 
+       :onsubmit => "setNextIndex('next_gene_index', 'filter\\[genes\\]');"} do %>
+    <%= hidden_field_tag :next_gene_index %>
+    
+    <label for="name">Gene:</label>
+    <%= text_field_tag :gene_name, '', :id => 'geneChoice' %>
+    <%= hidden_field_tag :gene_id %>
+    
+    <%= submit_tag "Select Gene", :style => 'display:none', :id => 'gene_submit_button' %>
+  <% end %>
+</div>
+
+<% content_for :javascript do %>
+  <script type='text/javascript'>
+    jQuery(function(){
+      var dlg = jQuery("#gene_filter_container").dialog({
+        autoOpen: false,
+        height: 200,
+        width: 500,
+        modal: true,
+        buttons: {
+          'Select Gene': function() {
+            jQuery('#gene_submit_button').click();
+            jQuery(this).dialog('close');
+          },
+          Cancel: function() {
+            jQuery(this).dialog('close');
+          }
+        },
+        close: function() {}
+      });
+    });
+  </script>
+<% end %>
+
+<% content_for :footer_javascript do %>
+  <script type="text/javascript">
+    var ac = initAutocomplete("geneChoice", [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO], 'gene', 2);
+    ac.result(function(event, data, formatted) {
+      if(data){ jQuery("#gene_id").attr('value', data.id); }
+    });
+  </script>
+<% end %>

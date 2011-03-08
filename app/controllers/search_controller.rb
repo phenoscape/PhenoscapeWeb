@@ -80,6 +80,21 @@ class SearchController < ApplicationController
     end
   end
   
+  def gene_filter
+    gene_id = nil
+    unless params[:gene_id].blank?
+      gene_id = params[:gene_id]
+      set_filter_term_names_for_ids(gene_id)
+    end
+    render :update do |page|
+      page.replace_html 'gene_filter', '' if params[:next_gene_index].to_i == 0
+      page.insert_html :bottom, 'gene_filter', :partial => 'gene_filter_item', 
+        :locals => {:gene_id => gene_id, :index => params[:next_gene_index].to_i}
+      page << "jQuery('#gene_filter_container').dialog('close')"
+      page << "changeSectionFilterOperators('genes');"
+    end
+  end
+  
   
   def term_tooltip
     @term = Term.find(params[:id])

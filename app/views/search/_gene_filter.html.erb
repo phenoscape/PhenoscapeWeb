@@ -1,0 +1,11 @@
+<% if genes.blank? %>
+  <strong>Any</strong>
+<% else %>
+  <% count = 0
+     #unset match type if not activated for this section; could be set coming from a related query page but not used.
+     params[:filter][:genes_match_type] = nil if !defined?(any_or_all) || !any_or_all %> 
+  <% genes.each do |index, gene_id| %>
+    <%= render :partial => 'search/gene_filter_item', :locals => {:gene_id => gene_id, :index => count} %>
+    <% count += 1 %>
+  <% end %>
+<% end %>

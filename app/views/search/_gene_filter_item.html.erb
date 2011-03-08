@@ -1,0 +1,8 @@
+<% unless gene_id.blank? %>
+  <div class="gene italic">
+    <%= filter_operator(index, 'genes') %>
+    <%= hidden_field_tag "filter[genes][#{index}]", gene_id %>
+    <%= filter_term_link(gene_id) %>
+    <%= link_to_function image_tag("remove.png"), "$(this).up('.gene').remove(); updateFilterSection('gene_filter');" %>
+  </div>
+<% end %>
