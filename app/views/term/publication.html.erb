@@ -74,17 +74,17 @@
       <strong>Taxa and specimens used in this study</strong>
       
       <% otus = Term.find_publication_otus(@publication['id'], :media => 'json') %>
-      <table id='specimens_table' class='search_results tablesorter'>
+      <table id='specimens_table' class='search_results sortable'>
         <thead>
           <tr>
-            <th class='nowrap sort_column'>Taxon name used in publication</th>
+            <th id="initial_sort_column" class='nowrap sort_column'>Taxon name used in publication</th>
             <th class='nowrap sort_column'>Valid taxon</th>
             <th class='sort_column'>Specimens</th>
           </tr>
         </thead>
         <tbody>
           <% otus['otus'].each do |otu| %>
-            <tr class="<%= cycle('odd','even') %>">
+            <tr>
               <td style="white-space: nowrap;"><i><%=h otu['label'] %></i></td>
               <td style="white-space: nowrap;"><%= term_link(otu['taxon']) %></td>
               <td><%= otu['specimens'].map{|s| term_link(s['collection']) + "&nbsp;#{s['catalog_number']}" }.join(", ") %></td>
@@ -92,15 +92,6 @@
           <% end %>
         </tbody>
       </table>
-      <% content_for :javascript do %>
-        <script type='text/javascript'>
-          jQuery(document).ready(function() 
-            {
-              jQuery("#specimens_table").tablesorter();
-            }
-          );
-        </script>
-      <% end %>
     </div>
   </div>
 </div>

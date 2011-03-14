@@ -4,7 +4,7 @@
   filter[:sortby] = sort_by
   filter[:desc] = sorted && filter[:desc] == 'false' ? 'true' : 'false'
   link_text = "#{link_text}"
-  link_text += " &nbsp;" + image_tag((params[:filter][:desc]=='true' ? 'down.png' : 'up.png'), :alt => "Sorted by link_text") if sorted
+  link_text += " &nbsp;" + (params[:filter][:desc]=='true' ? '&uarr;' : '&darr;') if sorted
 %>
 <th class="sort_column <%= 'sorted' if sorted %> <%= css_classes.join(" ") if defined?(css_classes) && css_classes %>">
   <%= link_to link_text, :controller => controller, :action => action, :filter => filter %>
