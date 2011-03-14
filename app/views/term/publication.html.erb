@@ -80,7 +80,6 @@
             <th class='nowrap sort_column'>Taxon name used in publication</th>
             <th class='nowrap sort_column'>Valid taxon</th>
             <th class='sort_column'>Specimens</th>
-			<th class='sort_column'>Comment</th>
           </tr>
         </thead>
         <tbody>
@@ -89,7 +88,6 @@
               <td style="white-space: nowrap;"><i><%=h otu['label'] %></i></td>
               <td style="white-space: nowrap;"><%= term_link(otu['taxon']) %></td>
               <td><%= otu['specimens'].map{|s| term_link(s['collection']) + "&nbsp;#{s['catalog_number']}" }.join(", ") %></td>
-			  <td><%= otu['comment'] %></td>
             </tr>
           <% end %>
         </tbody>
