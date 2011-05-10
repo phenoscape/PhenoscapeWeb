@@ -9,6 +9,7 @@ SOURCE_KEYS = {
   'cellular_component'  => :entity,
   'quality'             => :quality,
   'phenoscape_pub'      => :publication,
+  'zfin_pub'            => :zfin_publication,
   'museum'              => :collection
 }
 

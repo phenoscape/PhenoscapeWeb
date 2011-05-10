@@ -16,7 +16,10 @@
   <% annotation_sources['annotations'].each_with_index do |annotation_source, index| %>
     <% if annotation_source['publication'] %>
       <div class="source <%= 'dotted_border' if index > 0 %>">
-	    <%= term_link(annotation_source['publication']) %>
+		<% if params[:node_type] == 'gene' %>
+		<% annotation_source['publication']['source'] = {'id'=>'zfin_pub'} %>
+		<% end %>
+	    <%= term_page_link(annotation_source['publication']) %>
         
         <% if annotation_source['character'] %>
           <table class='character_state'>
