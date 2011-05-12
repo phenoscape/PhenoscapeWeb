@@ -1,0 +1,74 @@
+<h3 class='facet_header'>Phenotypes involving <%= display_green_term(:quality) %> for <%= display_green_term(:entity) %> with
+  <%= display_green_term(:related_entity) %> in <%= display_green_term(:taxon) %> and <%= display_green_term(:gene) %></h3>
+
+<div style='margin-top:5px;'><%= link_to "View these results as a phenotypes query", :controller => :phenotypes, :action => :index, :filter => params[:filter] %></div>
+
+<div>
+  <div id="search_sidebar" class='no_margin'>
+    <h4>Refine Search:</h4>
+    
+    <div class='search_area'>
+      <!-- Phenotype Filter -->
+      <span class='section_heading'>Phenotype</span>
+      <div class='section'>
+        <%= select_tag 'facet_paths[part_of]', options_for_select([['type of', 'false'],  ['part of', 'true']], params[:facet_paths][:part_of]), :class => 'right', :onchange => 'facetPartSelectSubmit(this)' %>
+        <div id='facet_filter'>
+          <%= render :partial => 'facet_filter', :locals => {:facets => @entity_facets, :term_type => :entity} %>
+        </div>
+        <hr/>
+        <div id='facet_filter'>
+          <%= render :partial => 'facet_filter', :locals => {:facets => @quality_facets, :term_type => :quality} %>
+        </div>
+        <hr/>
+        <div id='facet_filter'>
+          <%= render :partial => 'facet_filter', :locals => {:facets => @related_entity_facets, :term_type => :related_entity} %>
+        </div>
+      </div>
+    
+      <!-- Taxon Filter -->
+      <span class='section_heading'>Taxon</span>
+      <div class='section'>
+        <div id='facet_filter'>
+          <%= render :partial => 'facet_filter', :locals => {:facets => @taxon_facets, :term_type => :taxon} %>
+        </div>
+      </div>
+    
+      <!-- Genes Filter -->
+      <span class='section_heading'>Genes</span>
+      <div class='section'>
+        <div id='facet_filter'>
+          <%= render :partial => 'facet_filter', :locals => {:facets => @gene_facets, :term_type => :gene} %>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="search_main">
+    
+    <%= render :partial => 'shared/pagination', :locals => {:collection => @phenotypes['phenotypes'], 
+          :total => @phenotypes['total']} %>
+    
+    <table class="search_results sortable">
+      <tr>
+        <% shared_locals = {:controller => "phenotypes", :action => "facets"} %>
+        <%= sort_column 'Entity', 'entity', shared_locals %>
+        <%= sort_column 'Quality', 'quality', shared_locals %>
+        <%= sort_column 'Related Entity', 'relatedentity', shared_locals %>
+      </tr>
+      <% for phenotype in @phenotypes['phenotypes'] %>
+        <tr class="<%= cycle('odd','even') %>">
+          <td class="post-composable"><%= term_link(phenotype['entity']) if phenotype['entity'] %></td>
+          <td class="post-composable"><%= term_link(phenotype['quality']) if phenotype['quality'] %></td>
+          <td class="post-composable"><%= term_link(phenotype['related_entity']) if phenotype['related_entity'] %></td>
+        </tr>
+      <% end %>
+    </table>
+
+	<%= render :partial => 'shared/pagination', :locals => {:collection => @phenotypes['phenotypes'], 
+          :total => @phenotypes['total']} %>
+    
+    <%= render :partial => 'shared/download_links', :locals => {:total => @phenotypes['total']} %>
+  </div>
+  
+  <div class='clear'></div>
+</div>

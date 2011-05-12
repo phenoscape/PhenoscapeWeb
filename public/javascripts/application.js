@@ -226,6 +226,19 @@ function toggleCommaSeparatedList(suffix) {
 }
 
 
+function facetPartSelectSubmit(select){
+  var select_value = select.options[select.selectedIndex].value;
+  old_location = window.location.toString();
+  if(old_location.indexOf("facet_paths%5Bpart_of%5D=true") != -1)
+    new_location = old_location.replace("facet_paths%5Bpart_of%5D=true", "facet_paths%5Bpart_of%5D=" + select_value);
+  else if(old_location.indexOf("facet_paths%5Bpart_of%5D=false") != -1)
+    new_location = old_location.replace("facet_paths%5Bpart_of%5D=false", "facet_paths%5Bpart_of%5D=" + select_value);
+  else
+    new_location = old_location + "&facet_paths%5Bpart_of%5D=" + select_value;
+  window.location = new_location;
+}
+
+
 function getParameters() {
     // get the current URL
      var url = window.location.toString();

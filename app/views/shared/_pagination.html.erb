@@ -3,7 +3,7 @@
     <% filter = params[:filter].clone
        filter[:index] = filter[:index].to_i - filter[:limit].to_i %>
     <% if filter[:index].to_i >= 0 %>
-      <%= link_to "&laquo; Previous", :controller => controller_name, :action => action_name, :filter => filter %>
+      <%= link_to "&laquo; Previous", :controller => controller_name, :action => action_name, :filter => filter, :facet_paths => params[:facet_paths] %>
     <% else %>
       &laquo; Previous
     <% end %>
@@ -18,7 +18,7 @@
     <% filter = params[:filter].clone
        filter[:index] = filter[:index].to_i + filter[:limit].to_i %>
     <% if filter[:index].to_i < total %>
-      <%= link_to "Next &raquo;", :controller => controller_name, :action => action_name, :filter => filter %>
+      <%= link_to "Next &raquo;", :controller => controller_name, :action => action_name, :filter => filter, :facet_paths => params[:facet_paths] %>
     <% else %>
       Next &raquo;
     <% end %>

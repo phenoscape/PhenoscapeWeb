@@ -80,6 +80,7 @@ class SearchController < ApplicationController
     end
   end
   
+  
   def gene_filter
     gene_id = nil
     unless params[:gene_id].blank?

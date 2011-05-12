@@ -31,8 +31,18 @@ class ApplicationController < ActionController::Base
     if params[:filter] && params[:filter][:phenotypes]
       params[:filter][:phenotypes].each{|index, ph| term_ids += ph.values.compact }
     end
-    term_ids.delete('true') #remove any 'true' values from "including parts" field
-    set_filter_term_names_for_ids(term_ids)
+    ['true', 'false', true, false].each{|val| term_ids.delete(val) } #remove any boolean values from "including parts" field
+    
+    #Add any ids from facet paths if present
+    [:entity, :quality, :related_entity, :taxon, :gene].each do |term_type|
+      results = instance_variable_get("@#{term_type}_facets")
+      if results && results['facet'].any?
+        term_ids += results['facet'].map{|i| i["id"]}.compact
+        term_ids += results['facet'].last['children'].map{|i| i["id"]}.compact
+      end
+    end
+    
+    set_filter_term_names_for_ids(term_ids.uniq)
   end
   
   

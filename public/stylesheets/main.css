@@ -35,6 +35,8 @@ td {border: none;}
 .italic {font-style: italic;}
 .no_italic {font-style: normal;}
 .nowrap {white-space: nowrap;}
+.green {color: #115A50;}
+.no_margin {margin: 0px !important;}
 
 
 th.no_color {background-color: #fff;}
@@ -54,6 +56,7 @@ tr.odd {background-color: #EBECEE;}
 #sidebar {float: left; width: 30%;}
 #main {margin-left: 3px; margin-right: 3px;}
 #search_sidebar {float: left; width: 30%; margin-top: 10px;}
+#search_sidebar h4 {color: #115A50; margin-bottom: 10px;}
 #search_main {float: right; width: 70%; margin-top: 10px;}
 #footer {clear: both; margin-top: 1em; padding-top: 2em; font-size: 75%;}
 #footer > div {color: #0a3a34; border-top: 5px solid #74c4ab;}
@@ -70,6 +73,9 @@ div#term_info div {margin-bottom: 0.25em;}
 div#term_info .header {font-weight: bold;font-size:120%;margin-bottom: 10px; padding: 5px;}
 .term-info-field-label {font-weight: bold; color: #0a3a34;;}
 #term_info .green_heading {color: #115A50; font-weight: bold; font-size: 17px; letter-spacing: -1px;}
+
+div.search_area .section_heading {background-color: #115A50; color: white; margin-left: 3px; margin-right: 1em; padding: 3px 5px;}
+div.search_area .section {border: 3px solid #115A50; margin-left: 3px; margin-right: 1em; margin-bottom: 15px; padding: 5px;}
 
 
 .yui-skin-sam .yui-ac-input { position: static; width: 100%;}
@@ -201,4 +207,9 @@ a.toggle_link:hover {text-decoration: underline;}
 .scrolltable td, .scrolltable th {font-size: 12px; margin: 0em; padding: 4px; table-layout: automatic; white-space: nowrap; border: 1px solid gray; min-height: 30px;}
 .tableBoxOuter .top_left_cell {border-right: 1px solid gray; border-bottom: 1px solid gray;}
 .tableBoxOuter .first_col a {color: #3C57A7;}
+
+.facet_header {margin-bottom:0px; margin-top: 10px;}
+.facet_item.active {font-weight: bold;}
+.facet_item.active a{color: black;}
+.facet_item .facet_count {color: gray;}
 

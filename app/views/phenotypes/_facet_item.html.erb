@@ -1,0 +1,9 @@
+<div class='facet_item <%= "active" if item.has_key?('children') %>'>
+  <%= tabs(level) %>
+  <% if item.has_key?('id') %>
+    <%= link_to_facet display_filter_term(item['id']), term_type, item['id'] %>
+  <% else %>
+    <%= link_to_facet "Any #{term_type.to_s.titleize.downcase}", term_type %>
+  <% end %>
+  <span class='facet_count'>(<%= item['count'] %>)</span>
+</div>

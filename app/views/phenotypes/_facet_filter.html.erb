@@ -1,0 +1,8 @@
+<% facets['facet'].each_with_index do |facet_item, facet_level| %>
+  <%= render :partial => 'facet_item', :locals => {:item => facet_item, :level => facet_level, :term_type => term_type} %>
+  <% if facet_item['children'] %>
+    <% facet_item['children'].each do |child| %>
+      <%= render :partial => 'facet_item', :locals => {:item => child, :level => facet_level+1, :term_type => term_type} %>
+    <% end %>
+  <% end %>
+<% end %>

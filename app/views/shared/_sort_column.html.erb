@@ -5,7 +5,9 @@
   filter[:desc] = sorted && filter[:desc] == 'false' ? 'true' : 'false'
   link_text = "#{link_text}"
   link_text += " &nbsp;" + (params[:filter][:desc]=='true' ? '&uarr;' : '&darr;') if sorted
+  link_options = {:controller => controller, :action => action, :filter => filter}
+  link_options[:facet_paths] = params[:facet_paths] unless params[:facet_paths].blank?
 %>
 <th class="sort_column <%= 'sorted' if sorted %> <%= css_classes.join(" ") if defined?(css_classes) && css_classes %>">
-  <%= link_to link_text, :controller => controller, :action => action, :filter => filter %>
+  <%= link_to link_text, link_options %>
 </th>

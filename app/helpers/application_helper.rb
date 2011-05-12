@@ -234,6 +234,28 @@ module ApplicationHelper
     link_to "[help]", "http://www.phenoscape.org/wiki/Knowledgebase:#{topic}", :popup => true, :class => "kb-help"
   end
   
+  
+  def link_to_facet(text, term_type, term_id=nil)
+    paths = params[:facet_paths].clone
+    if paths[term_type]
+      if term_id.blank?
+        paths[term_type] = nil
+      else
+        ids = paths[term_type].split(',')
+        term_index = ids.index(term_id)
+        if term_index
+          paths[term_type] = ids[0..term_index].join(',')
+        else
+          paths[term_type] = (ids + [term_id]).join(',')
+        end
+      end
+    else
+      paths[term_type] = term_id
+    end
+    link_to text, :controller => :phenotypes, :action => :facets, :facet_paths => paths
+  end
+  
+  
   def filter_operator(index, section_name)
     operator = (params[:filter] && params[:filter]["#{section_name}_match_type"] == 'all') ? 'and' : 'or'
     return (index.to_i > 0 ? "<div class='#{section_name} filter_operator'>#{operator}</div>" : '')
@@ -339,6 +361,12 @@ module ApplicationHelper
   end
   
   
+  def display_filter_term(id)
+    return display_term(@filter_term_names[id.to_s]) if @filter_term_names[id.to_s]
+    return ''
+  end
+  
+  
   def term_css_classes(term)
     css_class = ''
     css_class += ' extinct-taxon' if term['extinct']
@@ -373,6 +401,24 @@ module ApplicationHelper
   
   def unique_id
     "#{(Time.now.to_f*1000).to_i}#{rand(9999)}"
+  end
+  
+  
+  def tabs(number_of_tabs=1)
+    str = ''
+    number_of_tabs.times{ str +="<span class='tab'>&nbsp;&nbsp;&nbsp;</span>" }
+    return str
+  end
+  
+  
+  def display_green_term(term_type)
+    content_tag :span, :class => 'green' do
+      if @selected_term_ids[term_type]
+        display_filter_term(@selected_term_ids[term_type])
+      else
+        "any " + term_type.to_s.titleize.downcase
+      end
+    end
   end
   
 end
