@@ -42,14 +42,16 @@ class ApplicationController < ActionController::Base
       end
     end
     
-    set_filter_term_names_for_ids(term_ids.uniq)
+    set_filter_term_names_for_ids(term_ids.uniq.compact)
   end
   
   
   def set_filter_term_names_for_ids(term_id_or_ids)
     term_ids = term_id_or_ids.is_a?(Array) ? term_id_or_ids : [term_id_or_ids]
+    term_ids.compact!
     @filter_term_names = {}
     unless term_ids.blank?
+      pp 'term_ids', term_ids
       result = Term.names(term_ids)
       if result['terms'] && result['terms'].any?
         result['terms'].each{|term| @filter_term_names[term['id']] = term }

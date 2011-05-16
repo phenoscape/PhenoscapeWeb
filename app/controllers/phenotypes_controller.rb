@@ -35,8 +35,7 @@ class PhenotypesController < ApplicationController
       params[:facet_paths] ||= {}
       params[:filter] ||= {}
       params[:filter][:phenotypes] = {'0' => {}}
-      params[:filter][:taxa] = nil
-      params[:filter][:genes] = nil
+      [:taxa, :genes].each{|type| params[:filter][type] = {'0' => nil} }
       @selected_term_ids = {}
       [:entity, :quality, :related_entity, :taxon, :gene].each do |term_type|
         term_ids = params[:facet_paths][term_type].present? ? params[:facet_paths][term_type].split(',') : []
@@ -48,13 +47,12 @@ class PhenotypesController < ApplicationController
           if [:entity, :quality, :related_entity].include?(term_type)
             params[:filter][:phenotypes]['0'][term_type] = selected_term_id
           else
-            params[:filter][term_type] = [selected_term_id]
+            params[:filter][(term_type == :taxon ? :taxa : :genes)]['0'] = selected_term_id
           end
         end
       end
-      if params[:filter][:phenotypes]['0'].empty?
-        params[:filter][:phenotypes] = nil
-      else
+      [:phenotypes, :taxa, :genes].each{|type| params[:filter][type] = nil if params[:filter][type]['0'].blank? }
+      unless params[:filter][:phenotypes].nil?
         params[:filter][:phenotypes]['0'][:including_parts] = (params[:facet_paths][:part_of].to_s == 'true')
       end
       
