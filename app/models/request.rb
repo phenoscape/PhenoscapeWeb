@@ -30,7 +30,10 @@ class Request
   
   
   def self.result(url_suffix, url_prefix='/OBD-WS/')
-    response = Net::HTTP.get_response(self.host, url_prefix + url_suffix)
+    http = Net::HTTP.new(self.host)
+    http.read_timeout = 500
+    response = http.get(url_prefix + url_suffix)
+    #response = Net::HTTP.get_response(self.host, url_prefix + url_suffix)
     return response.body
   end
   
