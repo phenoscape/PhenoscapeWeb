@@ -51,7 +51,6 @@ class ApplicationController < ActionController::Base
     term_ids.compact!
     @filter_term_names = {}
     unless term_ids.blank?
-      pp 'term_ids', term_ids
       result = Term.names(term_ids)
       if result['terms'] && result['terms'].any?
         result['terms'].each{|term| @filter_term_names[term['id']] = term }
@@ -83,7 +82,10 @@ class ApplicationController < ActionController::Base
     options[:any_or_all_sections] ||= []
     
     query = {:phenotype => []}
-    additional_param_items.each{|item_name| query[item_name.to_s.singularize.to_sym] = [] }
+    additional_param_items.each do |item_name|
+      query[item_name.to_s.singularize.to_sym] = []
+      query[:gene_class] = [] if item_name.to_s.singularize.to_sym == :gene
+    end
     query[:include_inferred] = (params[:filter][:include_inferred] == 'true') if options[:inferred]
     options[:any_or_all_sections].each do |section| 
       query["match_all_#{section}".to_sym] = (params[:filter]["#{section}_match_type"] == 'all')
@@ -98,8 +100,16 @@ class ApplicationController < ActionController::Base
       query[:phenotype] << phenotype
     end
     additional_param_items.each do |item_name|
-      params[:filter][item_name].each{|index, id| query[item_name.to_s.singularize.to_sym] << {:id => id} }
+      params[:filter][item_name].each do |index, id|
+        if item_name.to_s == 'genes'
+          query_section_name = Gene.gene_class?(@filter_term_names[id]) ? :gene_class : :gene
+          query[query_section_name] << {:id => id}
+        else
+          query[item_name.to_s.singularize.to_sym] << {:id => id}
+        end
+      end
     end
+    pp query
     return URI.encode(JSON.generate(query))
   end
   
