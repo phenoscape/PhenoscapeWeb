@@ -12,9 +12,12 @@ class SearchController < ApplicationController
   
   
   def autocomplete
-    search_params = @template.search_params_for_term(SOURCE_KEYS[params[:ac_term_source]], params[:ac_term_id])
-    controller = (SOURCE_KEYS[params[:ac_term_source]] == :gene) ? :gene_annotations : :taxon_annotations
-    redirect_to :controller => controller, :action => :index, :params => search_params
+    #search_params = @template.search_params_for_term(SOURCE_KEYS[params[:ac_term_source]], params[:ac_term_id])
+    #controller = (SOURCE_KEYS[params[:ac_term_source]] == :gene) ? :gene_annotations : :taxon_annotations
+    #redirect_to :controller => controller, :action => :index, :params => search_params
+    
+    
+    redirect_to :controller => :term, :action => Term.type({"source" => {"id" => params[:ac_term_source]}}), :id => params[:ac_term_id]
   end
   
   

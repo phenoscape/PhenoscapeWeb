@@ -242,7 +242,11 @@ module ApplicationHelper
   
   
   def link_to_facet(text, term_type, term_id=nil)
-    paths = params[:facet_paths].clone
+    if params[:facet_paths]
+      paths = params[:facet_paths].clone
+    else
+      paths = {}
+    end
     if paths[term_type]
       if term_id.blank?
         paths[term_type] = nil
