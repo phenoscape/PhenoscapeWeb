@@ -74,7 +74,7 @@
       </tr>
       <% for taxon_annotation in @taxon_annotations['annotations'] %>
         <tr class="<%= cycle('odd','even') %>">
-          <td><input type="checkbox" class="save" title="Save to workspace">
+          <td><input type="checkbox" class="save" title="Save to workspace" rel='{"annotations":[<%= taxon_annotation.to_json %>]}'>
           <td><%= term_link(taxon_annotation['taxon']) if taxon_annotation['taxon'] %></td>
           <td class="post-composable"><%= term_link(taxon_annotation['entity']) if taxon_annotation['entity'] %></td>
           <td class="post-composable"><%= term_link(taxon_annotation['quality']) if taxon_annotation['quality'] %></td>

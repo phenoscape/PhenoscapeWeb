@@ -82,7 +82,7 @@
       </tr>
       <% for phenotype in @phenotypes['phenotypes'] %>
         <tr class="<%= cycle('odd','even') %>">
-          <td><input type="checkbox" class="save" title="Save to workspace">
+          <td><input type="checkbox" class="save" title="Save to workspace" rel='{"phenotypes":[<%= phenotype.to_json %>]}'>
           <td class="post-composable"><%= term_link(phenotype['entity']) if phenotype['entity'] %></td>
           <td class="post-composable"><%= term_link(phenotype['quality']) if phenotype['quality'] %></td>
           <td class="post-composable"><%= term_link(phenotype['related_entity']) if phenotype['related_entity'] %></td>

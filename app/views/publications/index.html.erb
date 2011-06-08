@@ -50,7 +50,7 @@
       </tr>
       <% for publication in @publications['publications'] %>
         <tr class="<%= cycle('odd','even') %>">
-          <td><input type="checkbox" class="save" title="Save to workspace">
+          <td><input type="checkbox" class="save" title="Save to workspace" rel='{"publications":[<%= publication.to_json %>]}'>
           <td><%= term_link(publication) %></td>
         </tr>
       <% end %>
