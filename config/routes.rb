@@ -1,6 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
   map.feedback 'feedbacks', :controller => 'feedbacks', :action => 'create'
   map.new_feedback 'feedbacks/new', :controller => 'feedbacks', :action => 'new'
+  
+  map.resource 'workspace', :only => [:show, :update, :destroy]
+  
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
