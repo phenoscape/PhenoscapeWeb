@@ -44,11 +44,13 @@
     
     <table class="search_results sortable">
       <tr>
+        <th><input type="checkbox" id="save-all" title="Save to workspace"></th>
         <% shared_locals = {:controller => "publications", :action => "index"} %>
         <%= sort_column 'Publication', 'publication', shared_locals %>
       </tr>
       <% for publication in @publications['publications'] %>
         <tr class="<%= cycle('odd','even') %>">
+          <td><input type="checkbox" class="save" title="Save to workspace">
           <td><%= term_link(publication) %></td>
         </tr>
       <% end %>

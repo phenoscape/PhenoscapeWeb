@@ -30,12 +30,14 @@
     
     <table class="search_results sortable">
       <tr>
+        <th><input type="checkbox" id="save-all" title="Save to workspace"></th>
         <% shared_locals = {:controller => "genes", :action => "index"} %>
         <%= sort_column 'Gene Symbol', 'gene', shared_locals %>
         <%= sort_column 'Gene Name', 'fullname', shared_locals %>
       </tr>
       <% for gene in @genes['genes'] %>
         <tr class="<%= cycle('odd','even') %>">
+          <td><input type="checkbox" class="save" title="Save to workspace">
           <td class='italic'><%= term_link(gene) %></td>
           <td class='italic'><%=h gene['fullname'] %></td>
         </tr>
