@@ -16,5 +16,39 @@
         success: undefined,
       });
     });
+    
+    $('#save-all').click(function(event) {
+      var checked = $(event.target).attr('checked');
+      var boxes = $('.save');
+
+      // Collect data from all checkboxes
+      var page_type;
+      var items = boxes.map(function(i, element) {
+        var hash = $.evalJSON($(element).attr('rel'));
+
+        // hash is of the form: {"type": [{...}]}; the hash value array only contains one element.
+        for (type in hash) { // Iterate over the one type, because this is the only way I know to pull it out without knowing its name
+          page_type = type;
+          return hash[type][0];
+        }
+      }).get();
+      var data = {page_type: items};
+      data = $.toJSON(data);
+      
+      // Send it in one request
+      $.ajax({
+        url: '/workspace',
+        type: 'post',
+        data: {
+          _method: checked ? 'put' : 'delete',
+          data: data,
+          authenticitiy_token: AUTH_TOKEN
+        },
+        success: undefined,
+      });
+      
+      // Visibally check/uncheck all boxes
+      boxes.attr('checked', checked);
+    });
   });
 })(jQuery);
