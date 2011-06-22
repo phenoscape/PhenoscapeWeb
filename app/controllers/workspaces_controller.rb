@@ -9,7 +9,7 @@ class WorkspacesController < ActionController::Base
   def update
     data = JSON.parse params['data']
     type = data.keys.first
-    items = data.values
+    items = data.values.first
     existing = session[:workspace][type] || []
     session[:workspace][type] = (existing + items).uniq
   end
@@ -17,7 +17,7 @@ class WorkspacesController < ActionController::Base
   def destroy
     data = JSON.parse params['data']
     type = data.keys.first
-    items = data.values
+    items = data.values.first
     existing = session[:workspace][type] || []
     existing.delete_if {|item| items.include? item}
     session[:workspace][type] = existing

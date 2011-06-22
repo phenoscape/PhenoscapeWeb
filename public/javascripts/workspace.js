@@ -17,6 +17,7 @@
       });
     });
     
+    // Save-all checkbox click event
     $('#save-all').click(function(event) {
       var checked = $(event.target).attr('checked');
       var boxes = $('.save');
@@ -32,7 +33,8 @@
           return hash[type][0];
         }
       }).get();
-      var data = {page_type: items};
+      var data = {};
+      data[page_type] = items;
       data = JSON.encode(data);
       
       // Send it in one request
