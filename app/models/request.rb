@@ -38,8 +38,45 @@ class Request
   end
   
   
+  # An entity with multiple parents is returned with parents in a random-ish order.
+  # These need to be sorted so we can keep track of whether or not they are saved in the workspace.
+  def self.sort_parents!(structure)
+    if structure.is_a? Hash
+      # Sort parents
+      if structure['parents']
+        # Recurse into parents inside parents before sorting
+        structure['parents'].select{|parent| parent['target']['parents'].present? }.each do |meta_parent|
+          sort_parents! meta_parent['target']['parents']
+        end
+        
+        # Sort the parents
+        structure['parents'].sort! do |a,b|
+          # Fall back to using parents.inspect when a target has parents and is not an entity with a name. It's consistent, because we just sorted it.
+          (a['target']['name'] || a['target']['parents'].inspect) <=> (b['target']['name'] || a['target']['parents'].inspect)
+        end
+      end
+      
+      # Recurse into hash values
+      structure.values.each do |substructure|
+        sort_parents! substructure
+      end
+      
+    # Traverse arrays
+    elsif structure.is_a? Array
+      structure.each do |element|
+        sort_parents! element
+      end
+    end
+    
+    # Ignore strings
+    
+    # Return the result structure, even though we modified it in place
+    return structure
+  end
+  
+  
   def self.json_result(url_suffix, url_prefix='/OBD-WS/')
-    return JSON.parse(result(url_suffix, url_prefix))
+    return sort_parents!(JSON.parse(result(url_suffix, url_prefix)))
   end
   
   
