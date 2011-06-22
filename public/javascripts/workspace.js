@@ -4,6 +4,7 @@
     setup_extensions();
 
     var save_boxes = $('.save');
+    var save_all = $('#save-all');
     
     // Initialize checkboxes that were previously checked by the user
     save_boxes.each(function(i, element) {
@@ -14,8 +15,14 @@
       element.attr('checked', was_checked);
     });
     
+    function check_save_all_status() {
+      save_all.attr('checked', save_boxes.are(':checked'));
+    };
+    check_save_all_status(); // on page load
+    
     // Save checkbox click event
-    save_boxes.click(function(event) { // Save the row to the session via AJAX
+    save_boxes.click(function(event) {
+      // Save the row to the session via AJAX
       var checkbox = $(event.target);
       var checked = checkbox.attr('checked'); // boolean
       var data = checkbox.attr('rel');
@@ -29,10 +36,13 @@
         },
         success: undefined,
       });
+      
+      // Update the save-all checkbox if all other boxes are/were checked
+      check_save_all_status();
     });
     
     // Save-all checkbox click event
-    $('#save-all').click(function(event) {
+    save_all.click(function(event) {
       var checked = $(event.target).attr('checked');
       var boxes = $('.save');
 
@@ -69,6 +79,10 @@
   });
   
   function setup_extensions() {
+    jQuery.fn.are = function(selector) {
+      return !!selector && this.filter(selector).length == this.length;
+    };
+    
     Object.prototype.equals = function(x) {
       if (x === undefined) {return false;}
       
