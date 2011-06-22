@@ -24,7 +24,7 @@
       // Collect data from all checkboxes
       var page_type;
       var items = boxes.map(function(i, element) {
-        var hash = $.evalJSON($(element).attr('rel'));
+        var hash = JSON.decode($(element).attr('rel'));
 
         // hash is of the form: {"type": [{...}]}; the hash value array only contains one element.
         for (type in hash) { // Iterate over the one type, because this is the only way I know to pull it out without knowing its name
@@ -33,7 +33,7 @@
         }
       }).get();
       var data = {page_type: items};
-      data = $.toJSON(data);
+      data = JSON.encode(data);
       
       // Send it in one request
       $.ajax({
