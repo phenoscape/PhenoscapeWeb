@@ -1,4 +1,4 @@
-class WorkspacesController < ActionController::Base
+class WorkspacesController < ApplicationController
 
   before_filter :initialize_session_workspace
 
@@ -23,12 +23,7 @@ class WorkspacesController < ActionController::Base
     session[:workspace][type] = existing
   end
 
-  after_filter :debug_session
   private
-    def debug_session
-      logger.error "SESSION: #{session.inspect}"
-    end
-    
     def initialize_session_workspace
       session[:workspace] ||= {}
     end

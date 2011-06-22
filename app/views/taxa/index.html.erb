@@ -68,7 +68,7 @@
       </tr>
       <% for taxon in @taxa['taxa'] %>
         <tr class="<%= cycle('odd','even') %>">
-          <td><input type="checkbox" class="save" title="Save to workspace" rel='{"taxa":[<%= taxon.to_json %>]}'>
+          <td><input type="checkbox" class="save" title="Save to workspace" category="taxa" rel='{"taxa":[<%= taxon.to_json %>]}'>
           <td><%= term_link(taxon['order']) if taxon['order'] %></td>
           <td><%= term_link(taxon['family']) if taxon['family'] %></td>
           <td><%= term_link(taxon) %></td>

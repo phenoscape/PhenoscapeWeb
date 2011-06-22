@@ -58,7 +58,7 @@
       </tr>
       <% for gene_annotation in @gene_annotations['annotations'] %>
         <tr class="<%= cycle('odd','even') %>">
-          <td><input type="checkbox" class="save" title="Save to workspace" rel='{"annotations":[<%= gene_annotation.to_json %>]}'>
+          <td><input type="checkbox" class="save" title="Save to workspace" category="annotations" rel='{"annotations":[<%= gene_annotation.to_json %>]}'>
           <td class='italic'><%= term_link(gene_annotation['gene']) if gene_annotation['gene'] %></td>
           <td class="post-composable"><%= term_link(gene_annotation['entity']) if gene_annotation['entity'] %></td>
           <td class="post-composable"><%= term_link(gene_annotation['quality']) if gene_annotation['quality'] %></td>
