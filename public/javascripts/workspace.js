@@ -83,32 +83,32 @@
       return !!selector && this.filter(selector).length == this.length;
     };
     
-    Object.prototype.equals = function(x) {
-      if (x === undefined) {return false;}
+    function equals(xx, yy) {
+      if (xx === undefined || xx === null || yy === undefined || yy === null) {return false;}
       
-      for (p in this) {
-        if(typeof(x[p])=='undefined') {return false;}
+      for (p in xx) {
+        if(typeof(yy[p])=='undefined') {return false;}
       }
 
-      for (p in this) {
-        if (this[p]) {
-          switch(typeof(this[p])) {
+      for (p in xx) {
+        if (xx[p]) {
+          switch(typeof(xx[p])) {
             case 'object':
-              if (!this[p].equals(x[p])) { return false }; break;
+              if (!equals(xx[p], yy[p])) { return false }; break;
             case 'function':
-              if (typeof(x[p])=='undefined' || (p != 'equals' && this[p].toString() != x[p].toString())) { return false; }; break;
+              if (typeof(yy[p])=='undefined' || (p != 'equals' && xx[p].toString() != yy[p].toString())) { return false; }; break;
             default:
-              if (this[p] != x[p]) { return false; }
+              if (xx[p] != yy[p]) { return false; }
           }
         } else {
-          if (x[p]) {
+          if (yy[p]) {
             return false;
           }
         }
       }
 
-      for (p in x) {
-        if (typeof(this[p])=='undefined') {return false;}
+      for (p in yy) {
+        if (typeof(xx[p])=='undefined') {return false;}
       }
 
       return true;
@@ -117,7 +117,7 @@
     Array.prototype.has = function(obj) {
       var i = this.length;
       while (i--) {
-        if (this[i].equals(obj)) {
+        if (equals(this[i], obj)) {
           return true;
         }
       }
