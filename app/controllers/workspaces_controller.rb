@@ -1,7 +1,5 @@
 class WorkspacesController < ApplicationController
 
-  before_filter :initialize_session_workspace
-
   def show
     
   end
@@ -23,9 +21,4 @@ class WorkspacesController < ApplicationController
     session[:workspace][type] = existing
   end
 
-  private
-    def initialize_session_workspace
-      session[:workspace] ||= {}
-    end
-  
 end

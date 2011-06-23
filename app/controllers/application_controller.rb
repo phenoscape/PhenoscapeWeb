@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   # filter_parameter_logging :password
   
   before_filter :set_host
-  
+  before_filter :initialize_session_workspace
   
   def set_host
     Request.host = self.request.host
@@ -155,6 +155,12 @@ class ApplicationController < ActionController::Base
       type.all { render :nothing => true, :status => 500 }
     end
   end
+  
+
+  private
+    def initialize_session_workspace
+      session[:workspace] ||= {}
+    end
   
 end
 
