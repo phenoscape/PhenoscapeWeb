@@ -213,3 +213,4 @@ a.toggle_link:hover {text-decoration: underline;}
 .facet_item.active a{color: black;}
 .facet_item .facet_count {color: gray;}
 
+.section.disabled,.section.disabled * {color: gray !important;}

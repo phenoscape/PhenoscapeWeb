@@ -9,6 +9,7 @@
     if ($('#workspace').length > 0)
       setup_workspace();
   });
+  
 
   function setup_save_to_workspace_on_queries() {
     var save_boxes = $('.save');
@@ -86,6 +87,7 @@
     });
   };
   
+  
   function setup_workspace() {
     var categories = ['taxa', 'genes', 'entities', 'qualities', 'publications', 'phenotypes'];
     var items = SESSION_WORKSPACE_ITEMS;
@@ -114,17 +116,105 @@
       });
     });
     
+    /* Define callbacks for items */
+    function delete_item() {
+      return false; // Don't jump to top of page
+    }
+    
     /* Insert items from each category into the DOM */
     categories.each(function(category) {
       var container = $('#' + category + " .filter");
       if (items[category]) {
         var unique_json_array = items[category].map(function(item) {return JSON.encode(item)}).uniq();
         unique_json_array.each(function(item_json) {
-          container.append('<ul><li>' + SESSION_WORKSPACE_LINKS[item_json] + '</li></ul>');
+          var item_container = $('<div class="term"></div>');
+          var use_checkbox = $('<input type="checkbox" class="left"/>');
+          var term_container = $('<div class="term_name">' + SESSION_WORKSPACE_LINKS[item_json] + '</div>')
+          var delete_button = $('<a href="#"><img src="/images/remove.png" alt="remove" title="remove" /></a>');
+          delete_button.click(delete_item).hide();
+          var delete_container = $('<div class="right"></div>').append(delete_button);
+          container.append(item_container);
+          item_container.append(use_checkbox);
+          item_container.append(delete_container);
+          item_container.append(term_container);
+          item_container.hover(
+            function() {delete_button.show()},
+            function() {delete_button.hide()}
+          );
         });
       }
     });
+    
+    /* Enable and disable appropriate categories according to the Query for select */
+    function select_query(query_type) {
+      var type_sections = {
+        'Phenotypes': 
+          [{name: 'taxa', anyall: true},
+           {name: 'genes', anyall: true},
+           {name: 'entities', anyall: false},
+           {name: 'qualities', anyall: true},
+           {name: 'publications', anyall: true},
+           {name: 'phenotypes', anyall: false}],
+        'Phenotype annotations to taxa':
+          [{name: 'taxa', anyall: false},
+           {name: 'entities', anyall: false},
+           {name: 'qualities', anyall: false},
+           {name: 'publications', anyall: false},
+           {name: 'phenotypes', anyall: false},
+           {name: 'inferred_annotations'}],
+        'Taxa':
+          [{name: 'taxa', anyall: false},
+           {name: 'entities', anyall: true},
+           {name: 'qualities', anyall: true},
+           {name: 'publications', anyall: true},
+           {name: 'phenotypes', anyall: true},
+           {name: 'inferred_annotations'}],
+        'Phenotype annotations to genes':
+          [{name: 'genes', anyall: false},
+           {name: 'entities', anyall: false},
+           {name: 'qualities', anyall: false},
+           {name: 'phenotypes', anyall: false}],
+        'Genes':
+          [{name: 'entities', anyall: true},
+           {name: 'qualities', anyall: true},
+           {name: 'phenotypes', anyall: true}],
+        'Comparative publications':
+          [{name: 'taxa', anyall: true},
+           {name: 'entities', anyall: true},
+           {name: 'qualities', anyall: true},
+           {name: 'phenotypes', anyall: true}],
+      };
+      
+      function disable_section(selector) {
+        var section = $(selector).not('.enabled');
+        section.find(':input').attr('disabled', true);
+        section.find('.any_or_all').hide();
+        section.addClass('disabled');
+      };
+      
+      function enable_section(selector, enable_anyall) {
+        var section = $(selector);
+        section.removeClass('disabled');
+        section.find(':input').attr('disabled', false);
+        if (enable_anyall)
+          section.find('.any_or_all').show();
+        else
+          section.find('.any_or_all').attr('disabled', true)
+      };
+      
+      var enabled_sections = type_sections[query_type];
+      disable_section('.section');
+      enabled_sections.each(function(section) {
+        enable_section('.section#' + section.name, section.anyall)
+      });
+    };
+    
+    var query_select = $('#related_query_links');
+    query_select.attr('onchange', ''); // Remove the onchange event that's used for other queries
+    query_select.change(function() {select_query($(this).find(':selected').html())});
+    select_query(query_select.find(':selected').html());
   };
+  
   
   function setup_extensions() {
     jQuery.fn.are = function(selector) {

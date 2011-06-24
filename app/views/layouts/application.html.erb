@@ -13,8 +13,10 @@
   <%= javascript_include_tag "JSON.js" %>
   <% javascript_tag do %>
   <!--
+    $.noConflict();
     var AUTH_TOKEN = <%= form_authenticity_token.inspect %>;
     var SESSION_WORKSPACE_ITEMS = JSON.decode(<%= session[:workspace].to_json.inspect %>);
+    
     var SESSION_WORKSPACE_LINKS = {
       <%- items = session[:workspace].values.flatten -%>
       <%- sub_items = (session[:workspace]['phenotypes']||[]) + (session[:workspace]['annotations']||[]) -%>
@@ -28,10 +30,9 @@
             <%- link = term_link(item) -%>
           <%- end -%>
           <%= link.inspect %>,
-        
+
       <%- end -%>
     };
-    $.noConflict();
   -->
   <% end %>
   <%= javascript_include_tag "jquery-ui-1.8.2.custom.min.js" %>
