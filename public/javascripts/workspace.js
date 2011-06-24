@@ -2,7 +2,15 @@
 (function($){
   $(document).ready(function() {
     setup_extensions();
+    
+    if ($('#save-all').length > 0)
+      setup_save_to_workspace_on_queries();
+      
+    if ($('#workspace').length > 0)
+      setup_workspace();
+  });
 
+  function setup_save_to_workspace_on_queries() {
     var save_boxes = $('.save');
     var save_all = $('#save-all');
     
@@ -76,7 +84,46 @@
       // Visibally check/uncheck all boxes
       boxes.attr('checked', checked);
     });
-  });
+  };
+  
+  function setup_workspace() {
+    var categories = ['taxa', 'genes', 'entities', 'qualities', 'publications', 'phenotypes'];
+    var items = SESSION_WORKSPACE_ITEMS;
+    var parent_categories = ['phenotypes', 'annotations'];
+    var component_map = {
+      'entity': 'entities',
+      'related_entity': 'entities',
+      'quality': 'qualities',
+      'gene': 'genes',
+      'taxon': 'taxa',
+    };
+    
+    /* ensure each category is defined in items */
+    function ensure_items_defines(category) {
+      if (!items[category])
+        items[category] = [];
+    }
+    categories.each(ensure_items_defines);
+    parent_categories.each(ensure_items_defines);
+    
+    /* Copy phenotype and annotation (parent category) components to their respective catetgories */
+    parent_categories.each(function(parent) {
+      Object.keys(component_map).each(function(component) {
+        var component_items_in_parent = items[parent].map(function(parent) {return parent[component]}).compact();
+        items[component_map[component]] = items[component_map[component]].concat(component_items_in_parent);
+      });
+    });
+    
+    /* Insert items from each category into the DOM */
+    categories.each(function(category) {
+      var container = $('#' + category + " .filter");
+      if (items[category]) {
+        items[category].each(function(item) {
+          container.append('<ul><li>' + SESSION_WORKSPACE_LINKS[JSON.encode(item)] + '</li></ul>');
+        });
+      }
+    });
+  };
   
   function setup_extensions() {
     jQuery.fn.are = function(selector) {

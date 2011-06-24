@@ -1,1 +1,48 @@
-Workspace
+<%= javascript_include_tag 'workspace' %>
+
+<div id="workspace">
+  <% if session[:workspace].present? %>
+    <% categories = %w(Taxa Genes Entities Qualities Publications Phenotypes) %>
+    <div id="search_sidebar">
+      <form action="">
+        <div id="term_info">
+          <div class="header">Query for: 
+            <select name="" id="">
+              <%= categories.map do |category|
+                %Q(<option value="#{category}">#{category}</option>")
+              end %>
+            </select>
+          </div>
+          <% categories.each_with_index do |category, i| %>
+            <div class="section" id="<%= category.downcase %>">
+              <div class="green_heading"><%= category %>
+                <span class="any_or_all">
+                  <input type="radio" checked="checked" />any
+                  <input type="radio" />all</span>:
+              </div>
+              <div class="filter section_indent">
+              </div>
+              <%= '<hr />' unless i+1 == categories.size %>
+            </div>
+          <% end %>
+          <div class="section top_border"><input type="checkbox" />
+            <span class="green_heading">
+              Include inferred annotations
+            </span>
+          </div>
+          <div class="section top_border center">
+            <input type="submit" value="Perform Query" />
+          </div>
+        </div>
+      </form>
+    </div>
+  <% end %>
+
+  <div id="search_main">
+    <% if session[:workspace].empty? %>
+      <p>Your workspace is currently empty.</p>
+    <% end %>
+    <p>When viewing query results, check the box to the left of any result to add it to this workspace.</p>
+    <p>Click on any of the saved workspace items to the left to include them in a new query.</p>
+  </div>
+</div>

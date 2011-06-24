@@ -11,11 +11,29 @@
   <!-- jQuery libraries -->
   <%= javascript_include_tag "jquery-1.4.2.min.js" %>
   <%= javascript_include_tag "JSON.js" %>
-  <script type="text/javascript">
+  <% javascript_tag do %>
+  <!--
     var AUTH_TOKEN = <%= form_authenticity_token.inspect %>;
     var SESSION_WORKSPACE_ITEMS = JSON.decode(<%= session[:workspace].to_json.inspect %>);
+    var SESSION_WORKSPACE_LINKS = {
+      <%- items = session[:workspace].values.flatten -%>
+      <%- sub_items = (session[:workspace]['phenotypes']||[]) + (session[:workspace]['annotations']||[]) -%>
+      <%- items += sub_items.map{|item| %w(entity quality related_entity taxon gene).map{|component| item[component]}.compact}.flatten -%>
+      <%- items.each do |item| -%>
+        <%= item.to_json.inspect %>: 
+          <%- link = ""; phenotype_components = %w(entity quality related_entity) -%> 
+          <%- if phenotype_components.map{|component| item[component]}.any? # It's a phenotype -%>
+            <%- link = phenotype_components.map{|component| item[component].present? ? term_link(item[component]) : ''}.join ' ' -%>
+          <%- else -%>
+            <%- link = term_link(item) -%>
+          <%- end -%>
+          <%= link.inspect %>,
+        
+      <%- end -%>
+    };
     $.noConflict();
-  </script>
+  -->
+  <% end %>
   <%= javascript_include_tag "jquery-ui-1.8.2.custom.min.js" %>
   <%= javascript_include_tag "jquery.autocomplete.min.js" %>
   <%= javascript_include_tag "jquery.menu.min.js" %>

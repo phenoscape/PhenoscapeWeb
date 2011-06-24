@@ -1,3 +1,4 @@
+/* Modified to not escape the / character with \/ */
 /*
 Script: JSON.js
 
@@ -280,7 +281,8 @@ JSON = new function(){
 		p = ["","000","00","0",""],
 		rc = null,
 		rd = /^[0-9]{4}\-[0-9]{2}\-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}$/,
-		rs = /(\x5c|\x2F|\x22|[\x0c-\x0d]|[\x08-\x0a])/g,
+		rs = /(\x5c|\x22|[\x0c-\x0d]|[\x08-\x0a])/g,
+		//rs = /(\x5c|\x2F|\x22|[\x0c-\x0d]|[\x08-\x0a])/g,  // This version escapes / (\x2F)
 		rt = /^([0-9]+|[0-9]+[,\.][0-9]{1,3})$/,
 		ru = /([\x00-\x07]|\x0b|[\x0e-\x1f])/g,
 		s = function(i,d){return "\\".concat(c[d])},
