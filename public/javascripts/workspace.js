@@ -118,8 +118,9 @@
     categories.each(function(category) {
       var container = $('#' + category + " .filter");
       if (items[category]) {
-        items[category].each(function(item) {
-          container.append('<ul><li>' + SESSION_WORKSPACE_LINKS[JSON.encode(item)] + '</li></ul>');
+        var unique_json_array = items[category].map(function(item) {return JSON.encode(item)}).uniq();
+        unique_json_array.each(function(item_json) {
+          container.append('<ul><li>' + SESSION_WORKSPACE_LINKS[item_json] + '</li></ul>');
         });
       }
     });
