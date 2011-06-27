@@ -118,6 +118,25 @@
     
     /* Define callbacks for items */
     function delete_item() {
+      var delete_button = $(this);
+      var item_container = delete_button.closest('.term');
+      
+      /* Remove the item from the workspace */
+      var full_item_json = delete_button.attr('rel');
+      $.ajax({
+        url: '/workspace',
+        type: 'post',
+        data: {
+          _method: 'delete',
+          data: full_item_json,
+          authenticitiy_token: AUTH_TOKEN
+        },
+        success: undefined,
+      });
+      
+      /* Remove item visibly from the page */
+      item_container.remove();
+      
       return false; // Don't jump to top of page
     }
     
@@ -176,6 +195,9 @@
           var use_checkbox = $('<input type="checkbox" class="left"/>');
           var term_container = $('<div class="term_name">' + SESSION_WORKSPACE_LINKS[item_json] + '</div>');
           var delete_button = $('<a href="#"><img src="/images/remove.png" alt="remove" title="remove" /></a>');
+          var item_with_category = {};
+          item_with_category[category] = [item];
+          delete_button.attr('rel', JSON.encode(item_with_category));
           delete_button.click(delete_item).hide();
           var delete_container = $('<div class="right"></div>').append(delete_button);
           container.append(item_container);

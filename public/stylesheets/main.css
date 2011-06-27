@@ -213,4 +213,19 @@ a.toggle_link:hover {text-decoration: underline;}
 .facet_item.active a{color: black;}
 .facet_item .facet_count {color: gray;}
 
-.section.disabled,.section.disabled * {color: gray !important;}
+#workspace .section.disabled,#workspace .section.disabled * {color: gray !important;}
+#workspace .term:hover {
+  background-image: -webkit-gradient(
+    linear,
+    right top,
+    left top,
+    color-stop(0.05, #FFFFFF),
+    color-stop(0.51, #74C4AB)
+  );
+  background-image: -moz-linear-gradient(
+    right center,
+    #FFFFFF 5%,
+    #74C4AB 51%
+  );
+  background-color: #74c4ab;
+}
