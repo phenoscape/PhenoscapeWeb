@@ -10,11 +10,11 @@
             <%= render :partial => 'shared/related_query_links' %>
           </div>
           <% categories.each_with_index do |category, i| %>
-            <div class="section" id="<%= category.downcase %>">
+            <div class="section" id="<%= category.underscore %>">
               <div class="green_heading"><%= category %>
                 <span class="any_or_all">
-                  <input type="radio" checked="checked" />any
-                  <input type="radio" />all</span>:
+                  <input type="radio" name="filter[<%= category.underscore %>_match_type]" value="any" checked="checked" />any
+                  <input type="radio" name="filter[<%= category.underscore %>_match_type]" value="all" />all</span>:
               </div>
               <div class="filter section_indent">
               </div>
@@ -22,7 +22,7 @@
             </div>
           <% end %>
           <div class="section top_border" id="inferred_annotations">
-            <input type="checkbox" />
+            <input type="checkbox" name="filter[include_inferred]" />
             <span class="green_heading">
               Include inferred annotations
             </span>

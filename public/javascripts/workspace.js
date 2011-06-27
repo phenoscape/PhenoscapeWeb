@@ -125,28 +125,81 @@
     categories.each(function(category) {
       var container = $('#' + category + " .filter");
       if (items[category]) {
+        // Uniq the JSON, because uniq removes duplicate objects or strings, not objects with duplicate contents
         var unique_json_array = items[category].map(function(item) {return JSON.encode(item)}).uniq();
         unique_json_array.each(function(item_json) {
+          var item = JSON.decode(item_json);
+          function filter_name() {
+            
+          }
+          function set_up_checkbox(checkbox) {
+            /* Keep a counter to make unique params */
+            if (!this.counter)
+              this.counter = 0
+            this.counter++;
+            
+            if (category == 'phenotypes') {
+              /* For phenotypes, we need to send params for each phenotype component */
+
+              /* Create and insert hidden fields into the DOM */
+              var hidden_fields = ['entity', 'quality', 'related_entity'].map(function(component) {
+                if (item[component]) {
+                  var name = 'filter[phenotypes][' + counter + '][' + component + ']';
+                  return $('<input type="hidden" name="' + name + '" value="' + item[component]['id'] + '" />').insertAfter(checkbox);
+                } else {
+                  return null;
+                }
+              }).compact();
+              
+              /* Enable and disable them when the box is checked */
+              function enable_if_checked(checkbox, targets) {
+                targets.each(function(target) {
+                  $(target).attr('disabled', !$(checkbox).data('checked'));
+                });
+              };
+              checkbox.click(function() {
+                /* We need to store the check state rather than relying on checkbox.attr('checked') to track it, 
+                   because depending on whether the checkbox or the row is clicked, the attribute will have updated or not */
+                checkbox.data('checked', !checkbox.data('checked'));
+                enable_if_checked(this, hidden_fields)
+                });
+              checkbox.data('checked', false);
+              enable_if_checked(checkbox, hidden_fields);
+              
+            } else {
+              /* For everything else, we can just enable or disable the checkbox, which contains the filter value. */
+              var name = 'filter[' + category + '][' + counter + ']';
+              checkbox.attr('name', name).val(item['id']);
+            }
+          }
           var item_container = $('<div class="term"></div>');
           var use_checkbox = $('<input type="checkbox" class="left"/>');
-          var term_container = $('<div class="term_name">' + SESSION_WORKSPACE_LINKS[item_json] + '</div>')
+          var term_container = $('<div class="term_name">' + SESSION_WORKSPACE_LINKS[item_json] + '</div>');
           var delete_button = $('<a href="#"><img src="/images/remove.png" alt="remove" title="remove" /></a>');
           delete_button.click(delete_item).hide();
           var delete_container = $('<div class="right"></div>').append(delete_button);
           container.append(item_container);
           item_container.append(use_checkbox);
+          set_up_checkbox(use_checkbox);
           item_container.append(delete_container);
           item_container.append(term_container);
           item_container.hover(
             function() {delete_button.show()},
             function() {delete_button.hide()}
           );
+          
+          /* When clicking on the row, toggle the checkbox. Don't toggle if a term name link was clicked */
+          term_container.click(function(event) {
+            if (!use_checkbox.attr('disabled') && $(event.target).hasClass('term_name')) {
+              use_checkbox.click();
+            }
+          });
         });
       }
     });
     
     /* Enable and disable appropriate categories according to the Query for select */
-    function select_query(query_type) {
+    function select_query(query_option) {
       var type_sections = {
         'Phenotypes': 
           [{name: 'taxa', anyall: true},
@@ -187,7 +240,7 @@
       
       function disable_section(selector) {
         var section = $(selector).not('.enabled');
-        section.find(':input').attr('disabled', true);
+        section.find(':input').not('[type="hidden"]').attr('disabled', true);
         section.find('.any_or_all').hide();
         section.addClass('disabled');
       };
@@ -195,24 +248,29 @@
       function enable_section(selector, enable_anyall) {
         var section = $(selector);
         section.removeClass('disabled');
-        section.find(':input').attr('disabled', false);
+        section.find(':input').not('[type="hidden"]').attr('disabled', false);
         if (enable_anyall)
           section.find('.any_or_all').show();
         else
           section.find('.any_or_all').attr('disabled', true)
       };
       
-      var enabled_sections = type_sections[query_type];
+      /* Enable the appropriate sections */
+      var enabled_sections = type_sections[query_option.html()];
       disable_section('.section');
       enabled_sections.each(function(section) {
         enable_section('.section#' + section.name, section.anyall)
       });
+      
+      /* Set the form action */
+      query_option.closest('form').attr('action', query_option.val());
     };
     
+    /* Set up Query for select box */
     var query_select = $('#related_query_links');
     query_select.attr('onchange', ''); // Remove the onchange event that's used for other queries
-    query_select.change(function() {select_query($(this).find(':selected').html())});
-    select_query(query_select.find(':selected').html());
+    query_select.change(function() {select_query($(this).find(':selected'))}); // .find(':selected') is the selected <option>
+    select_query(query_select.find(':selected'));
   };
   
   
