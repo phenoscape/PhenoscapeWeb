@@ -16,11 +16,24 @@
     $.noConflict();
     var AUTH_TOKEN = <%= form_authenticity_token.inspect %>;
     var SESSION_WORKSPACE_ITEMS = JSON.decode(<%= session[:workspace].to_json.inspect %>);
-    
+
     var SESSION_WORKSPACE_LINKS = {
+      <%# Add links for main values %>
       <%- items = session[:workspace].values.flatten -%>
-      <%- sub_items = (session[:workspace]['phenotypes']||[]) + (session[:workspace]['annotations']||[]) -%>
-      <%- items += sub_items.map{|item| %w(entity quality related_entity taxon gene).map{|component| item[component]}.compact}.flatten -%>
+      <%# Add links for components %>
+      <%- components = (session[:workspace]['phenotypes']||[]) + (session[:workspace]['annotations']||[]) -%>
+      <%- items += components.map{|item| %w(entity quality related_entity taxon gene).map{|component| item[component]}.compact}.flatten -%>
+      <%# Remove the taxon/gene part of the the annotation, and now it's the phenotype that we'll need a link for %>
+      <%- 
+        items += (session[:workspace]['annotations']||[]).map do |annotation| 
+          phenotype = ActiveSupport::OrderedHash.new
+          phenotype['entity'] = annotation['entity'] if annotation['entity']
+          phenotype['quality'] = annotation['quality'] if annotation['quality']
+          phenotype['related_entity'] = annotation['related_entity'] if annotation['related_entity']
+          phenotype
+        end
+      -%>
+      <%# Loop through each and make a link for it %>
       <%- items.each do |item| -%>
         <%= item.to_json.inspect %>: 
           <%- link = ""; phenotype_components = %w(entity quality related_entity) -%> 

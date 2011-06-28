@@ -92,6 +92,7 @@
     var categories = ['taxa', 'genes', 'entities', 'qualities', 'publications', 'phenotypes'];
     var items = SESSION_WORKSPACE_ITEMS;
     var parent_categories = ['phenotypes', 'annotations'];
+    var phenotype_component_types = ['entity', 'quality', 'related_entity'];
     var component_map = {
       'entity': 'entities',
       'related_entity': 'entities',
@@ -109,10 +110,32 @@
     parent_categories.each(ensure_items_defines);
     
     /* Copy phenotype and annotation (parent category) components to their respective catetgories */
-    parent_categories.each(function(parent) {
-      Object.keys(component_map).each(function(component) {
-        var component_items_in_parent = items[parent].map(function(parent) {return parent[component]}).compact();
-        items[component_map[component]] = items[component_map[component]].concat(component_items_in_parent);
+    parent_categories.each(function(parent_type) {
+      items[parent_type].each(function(parent) {
+        /* Extract components from each parent, and add them into the items array */
+        Object.keys(component_map).each(function(component_type) {
+          if (parent[component_type]) {
+            /* Clone, so we can modify the object (mark it a component) without modifying the parent's contents */
+            var component = Object.clone(parent[component_type]);
+          
+            /* Mark it as a component */
+            component.component = true;
+          
+            /* Add it to the items object */
+            items[component_map[component_type]].push(component);
+          }
+        });
+
+        /* For taxa and gene annotations, create a phenotype from the combination of the phenotype components, and add it to the items object */
+        if (parent_type == 'annotations') {
+          var phenotype = { component: true };
+          var phenotype_components = phenotype_component_types.each(function(phenotype_component_type) {
+            var component = parent[phenotype_component_type];
+            if (component)
+              phenotype[phenotype_component_type] = component;
+          });
+          items['phenotypes'].push(phenotype);
+        }
       });
     });
     
@@ -148,23 +171,35 @@
         var unique_json_array = items[category].map(function(item) {return JSON.encode(item)}).uniq();
         unique_json_array.each(function(item_json) {
           var item = JSON.decode(item_json);
-          function filter_name() {
-            
+          
+          /* Make components look real */
+          var is_component = item.component;
+          if (is_component) {
+            /* Remove the temporary component property, so the JSON will match up with the SESSION_WORKSPACE_LINK and work properly in a query */
+            delete item.component;
+            item_json = JSON.encode(item);
           }
+
           function set_up_checkbox(checkbox) {
             /* Keep a counter to make unique params */
             if (!this.counter)
               this.counter = 0
             this.counter++;
             
-            if (category == 'phenotypes') {
+            if (category == 'phenotypes' || (is_component && ['entities', 'qualities'].include(category))) {
               /* For phenotypes, we need to send params for each phenotype component */
 
               /* Create and insert hidden fields into the DOM */
-              var hidden_fields = ['entity', 'quality', 'related_entity'].map(function(component) {
-                if (item[component]) {
-                  var name = 'filter[phenotypes][' + counter + '][' + component + ']';
-                  return $('<input type="hidden" name="' + name + '" value="' + item[component]['id'] + '" />').insertAfter(checkbox);
+              var hidden_fields = phenotype_component_types.map(function(component_type) {
+                if (item[component_type] || category == component_type.sub('entity', 'entities').sub('quality', 'qualities')) {
+                  var insertion_item = item;
+                  /* If item is not a phenotype, then it's a component. Wrap it in a phenotype */
+                  if (category != 'phenotypes') {
+                    insertion_item = {};
+                    insertion_item[component_type] = item;
+                  }
+                  var name = 'filter[phenotypes][' + counter + '][' + component_type + ']';
+                  return $('<input type="hidden" name="' + name + '" value="' + insertion_item[component_type]['id'] + '" />').insertAfter(checkbox);
                 } else {
                   return null;
                 }
@@ -196,7 +231,8 @@
           var term_container = $('<div class="term_name">' + SESSION_WORKSPACE_LINKS[item_json] + '</div>');
           var delete_button = $('<a href="#"><img src="/images/remove.png" alt="remove" title="remove" /></a>');
           var item_with_category = {};
-          item_with_category[category] = [item];
+          var query_category = category.gsub(/entities|qualities/, 'phenotypes')
+          item_with_category[query_category] = [item];
           delete_button.attr('rel', JSON.encode(item_with_category));
           delete_button.click(delete_item).hide();
           var delete_container = $('<div class="right"></div>').append(delete_button);
@@ -226,37 +262,37 @@
         'Phenotypes': 
           [{name: 'taxa', anyall: true},
            {name: 'genes', anyall: true},
-           {name: 'entities', anyall: false},
-           {name: 'qualities', anyall: true},
+           {name: 'entities'},
+           {name: 'qualities'},
            {name: 'publications', anyall: true},
            {name: 'phenotypes', anyall: false}],
         'Phenotype annotations to taxa':
           [{name: 'taxa', anyall: false},
-           {name: 'entities', anyall: false},
-           {name: 'qualities', anyall: false},
+           {name: 'entities'},
+           {name: 'qualities'},
            {name: 'publications', anyall: false},
            {name: 'phenotypes', anyall: false},
            {name: 'inferred_annotations', anyall: true}],
         'Taxa':
           [{name: 'taxa', anyall: false},
-           {name: 'entities', anyall: true},
-           {name: 'qualities', anyall: true},
+           {name: 'entities'},
+           {name: 'qualities'},
            {name: 'publications', anyall: true},
            {name: 'phenotypes', anyall: true},
            {name: 'inferred_annotations', anyall: true}],
         'Phenotype annotations to genes':
           [{name: 'genes', anyall: false},
-           {name: 'entities', anyall: false},
-           {name: 'qualities', anyall: false},
+           {name: 'entities'},
+           {name: 'qualities'},
            {name: 'phenotypes', anyall: false}],
         'Genes':
-          [{name: 'entities', anyall: true},
-           {name: 'qualities', anyall: true},
+          [{name: 'entities'},
+           {name: 'qualities'},
            {name: 'phenotypes', anyall: true}],
         'Comparative publications':
           [{name: 'taxa', anyall: true},
-           {name: 'entities', anyall: true},
-           {name: 'qualities', anyall: true},
+           {name: 'entities'},
+           {name: 'qualities'},
            {name: 'phenotypes', anyall: true}],
       };
       
