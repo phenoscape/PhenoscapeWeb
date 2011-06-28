@@ -236,14 +236,14 @@
            {name: 'qualities', anyall: false},
            {name: 'publications', anyall: false},
            {name: 'phenotypes', anyall: false},
-           {name: 'inferred_annotations'}],
+           {name: 'inferred_annotations', anyall: true}],
         'Taxa':
           [{name: 'taxa', anyall: false},
            {name: 'entities', anyall: true},
            {name: 'qualities', anyall: true},
            {name: 'publications', anyall: true},
            {name: 'phenotypes', anyall: true},
-           {name: 'inferred_annotations'}],
+           {name: 'inferred_annotations', anyall: true}],
         'Phenotype annotations to genes':
           [{name: 'genes', anyall: false},
            {name: 'entities', anyall: false},
@@ -260,28 +260,28 @@
            {name: 'phenotypes', anyall: true}],
       };
       
-      function disable_section(selector) {
-        var section = $(selector).not('.enabled');
+      function disable_sections() {
+        var section = $('.section,.section_options').not('.enabled');
+        $('.section_options').hide();
         section.find(':input').not('[type="hidden"]').attr('disabled', true);
-        section.find('.any_or_all').hide();
         section.addClass('disabled');
       };
       
-      function enable_section(selector, enable_anyall) {
-        var section = $(selector);
+      function enable_section(section_name, enable_anyall) {
+        var section = $('.section#' + section_name + ',.section_options#' + section_name + '_options');
         section.removeClass('disabled');
         section.find(':input').not('[type="hidden"]').attr('disabled', false);
         if (enable_anyall)
-          section.find('.any_or_all').show();
+          $('.section_options#' + section_name + '_options').show();
         else
-          section.find('.any_or_all').attr('disabled', true)
+          $('.section_options#' + section_name + '_options').hide().find('input').attr('disabled', true)
       };
       
       /* Enable the appropriate sections */
       var enabled_sections = type_sections[query_option.html()];
-      disable_section('.section');
+      disable_sections();
       enabled_sections.each(function(section) {
-        enable_section('.section#' + section.name, section.anyall)
+        enable_section(section.name, section.anyall)
       });
       
       /* Set the form action */

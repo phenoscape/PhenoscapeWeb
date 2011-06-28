@@ -1,45 +1,57 @@
 <%= javascript_include_tag 'workspace' %>
+<% categories = %w(Taxa Genes Entities Qualities Publications Phenotypes) %>
 
 <div id="workspace">
-  <% if session[:workspace].present? %>
-    <% categories = %w(Taxa Genes Entities Qualities Publications Phenotypes) %>
-    <div id="search_sidebar">
-      <form action="">
+  <form method="get">
+    <% if session[:workspace].present? %>
+      <div id="search_sidebar">
         <div id="term_info">
           <div class="header">Query for: 
             <%= render :partial => 'shared/related_query_links' %>
           </div>
           <% categories.each_with_index do |category, i| %>
             <div class="section" id="<%= category.underscore %>">
-              <div class="green_heading"><%= category %>
-                <span class="any_or_all">
-                  <input type="radio" name="filter[<%= category.underscore %>_match_type]" value="any" checked="checked" />any
-                  <input type="radio" name="filter[<%= category.underscore %>_match_type]" value="all" />all</span>:
+              <div class="green_heading">
+                <%= category %>:
               </div>
               <div class="filter section_indent">
               </div>
               <%= '<hr />' unless i+1 == categories.size %>
             </div>
           <% end %>
-          <div class="section top_border" id="inferred_annotations">
+        </div>
+      </div>
+    <% end %>
+
+    <div id="search_main">
+      <% if session[:workspace].empty? %>
+        <p>Your workspace is currently empty.</p>
+      <% end %>
+      <p>When viewing query results, check the box to the left of any result to add it to this workspace.</p>
+      <p>Click on any of the saved workspace items to the left to include them in a new query.</p>
+      <% if session[:workspace].present? %>
+        <div class="query_options">
+          <% categories.each do |category| %>
+            <div class="section_options" id="<%= category.underscore %>_options">
+              Match
+              (<input type="radio" name="filter[<%= category.underscore %>_match_type]" value="any" checked="checked" id="<%= category.underscore %>_any" />
+              <label for="<%= category.underscore %>_any">any</label> 
+              <input type="radio" name="filter[<%= category.underscore %>_match_type]" value="all" id="<%= category.underscore %>_all" />
+              <label for="<%= category.underscore %>_all">all</label>)
+              checked <%= category %>
+            </div>
+          <% end %>
+          <div id="inferred_annotations_options" class="section_options">
             <input type="checkbox" name="filter[include_inferred]" id="filter_include_inferred" />
             <label class="green_heading" for="filter_include_inferred">
               Include inferred annotations
             </span>
           </div>
-          <div class="section top_border center enabled">
+          <div>
             <input type="submit" value="Perform Query" />
           </div>
         </div>
-      </form>
+      <% end %>
     </div>
-  <% end %>
-
-  <div id="search_main">
-    <% if session[:workspace].empty? %>
-      <p>Your workspace is currently empty.</p>
-    <% end %>
-    <p>When viewing query results, check the box to the left of any result to add it to this workspace.</p>
-    <p>Click on any of the saved workspace items to the left to include them in a new query.</p>
-  </div>
+  </form>
 </div>
