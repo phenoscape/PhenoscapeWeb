@@ -239,7 +239,8 @@
           container.append(item_container);
           item_container.append(use_checkbox);
           set_up_checkbox(use_checkbox);
-          item_container.append(delete_container);
+          if (!is_component)
+            item_container.append(delete_container);
           item_container.append(term_container);
           item_container.hover(
             function() {delete_button.show()},
