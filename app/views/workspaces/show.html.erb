@@ -6,9 +6,6 @@
     <% if session[:workspace].present? %>
       <div id="search_sidebar">
         <div id="term_info">
-          <div class="header">Query for: 
-            <%= render :partial => 'shared/related_query_links' %>
-          </div>
           <% categories.each_with_index do |category, i| %>
             <div class="section" id="<%= category.underscore %>">
               <div class="green_heading">
@@ -26,6 +23,10 @@
     <div id="search_main">
       <% if session[:workspace].empty? %>
         <p>Your workspace is currently empty.</p>
+      <% else %>
+        <div class="header">Query for: 
+          <%= render :partial => 'shared/related_query_links' %>
+        </div>
       <% end %>
       <p>When viewing query results, check the box to the left of any result to add it to this workspace.</p>
       <p>Click on any of the saved workspace items to the left to include them in a new query.</p>
