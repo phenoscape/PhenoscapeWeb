@@ -60,7 +60,7 @@
     
     <table class="search_results sortable">
       <tr>
-        <th><input type="checkbox" id="save-all" title="Save to workspace"></th>
+        <th><a href="#" id="save-all" title="Save all results on this page to workspace"><img src="/images/add.png"></a></th>
         <% shared_locals = {:controller => "taxa", :action => "index"} %>
         <%= sort_column 'Order', 'order', shared_locals %>
         <%= sort_column 'Family', 'family', shared_locals %>
@@ -68,7 +68,7 @@
       </tr>
       <% for taxon in @taxa['taxa'] %>
         <tr class="<%= cycle('odd','even') %>">
-          <td><input type="checkbox" class="save" title="Save to workspace" category="taxa" rel='{"taxa":[<%= taxon.to_json %>]}'>
+          <td><a href="#" class="save" title="Save to workspace" category="taxa" rel='{"taxa":[<%= taxon.to_json %>]}'><img src="/images/add.png"></a></td>
           <td><%= term_link(taxon['order']) if taxon['order'] %></td>
           <td><%= term_link(taxon['family']) if taxon['family'] %></td>
           <td><%= term_link(taxon) %></td>

@@ -138,6 +138,7 @@ div.tree-row {text-indent: -3em; margin-left: 3em;}
 table.search_results {width: 100%;}
 table.search_results td, table.search_results th {text-align: center; padding: 6px 0px; font-size: 90%;}
 table.search_results .less_padding th, table.search_results tr.less_padding td { padding: 2px 0px;}
+table.search_results tr {height: 31px;}
 
 .pagination {margin: 20px 0px 20px 0px; padding: 5px;}
 .pagination div {float: left; width: 33%;}

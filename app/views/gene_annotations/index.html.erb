@@ -48,7 +48,7 @@
         <th class='no_color' colspan='2'></th><th colspan='3'>Phenotype <%= help_link "Phenotypes" %></th><th class='no_color'></th>
       </tr>
       <tr>
-        <th><input type="checkbox" id="save-all" title="Save to workspace"></th>
+        <th><a href="#" id="save-all" title="Save all results on this page to workspace"><img src="/images/add.png"></a></th>
         <% shared_locals = {:controller => "gene_annotations", :action => "index"} %>
         <%= sort_column 'Gene', 'gene', shared_locals %>
         <%= sort_column 'Entity', 'entity', shared_locals %>
@@ -58,7 +58,7 @@
       </tr>
       <% for gene_annotation in @gene_annotations['annotations'] %>
         <tr class="<%= cycle('odd','even') %>">
-          <td><input type="checkbox" class="save" title="Save to workspace" category="annotations" rel='{"annotations":[<%= gene_annotation.to_json %>]}'>
+          <td><a href="#" class="save" title="Save to workspace" category="annotations" rel='{"annotations":[<%= gene_annotation.to_json %>]}'><img src="/images/add.png"></a></td>
           <td class='italic'><%= term_link(gene_annotation['gene']) if gene_annotation['gene'] %></td>
           <td class="post-composable"><%= term_link(gene_annotation['entity']) if gene_annotation['entity'] %></td>
           <td class="post-composable"><%= term_link(gene_annotation['quality']) if gene_annotation['quality'] %></td>

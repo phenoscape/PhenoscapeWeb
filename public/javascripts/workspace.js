@@ -1,3 +1,5 @@
+/* add.png and accept.png icons under CCA license. credit: http://famfamfam.com/lab/icons/silk/ */
+
 /* Save to Workspace scripts */
 (function($){
   $(document).ready(function() {
@@ -15,49 +17,50 @@
     var save_boxes = $('.save');
     var save_all = $('#save-all');
     
-    // Initialize checkboxes that were previously checked by the user
+    // Initialize add_buttons that were previously checked by the user
     save_boxes.each(function(i, element) {
-      element = $(element);
-      var category = element.attr('category');
-      var data = JSON.decode(element.attr('rel'))[category][0];
-      var was_checked = (SESSION_WORKSPACE_ITEMS[category] || []).has(data);
-      element.attr('checked', was_checked);
+      var add_button = $(element);
+      add_button.hide();
+      var row = add_button.closest('tr');
+      row.hover(
+        function() {add_button.show();},
+        function() {add_button.hide();}
+      );
     });
     
-    function check_save_all_status() {
-      save_all.attr('checked', save_boxes.are(':checked'));
-    };
-    check_save_all_status(); // on page load
+    var ajax_error_handler = function() {alert("There was a problem saving to the workspace. Check your internet connection or report this problem in feedback. Reload the page to try again.")};
+    var added_confirmation = '<img src="/images/accept.png" title="Added to workspace">';
     
-    // Save checkbox click event
+    // Save add_button click event
     save_boxes.click(function(event) {
       // Save the row to the session via AJAX
-      var checkbox = $(event.target);
-      var checked = checkbox.attr('checked'); // boolean
-      var data = checkbox.attr('rel');
+      var add_button = $(event.target).closest('a');
+      var data = add_button.attr('rel');
       $.ajax({
         url: '/workspace',
         type: 'post',
         data: {
-          _method: checked ? 'put' : 'delete',
+          _method: 'put',
           data: data,
           authenticitiy_token: AUTH_TOKEN
         },
-        success: undefined,
+        error: ajax_error_handler,
       });
       
-      // Update the save-all checkbox if all other boxes are/were checked
-      check_save_all_status();
+      // Replace the icon with a confirmation
+      add_button.replaceWith(added_confirmation);
+      
+      // Don't follow the # link
+      return false;
     });
     
-    // Save-all checkbox click event
+    // Save-all add_button click event
     save_all.click(function(event) {
-      var checked = $(event.target).attr('checked');
       var boxes = $('.save');
 
-      // Collect data from all checkboxes
+      // Collect data from all add_buttones
       var page_type;
-      var items = boxes.map(function(i, element) {
+      var items = save_boxes.map(function(i, element) {
         var hash = JSON.decode($(element).attr('rel'));
 
         // hash is of the form: {"type": [{...}]}; the hash value array only contains one element.
@@ -75,15 +78,19 @@
         url: '/workspace',
         type: 'post',
         data: {
-          _method: checked ? 'put' : 'delete',
+          _method: 'put',
           data: data,
           authenticitiy_token: AUTH_TOKEN
         },
-        success: undefined,
+        error: ajax_error_handler,
       });
       
-      // Visibally check/uncheck all boxes
-      boxes.attr('checked', checked);
+      // Replace the icon with a confirmation
+      save_boxes.replaceWith(added_confirmation);
+      save_all.remove();
+      
+      // Don't follow the # link
+      return false;
     });
   };
   

@@ -75,7 +75,7 @@
         <th colspan='4'>Phenotype <%= help_link "Phenotypes" %></th>
       </tr>
       <tr>
-        <th><input type="checkbox" id="save-all" title="Save to workspace"></th>
+        <th><a href="#" id="save-all" title="Save all results on this page to workspace"><img src="/images/add.png"></a></th>
         <% shared_locals = {:controller => "phenotypes", :action => "index"} %>
         <%= sort_column 'Entity', 'entity', shared_locals %>
         <%= sort_column 'Quality', 'quality', shared_locals %>
@@ -83,7 +83,7 @@
       </tr>
       <% for phenotype in @phenotypes['phenotypes'] %>
         <tr class="<%= cycle('odd','even') %>">
-          <td><input type="checkbox" class="save" title="Save to workspace" category="phenotypes" rel='{"phenotypes":[<%= phenotype.to_json %>]}'>
+          <td><a href="#" class="save" title="Save to workspace" category="phenotypes" rel='{"phenotypes":[<%= phenotype.to_json %>]}'><img src="/images/add.png"></a></td>
           <td class="post-composable"><%= term_link(phenotype['entity']) if phenotype['entity'] %></td>
           <td class="post-composable"><%= term_link(phenotype['quality']) if phenotype['quality'] %></td>
           <td class="post-composable"><%= term_link(phenotype['related_entity']) if phenotype['related_entity'] %></td>

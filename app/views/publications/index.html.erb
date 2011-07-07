@@ -45,13 +45,13 @@
     
     <table class="search_results sortable">
       <tr>
-        <th><input type="checkbox" id="save-all" title="Save to workspace"></th>
+        <th><a href="#" id="save-all" title="Save all results on this page to workspace"><img src="/images/add.png"></a></th>
         <% shared_locals = {:controller => "publications", :action => "index"} %>
         <%= sort_column 'Publication', 'publication', shared_locals %>
       </tr>
       <% for publication in @publications['publications'] %>
         <tr class="<%= cycle('odd','even') %>">
-          <td><input type="checkbox" class="save" title="Save to workspace" category="publications" rel='{"publications":[<%= publication.to_json %>]}'>
+          <td><a href="#" class="save" title="Save to workspace" category="publications" rel='{"publications":[<%= publication.to_json %>]}'><img src="/images/add.png"></a></td>
           <td><%= term_link(publication) %></td>
         </tr>
       <% end %>
