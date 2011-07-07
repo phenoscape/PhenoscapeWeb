@@ -3,7 +3,8 @@
 
 <div id="workspace">
   <form method="get">
-    <% if session[:workspace].present? %>
+    <% empty_workspace = session[:workspace].empty? || session[:workspace].values.flatten.empty? %>
+    <% unless empty_workspace %>
       <div id="search_sidebar">
         <div id="term_info">
           <% categories.each_with_index do |category, i| %>
@@ -21,7 +22,7 @@
     <% end %>
 
     <div id="search_main">
-      <% if session[:workspace].empty? %>
+      <% if empty_workspace %>
         <p>Your workspace is currently empty.</p>
       <% else %>
         <div class="header">Query for: 
@@ -30,7 +31,7 @@
       <% end %>
       <p>When viewing query results, check the box to the left of any result to add it to this workspace.</p>
       <p>Click on any of the saved workspace items to the left to include them in a new query.</p>
-      <% if session[:workspace].present? %>
+      <% unless empty_workspace %>
         <div class="query_options">
           <% categories.each do |category| %>
             <div class="section_options" id="<%= category.underscore %>_options">

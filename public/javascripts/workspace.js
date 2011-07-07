@@ -116,36 +116,6 @@
     categories.each(ensure_terms_defines);
     parent_categories.each(ensure_terms_defines);
     
-    /* Copy phenotype and annotation (parent category) components to their respective catetgories */
-    parent_categories.each(function(parent_type) {
-      terms[parent_type].each(function(parent) {
-        /* Extract components from each parent, and add them into the terms array */
-        Object.keys(component_map).each(function(component_type) {
-          if (parent[component_type]) {
-            /* Clone, so we can modify the object (mark it a component) without modifying the parent's contents */
-            var component = Object.clone(parent[component_type]);
-          
-            /* Mark it as a component */
-            component.component = true;
-          
-            /* Add it to the terms object */
-            terms[component_map[component_type]].push(component);
-          }
-        });
-
-        /* For taxa and gene annotations, create a phenotype from the combination of the phenotype components, and add it to the terms object */
-        if (parent_type == 'annotations') {
-          var phenotype = { component: true };
-          var phenotype_components = phenotype_component_types.each(function(phenotype_component_type) {
-            var component = parent[phenotype_component_type];
-            if (component)
-              phenotype[phenotype_component_type] = component;
-          });
-          terms['phenotypes'].push(phenotype);
-        }
-      });
-    });
-    
     /* Define callbacks for terms */
     function delete_term() {
       var delete_button = $(this);
@@ -167,7 +137,7 @@
       /* Remove term visibly from the page */
       term_container.remove();
       
-      return false; // Don't jump to top of page
+      return false; // Don't follow the # link
     }
     
     /* Insert terms from each category into the DOM */
@@ -179,21 +149,13 @@
         unique_json_array.each(function(term_json) {
           var term = JSON.decode(term_json);
           
-          /* Make components look real */
-          var is_component = term.component;
-          if (is_component) {
-            /* Remove the temporary component property, so the JSON will match up with the SESSION_WORKSPACE_LINK and work properly in a query */
-            delete term.component;
-            term_json = JSON.encode(term);
-          }
-
           function set_up_checkbox(checkbox) {
             /* Keep a counter to make unique params */
             if (!this.counter)
               this.counter = 0
             this.counter++;
             
-            if (category == 'phenotypes' || (is_component && ['entities', 'qualities'].include(category))) {
+            if (['phenotypes', 'entities', 'qualities'].include(category)) {
               /* For phenotypes, we need to send params for each phenotype component */
 
               /* Create and insert hidden fields into the DOM */
@@ -239,15 +201,14 @@
           var delete_button = $('<a href="#"><img src="/images/remove.png" alt="remove" title="remove" /></a>');
           var term_with_category = {};
           var query_category = category.gsub(/entities|qualities/, 'phenotypes')
-          term_with_category[query_category] = [term];
+          term_with_category[category] = [term];
           delete_button.attr('rel', JSON.encode(term_with_category));
           delete_button.click(delete_term).hide();
           var delete_container = $('<div class="right"></div>').append(delete_button);
           container.append(term_container);
           term_container.append(use_checkbox);
           set_up_checkbox(use_checkbox);
-          if (!is_component)
-            term_container.append(delete_container);
+          term_container.append(delete_container);
           term_container.append(term_name_container);
           term_container.hover(
             function() {delete_button.show()},

@@ -21,19 +21,9 @@
       <%-
         # Add links for main terms
         terms = session[:workspace].values.flatten
-
+        
         # Add links for components contained within terms (meta-terms)
-        containers = (session[:workspace]['phenotypes']||[]) + (session[:workspace]['annotations']||[])
-        terms += containers.map{|term| %w(entity quality related_entity taxon gene).map{|component_type| term[component_type]}.compact}.flatten
-
-        # Remove the taxon/gene part of the the annotation, and now it's the phenotype that we'll need a link for
-        terms += (session[:workspace]['annotations']||[]).map do |annotation|
-          phenotype = ActiveSupport::OrderedHash.new
-          phenotype['entity'] = annotation['entity'] if annotation['entity']
-          phenotype['quality'] = annotation['quality'] if annotation['quality']
-          phenotype['related_entity'] = annotation['related_entity'] if annotation['related_entity']
-          phenotype
-        end
+        terms += extract_term_components(terms).values.flatten
       -%>
       <%# Loop through each term and make a link for it %>
       <%- terms.each do |term| -%>

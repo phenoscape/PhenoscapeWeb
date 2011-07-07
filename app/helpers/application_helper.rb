@@ -432,4 +432,41 @@ module ApplicationHelper
     end
   end
   
+  # Returns a hash of categorized components contained within the given terms.
+  # Example: extract_term_components([{"entity":{"name":"abdominal scute","id":"TAO:0001547"},"quality":{"name":"count","id":"PATO:0000070"}}])
+  #       => {"entities":[{"name":"abdominal scute","id":"TAO:0001547"}],"qualities":[{"name":"count","id":"PATO:0000070"}]}
+  def extract_term_components(terms)
+    terms = [*terms] 
+    components = {}
+    category_map = {
+      'entity' => 'entities',
+      'quality' => 'qualities',
+      'related_entity' => 'entities',
+      'taxon' => 'taxa',
+      'gene' => 'genes',
+      'phenotype' => 'phenotypes',
+      'annotation' => 'annotations',
+    }
+    
+    category_map.values.each {|category| components[category] = []}
+
+    # Add pull out components contained within terms
+    terms.each do |term|
+      %w(entity quality related_entity taxon gene).each do |component_type|
+        if term[component_type]
+          components[category_map[component_type]] << term[component_type]
+        end
+      end
+
+      # Get the phenotype from annotations
+      if ((term['taxon'] || term['gene']) && (term['entity'])) # It's an annotation
+        phenotype = ActiveSupport::OrderedHash.new
+        phenotype['entity'] = term['entity'] if term['entity']
+        phenotype['quality'] = term['quality'] if term['quality']
+        phenotype['related_entity'] = term['related_entity'] if term['related_entity']
+        components['phenotypes'] << phenotype
+      end
+    end
+    return components
+  end
 end
