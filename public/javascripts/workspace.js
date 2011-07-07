@@ -60,7 +60,7 @@
 
       // Collect data from all add_buttones
       var page_type;
-      var items = save_boxes.map(function(i, element) {
+      var terms = save_boxes.map(function(i, element) {
         var hash = JSON.decode($(element).attr('rel'));
 
         // hash is of the form: {"type": [{...}]}; the hash value array only contains one element.
@@ -70,7 +70,7 @@
         }
       }).get();
       var data = {};
-      data[page_type] = items;
+      data[page_type] = terms;
       data = JSON.encode(data);
       
       // Send it in one request
@@ -97,7 +97,7 @@
   
   function setup_workspace() {
     var categories = ['taxa', 'genes', 'entities', 'qualities', 'publications', 'phenotypes'];
-    var items = SESSION_WORKSPACE_ITEMS;
+    var terms = SESSION_WORKSPACE_TERMS;
     var parent_categories = ['phenotypes', 'annotations'];
     var phenotype_component_types = ['entity', 'quality', 'related_entity'];
     var component_map = {
@@ -108,18 +108,18 @@
       'taxon': 'taxa',
     };
     
-    /* ensure each category is defined in items */
-    function ensure_items_defines(category) {
-      if (!items[category])
-        items[category] = [];
+    /* ensure each category is defined in terms */
+    function ensure_terms_defines(category) {
+      if (!terms[category])
+        terms[category] = [];
     }
-    categories.each(ensure_items_defines);
-    parent_categories.each(ensure_items_defines);
+    categories.each(ensure_terms_defines);
+    parent_categories.each(ensure_terms_defines);
     
     /* Copy phenotype and annotation (parent category) components to their respective catetgories */
     parent_categories.each(function(parent_type) {
-      items[parent_type].each(function(parent) {
-        /* Extract components from each parent, and add them into the items array */
+      terms[parent_type].each(function(parent) {
+        /* Extract components from each parent, and add them into the terms array */
         Object.keys(component_map).each(function(component_type) {
           if (parent[component_type]) {
             /* Clone, so we can modify the object (mark it a component) without modifying the parent's contents */
@@ -128,12 +128,12 @@
             /* Mark it as a component */
             component.component = true;
           
-            /* Add it to the items object */
-            items[component_map[component_type]].push(component);
+            /* Add it to the terms object */
+            terms[component_map[component_type]].push(component);
           }
         });
 
-        /* For taxa and gene annotations, create a phenotype from the combination of the phenotype components, and add it to the items object */
+        /* For taxa and gene annotations, create a phenotype from the combination of the phenotype components, and add it to the terms object */
         if (parent_type == 'annotations') {
           var phenotype = { component: true };
           var phenotype_components = phenotype_component_types.each(function(phenotype_component_type) {
@@ -141,50 +141,50 @@
             if (component)
               phenotype[phenotype_component_type] = component;
           });
-          items['phenotypes'].push(phenotype);
+          terms['phenotypes'].push(phenotype);
         }
       });
     });
     
-    /* Define callbacks for items */
-    function delete_item() {
+    /* Define callbacks for terms */
+    function delete_term() {
       var delete_button = $(this);
-      var item_container = delete_button.closest('.term');
+      var term_container = delete_button.closest('.term');
       
-      /* Remove the item from the workspace */
-      var full_item_json = delete_button.attr('rel');
+      /* Remove the term from the workspace */
+      var full_term_json = delete_button.attr('rel');
       $.ajax({
         url: '/workspace',
         type: 'post',
         data: {
           _method: 'delete',
-          data: full_item_json,
+          data: full_term_json,
           authenticitiy_token: AUTH_TOKEN
         },
         success: undefined,
       });
       
-      /* Remove item visibly from the page */
-      item_container.remove();
+      /* Remove term visibly from the page */
+      term_container.remove();
       
       return false; // Don't jump to top of page
     }
     
-    /* Insert items from each category into the DOM */
+    /* Insert terms from each category into the DOM */
     categories.each(function(category) {
       var container = $('#' + category + " .filter");
-      if (items[category]) {
+      if (terms[category]) {
         // Uniq the JSON, because uniq removes duplicate objects or strings, not objects with duplicate contents
-        var unique_json_array = items[category].map(function(item) {return JSON.encode(item)}).uniq();
-        unique_json_array.each(function(item_json) {
-          var item = JSON.decode(item_json);
+        var unique_json_array = terms[category].map(function(term) {return JSON.encode(term)}).uniq();
+        unique_json_array.each(function(term_json) {
+          var term = JSON.decode(term_json);
           
           /* Make components look real */
-          var is_component = item.component;
+          var is_component = term.component;
           if (is_component) {
             /* Remove the temporary component property, so the JSON will match up with the SESSION_WORKSPACE_LINK and work properly in a query */
-            delete item.component;
-            item_json = JSON.encode(item);
+            delete term.component;
+            term_json = JSON.encode(term);
           }
 
           function set_up_checkbox(checkbox) {
@@ -198,15 +198,15 @@
 
               /* Create and insert hidden fields into the DOM */
               var hidden_fields = phenotype_component_types.map(function(component_type) {
-                if (item[component_type] || category == component_type.sub('entity', 'entities').sub('quality', 'qualities')) {
-                  var insertion_item = item;
-                  /* If item is not a phenotype, then it's a component. Wrap it in a phenotype */
+                if (term[component_type] || category == component_type.sub('entity', 'entities').sub('quality', 'qualities')) {
+                  var insertion_term = term;
+                  /* If term is not a phenotype, then it's a component. Wrap it in a phenotype */
                   if (category != 'phenotypes') {
-                    insertion_item = {};
-                    insertion_item[component_type] = item;
+                    insertion_term = {};
+                    insertion_term[component_type] = term;
                   }
                   var name = 'filter[phenotypes][' + counter + '][' + component_type + ']';
-                  return $('<input type="hidden" name="' + name + '" value="' + insertion_item[component_type]['id'] + '" />').insertAfter(checkbox);
+                  return $('<input type="hidden" name="' + name + '" value="' + insertion_term[component_type]['id'] + '" />').insertAfter(checkbox);
                 } else {
                   return null;
                 }
@@ -230,32 +230,32 @@
             } else {
               /* For everything else, we can just enable or disable the checkbox, which contains the filter value. */
               var name = 'filter[' + category + '][' + counter + ']';
-              checkbox.attr('name', name).val(item['id']);
+              checkbox.attr('name', name).val(term['id']);
             }
           }
-          var item_container = $('<div class="term"></div>');
+          var term_container = $('<div class="term"></div>');
           var use_checkbox = $('<input type="checkbox" class="left"/>');
-          var term_container = $('<div class="term_name">' + SESSION_WORKSPACE_LINKS[item_json] + '</div>');
+          var term_name_container = $('<div class="term_name">' + SESSION_WORKSPACE_LINKS[term_json] + '</div>');
           var delete_button = $('<a href="#"><img src="/images/remove.png" alt="remove" title="remove" /></a>');
-          var item_with_category = {};
+          var term_with_category = {};
           var query_category = category.gsub(/entities|qualities/, 'phenotypes')
-          item_with_category[query_category] = [item];
-          delete_button.attr('rel', JSON.encode(item_with_category));
-          delete_button.click(delete_item).hide();
+          term_with_category[query_category] = [term];
+          delete_button.attr('rel', JSON.encode(term_with_category));
+          delete_button.click(delete_term).hide();
           var delete_container = $('<div class="right"></div>').append(delete_button);
-          container.append(item_container);
-          item_container.append(use_checkbox);
+          container.append(term_container);
+          term_container.append(use_checkbox);
           set_up_checkbox(use_checkbox);
           if (!is_component)
-            item_container.append(delete_container);
-          item_container.append(term_container);
-          item_container.hover(
+            term_container.append(delete_container);
+          term_container.append(term_name_container);
+          term_container.hover(
             function() {delete_button.show()},
             function() {delete_button.hide()}
           );
           
           /* When clicking on the row, toggle the checkbox. Don't toggle if a term name link was clicked */
-          term_container.click(function(event) {
+          term_name_container.click(function(event) {
             if (!use_checkbox.attr('disabled') && $(event.target).hasClass('term_name')) {
               use_checkbox.click();
             }
