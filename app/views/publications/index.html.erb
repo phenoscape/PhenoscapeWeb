@@ -51,7 +51,7 @@
       </tr>
       <% for publication in @publications['publications'] %>
         <tr class="<%= cycle('odd','even') %>">
-          <td><a href="#" class="save" title="Save to workspace" category="publications" rel='{"publications":[<%= publication.to_json %>]}'><img src="/images/add.png"></a></td>
+          <td><a href="#" class="save" title="Save to workspace" category="publications" <%= json_rel_for('publications', publication) %>><img src="/images/add.png"></a></td>
           <td><%= term_link(publication) %></td>
         </tr>
       <% end %>

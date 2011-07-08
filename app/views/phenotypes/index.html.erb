@@ -83,7 +83,7 @@
       </tr>
       <% for phenotype in @phenotypes['phenotypes'] %>
         <tr class="<%= cycle('odd','even') %>">
-          <td><a href="#" class="save" title="Save to workspace" category="phenotypes" rel='{"phenotypes":[<%= phenotype.to_json %>]}'><img src="/images/add.png"></a></td>
+          <td><a href="#" class="save" title="Save to workspace" category="phenotypes" <%= json_rel_for('phenotypes', phenotype) %>><img src="/images/add.png"></a></td>
           <td class="post-composable"><%= term_link(phenotype['entity']) if phenotype['entity'] %></td>
           <td class="post-composable"><%= term_link(phenotype['quality']) if phenotype['quality'] %></td>
           <td class="post-composable"><%= term_link(phenotype['related_entity']) if phenotype['related_entity'] %></td>

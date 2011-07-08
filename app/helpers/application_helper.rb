@@ -432,6 +432,11 @@ module ApplicationHelper
     end
   end
   
+  def json_rel_for(category, term)
+    term_json = term.to_json.gsub("'", "&apos;")
+    retval = "rel='{\"#{category}\":[#{term_json}]}'"
+  end
+  
   # Returns a hash of categorized components contained within the given terms.
   # Example: extract_term_components([{"entity":{"name":"abdominal scute","id":"TAO:0001547"},"quality":{"name":"count","id":"PATO:0000070"}}])
   #       => {"entities":[{"name":"abdominal scute","id":"TAO:0001547"}],"qualities":[{"name":"count","id":"PATO:0000070"}]}
