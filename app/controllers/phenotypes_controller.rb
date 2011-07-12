@@ -16,6 +16,24 @@ class PhenotypesController < ApplicationController
   end
   
   
+  def profile_tree
+    respond_to do |format|
+      format.html do
+        @phenotypes = Phenotype.find(query_params)
+      end
+      format.js do
+        qp = query_params
+        qp['taxon'] = params[:taxon] if params[:taxon].present?
+        @taxa = Phenotype.profile(qp)
+        taxon_ids = @taxa['matches'].map {|taxon| taxon['taxon_id'] }
+        name_map = Term.names(taxon_ids)['terms'].each_with_object({}) {|term, map| map[term['id']] = term['name'] }
+        @taxa['matches'].each {|taxon| taxon['name'] = name_map[taxon['taxon_id']] }
+        render :js => "window.profile_tree.query_callback(JSON.decode('#{@taxa['matches'].to_json}'), '#{params[:taxon]}')"
+      end
+    end
+  end
+  
+  
   def download
     download_query_results(Phenotype, query_params)
   end

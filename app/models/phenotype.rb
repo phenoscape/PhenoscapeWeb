@@ -11,4 +11,10 @@ class Phenotype
     Request.find("phenotype/facet/#{term_type}", params, result_options)
   end
   
+  
+  #Return profile tree result from data service
+  def self.profile(params={}, result_options={})
+    Request.find("phenotype/profile", params, result_options)
+  end
+  
 end

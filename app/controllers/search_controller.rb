@@ -53,7 +53,7 @@ class SearchController < ApplicationController
       #          page.remove "phenotype_filter_item_#{params[:last_phenotype_index]}"
       #        page << "jQuery('#broaden_refine_menu').click();"
       #      els
-      if !params[:replace_phenotype_index].blank?
+      if params[:replace_phenotype_index].present?
         page.replace_html "phenotype_filter_item_#{params[:replace_phenotype_index]}", :partial => 'phenotype_filter_item', 
           :locals => {:phenotype => phenotype, :index => params[:replace_phenotype_index].to_i}
         page << "jQuery('#broaden_refine_menu').click();"
@@ -64,6 +64,7 @@ class SearchController < ApplicationController
         page << "jQuery('#phenotype_filter_container').dialog('close')"
       end
       page << "changeSectionFilterOperators('phenotypes');"
+      page << "jQuery('#term_info').change();"
     end
   end
   

@@ -230,3 +230,9 @@ a.toggle_link:hover {text-decoration: underline;}
   );
   background-color: #74c4ab;
 }
+
+#tree {
+  border: 2px solid #115A50;
+  height: 550px;
+  overflow: hidden;
+}
