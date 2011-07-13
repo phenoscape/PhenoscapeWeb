@@ -6,22 +6,20 @@ class Tree
     
     $ =>
       $('#term_info').change =>
+        @destroy_spacetree()
         @create_spacetree()
         @query()
+      # $('body').
+      #   $(this).find('.broaden_refine_link').remove()
 
   create_spacetree: () ->
     $('#tree_empty_state').hide()
-    spacetree_callback = null
-    
-    # Can't bind functions in the spacetree initializer, so provide references here
-    query = @query
-    self = this
     
     @spacetree = st ?= new $jit.ST
       injectInto: @container_id
       duration: 600
       transition: $jit.Trans.Quart.easeOut
-      levelDistance: 70
+      levelDistance: 100
       levelsToShow: 1
       Node:
         autoHeight: true
@@ -48,17 +46,17 @@ class Tree
           fontSize: '0.8em'
           padding: '3px'
       onBeforePlotNode: (node) ->
-        if node.selected
-          node.data.$lineWidth = 1
-        else
-          node.data.$lineWidth = 0
+        ## This code had no effect and wasn't important anyway. Leaving the framework here, in case we want to distinguish selected nodes later.
+        # if node.selected
+        #   node.data.$lineWidth = 1
+        # else
+        #   node.data.$lineWidth = 0
       request: (nodeId, level, onComplete) =>
          @update_spacetree_callback = onComplete.onComplete
          @query(nodeId)
  
   destroy_spacetree: () ->
-    @spacetree.removeSubtree('root', true, 'replot') if @spacetree?
-    # $('#tree_empty_state').show()
+    @spacetree.removeSubtree('root', false, 'animate') if @spacetree?
   
   initialize_spacetree: () ->
     @spacetree.loadJSON @root_node
@@ -83,7 +81,6 @@ class Tree
     url = '/phenotypes/profile_tree?' + decodeURIComponent(@phenotype_params)
     url += "&taxon=#{taxon_id}" if taxon_id? && taxon_id != 'root'
 
-    console.log "URL: " + url
     $.ajax
       url: url
       type: 'get'
@@ -94,8 +91,6 @@ class Tree
 
   # Converts matches from the data source into TreeNodes and stores them in the tree
   query_callback: (matches, root_taxon_id) ->
-    console.log "Matches: "
-    console.log matches
     root_node = @find_node(root_taxon_id) || @root_node
     for match in matches
       node = root_node.find_or_create_child(this, match.taxon_id, match.name, {greatest_profile_match: match.greatest_profile_match})
@@ -103,14 +98,31 @@ class Tree
         for match_child in match.matches
           node = node.find_or_create_child(this, match_child.taxon_id, match_child.name, {greatest_profile_match: match_child.greatest_profile_match})
     
+    @hide_loading()
+    
     if root_node.id == 'root'
-      # @destroy_spacetree()
       @initialize_spacetree()
     else
       @update_spacetree root_node
-
+  
   show_loading: ->
-
+    @loading = true
+    
+    $("##{@container_id}").animate {backgroundColor: '#BBE2D6'},
+      duration: 'fast'
+      queue: true
+    
+    $("##{@container_id}-loading").show()
+  
+  hide_loading: ->
+    @loading = false
+    
+    $("##{@container_id}").animate {backgroundColor: '#FFFFFF'},
+      duration: 'fast'
+      queue: true
+      complete: =>
+        $("##{@container_id}-loading").hide() unless @loading # Check @loading because of potential race conditions - if started loading again while fading out
+  
   ajax_error_handler: -> alert 'There was a problem requesting data. Check your internet connection or report this problem in feedback.'
   
   find_node: (id) ->

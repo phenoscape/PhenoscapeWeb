@@ -236,3 +236,13 @@ a.toggle_link:hover {text-decoration: underline;}
   height: 550px;
   overflow: hidden;
 }
+
+#tree-loading {
+  color: white;
+  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
+  font-size: 64px;
+  font-weight: bold;
+  margin: 10px 30px;
+  position: absolute;
+  z-index: 2;
+}

@@ -9,22 +9,19 @@
       this.root_node = new TreeNode(this, 'root', 'Phenotype query');
       $(__bind(function() {
         return $('#term_info').change(__bind(function() {
+          this.destroy_spacetree();
           this.create_spacetree();
           return this.query();
         }, this));
       }, this));
     }
     Tree.prototype.create_spacetree = function() {
-      var query, self, spacetree_callback;
       $('#tree_empty_state').hide();
-      spacetree_callback = null;
-      query = this.query;
-      self = this;
       return this.spacetree = typeof st !== "undefined" && st !== null ? st : st = new $jit.ST({
         injectInto: this.container_id,
         duration: 600,
         transition: $jit.Trans.Quart.easeOut,
-        levelDistance: 70,
+        levelDistance: 100,
         levelsToShow: 1,
         Node: {
           autoHeight: true,
@@ -54,13 +51,7 @@
             padding: '3px'
           });
         },
-        onBeforePlotNode: function(node) {
-          if (node.selected) {
-            return node.data.$lineWidth = 1;
-          } else {
-            return node.data.$lineWidth = 0;
-          }
-        },
+        onBeforePlotNode: function(node) {},
         request: __bind(function(nodeId, level, onComplete) {
           this.update_spacetree_callback = onComplete.onComplete;
           return this.query(nodeId);
@@ -69,7 +60,7 @@
     };
     Tree.prototype.destroy_spacetree = function() {
       if (this.spacetree != null) {
-        return this.spacetree.removeSubtree('root', true, 'replot');
+        return this.spacetree.removeSubtree('root', false, 'animate');
       }
     };
     Tree.prototype.initialize_spacetree = function() {
@@ -101,7 +92,6 @@
       if ((taxon_id != null) && taxon_id !== 'root') {
         url += "&taxon=" + taxon_id;
       }
-      console.log("URL: " + url);
       return $.ajax({
         url: url,
         type: 'get',
@@ -114,8 +104,6 @@
     };
     Tree.prototype.query_callback = function(matches, root_taxon_id) {
       var match, match_child, node, root_node, _i, _j, _len, _len2, _ref;
-      console.log("Matches: ");
-      console.log(matches);
       root_node = this.find_node(root_taxon_id) || this.root_node;
       for (_i = 0, _len = matches.length; _i < _len; _i++) {
         match = matches[_i];
@@ -132,13 +120,37 @@
           }
         }
       }
+      this.hide_loading();
       if (root_node.id === 'root') {
         return this.initialize_spacetree();
       } else {
         return this.update_spacetree(root_node);
       }
     };
-    Tree.prototype.show_loading = function() {};
+    Tree.prototype.show_loading = function() {
+      this.loading = true;
+      $("#" + this.container_id).animate({
+        backgroundColor: '#BBE2D6'
+      }, {
+        duration: 'fast',
+        queue: true
+      });
+      return $("#" + this.container_id + "-loading").show();
+    };
+    Tree.prototype.hide_loading = function() {
+      this.loading = false;
+      return $("#" + this.container_id).animate({
+        backgroundColor: '#FFFFFF'
+      }, {
+        duration: 'fast',
+        queue: true,
+        complete: __bind(function() {
+          if (!this.loading) {
+            return $("#" + this.container_id + "-loading").hide();
+          }
+        }, this)
+      });
+    };
     Tree.prototype.ajax_error_handler = function() {
       return alert('There was a problem requesting data. Check your internet connection or report this problem in feedback.');
     };
