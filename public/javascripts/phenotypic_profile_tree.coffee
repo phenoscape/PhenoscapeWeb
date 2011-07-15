@@ -47,6 +47,7 @@ class Tree
           color: '#333'
           fontSize: '0.8em'
           padding: '3px'
+          'white-space': 'nowrap'
       onBeforePlotNode: (node) ->
         ## This code had no effect and wasn't important anyway. Leaving the framework here, in case we want to distinguish selected nodes later.
         # if node.selected

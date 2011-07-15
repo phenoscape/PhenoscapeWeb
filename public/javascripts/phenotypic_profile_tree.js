@@ -49,7 +49,8 @@
             cursor: 'pointer',
             color: '#333',
             fontSize: '0.8em',
-            padding: '3px'
+            padding: '3px',
+            'white-space': 'nowrap'
           });
         },
         onBeforePlotNode: function(node) {},
