@@ -7,7 +7,8 @@
         <!-- Phenotype Filter -->
         <div class='section'>
           <div class='right'><%= button_to_function 'Add', "clearInputs(['#entityChoice','#entity_id','#qualityChoice'," +
-            "'#quality_id','#relatedEntityChoice','#related_entity_id']);jQuery('#phenotype_filter_container').dialog('open');" %></div>
+            "'#quality_id','#relatedEntityChoice','#related_entity_id']);jQuery('#phenotype_filter_container').dialog('open');",
+            :id => "add_phenotype_button" %></div>
           <div class='green_heading'>Phenotype is:</div>
           <div id='phenotype_filter' class='section_indent'>
             <%= render :partial => '/search/phenotype_filter', :locals => {:phenotypes => params[:filter][:phenotypes]} %>
@@ -26,9 +27,15 @@
   <%= render :partial => 'search/phenotype_filter_popup' %>
   
   <div id="search_main">
+    <h2>Phenotypic profile tree</h2>
+    <p>Taxon color indicates the greatest level of match of specified phenotype(s) found within a species in the clade.</p>
     <div id="tree-loading" style="display: none">Loading...</div>
-    <div id="tree">
+    <div id="tree-empty">
+      No phenotypes entered yet.<br/>
+      Add a phenotype to the profile:
+      <%= button_to_function('Add', "jQuery('#add_phenotype_button').click()") %>
     </div>
+    <div id="tree"></div>
   </div>
   
   <div class='clear'></div>

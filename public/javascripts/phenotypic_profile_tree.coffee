@@ -5,10 +5,12 @@ class Tree
     @root_node = new TreeNode this, 'root', 'Phenotype query'
     
     $ =>
+      # This event gets called when anything is added to or removed from the Phenotype list
       $('#term_info').change =>
         @destroy_spacetree()
         @create_spacetree()
         @query()
+        @check_empty_state() # @query() must come before this call, because it calls @load_selected_phenotypes(), which sets @phenotype_count
       # $('body').
       #   $(this).find('.broaden_refine_link').remove()
 
@@ -136,6 +138,13 @@ class Tree
       search_nodes = search_nodes.flatten()
       
     return null
+  
+  check_empty_state: ->
+    empty_state_div = $("##{@container_id}-empty")
+    if @phenotype_count && @phenotype_count > 0
+      empty_state_div.hide()
+    else
+      empty_state_div.show()
 
 
 class TreeNode

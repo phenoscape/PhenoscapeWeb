@@ -11,7 +11,8 @@
         return $('#term_info').change(__bind(function() {
           this.destroy_spacetree();
           this.create_spacetree();
-          return this.query();
+          this.query();
+          return this.check_empty_state();
         }, this));
       }, this));
     }
@@ -173,6 +174,15 @@
         search_nodes = search_nodes.flatten();
       }
       return null;
+    };
+    Tree.prototype.check_empty_state = function() {
+      var empty_state_div;
+      empty_state_div = $("#" + this.container_id + "-empty");
+      if (this.phenotype_count && this.phenotype_count > 0) {
+        return empty_state_div.hide();
+      } else {
+        return empty_state_div.show();
+      }
     };
     return Tree;
   })();

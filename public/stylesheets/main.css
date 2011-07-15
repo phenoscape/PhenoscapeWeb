@@ -246,3 +246,17 @@ a.toggle_link:hover {text-decoration: underline;}
   position: absolute;
   z-index: 2;
 }
+
+#tree-empty {
+  background-color: white;
+  border: 3px solid black;
+  border-radius: 20px;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  font-size: 18px;
+  font-style: italic;
+  margin: 100px;
+  padding: 30px 20px;
+  position: absolute;
+  z-index: 1;
+}
