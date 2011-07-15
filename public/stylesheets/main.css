@@ -260,3 +260,23 @@ a.toggle_link:hover {text-decoration: underline;}
   position: absolute;
   z-index: 1;
 }
+
+#tree-key {
+  margin-top: 10px;
+  position: absolute;
+  right: 20px;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+#tree-key .key {
+  border: 3px solid black;
+  margin: 5px auto;
+  width: 60px;
+}
+
+#tree-key .key .cell {
+  padding: 5px;
+  font-weight: bold;
+  text-align: center;
+}

@@ -35,7 +35,17 @@
       Add a phenotype to the profile:
       <%= button_to_function('Add', "jQuery('#add_phenotype_button').click()") %>
     </div>
-    <div id="tree"></div>
+    <div id="tree">
+      <div id="tree-key">
+        Greatest level of match
+        <div class="key">
+          <div class="cell" style="background-color: red">100%</div>
+          <div class="cell" style="background-color: orange">75%</div>
+          <div class="cell" style="background-color: yellow">50%</div>
+          <div class="cell" style="background-color: lightgray">&lt;50%</div>
+        </div>
+      </div>
+    </div>
   </div>
   
   <div class='clear'></div>
