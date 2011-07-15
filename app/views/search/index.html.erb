@@ -53,6 +53,7 @@
 	<div class="navigation-group">
 		<h3>Query Data</h3>
 		<ul>
+			<li><%= link_to 'Phenotypic profile tree', :controller => :phenotypes, :action => :profile_tree %></li>
 			<li><%= link_to 'Phenotype annotations to taxa', :controller => :taxon_annotations %></li>
 			<li><%= link_to 'Phenotype annotations to genes', :controller => :gene_annotations %></li>
 			<li><%= link_to 'Taxa', :controller => :taxa %></li>
