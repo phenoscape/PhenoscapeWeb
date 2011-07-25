@@ -5,14 +5,14 @@ class Tree
     @root_node = new TreeNode this, 'root'
     
     $ =>
+      $("##{@container_id}").css('visibility', 'hidden') # Tree should not be visible at first
+
       # This event gets called when anything is added to or removed from the Phenotype list
       $('#term_info').change =>
         @destroy_spacetree()
         @create_spacetree()
         @query()
         @check_empty_state() # @query() must come before this call, because it calls @load_selected_phenotypes(), which sets @phenotype_count
-      # $('body').
-      #   $(this).find('.broaden_refine_link').remove()
 
   create_spacetree: () ->
     $('#tree_empty_state').hide()
@@ -155,10 +155,13 @@ class Tree
     return null
   
   check_empty_state: ->
+    tree_div = $("##{@container_id}")
     empty_state_div = $("##{@container_id}-empty")
     if @phenotype_count && @phenotype_count > 0
       empty_state_div.hide()
+      tree_div.css('visibility', 'visible')
     else
+      tree_div.css('visibility', 'hidden')
       empty_state_div.show()
 
 

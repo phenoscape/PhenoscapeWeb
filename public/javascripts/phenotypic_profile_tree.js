@@ -8,6 +8,7 @@
       this.container_id = container_id;
       this.root_node = new TreeNode(this, 'root');
       $(__bind(function() {
+        $("#" + this.container_id).css('visibility', 'hidden');
         return $('#term_info').change(__bind(function() {
           this.destroy_spacetree();
           this.create_spacetree();
@@ -196,11 +197,14 @@
       return null;
     };
     Tree.prototype.check_empty_state = function() {
-      var empty_state_div;
+      var empty_state_div, tree_div;
+      tree_div = $("#" + this.container_id);
       empty_state_div = $("#" + this.container_id + "-empty");
       if (this.phenotype_count && this.phenotype_count > 0) {
-        return empty_state_div.hide();
+        empty_state_div.hide();
+        return tree_div.css('visibility', 'visible');
       } else {
+        tree_div.css('visibility', 'hidden');
         return empty_state_div.show();
       }
     };
