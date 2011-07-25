@@ -98,9 +98,11 @@ class Tree
   # Converts matches from the data source into TreeNodes and stores them in the tree
   query_callback: (matches, root_taxon_id) ->
     root_node = @find_node(root_taxon_id) || @root_node
+    matches = matches.sortBy (m) -> m.name
     for match in matches
       node = root_node.find_or_create_child(this, match.taxon_id, match.name, {greatest_profile_match: match.greatest_profile_match})
       if match.matches?
+        match.matches = match.matches.sortBy (m) -> m.name
         for match_child in match.matches
           node = node.find_or_create_child(this, match_child.taxon_id, match_child.name, {greatest_profile_match: match_child.greatest_profile_match})
     

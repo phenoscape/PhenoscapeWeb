@@ -111,12 +111,18 @@
     Tree.prototype.query_callback = function(matches, root_taxon_id) {
       var match, match_child, node, root_node, _i, _j, _len, _len2, _ref;
       root_node = this.find_node(root_taxon_id) || this.root_node;
+      matches = matches.sortBy(function(m) {
+        return m.name;
+      });
       for (_i = 0, _len = matches.length; _i < _len; _i++) {
         match = matches[_i];
         node = root_node.find_or_create_child(this, match.taxon_id, match.name, {
           greatest_profile_match: match.greatest_profile_match
         });
         if (match.matches != null) {
+          match.matches = match.matches.sortBy(function(m) {
+            return m.name;
+          });
           _ref = match.matches;
           for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
             match_child = _ref[_j];
