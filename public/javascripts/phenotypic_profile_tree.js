@@ -237,7 +237,7 @@
       } else if (percentage < 1) {
         return 'orange';
       } else {
-        return 'red';
+        return '#F44';
       }
     };
     TreeNode.prototype.set_color = function() {

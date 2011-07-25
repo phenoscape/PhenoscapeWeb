@@ -182,7 +182,7 @@ class TreeNode
     else if percentage  < 1
       'orange'
     else
-      'red'
+      '#F44' # a lighter red
   
   set_color: ->
     @data.$color = @color()
