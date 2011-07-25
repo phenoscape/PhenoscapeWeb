@@ -8,11 +8,14 @@ class Tree
       $("##{@container_id}").css('visibility', 'hidden') # Tree should not be visible at first
 
       # This event gets called when anything is added to or removed from the Phenotype list
-      $('#term_info').change =>
+      term_info_div = $('#term_info')
+      term_info_div.change =>
         @destroy_spacetree()
         @create_spacetree()
         @query()
         @check_empty_state() # @query() must come before this call, because it calls @load_selected_phenotypes(), which sets @phenotype_count
+
+      term_info_div.change() # fire on page load, in case phenotypes are there from the profile tree
 
   create_spacetree: () ->
     $('#tree_empty_state').hide()

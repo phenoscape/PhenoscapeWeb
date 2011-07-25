@@ -17,6 +17,8 @@ class PhenotypesController < ApplicationController
   
   
   def profile_tree
+    params[:source] = 'profile_tree' # Used in _phenotype_filter_item.html.erb to hide broaden/refine link
+    filter_term_names
     respond_to do |format|
       format.html do
         @phenotypes = Phenotype.find(query_params)

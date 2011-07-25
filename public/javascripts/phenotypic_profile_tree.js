@@ -8,13 +8,16 @@
       this.container_id = container_id;
       this.root_node = new TreeNode(this, 'root');
       $(__bind(function() {
+        var term_info_div;
         $("#" + this.container_id).css('visibility', 'hidden');
-        return $('#term_info').change(__bind(function() {
+        term_info_div = $('#term_info');
+        term_info_div.change(__bind(function() {
           this.destroy_spacetree();
           this.create_spacetree();
           this.query();
           return this.check_empty_state();
         }, this));
+        return term_info_div.change();
       }, this));
     }
     Tree.prototype.create_spacetree = function() {

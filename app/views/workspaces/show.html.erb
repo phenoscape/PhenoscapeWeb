@@ -25,8 +25,8 @@
       <% if empty_workspace %>
         <p>Your workspace is currently empty.</p>
       <% else %>
-        <div class="header">Query for: 
-          <%= render :partial => 'shared/related_query_links' %>
+        <div class="header">Send selections to: 
+          <%= render :partial => 'shared/related_query_links', :locals => {:phenotypic_profile_tree => true} %>
         </div>
       <% end %>
       <p>When viewing query results, check the box to the left of any result to add it to this workspace.</p>

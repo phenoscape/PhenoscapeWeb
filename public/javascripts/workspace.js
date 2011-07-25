@@ -228,6 +228,10 @@
     /* Enable and disable appropriate categories according to the Query for select */
     function select_query(query_option) {
       var type_sections = {
+        'Phenotypic profile tree':
+          [{name: 'phenotypes'},
+           {name: 'entities'},
+           {name: 'qualities'}],
         'Phenotypes': 
           [{name: 'taxa', anyall: true},
            {name: 'genes', anyall: true},
