@@ -237,6 +237,12 @@ a.toggle_link:hover {text-decoration: underline;}
   overflow: hidden;
 }
 
+#tree-canvaswidget {
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+
 #tree-loading {
   color: white;
   font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
