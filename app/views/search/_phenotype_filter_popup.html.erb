@@ -2,6 +2,7 @@
   <% form_remote_tag :url => {:controller => :search, :action => :phenotype_filter}, :html => {:id => 'phenotype_filter_form', 
        :onsubmit => "setNextIndex('next_phenotype_index','filter\\[phenotypes\\]');"} do %>
     <%= hidden_field_tag :next_phenotype_index %>
+    <%= hidden_field_tag 'filter[phenotypes_match_type]', @global_phenotype_match_type if @global_phenotype_match_type %>
     <table class='popup_table'>
       <tr>
         <th><label for="entity">Entity:</label></th>

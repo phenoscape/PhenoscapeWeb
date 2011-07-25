@@ -17,6 +17,7 @@ class PhenotypesController < ApplicationController
   
   
   def profile_tree
+    @global_phenotype_match_type = 'all'
     respond_to do |format|
       format.html do
         @phenotypes = Phenotype.find(query_params)
