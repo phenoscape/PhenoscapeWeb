@@ -2,7 +2,7 @@ $ = jQuery
 
 class Tree
   constructor: (@container_id) ->
-    @root_node = new TreeNode this, 'root', 'Phenotype query'
+    @root_node = new TreeNode this, 'root'
     
     $ =>
       # This event gets called when anything is added to or removed from the Phenotype list
@@ -41,19 +41,20 @@ class Tree
         label = $(label)
         label.attr 'id', node.id
         label.html node.name
-        label.click => st.onClick node.id
+        unless node.data.leaf_node
+          label.click -> st.onClick node.id
         label.css
           cursor: 'pointer'
           color: '#333'
           fontSize: '0.8em'
           padding: '3px'
           'white-space': 'nowrap'
-      onBeforePlotNode: (node) ->
-        ## This code had no effect and wasn't important anyway. Leaving the framework here, in case we want to distinguish selected nodes later.
-        # if node.selected
-        #   node.data.$lineWidth = 1
-        # else
-        #   node.data.$lineWidth = 0
+      ## This code had no effect and wasn't important anyway. Leaving the framework here, in case we want to distinguish selected nodes later.
+      # onBeforePlotNode: (node) ->
+      #   if node.selected
+      #     node.data.$lineWidth = 1
+      #   else
+      #     node.data.$lineWidth = 0
       request: (nodeId, level, onComplete) =>
          @update_spacetree_callback = onComplete.onComplete
          @query(nodeId)
@@ -64,7 +65,9 @@ class Tree
   initialize_spacetree: () ->
     @spacetree.loadJSON @root_node
     @spacetree.compute()
-    @spacetree.onClick @spacetree.root
+    @spacetree.plot()
+    unless @spacetree.graph.getNode(@spacetree.root).data.leaf_node
+      @spacetree.onClick @spacetree.root
   
   update_spacetree: (node) ->
     return console.log "$jit failed to set update_spacetree_callback" unless @update_spacetree_callback
@@ -104,6 +107,15 @@ class Tree
     @hide_loading()
     
     if root_node.id == 'root'
+      if matches.any()
+        root_node.name = 'Phenotype query'
+        root_node.data.leaf_node = false
+        root_node.set_color()
+      else
+        root_node.name = 'No results'
+        root_node.data.leaf_node = true
+        root_node.set_color()
+
       @initialize_spacetree()
     else
       @update_spacetree root_node
@@ -150,19 +162,22 @@ class Tree
 
 class TreeNode
   constructor: (@tree, @id, @name, @data={}, @children=[]) ->
-    @data.$color ?= @color()
+    @set_color() unless @data.$color
     @name = @id if !@name? or @name.blank()
   
   color: ->
     percentage = @data.greatest_profile_match / @tree.phenotype_count
-    if percentage < .50
-      'gray'
+    if percentage < .50 or @data.leaf_node
+      'lightgray'
     else if percentage  < .75
       'yellow'
     else if percentage  < 1
       'orange'
     else
       'red'
+  
+  set_color: ->
+    @data.$color = @color()
   
   find_or_create_child: (tree, id, name, data={}) ->
     child = @children.find (c) -> c.id == id

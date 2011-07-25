@@ -6,7 +6,7 @@
   Tree = (function() {
     function Tree(container_id) {
       this.container_id = container_id;
-      this.root_node = new TreeNode(this, 'root', 'Phenotype query');
+      this.root_node = new TreeNode(this, 'root');
       $(__bind(function() {
         return $('#term_info').change(__bind(function() {
           this.destroy_spacetree();
@@ -42,9 +42,11 @@
           label = $(label);
           label.attr('id', node.id);
           label.html(node.name);
-          label.click(__bind(function() {
-            return st.onClick(node.id);
-          }, this));
+          if (!node.data.leaf_node) {
+            label.click(function() {
+              return st.onClick(node.id);
+            });
+          }
           return label.css({
             cursor: 'pointer',
             color: '#333',
@@ -53,7 +55,6 @@
             'white-space': 'nowrap'
           });
         },
-        onBeforePlotNode: function(node) {},
         request: __bind(function(nodeId, level, onComplete) {
           this.update_spacetree_callback = onComplete.onComplete;
           return this.query(nodeId);
@@ -68,7 +69,10 @@
     Tree.prototype.initialize_spacetree = function() {
       this.spacetree.loadJSON(this.root_node);
       this.spacetree.compute();
-      return this.spacetree.onClick(this.spacetree.root);
+      this.spacetree.plot();
+      if (!this.spacetree.graph.getNode(this.spacetree.root).data.leaf_node) {
+        return this.spacetree.onClick(this.spacetree.root);
+      }
     };
     Tree.prototype.update_spacetree = function(node) {
       if (!this.update_spacetree_callback) {
@@ -124,6 +128,15 @@
       }
       this.hide_loading();
       if (root_node.id === 'root') {
+        if (matches.any()) {
+          root_node.name = 'Phenotype query';
+          root_node.data.leaf_node = false;
+          root_node.set_color();
+        } else {
+          root_node.name = 'No results';
+          root_node.data.leaf_node = true;
+          root_node.set_color();
+        }
         return this.initialize_spacetree();
       } else {
         return this.update_spacetree(root_node);
@@ -189,17 +202,14 @@
   })();
   TreeNode = (function() {
     function TreeNode(tree, id, name, data, children) {
-      var _base, _ref;
       this.tree = tree;
       this.id = id;
       this.name = name;
       this.data = data != null ? data : {};
       this.children = children != null ? children : [];
-            if ((_ref = (_base = this.data).$color) != null) {
-        _ref;
-      } else {
-        _base.$color = this.color();
-      };
+      if (!this.data.$color) {
+        this.set_color();
+      }
       if (!(this.name != null) || this.name.blank()) {
         this.name = this.id;
       }
@@ -207,8 +217,8 @@
     TreeNode.prototype.color = function() {
       var percentage;
       percentage = this.data.greatest_profile_match / this.tree.phenotype_count;
-      if (percentage < .50) {
-        return 'gray';
+      if (percentage < .50 || this.data.leaf_node) {
+        return 'lightgray';
       } else if (percentage < .75) {
         return 'yellow';
       } else if (percentage < 1) {
@@ -216,6 +226,9 @@
       } else {
         return 'red';
       }
+    };
+    TreeNode.prototype.set_color = function() {
+      return this.data.$color = this.color();
     };
     TreeNode.prototype.find_or_create_child = function(tree, id, name, data) {
       var child;
