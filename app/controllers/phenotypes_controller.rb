@@ -24,12 +24,34 @@ class PhenotypesController < ApplicationController
         @phenotypes = Phenotype.find(query_params)
       end
       format.js do
+        # Query for taxa for the given phenotypes
         qp = query_params
         qp['taxon'] = params[:taxon] if params[:taxon].present?
         @taxa = Phenotype.profile(qp)
+        
+        # Collect taxon IDs for name lookup later
         taxon_ids = @taxa['matches'].map {|taxon| taxon['taxon_id'] }
+
+        # Query for another level of taxa, if specified
+        if params[:levels].to_i > 1
+          @taxa['matches'].each do |taxon|
+            qp['taxon'] = taxon['taxon_id']
+            taxon['matches'] = Phenotype.profile(qp)['matches']
+            taxon_ids += taxon['matches'].map {|t| t['taxon_id'] }
+          end
+        end
+        
+        # Look up names for the taxa 
         name_map = Term.names(taxon_ids)['terms'].each_with_object({}) {|term, map| map[term['id']] = term['name'] }
-        @taxa['matches'].each {|taxon| taxon['name'] = name_map[taxon['taxon_id']] }
+        @taxa['matches'].each do |taxon|
+          taxon['name'] = name_map[taxon['taxon_id']]
+          if taxon['matches']
+            taxon['matches'].each do |t|
+              t['name'] = name_map[t['taxon_id']]
+            end
+          end
+        end
+        
         render :js => "window.profile_tree.query_callback(JSON.decode('#{@taxa['matches'].to_json}'), '#{params[:taxon]}')"
       end
     end

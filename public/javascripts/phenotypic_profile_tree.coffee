@@ -25,7 +25,7 @@ class Tree
       duration: 600
       transition: $jit.Trans.Quart.easeOut
       levelDistance: 100
-      levelsToShow: 1
+      levelsToShow: 2
       Node:
         autoHeight: true
         autoWidth: true
@@ -87,14 +87,17 @@ class Tree
     
     @show_loading()
     
+    loading_root = !taxon_id? || taxon_id == 'root'
+    
     url = '/phenotypes/profile_tree?' + decodeURIComponent(@phenotype_params)
-    url += "&taxon=#{taxon_id}" if taxon_id? && taxon_id != 'root'
+    url += "&taxon=#{taxon_id}" unless loading_root
 
     $.ajax
       url: url
       type: 'get'
       dataType: 'script'
       data:
+        levels: 2 # if loading_root then 2 else 1
         authenticitiy_token: AUTH_TOKEN
       error: @ajax_error_handler
 
@@ -107,7 +110,7 @@ class Tree
       if match.matches?
         match.matches = match.matches.sortBy (m) -> m.name
         for match_child in match.matches
-          node = node.find_or_create_child(this, match_child.taxon_id, match_child.name, {greatest_profile_match: match_child.greatest_profile_match})
+          node.find_or_create_child(this, match_child.taxon_id, match_child.name, {greatest_profile_match: match_child.greatest_profile_match})
     
     @hide_loading()
     

@@ -27,7 +27,7 @@
         duration: 600,
         transition: $jit.Trans.Quart.easeOut,
         levelDistance: 100,
-        levelsToShow: 1,
+        levelsToShow: 2,
         Node: {
           autoHeight: true,
           autoWidth: true,
@@ -89,7 +89,7 @@
       this.phenotype_count = $("#term_info .phenotype").length;
     };
     Tree.prototype.query = function(taxon_id) {
-      var url;
+      var loading_root, url;
       if (taxon_id == null) {
         taxon_id = null;
       }
@@ -98,8 +98,9 @@
         return;
       }
       this.show_loading();
+      loading_root = !(taxon_id != null) || taxon_id === 'root';
       url = '/phenotypes/profile_tree?' + decodeURIComponent(this.phenotype_params);
-      if ((taxon_id != null) && taxon_id !== 'root') {
+      if (!loading_root) {
         url += "&taxon=" + taxon_id;
       }
       return $.ajax({
@@ -107,6 +108,7 @@
         type: 'get',
         dataType: 'script',
         data: {
+          levels: 2,
           authenticitiy_token: AUTH_TOKEN
         },
         error: this.ajax_error_handler
@@ -130,7 +132,7 @@
           _ref = match.matches;
           for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
             match_child = _ref[_j];
-            node = node.find_or_create_child(this, match_child.taxon_id, match_child.name, {
+            node.find_or_create_child(this, match_child.taxon_id, match_child.name, {
               greatest_profile_match: match_child.greatest_profile_match
             });
           }
