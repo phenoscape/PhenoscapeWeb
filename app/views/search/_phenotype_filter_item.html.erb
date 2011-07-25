@@ -11,8 +11,10 @@
       <% end %>
     <% end %>
     
-    <%= link_to_function '[broaden/refine]', "buildBroadenRefineMenu(this, #{phenotype.to_json}, #{index})", 
-          :class => 'broaden_refine_link', :id => "broaden_refine_link_#{index}" %>
+    <% unless params[:source] == 'profile_tree' %>
+      <%= link_to_function '[broaden/refine]', "buildBroadenRefineMenu(this, #{phenotype.to_json}, #{index})", 
+            :class => 'broaden_refine_link', :id => "broaden_refine_link_#{index}" %>
+    <% end %>
 
 	<% phenotype_object =  add_names_to_filter_terms(phenotype) %>
 	<% if false # intentionally disabled %>
