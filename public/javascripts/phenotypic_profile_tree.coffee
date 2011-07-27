@@ -9,13 +9,20 @@ class Tree
 
       # This event gets called when anything is added to or removed from the Phenotype list
       term_info_div = $('#term_info')
+      initial_page_load = true
       term_info_div.change =>
-        @destroy_spacetree()
-        @create_spacetree()
-        @query()
+        path = "/phenotypes/profile_tree?" + $('form[name=complex_query_form]').serialize()
+        if !initial_page_load && new StateTransition(path).redirecting
+          @show_loading()
+        else
+          @destroy_spacetree()
+          @create_spacetree()
+          @query()
+        
         @check_empty_state() # @query() must come before this call, because it calls @load_selected_phenotypes(), which sets @phenotype_count
 
       term_info_div.change() # fire on page load, in case phenotypes are there from the profile tree
+      initial_page_load = false
 
   create_spacetree: () ->
     $('#tree_empty_state').hide()
@@ -63,7 +70,9 @@ class Tree
          @query(nodeId)
  
   destroy_spacetree: () ->
-    @spacetree.removeSubtree('root', false, 'animate') if @spacetree?
+    try
+      @spacetree.removeSubtree('root', false, 'animate') if @spacetree?
+    catch err
   
   initialize_spacetree: () ->
     @spacetree.loadJSON @root_node
@@ -197,5 +206,14 @@ class TreeNode
     child = new TreeNode tree, id, name, data
     @children.push child
     child
+
+
+class StateTransition
+  constructor: (@path) -> if @pushstate_supported then @push_state() else @redirect()
+  pushstate_supported: !!history.pushState
+  push_state: -> history.pushState {}, "", @path
+  redirect: -> window.location = @path
+  redirecting: !history.pushState
+
 
 window.profile_tree = new Tree 'tree'
