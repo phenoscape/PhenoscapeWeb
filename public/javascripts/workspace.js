@@ -44,7 +44,7 @@
           data: data,
           authenticitiy_token: AUTH_TOKEN
         },
-        error: ajax_error_handler,
+        error: ajax_error_handler
       });
       
       // Replace the icon with a confirmation
@@ -82,7 +82,7 @@
           data: data,
           authenticitiy_token: AUTH_TOKEN
         },
-        error: ajax_error_handler,
+        error: ajax_error_handler
       });
       
       // Replace the icon with a confirmation
@@ -105,7 +105,7 @@
       'related_entity': 'entities',
       'quality': 'qualities',
       'gene': 'genes',
-      'taxon': 'taxa',
+      'taxon': 'taxa'
     };
     
     /* ensure each category is defined in terms */
@@ -131,7 +131,7 @@
           data: full_term_json,
           authenticitiy_token: AUTH_TOKEN
         },
-        success: undefined,
+        success: undefined
       });
       
       /* Remove term visibly from the page */
@@ -266,7 +266,7 @@
           [{name: 'taxa', anyall: true},
            {name: 'entities'},
            {name: 'qualities'},
-           {name: 'phenotypes', anyall: true}],
+           {name: 'phenotypes', anyall: true}]
       };
       
       function disable_sections() {
@@ -299,9 +299,11 @@
     
     /* Set up Query for select box */
     var query_select = $('#related_query_links');
-    query_select.attr('onchange', ''); // Remove the onchange event that's used for other queries
-    query_select.change(function() {select_query($(this).find(':selected'))}); // .find(':selected') is the selected <option>
-    select_query(query_select.find(':selected'));
+    if (query_select.length) {
+      query_select.attr('onchange', ''); // Remove the onchange event that's used for other queries
+      query_select.change(function() {select_query($(this).find(':selected'))}); // .find(':selected') is the selected <option>
+      select_query(query_select.find(':selected'));
+    }
   };
   
   

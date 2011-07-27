@@ -24,7 +24,8 @@
         terms += extract_term_components(terms).values.flatten
       -%>
       <%# Loop through each term and make a link for it %>
-      <%- terms.each do |term| -%>
+      <%- term_count = terms.size -%>
+      <%- terms.each_with_index do |term, i| -%>
         <%= term.to_json.inspect %>: 
         <%- 
           link = ""
@@ -35,10 +36,10 @@
             link = term_link(term)
           end
         -%>
-        <%= link.inspect %>,
+        <%= link.inspect %><%= ',' unless i+1 == term_count %>
       <%- end -%>
     };
-  -->
+  //-->
   <% end %>
   <%= javascript_include_tag "jquery-ui-1.8.2.custom.min.js" %>
   <%= javascript_include_tag "jquery.autocomplete.min.js" %>
