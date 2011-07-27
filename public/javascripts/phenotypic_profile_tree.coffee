@@ -4,7 +4,7 @@ class Tree
   constructor: (@container_id) ->
     @root_node = new TreeNode this, 'root'
     
-    $ =>
+    $ => # DOM ready
       $("##{@container_id}").css('visibility', 'hidden') # Tree should not be visible at first
 
       # This event gets called when anything is added to or removed from the Phenotype list

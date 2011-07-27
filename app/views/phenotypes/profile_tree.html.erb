@@ -1,7 +1,7 @@
 <%= javascript_include_tag 'jit-yc', 'phenotypic_profile_tree' %>
 <div>
   <div id="search_sidebar">
-    <% form_tag '', :method => :get, :name => 'complex_query_form' do %>
+    <% form_tag '/taxa', :method => :get, :name => 'complex_query_form' do %>
       <div id="term_info">
         
         <!-- Phenotype Filter -->
@@ -21,6 +21,13 @@
         </div>
 
       </div>
+      
+      <p>
+        <%-# Using button_to_function instead of submit_tag, so that (at least in some browsers) 
+           # if a user presses enter when a checkbox has focus, the form will not submit since there is no submit tag. -%>
+        <%= button_to_function 'Query taxa with these phenotypes', 'jQuery(this).closest("form").submit()' %>
+      </p>
+      
     <% end %>
   </div>
   
