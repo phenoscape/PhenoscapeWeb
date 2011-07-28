@@ -75,6 +75,9 @@ class Tree
     catch err
   
   initialize_spacetree: () ->
+    # If the first level has only one child, replace the root with that child
+    @root_node = @root_node.children[0] if @root_node.children.length == 1
+    
     @spacetree.loadJSON @root_node
     @spacetree.compute()
     @spacetree.plot()

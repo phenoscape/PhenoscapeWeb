@@ -83,6 +83,9 @@
       }
     };
     Tree.prototype.initialize_spacetree = function() {
+      if (this.root_node.children.length === 1) {
+        this.root_node = this.root_node.children[0];
+      }
       this.spacetree.loadJSON(this.root_node);
       this.spacetree.compute();
       this.spacetree.plot();
