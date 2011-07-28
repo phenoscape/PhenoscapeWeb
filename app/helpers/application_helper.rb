@@ -267,7 +267,7 @@ module ApplicationHelper
   
   
   def filter_operator(index, section_name)
-    operator = (params[:filter] && params[:filter]["#{section_name}_match_type"] == 'all') ? 'and' : 'or'
+    operator = (params[:source] == 'profile_tree' || params[:filter] && params[:filter]["#{section_name}_match_type"] == 'all') ? 'and' : 'or'
     return (index.to_i > 0 ? "<div class='#{section_name} filter_operator'>#{operator}</div>" : '')
   end
   
