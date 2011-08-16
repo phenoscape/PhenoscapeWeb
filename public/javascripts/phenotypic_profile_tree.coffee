@@ -34,7 +34,7 @@ class Tree
       duration: 600
       transition: $jit.Trans.Quart.easeOut
       levelDistance: 100
-      levelsToShow: 2
+      levelsToShow: 1
       Node:
         autoHeight: true
         autoWidth: true
