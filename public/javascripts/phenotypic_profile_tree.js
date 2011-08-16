@@ -6,7 +6,6 @@
   Tree = (function() {
     function Tree(container_id) {
       this.container_id = container_id;
-      this.root_node = new TreeNode(this, 'root');
       $(__bind(function() {
         var initial_page_load, term_info_div;
         $("#" + this.container_id).css('visibility', 'hidden');
@@ -30,6 +29,7 @@
     }
     Tree.prototype.create_spacetree = function() {
       $('#tree_empty_state').hide();
+      this.root_node || (this.root_node = TreeNode.create_root(this));
       return this.spacetree = typeof st !== "undefined" && st !== null ? st : st = new $jit.ST({
         injectInto: this.container_id,
         duration: 600,
@@ -69,14 +69,17 @@
         },
         request: __bind(function(nodeId, level, onComplete) {
           this.update_spacetree_callback = onComplete.onComplete;
+          console.log("Set update_spacetree_callback:");
+          console.log(onComplete.onComplete);
           return this.query(nodeId);
         }, this)
       });
     };
     Tree.prototype.destroy_spacetree = function() {
+      this.root_node = null;
       try {
         if (this.spacetree != null) {
-          return this.spacetree.removeSubtree('root', false, 'animate');
+          return this.spacetree.removeSubtree('root', true, 'animate');
         }
       } catch (err) {
 
@@ -85,6 +88,7 @@
     Tree.prototype.initialize_spacetree = function() {
       if (this.root_node.children.length === 1) {
         this.root_node = this.root_node.children[0];
+        this.root_node.id = 'root';
       }
       this.spacetree.loadJSON(this.root_node);
       this.spacetree.compute();
@@ -156,7 +160,7 @@
       this.hide_loading();
       if (root_node.id === 'root') {
         if (matches.any()) {
-          root_node.name = 'Phenotype query';
+          root_node.name || (root_node.name = 'Phenotype query');
           root_node.data.leaf_node = false;
           root_node.set_color();
         } else {
@@ -274,6 +278,9 @@
       child = new TreeNode(tree, id, name, data);
       this.children.push(child);
       return child;
+    };
+    TreeNode.create_root = function(tree) {
+      return new TreeNode(tree, 'root');
     };
     return TreeNode;
   })();

@@ -2,8 +2,6 @@ $ = jQuery
 
 class Tree
   constructor: (@container_id) ->
-    @root_node = new TreeNode this, 'root'
-    
     $ => # DOM ready
       $("##{@container_id}").css('visibility', 'hidden') # Tree should not be visible at first
 
@@ -12,6 +10,8 @@ class Tree
       initial_page_load = true
       term_info_div.change =>
         path = "/phenotypes/profile_tree?" + $('form[name=complex_query_form]').serialize()
+
+        # If we're redirecting to change the URL (pushState unsupported), don't bother loading anything, but show the loading screen
         if !initial_page_load && new StateTransition(path).redirecting
           @show_loading()
         else
@@ -26,6 +26,8 @@ class Tree
 
   create_spacetree: () ->
     $('#tree_empty_state').hide()
+    
+    @root_node ||= TreeNode.create_root this
     
     @spacetree = st ?= new $jit.ST
       injectInto: @container_id
@@ -66,17 +68,22 @@ class Tree
       #   else
       #     node.data.$lineWidth = 0
       request: (nodeId, level, onComplete) =>
-         @update_spacetree_callback = onComplete.onComplete
-         @query(nodeId)
+        @update_spacetree_callback = onComplete.onComplete
+        console.log "Set update_spacetree_callback:"
+        console.log onComplete.onComplete
+        @query nodeId
  
   destroy_spacetree: () ->
+    @root_node = null
     try
-      @spacetree.removeSubtree('root', false, 'animate') if @spacetree?
+      @spacetree.removeSubtree('root', true, 'animate') if @spacetree?
     catch err
   
   initialize_spacetree: () ->
     # If the first level has only one child, replace the root with that child
-    @root_node = @root_node.children[0] if @root_node.children.length == 1
+    if @root_node.children.length == 1
+      @root_node = @root_node.children[0]
+      @root_node.id = 'root'
     
     @spacetree.loadJSON @root_node
     @spacetree.compute()
@@ -128,7 +135,7 @@ class Tree
     
     if root_node.id == 'root'
       if matches.any()
-        root_node.name = 'Phenotype query'
+        root_node.name ||= 'Phenotype query'
         root_node.data.leaf_node = false
         root_node.set_color()
       else
@@ -209,6 +216,9 @@ class TreeNode
     child = new TreeNode tree, id, name, data
     @children.push child
     child
+  
+  @create_root: (tree) ->
+    new TreeNode tree, 'root'
 
 
 class StateTransition
