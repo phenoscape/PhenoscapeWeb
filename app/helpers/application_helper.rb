@@ -171,6 +171,18 @@ module ApplicationHelper
     return "http://zfin.org/cgi-bin/webdriver?MIval=aa-pubview2.apg&OID=#{fixed_id}"
   end
   
+  def zfin_genotype_url(term)
+    id = term["id"]
+    fixed_id = id.sub(/^ZFIN:/, "")
+    return "http://zfin.org/action/genotype/genotype-detail?zdbID=#{fixed_id}"
+  end
+  
+  def zfin_morpholino_url(term)
+    id = term["id"]
+    fixed_id = id.sub(/^ZFIN:/, "")
+    return "http://zfin.org/action/marker/view/#{fixed_id}"
+  end
+  
   def bioportal_tao_url(term)
     id = term["id"]
     return "http://bioportal.bioontology.org/virtual/1110/" + id
@@ -321,6 +333,10 @@ module ApplicationHelper
       type = Term.type(term)
       if type == :zfin_publication
         link_to((link_text ? link_text : display_term(term)), zfin_pub_url(term), html_options)
+      elsif type == :zfin_genotype
+        link_to((link_text ? link_text : display_term(term)), zfin_genotype_url(term), html_options)
+      elsif type == :zfin_morpholino
+        link_to((link_text ? link_text : display_term(term)), zfin_morpholino_url(term), html_options)
       elsif type
         link_to((link_text ? link_text : display_term(term)), {:controller => :term, :action => type, :id => term['id']}, html_options)
       end

@@ -37,7 +37,14 @@ class Term
   
   
   def self.type(term)
-    return (term['source'] ? SOURCE_KEYS[term['source']['id']] : :entity)
+    if term['source']
+      return SOURCE_KEYS[term['source']['id']]
+    elsif (term['type']) && (term['type']['id'] == 'SO:0001027')
+      return :zfin_genotype
+    elsif (term['type']) && (term['type']['id'] == 'SO:0000034')
+      return :zfin_morpholino
+    end
+    return :entity
   end
   
 end
