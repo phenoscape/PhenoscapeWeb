@@ -23,7 +23,6 @@ class FeedbackFormGenerator < Rails::Generator::Base
   def manifest
     record do |m|
       
-      puts "hello"
       add_model(m)
       add_mailer(m)
       add_controller(m)

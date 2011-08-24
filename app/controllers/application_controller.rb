@@ -109,7 +109,6 @@ class ApplicationController < ActionController::Base
         end
       end
     end
-    pp query
     return URI.encode(JSON.generate(query))
   end
   
