@@ -117,7 +117,7 @@ function buildBroadenRefineMenu(link, terms, element_index){
 
 function setPhenotypeInputs(data) {
     if (data['entity']) {
-        console.log("setting entity: " + data);
+        // console.log("setting entity: " + data);
         jQuery('#entity_id').attr('value', data['entity']['id']);
         jQuery('#entityChoice').attr('value', data['entity']['name']);
     }
@@ -134,7 +134,7 @@ function setPhenotypeInputs(data) {
 
 function moveLastPhenotypeToIndex(element_index) {
     var lastPhenotypeIndex = jQuery('#phenotype_filter .phenotype').length - 1;
-    console.log(lastPhenotypeIndex);
+    // console.log(lastPhenotypeIndex);
     //setup data with existing phenotype
     var data = {move_last_phenotype_index: element_index, last_phenotype_index: lastPhenotypeIndex};
     jQuery.each(['entity_id', 'quality_id', 'related_entity_id'], function(index, phenotype_component) {
@@ -145,7 +145,7 @@ function moveLastPhenotypeToIndex(element_index) {
 
 
 function editPhenotype(link, terms, element_index) {
-    console.log(terms);
+    // console.log(terms);
    clearInputs(['#entityChoice','#entity_id','#qualityChoice', '#quality_id','#relatedEntityChoice','#related_entity_id']);
    setPhenotypeInputs(terms);
    jQuery('#phenotype_filter_container').dialog({'close': function(event, ui) { 

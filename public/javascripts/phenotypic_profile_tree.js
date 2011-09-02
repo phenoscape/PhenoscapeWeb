@@ -69,8 +69,6 @@
         },
         request: __bind(function(nodeId, level, onComplete) {
           this.update_spacetree_callback = onComplete.onComplete;
-          console.log("Set update_spacetree_callback:");
-          console.log(onComplete.onComplete);
           return this.query(nodeId);
         }, this)
       });
@@ -98,7 +96,7 @@
       }
     };
     Tree.prototype.update_spacetree = function(node) {
-      if (!this.update_spacetree_callback) {
+      if (!(this.update_spacetree_callback || !console)) {
         return console.log("$jit failed to set update_spacetree_callback");
       }
       return this.update_spacetree_callback(node.id, node);

@@ -69,8 +69,6 @@ class Tree
       #     node.data.$lineWidth = 0
       request: (nodeId, level, onComplete) =>
         @update_spacetree_callback = onComplete.onComplete
-        console.log "Set update_spacetree_callback:"
-        console.log onComplete.onComplete
         @query nodeId
  
   destroy_spacetree: () ->
@@ -92,7 +90,7 @@ class Tree
       @spacetree.onClick @spacetree.root
   
   update_spacetree: (node) ->
-    return console.log "$jit failed to set update_spacetree_callback" unless @update_spacetree_callback
+    return console.log "$jit failed to set update_spacetree_callback" unless @update_spacetree_callback || !console
     @update_spacetree_callback node.id, node
   
   load_selected_phenotypes: () ->
