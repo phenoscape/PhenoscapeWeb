@@ -231,19 +231,25 @@ a.toggle_link:hover {text-decoration: underline;}
   background-color: #74c4ab;
 }
 
-#tree {
+#variation-tree {
   border: 2px solid #115A50;
   height: 550px;
   overflow: hidden;
 }
 
-#tree-canvaswidget {
+#profile-tree {
+  border: 2px solid #115A50;
+  height: 550px;
+  overflow: hidden;
+}
+
+#profile-tree-canvaswidget {
   cursor: grab;
   cursor: -moz-grab;
   cursor: -webkit-grab;
 }
 
-#tree-loading {
+#profile-tree-loading {
   color: white;
   font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
   font-size: 64px;
@@ -253,7 +259,7 @@ a.toggle_link:hover {text-decoration: underline;}
   z-index: 2;
 }
 
-#tree-empty {
+#profile-tree-empty {
   background-color: white;
   border: 3px solid black;
   border-radius: 20px;
@@ -267,7 +273,7 @@ a.toggle_link:hover {text-decoration: underline;}
   z-index: 1;
 }
 
-#tree-key {
+#profile-tree-key {
   margin-top: 10px;
   position: absolute;
   right: 20px;
@@ -275,14 +281,26 @@ a.toggle_link:hover {text-decoration: underline;}
   z-index: 1;
 }
 
-#tree-key .key {
+#profile-tree-key .key {
   border: 3px solid black;
   margin: 5px auto;
   width: 60px;
 }
 
-#tree-key .key .cell {
+#profile-tree-key .key .cell {
   padding: 5px;
   font-weight: bold;
   text-align: center;
+}
+
+table.grid {
+  border: 2px solid black;
+  border-collapse: collapse;
+  margin-top: 15px;
+  width: 100%;
+}
+
+table.grid td, table.grid th {
+  border: 2px solid black;
+  padding: 3px;
 }
