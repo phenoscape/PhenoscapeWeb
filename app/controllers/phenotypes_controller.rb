@@ -58,6 +58,11 @@ class PhenotypesController < ApplicationController
   end
   
   
+  def variation_tree
+    @entity = Term.names(params[:id])['terms'].first
+  end
+  
+  
   def download
     download_query_results(Phenotype, query_params)
   end
