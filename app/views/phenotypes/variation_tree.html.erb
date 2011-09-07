@@ -16,20 +16,26 @@
   <div class='clear'></div>
 
   <div id="search_sidebar">
-    <div id="term_info">
-      <div class='section'>
-        Limit tree to <span style="border: 3px solid black">Halecostomi</span> (X)
+    <% form_tag '/phenotypes', :method => :get, :name => 'complex_query_form' do %>
+      <div id="term_info">
+        <div class='section'>
+          Limit tree to <span style="border: 3px solid black">?</span> (X)
+        </div>
+        <div class="section">
+          <input type="checkbox" />
+          <label for="">Show taxa without phenotype data</label><br />
+          <input type="checkbox" />
+          <label for="">Show taxa with unspecified shape phenotypes</label>
+        </div>
       </div>
-      <div class="section">
-        <input type="checkbox" />
-        <label for="">Show taxa without phenotype data</label><br />
-        <input type="checkbox" />
-        <label for="">Show taxa with unspecified shape phenotypes</label>
-      </div>
-      <div class="section">
-        <a href="">Show current query</a>
-      </div>
-    </div>
+      
+      <p>
+        <%-# Using button_to_function instead of submit_tag, so that (at least in some browsers)
+           # if a user presses enter when a checkbox has focus, the form will not submit since there is no submit tag. -%>
+        <%= button_to_function 'Show current query', 'jQuery(this).closest("form").submit()' %>
+      </p>
+    
+    <% end %>
 
     <table class="grid">
       <tr>
@@ -51,6 +57,12 @@
   </div>
   
   <div id="search_main">
+    <div id="variation-tree-loading" style="display: none">Loading...</div>
+    <div id="variation-tree-empty">
+      No phenotypes entered yet.<br/>
+      Add a phenotype to the profile:
+      <%= button_to_function('Add', "jQuery('#add_phenotype_button').click()") %>
+    </div>
     <div id="variation-tree">
       
     </div>

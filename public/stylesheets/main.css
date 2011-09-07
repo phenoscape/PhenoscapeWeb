@@ -249,7 +249,7 @@ a.toggle_link:hover {text-decoration: underline;}
   cursor: -webkit-grab;
 }
 
-#profile-tree-loading {
+#profile-tree-loading, #variation-tree-loading {
   color: white;
   font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
   font-size: 64px;
@@ -259,7 +259,7 @@ a.toggle_link:hover {text-decoration: underline;}
   z-index: 2;
 }
 
-#profile-tree-empty {
+#profile-tree-empty, #variation-tree-empty {
   background-color: white;
   border: 3px solid black;
   border-radius: 20px;

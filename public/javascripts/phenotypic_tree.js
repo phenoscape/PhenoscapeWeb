@@ -179,8 +179,14 @@
         }, this)
       });
     };
-    Tree.prototype.ajax_error_handler = function() {
-      return alert('There was a problem requesting data. Check your internet connection or report this problem in feedback.');
+    Tree.prototype.ajax_error_handler = function(jqXHR, textStatus, errorThrown) {
+      alert('There was a problem requesting data. Check your internet connection or report this problem in feedback.');
+      if (console) {
+        console.log("Error:");
+        console.log(jqXHR);
+        console.log(textStatus);
+        return console.log(errorThrown);
+      }
     };
     Tree.prototype.find_node = function(id) {
       var result_node, search_nodes;

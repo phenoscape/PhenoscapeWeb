@@ -88,7 +88,7 @@ class Tree
     
     loading_root = !taxon_id? || taxon_id == 'root'
     
-    url = "#{@options.base_path}?#{decodeURIComponent(@term_params)}"
+    url = "#{@options.base_path}?#{decodeURIComponent(@term_params)}" # @term_params set in load_selected_terms
     url += "&taxon=#{taxon_id}" unless loading_root
 
     $.ajax
@@ -145,7 +145,13 @@ class Tree
       complete: =>
         $("##{@container_id}-loading").hide() unless @loading # Check @loading because of potential race conditions - if started loading again while fading out
   
-  ajax_error_handler: -> alert 'There was a problem requesting data. Check your internet connection or report this problem in feedback.'
+  ajax_error_handler: (jqXHR, textStatus, errorThrown) ->
+    alert 'There was a problem requesting data. Check your internet connection or report this problem in feedback.'
+    if console
+      console.log "Error:"
+      console.log jqXHR
+      console.log textStatus
+      console.log errorThrown
   
   find_node: (id) ->
     return null unless id? && id.length > 0
