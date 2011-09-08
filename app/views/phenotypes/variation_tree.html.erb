@@ -1,22 +1,22 @@
 <%= javascript_include_tag 'jit-yc', 'phenotypic_tree' %>
 <div>
-  <div>
-    Taxonomic distribution of
-    <select>
-      <%= options_for_select Attribute.all(:format => :array_for_select_options)%>
-    </select>
-    for
-    <strong id="entity">
-      <%= @entity['name'] %>
-      <input type="hidden" name="entity" value="<%= @entity['id'] %>">
-    </strong>
-    <button>change</button>
-  </div>
+  <% form_tag '/phenotypes', :method => :get, :name => 'complex_query_form' do %>
+    <div>
+      Taxonomic distribution of
+      <select name="filter[phenotypes][0][quality]">
+        <%= options_for_select Attribute.all(:format => :array_for_select_options)%>
+      </select>
+      for
+      <strong id="entity">
+        <%= @entity['name'] %>
+        <input type="hidden" name="filter[phenotypes][0][entity]" value="<%= @entity['id'] %>">
+      </strong>
+      <button>change</button>
+    </div>
   
-  <div class='clear'></div>
+    <div class='clear'></div>
 
-  <div id="search_sidebar">
-    <% form_tag '/phenotypes', :method => :get, :name => 'complex_query_form' do %>
+    <div id="search_sidebar">
       <div id="term_info">
         <div class='section'>
           Limit tree to <span style="border: 3px solid black">?</span> (X)
@@ -28,33 +28,32 @@
           <label for="">Show taxa with unspecified shape phenotypes</label>
         </div>
       </div>
-      
+    
       <p>
         <%-# Using button_to_function instead of submit_tag, so that (at least in some browsers)
            # if a user presses enter when a checkbox has focus, the form will not submit since there is no submit tag. -%>
         <%= button_to_function 'Show current query', 'jQuery(this).closest("form").submit()' %>
       </p>
     
-    <% end %>
-
-    <table class="grid">
-      <tr>
-        <th>Phenotype</th>
-        <th>Taxa</th>
-        <th>Phenotype Profiles</th>
-      </tr>
-      <tr>
-        <td>triangular</td>
-        <td>1</td>
-        <td>1</td>
-      </tr>
-      <tr>
-        <td>Y-shaped</td>
-        <td>1</td>
-        <td>1</td>
-      </tr>
-    </table>
-  </div>
+      <table class="grid">
+        <tr>
+          <th>Phenotype</th>
+          <th>Taxa</th>
+          <th>Phenotype Profiles</th>
+        </tr>
+        <tr>
+          <td>triangular</td>
+          <td>1</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>Y-shaped</td>
+          <td>1</td>
+          <td>1</td>
+        </tr>
+      </table>
+    </div>
+  <% end %>
   
   <div id="search_main">
     <div id="variation-tree-loading" style="display: none">Loading...</div>
