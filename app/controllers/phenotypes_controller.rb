@@ -68,8 +68,35 @@ class PhenotypesController < ApplicationController
   end
   
   
+  # For html requests, return the entity specified by params[:id].
+  # The page will then do an Ajax request to this same action.
+  #
+  # For js requests, call the variation_tree query_callback with the args (phenotype_sets, root_taxon_id, taxon_name_map), where:
+  #   phenotype_sets is a hash / json object conaining the sets as returned by the data source
+  #     See https://www.phenoscape.org/wiki/Data_Services#Phenotypic_variation_sets_service
+  #   root_taxon_id is the ID of the current taxon that is the parent all the taxa in phenotype_sets
+  #   taxon_name_map maps taxon ids to names, such as
+  #     {"TTO:1234": "Taxon name", ...}
   def variation_tree
-    @entity = Term.names(params[:id])['terms'].first
+    respond_to do |format|
+      format.html do
+        @entity = Term.names(params[:id])['terms'].first
+      end
+      format.js do
+        qp = query_params # this adds a little more to qp than we need, but it gets the job done
+        qp['taxon'] = params[:taxon] if params[:taxon].present?
+        qp['exclude_unannotated'] = params[:exclude_unannotated] == 'true' ? 'true' : false
+        qp['exclude_attribute'] = params[:exclude_attribute] == 'true' ? 'true' : false
+        
+        result = Phenotype.variationsets(qp)
+        phenotype_sets = result['phenotype_sets']
+        parent_taxon_id = result['parent_taxon']
+        taxon_ids = ([parent_taxon_id] + phenotype_sets.map { |set| set['taxa'] }).flatten.uniq
+        taxon_name_map = Term.names(taxon_ids)['terms'].each_with_object({}) { |term, map| map[term['id']] = term['name'] }
+        
+        render :js => "window.variation_tree.query_callback(JSON.decode('#{phenotype_sets.to_json}'), '#{parent_taxon_id}', JSON.decode('#{taxon_name_map.to_json}'))"
+      end
+    end
   end
   
   

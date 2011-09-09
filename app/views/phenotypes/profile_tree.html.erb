@@ -1,7 +1,7 @@
-<%= javascript_include_tag 'jit-yc', 'phenotypic_profile_tree' %>
+<%= javascript_include_tag 'jit-yc', 'phenotypic_tree' %>
 <div>
   <div id="search_sidebar">
-    <% form_tag '/taxa', :method => :get, :name => 'complex_query_form' do %>
+    <% form_tag '/taxa', :method => :get, :name => 'complex_query_form', :id => 'query_form' do %>
       <div id="term_info">
         
         <!-- Phenotype Filter -->

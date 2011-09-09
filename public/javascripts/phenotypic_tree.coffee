@@ -77,12 +77,12 @@ class Tree
     @update_spacetree_callback node.id, node
   
   load_selected_terms: ->
-    @term_params = $("#search_sidebar form").serialize()
+    @term_params = $("form#query_form}}").serialize()
     return
   
   query: (taxon_id=null) ->
     @load_selected_terms()
-    return unless @term_count > 0
+    return unless !@term_count? || @term_count > 0
     
     @show_loading()
     
@@ -224,6 +224,13 @@ class VariationTree extends Tree
       base_path:        '/phenotypes/variation_tree'
 
     super @container_id
+    
+    $ ->
+      update_quality_name = ->
+        $('.quality_name').html $('#quality_select option:selected').html()
+        update_quality_name()
+      $('#quality_select').change update_quality_name
+        
 
   create_spacetree: ->
     super
@@ -242,11 +249,17 @@ class VariationTree extends Tree
           'white-space': 'nowrap'
   
   load_selected_terms: ->
-    @term_count = 1 # will this concept exist? query depends on it
     super()
   
   initialize_spacetree: ->
     super() # TODO
+  
+  query_callback: (matching_taxa, root_taxon_id, phenotype_sets) ->
+    super matching_taxa, root_taxon_id
+    @populate_phenotype_table phenotype_sets
+  
+  populate_phenotype_table: (phenotype_sets) ->
+    
 
 
 
@@ -258,6 +271,8 @@ class TreeNode
   set_color: ->
     @data.$color = @color()
 
+  # Find and return a decendent of this node that matches the given id.
+  # If no descendent is found, create a the node using the given data and add it as a child of this node.
   find_or_create_child: (tree, id, name, data={}) ->
     child = @children.find (c) -> c.id == id
     return child if child?
