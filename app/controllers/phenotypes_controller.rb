@@ -16,6 +16,16 @@ class PhenotypesController < ApplicationController
   end
   
   
+  # For html requests, return the phenotypes specified by the query params
+  # The page will then do an Ajax request to this same action.
+  #
+  # For js requests, call the profile_tree query_callback with the args (matches, root_taxon_id), where:
+  #   matches is a hash / json object conaining the matches as returned by the data source,
+  #     but with the name as an additional field.
+  #     See https://www.phenoscape.org/wiki/Data_Services#Phenotypic_profile_match_service
+  #   root_taxon_id is the ID of the root taxon in the match tree.
+  #     It is used by the javascript ProfileTree to determine if this is a subtree (when expanding a node)
+  #     or the root of a tree (on the initial call)
   def profile_tree
     params[:source] = 'profile_tree' # Used in _phenotype_filter_item.html.erb to hide broaden/refine link
     filter_term_names
@@ -25,24 +35,24 @@ class PhenotypesController < ApplicationController
       end
       format.js do
         # Query for taxa for the given phenotypes
-        qp = query_params
+        qp = query_params # this adds a little more to qp than we need, but it gets the job done
         qp['taxon'] = params[:taxon] if params[:taxon].present?
         @taxa = Phenotype.profile(qp)
         
         # Collect taxon IDs for name lookup later
-        taxon_ids = @taxa['matches'].map {|taxon| taxon['taxon_id'] }
+        taxon_ids = @taxa['matches'].map { |taxon| taxon['taxon_id'] }
 
         # Query for another level of taxa, if specified
         if params[:levels].to_i > 1
           @taxa['matches'].each do |taxon|
             qp['taxon'] = taxon['taxon_id']
             taxon['matches'] = Phenotype.profile(qp)['matches']
-            taxon_ids += taxon['matches'].map {|t| t['taxon_id'] }
+            taxon_ids += taxon['matches'].map { |t| t['taxon_id'] }
           end
         end
         
         # Look up names for the taxa 
-        name_map = Term.names(taxon_ids)['terms'].each_with_object({}) {|term, map| map[term['id']] = term['name'] }
+        name_map = Term.names(taxon_ids)['terms'].each_with_object({}) { |term, map| map[term['id']] = term['name'] }
         @taxa['matches'].each do |taxon|
           taxon['name'] = name_map[taxon['taxon_id']]
           if taxon['matches']
