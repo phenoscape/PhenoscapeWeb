@@ -74,6 +74,10 @@
       }
     };
     Tree.prototype.initialize_spacetree = function() {
+      if (this.root_node.children.length === 1) {
+        this.root_node = this.root_node.children[0];
+        this.root_node.id = 'root';
+      }
       this.spacetree.loadJSON(this.root_node);
       this.spacetree.compute();
       this.spacetree.plot();
@@ -88,7 +92,7 @@
       return this.update_spacetree_callback(node.id, node);
     };
     Tree.prototype.load_selected_terms = function() {
-      this.term_params = $("form#query_form}}").serialize();
+      return this.term_params = $("form#query_form}}").serialize();
     };
     Tree.prototype.query = function(taxon_id) {
       var loading_root, url;
@@ -96,7 +100,7 @@
         taxon_id = null;
       }
       this.load_selected_terms();
-      if (!(!(this.term_count != null) || this.term_count > 0)) {
+      if (!(this.term_count > 0)) {
         return;
       }
       this.show_loading();
@@ -116,33 +120,13 @@
         error: this.ajax_error_handler
       });
     };
-    Tree.prototype.query_callback = function(matches, root_taxon_id) {
-      var match, match_child, node, root_node, _i, _j, _len, _len2, _ref;
-      root_node = this.find_node(root_taxon_id) || this.root_node;
-      matches = matches.sortBy(function(m) {
-        return m.name;
-      });
-      for (_i = 0, _len = matches.length; _i < _len; _i++) {
-        match = matches[_i];
-        node = root_node.find_or_create_child(this, match.taxon_id, match.name, {
-          greatest_profile_match: match.greatest_profile_match
-        });
-        if (match.matches != null) {
-          match.matches = match.matches.sortBy(function(m) {
-            return m.name;
-          });
-          _ref = match.matches;
-          for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
-            match_child = _ref[_j];
-            node.find_or_create_child(this, match_child.taxon_id, match_child.name, {
-              greatest_profile_match: match_child.greatest_profile_match
-            });
-          }
-        }
+    Tree.prototype.query_callback = function(root_node, empty_resultset) {
+      if (empty_resultset == null) {
+        empty_resultset = false;
       }
       this.hide_loading();
       if (root_node.id === 'root') {
-        if (matches.any()) {
+        if (!empty_resultset) {
           root_node.name || (root_node.name = 'Phenotype query');
           root_node.data.leaf_node = false;
           root_node.set_color();
@@ -259,15 +243,35 @@
       });
     };
     ProfileTree.prototype.load_selected_terms = function() {
-      this.term_count = $("#term_info .phenotype").length;
-      return ProfileTree.__super__.load_selected_terms.call(this);
+      ProfileTree.__super__.load_selected_terms.call(this);
+      return this.term_count = $("#term_info .phenotype").length;
     };
-    ProfileTree.prototype.initialize_spacetree = function() {
-      if (this.root_node.children.length === 1) {
-        this.root_node = this.root_node.children[0];
-        this.root_node.id = 'root';
+    ProfileTree.prototype.query_callback = function(matches, root_taxon_id) {
+      var empty_resultset, match, match_child, node, root_node, _i, _j, _len, _len2, _ref;
+      root_node = this.find_node(root_taxon_id) || this.root_node;
+      matches = matches.sortBy(function(m) {
+        return m.name;
+      });
+      for (_i = 0, _len = matches.length; _i < _len; _i++) {
+        match = matches[_i];
+        node = root_node.find_or_create_child(this, match.taxon_id, match.name, {
+          greatest_profile_match: match.greatest_profile_match
+        });
+        if (match.matches != null) {
+          match.matches = match.matches.sortBy(function(m) {
+            return m.name;
+          });
+          _ref = match.matches;
+          for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
+            match_child = _ref[_j];
+            node.find_or_create_child(this, match_child.taxon_id, match_child.name, {
+              greatest_profile_match: match_child.greatest_profile_match
+            });
+          }
+        }
       }
-      return ProfileTree.__super__.initialize_spacetree.call(this);
+      empty_resultset = matches.length === 0;
+      return ProfileTree.__super__.query_callback.call(this, root_node, empty_resultset);
     };
     return ProfileTree;
   })();
@@ -283,42 +287,81 @@
       $(function() {
         var update_quality_name;
         update_quality_name = function() {
-          $('.quality_name').html($('#quality_select option:selected').html());
-          return update_quality_name();
+          return $('.quality_name').html($('#quality_select option:selected').html());
         };
-        return $('#quality_select').change(update_quality_name);
+        $('#quality_select').change(function() {
+          update_quality_name();
+          return $('#term_info').change();
+        });
+        return update_quality_name();
       });
     }
     VariationTree.prototype.create_spacetree = function() {
       return VariationTree.__super__.create_spacetree.call(this, {
+        Node: {
+          levelDistance: 300
+        },
+        Label: {
+          type: 'HTML'
+        },
         onCreateLabel: function(label, node) {
           label = $(label);
           label.attr('id', node.id);
-          label.html(node.name);
-          if (!node.data.leaf_node) {
-            label.click(function() {
-              return st.onClick(node.id);
-            });
-          }
-          return label.css({
+          label.css({
             cursor: 'pointer',
-            color: '#333',
             fontSize: '0.8em',
             padding: '3px',
             'white-space': 'nowrap'
           });
+          if (node.data.type === 'group') {
+            node.data.taxa.each(function(taxon) {
+              return label.append($("<div class='variation-tree-grouped-taxon' rel='" + taxon.id + "'>" + taxon.name + "</div>"));
+            });
+            label.css({
+              color: '#333'
+            });
+          } else {
+            label.html(node.name);
+            label.css({
+              backgroundColor: 'blue',
+              color: '#333'
+            });
+          }
+          if (!node.data.leaf_node) {
+            return label.click(function() {
+              return st.onClick(node.id);
+            });
+          }
         }
       });
     };
     VariationTree.prototype.load_selected_terms = function() {
-      return VariationTree.__super__.load_selected_terms.call(this);
+      VariationTree.__super__.load_selected_terms.call(this);
+      return this.term_count = 1;
     };
     VariationTree.prototype.initialize_spacetree = function() {
       return VariationTree.__super__.initialize_spacetree.call(this);
     };
-    VariationTree.prototype.query_callback = function(matching_taxa, root_taxon_id, phenotype_sets) {
-      VariationTree.__super__.query_callback.call(this, matching_taxa, root_taxon_id);
-      return this.populate_phenotype_table(phenotype_sets);
+    VariationTree.prototype.query_callback = function(phenotype_sets, root_taxon_id, taxon_name_map) {
+      var current_taxon_node, root_node;
+      root_node = this.find_node(root_taxon_id) || this.root_node;
+      current_taxon_node = root_node.find_or_create_child(this, root_taxon_id, taxon_name_map[root_taxon_id], {
+        type: 'taxon'
+      });
+      phenotype_sets.each(__bind(function(group) {
+        var group_id;
+        group_id = "group-" + (hex_md5(JSON.encode(group)));
+        return current_taxon_node.find_or_create_child(this, group_id, group_id, {
+          type: 'group',
+          taxa: group.taxa.map(function(taxon_id) {
+            return {
+              id: taxon_id,
+              name: taxon_name_map[taxon_id]
+            };
+          })
+        });
+      }, this));
+      return VariationTree.__super__.query_callback.call(this, root_node);
     };
     VariationTree.prototype.populate_phenotype_table = function(phenotype_sets) {};
     return VariationTree;

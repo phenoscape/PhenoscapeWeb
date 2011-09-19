@@ -1,4 +1,4 @@
-<%= javascript_include_tag 'jit-yc', 'phenotypic_tree' %>
+<%= javascript_include_tag 'jit-yc', 'md5-min', 'phenotypic_tree' %>
 <div>
   <% form_tag '/phenotypes', :method => :get, :name => 'complex_query_form', :id => 'query_form' do %>
     <div>
@@ -58,9 +58,7 @@
   <div id="search_main">
     <div id="variation-tree-loading" style="display: none">Loading...</div>
     <div id="variation-tree-empty">
-      No phenotypes entered yet.<br>
-      Add a phenotype to the profile:
-      <%= button_to_function('Add', "jQuery('#add_phenotype_button').click()") %>
+      No results.
     </div>
     <div id="variation-tree">
       

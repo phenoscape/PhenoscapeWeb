@@ -1,3 +1,4 @@
+# Dependencies: prototype (for enumerators, array methods, and others) and jQuery (for DOM access and manipulation)
 $ = jQuery
 
 class Tree
@@ -11,7 +12,7 @@ class Tree
       term_info_div.change =>
         path = @options.base_path + "?" + $('form[name=complex_query_form]').serialize()
 
-        # If we're redirecting to change the URL (pushState unsupported), don't bother loading anything, but show the loading screen
+        # If we're redirecting to change the URL (when pushState is unsupported), don't bother loading anything, but show the loading screen
         if !initial_page_load && new StateTransition(path).redirecting
           @show_loading()
         else
@@ -66,6 +67,11 @@ class Tree
     catch err
   
   initialize_spacetree: ->
+    # If the first level has only one child, replace the root with that child
+    if @root_node.children.length == 1
+      @root_node = @root_node.children[0]
+      @root_node.id = 'root'
+
     @spacetree.loadJSON @root_node
     @spacetree.compute()
     @spacetree.plot()
@@ -78,11 +84,10 @@ class Tree
   
   load_selected_terms: ->
     @term_params = $("form#query_form}}").serialize()
-    return
   
   query: (taxon_id=null) ->
     @load_selected_terms()
-    return unless !@term_count? || @term_count > 0
+    return unless @term_count > 0
     
     @show_loading()
     
@@ -99,22 +104,12 @@ class Tree
         levels: if loading_root then 2 else 1
         authenticitiy_token: AUTH_TOKEN
       error: @ajax_error_handler
-
-  # Converts matches from the data source into TreeNodes and stores them in the tree
-  query_callback: (matches, root_taxon_id) ->
-    root_node = @find_node(root_taxon_id) || @root_node
-    matches = matches.sortBy (m) -> m.name
-    for match in matches
-      node = root_node.find_or_create_child(this, match.taxon_id, match.name, {greatest_profile_match: match.greatest_profile_match})
-      if match.matches?
-        match.matches = match.matches.sortBy (m) -> m.name
-        for match_child in match.matches
-          node.find_or_create_child(this, match_child.taxon_id, match_child.name, {greatest_profile_match: match_child.greatest_profile_match})
-    
+  
+  query_callback: (root_node, empty_resultset=false) ->
     @hide_loading()
-    
+
     if root_node.id == 'root'
-      if matches.any()
+      unless empty_resultset
         root_node.name ||= 'Phenotype query'
         root_node.data.leaf_node = false
         root_node.set_color()
@@ -204,16 +199,22 @@ class ProfileTree extends Tree
           'white-space': 'nowrap'
   
   load_selected_terms: ->
+    super()
     @term_count = $("#term_info .phenotype").length
-    super()
   
-  initialize_spacetree: ->
-    # If the first level has only one child, replace the root with that child
-    if @root_node.children.length == 1
-      @root_node = @root_node.children[0]
-      @root_node.id = 'root'
-
-    super()
+  # Converts matches from the data source into TreeNodes and stores them in the tree
+  query_callback: (matches, root_taxon_id) ->
+    root_node = @find_node(root_taxon_id) || @root_node
+    matches = matches.sortBy (m) -> m.name
+    for match in matches
+      node = root_node.find_or_create_child this, match.taxon_id, match.name, greatest_profile_match: match.greatest_profile_match
+      if match.matches?
+        match.matches = match.matches.sortBy (m) -> m.name
+        for match_child in match.matches
+          node.find_or_create_child this, match_child.taxon_id, match_child.name, greatest_profile_match: match_child.greatest_profile_match
+    
+    empty_resultset = (matches.length == 0)
+    super root_node, empty_resultset
 
 
 
@@ -228,35 +229,67 @@ class VariationTree extends Tree
     $ ->
       update_quality_name = ->
         $('.quality_name').html $('#quality_select option:selected').html()
+      $('#quality_select').change ->
         update_quality_name()
-      $('#quality_select').change update_quality_name
-        
+        $('#term_info').change()
+      update_quality_name()
 
   create_spacetree: ->
     super
+      Node:
+        levelDistance: 300
+      Label:
+        type: 'HTML'
       onCreateLabel: (label, node) ->
-        # Set label style
         label = $(label)
         label.attr 'id', node.id
-        label.html node.name
-        unless node.data.leaf_node
-          label.click -> st.onClick node.id
         label.css
           cursor: 'pointer'
-          color: '#333'
           fontSize: '0.8em'
           padding: '3px'
           'white-space': 'nowrap'
+
+        # Groups get treated differently; they have sub-divs for each taxon in the group
+        if node.data.type == 'group'
+          node.data.taxa.each (taxon) ->
+            label.append $("<div class='variation-tree-grouped-taxon' rel='#{taxon.id}'>#{taxon.name}</div>")
+          label.css
+            color: '#333'
+        else
+          label.html node.name
+          label.css
+            backgroundColor: 'blue'
+            color: '#333'
+
+        unless node.data.leaf_node
+          label.click -> st.onClick node.id
   
   load_selected_terms: ->
     super()
+    @term_count = 1
   
   initialize_spacetree: ->
     super() # TODO
   
-  query_callback: (matching_taxa, root_taxon_id, phenotype_sets) ->
-    super matching_taxa, root_taxon_id
-    @populate_phenotype_table phenotype_sets
+  # Converts phenotype_sets from the data source into TreeNodes and stores them in the tree.
+  # Also builds the phenotypes table.
+  query_callback: (phenotype_sets, root_taxon_id, taxon_name_map) ->
+    # Build the tree
+    root_node = @find_node(root_taxon_id) || @root_node
+    current_taxon_node = root_node.find_or_create_child this, root_taxon_id, taxon_name_map[root_taxon_id], type: 'taxon'
+    phenotype_sets.each (group) =>
+      group_id = "group-#{hex_md5 JSON.encode group}" # There's no id or any unique identifier; encode the whole group and hash it
+      current_taxon_node.find_or_create_child this, group_id, group_id,
+        type: 'group'
+        taxa: group.taxa.map (taxon_id) ->
+          id: taxon_id
+          name: taxon_name_map[taxon_id]
+    
+    # Set up the phenotypes table
+    
+    
+    super root_node
+  
   
   populate_phenotype_table: (phenotype_sets) ->
     
