@@ -31,11 +31,11 @@ class PhenotypesController < ApplicationController
     filter_term_names
     respond_to do |format|
       format.html do
-        @phenotypes = Phenotype.find(query_params)
+        @phenotypes = Phenotype.find({:query => build_json_query})
       end
       format.js do
         # Query for taxa for the given phenotypes
-        qp = query_params # this adds a little more to qp than we need, but it gets the job done
+        qp = {:query => build_json_query}
         qp['taxon'] = params[:taxon] if params[:taxon].present?
         @taxa = Phenotype.profile(qp)
         
@@ -83,7 +83,7 @@ class PhenotypesController < ApplicationController
         @entity = Term.names(params[:id])['terms'].first
       end
       format.js do
-        qp = query_params # this adds a little more to qp than we need, but it gets the job done
+        qp = {:query => build_json_query}
         qp['taxon'] = params[:taxon] if params[:taxon].present?
         qp['exclude_unannotated'] = params[:exclude_unannotated] == 'true' ? 'true' : false
         qp['exclude_attribute'] = params[:exclude_attribute] == 'true' ? 'true' : false
@@ -109,8 +109,14 @@ class PhenotypesController < ApplicationController
   
   
     def query_params
-      sections = [:taxa, :genes]
-      sections << :publications unless action_name == 'facets'
+      sections = case action_name
+      when 'index', 'download'
+        [:taxa, :genes, :publications]
+      when 'facets'
+        [:taxa, :genes]
+      else
+        []
+      end
       setup_query_params('entity', sections, :any_or_all_sections => sections, :inferred => false)
     end
     
