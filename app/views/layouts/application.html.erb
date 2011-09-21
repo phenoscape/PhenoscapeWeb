@@ -86,8 +86,22 @@
   </script>
 </head>
 <body class="yui-skin-sam">
-<h1><a href="/"><img class="top_logo" src="/images/phenoscape_beta.png" alt="Phenoscape logo"></a><span>The Phenoscape 
-  Knowledgebase is currently in BETA testing - we would greatly value your feedback as we continue its development.</span></h1>
+
+	<% if controller_name == 'search' && action_name == 'index'%>
+	<div class="header-message rounded-medium">
+	   <p>
+	       The Knowledgebase currently contains <span class="count">518,905</span> phenotype statements about <span class="count">2,473</span> taxa, sourced from <span class="count">52</span> <a href="http://kb-staging.phenoscape.org/about/bibliography/">publications</a>. as well as <span class="count">22,484</span> phenotype statements about <span class="count">3,941</span> genes, retrieved from <a href="http://zfin.org/">ZFIN</a>.  The data were last loaded into the Knowledgebase on <span class="count">2011-05-10</span>.
+	   </p>
+	   <div class="feedback-widget rounded-large"><a href="#" class="feedback_link popup-link">Feedback</a></div>
+	   <p>
+	       The Phenoscape Knowledgebase is currently in beta testing. We would greatly value your <a href="#" class="feedback_link popup-link">feedback</a> as we continue its development.
+	   </p>
+	</div>
+	<% end %>
+
+<h1 class="top_logo_holder"><a href="/"><img class="top_logo" src="/images/phenoscape.png" alt="Phenoscape logo"></a>
+</h1>
+  
 	<% unless controller_name == 'search' && action_name == 'index'%>
     <form id="upperTermForm" action="/search/autocomplete">
   		<div id="upperTermChoiceGroup">
@@ -98,11 +112,11 @@
   			<p id="upperSearchExamples">Enter entity terms (e.g. basihyal bone), phenotypic qualities (e.g. shape, size), taxonomic names (e.g. Ictaluridae), gene names or symbols (e.g. cadherin 6, cdh6), or publications.</p>
   		</div>
   	</form>
+    <div class="feedback-widget rounded-large"><a href="#" class="feedback_link popup-link">Feedback</a></div>
   <% end %>
 <div id="navbar">
 	<a href="/">Home</a>
   <%= link_to "Workspace", workspace_path %>
-	<%= feedback_link "Provide Feedback" %>
 	<a href="/about/">About</a> 
 	<a href="http://www.phenoscape.org/wiki/acknowledgments" target="_blank">Acknowledgments</a>
 </div>
