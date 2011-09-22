@@ -209,6 +209,46 @@ function initializeTooltip(element_id, term_id) {
   });
 }
 
+function initializeHints() {
+  var $helpLinks = jQuery('a.help-link');
+  // disable normal click-through behavior of these links
+  $helpLinks.click(function() { return false; });
+  /* BeautyTips is unable to read the element's attributes for some reason,
+   * so we're going to use a big dumb loop to pre-fetch and groom each URL.
+   */
+  $helpLinks.each(function() {
+      var ajaxURL = jQuery(this).attr('href');
+      if (ajaxURL.indexOf('#') != -1) {
+        // split URL on fragment, to show just part of the page
+        ajaxURL = ajaxURL.split('#').join(' #') + " > *";
+      }
+      if (console && console.log) {
+        console.log("ajaxURL: "+ ajaxURL);
+      }
+      jQuery(this).bt({
+         trigger: 'hover',
+         // WORKS: ajaxPath: '/hints/Informatics #Synchronization_Tool',
+         // FAILS, EXPECTED:ajaxPath: jQuery(this).attr('href')).split('#').join(' #'),
+         ajaxPath: ajaxURL,
+         ajaxLoading: '<img src="/images/rotation.gif" width="32" height="32" />',
+         width: 325,
+         fill: '#FFF',
+         cornerRadius: 10,
+         strokeWidth: 0,
+         shadow: true,
+         shadowOffsetX: 3,
+         shadowOffsetY: 3,
+         shadowBlur: 8,
+         shadowColor: 'rgba(0,0,0,.9)',
+         shadowOverlap: false,
+         noShadowOpts: {strokeStyle: '#999', strokeWidth: 2},
+         spikeGirth: 15,
+         spikeLength: 30,
+         closeWhenOthersOpen: true
+      });
+  });
+}
+
 
 /*function updateTooltipHeight(){
   setTimeout(function(){
