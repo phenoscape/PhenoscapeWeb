@@ -220,6 +220,9 @@ class ProfileTree extends Tree
 
 class VariationTree extends Tree
   constructor: (@container_id) ->
+    # Temporarily disable pushstate until it's implemented properly for VariationTree
+    StateTransition.prototype.push_state = -> # do nothing
+    
     @options =
       tree_node_class:  VariationTreeNode
       base_path:        '/phenotypes/variation_tree'

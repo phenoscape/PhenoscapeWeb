@@ -279,6 +279,7 @@
     __extends(VariationTree, Tree);
     function VariationTree(container_id) {
       this.container_id = container_id;
+      StateTransition.prototype.push_state = function() {};
       this.options = {
         tree_node_class: VariationTreeNode,
         base_path: '/phenotypes/variation_tree'
