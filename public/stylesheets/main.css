@@ -37,7 +37,7 @@ a:hover {text-decoration: underline;}
 a:visited {color: #939;}
 a.help-link { display: inline-block; padding: 0; margin: 0; vertical-align: top; }
 a.help-link img {display: none;}
-li:hover a.help-link img, h3:hover a.help-link img { display: block; }
+.navigation-group:hover a.help-link img, li:hover a.help-link img, h3:hover a.help-link img { display: block; }
 a.popup-link { }
 a.popup-link:hover { text-decoration: none; border-bottom: 1px dotted; }
 

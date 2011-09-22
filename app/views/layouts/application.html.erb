@@ -84,6 +84,17 @@
     })();
     
   </script>
+  <script type="text/javascript">
+  /** universal behavior on document.ready **/
+    if (jQuery) {
+    	if (initializeHints) {
+    		jQuery(document).ready(function() {
+    			initializeHints();
+    		});
+    	}
+    }
+    
+  </script>
 </head>
 <body class="yui-skin-sam">
 
