@@ -24,7 +24,7 @@ class Request
     response = Net::HTTP.start(self.host){|http| http.request(request) }
     options[:format] ||= :json
     result = response.body
-    result = JSON.parse(result) if options[:format] == :json
+    result = JSON.parse(result) if options[:format] == :json rescue raise("Error parsing JSON response for query: http://" + self.host + url_prefix + url_suffix + "\nPost data:\n#{request.body}\n")
     return result
   end
   
@@ -76,7 +76,8 @@ class Request
   
   
   def self.json_result(url_suffix, url_prefix='/OBD-WS/')
-    return sort_parents!(JSON.parse(result(url_suffix, url_prefix)))
+    parsed_json = JSON.parse(result(url_suffix, url_prefix)) rescue raise("Error parsing JSON response for query: http://" + self.host + url_prefix + url_suffix)
+    return sort_parents! parsed_json
   end
   
   
