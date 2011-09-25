@@ -27,7 +27,9 @@ SUBJECT_RELATION_MAPPINGS = {
   "increased_in_magnitude_relative_to" => "increased in magnitude relative to",
   "decreased_in_magnitude_relative_to" => "decreased in magnitude relative to",
   "similar_in_magnitude_relative_to"   => "similar in magnitude relative to",
-  "reciprocal_of"         => "reciprocal of"
+  "reciprocal_of"         => "reciprocal of",
+  "OBO_REL:has_part"      => "has part",
+  "has_quality"           => "has quality"
 }
 
 
@@ -39,7 +41,9 @@ OBJECT_RELATION_MAPPINGS = {
   "develops_from"         => "develops into",
   "overlaps"              => "overlaps",
   "correlates_with"       => "correlates with",
-  "reciprocal_of"         => "has reciprocal"
+  "reciprocal_of"         => "has reciprocal",
+  "OBO_REL:has_part"      => "may be part of",
+  "has_quality"           => "may be quality of"
 }
 
 
