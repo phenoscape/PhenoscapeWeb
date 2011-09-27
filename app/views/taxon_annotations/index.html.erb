@@ -3,10 +3,8 @@
   <div id="search_sidebar">
     <% form_tag '', :method => :get, :name => 'complex_query_form' do %>
       <div id="term_info">
-        <div class='header'>Query for: <%= render :partial => 'shared/related_query_links' %>
-	    </div>
+        <div class='header'>Query for: <%= render :partial => 'shared/related_query_links' %></div>
 
-          
         <!-- Taxon Filter -->
         <div class='section'>
           <div class='right'><%= button_to_function 'Add', "clearInputs(['#popupTermChoice','#term_id']);jQuery('#term_filter_container').dialog('open');" %></div>
@@ -57,8 +55,8 @@
   
   <div id="search_main">
     
-    <%= render :partial => 'shared/pagination', :locals => {:collection => @taxon_annotations['annotations'], 
-          :total => @taxon_annotations['total']} %>
+    <%= render :partial => 'shared/pagination', :locals => {:collection => @taxon_annotations['annotations'],
+               :total => @taxon_annotations['total']} %>
     
     <table class="search_results sortable">
       <tr class='no_padding'>
@@ -85,8 +83,8 @@
       <% end %>
     </table>
 
-	<%= render :partial => 'shared/pagination', :locals => {:collection => @taxon_annotations['annotations'], 
-          :total => @taxon_annotations['total']} %>
+    <%= render :partial => 'shared/pagination', :locals => {:collection => @taxon_annotations['annotations'],
+               :total => @taxon_annotations['total']} %>
     
     <%= render :partial => 'shared/download_links', :locals => {:total => @taxon_annotations['total']} %>
   </div>

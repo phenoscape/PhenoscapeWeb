@@ -3,8 +3,7 @@
   <div id="search_sidebar">
     <% form_tag '', :method => :get, :name => 'complex_query_form' do %>
       <div id="term_info">
-		<div class='header'>Query for: <%= render :partial => 'shared/related_query_links' %>
-	    </div>          
+        <div class='header'>Query for: <%= render :partial => 'shared/related_query_links' %></div>
         <!-- Phenotype Filter -->
         <div class='section'>
           <div class='right'><%= button_to_function 'Add', "clearInputs(['#entityChoice','#entity_id','#qualityChoice'," +
@@ -45,7 +44,7 @@
       <% end %>
     </table>
 
-	<%= render :partial => 'shared/pagination', :locals => {:collection => @genes['genes'], :total => @genes['total']} %>
+    <%= render :partial => 'shared/pagination', :locals => {:collection => @genes['genes'], :total => @genes['total']} %>
     
     <%= render :partial => 'shared/download_links', :locals => {:total => @genes['total']} %>
   </div>
