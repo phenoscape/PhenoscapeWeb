@@ -6,9 +6,10 @@ class Tree
     $ => # DOM ready
       $("##{@container_id}").css('visibility', 'hidden') # Tree should not be visible at first
 
-      # This event gets called when anything is added to or removed from the Phenotype list
       term_info_div = $('#term_info')
       initial_page_load = true
+      
+      # This event gets called when anything is added to or removed from the Phenotype list
       term_info_div.change =>
         path = @current_state_path()
 
@@ -299,9 +300,13 @@ class VariationTree extends Tree
   # Converts phenotype_sets from the data source into TreeNodes and stores them in the tree.
   # Also builds the phenotypes table.
   query_callback: (phenotype_sets, root_taxon_id, taxon_data) ->
-    # Build the tree
+    root_node = @build_tree phenotype_sets, root_taxon_id, taxon_data
+    @populate_phenotype_table phenotype_sets
+    super root_node
+  
+  build_tree: (phenotype_sets, root_taxon_id, taxon_data) ->
     root_node = @find_node(root_taxon_id) || @root_node
-    current_taxon_node = root_node.find_or_create_child this, root_taxon_id, taxon_data[root_taxon_id].name, type: 'taxon', rank: taxon_data[root_taxon_id].rank.name
+    current_taxon_node = root_node.find_or_create_child this, root_taxon_id, taxon_data[root_taxon_id].name, type: 'taxon', rank: taxon_data[root_taxon_id].rank?.name
     phenotype_sets.each (group) =>
       group_id = "group-#{hex_md5 JSON.encode group}" # There's no id or any unique identifier; encode the whole group and hash it
       current_taxon_node.find_or_create_child this, group_id, group_id,
@@ -309,13 +314,9 @@ class VariationTree extends Tree
         taxa: group.taxa.map (taxon_id) ->
           id: taxon_id
           name: taxon_data[taxon_id].name
-          rank: taxon_data[taxon_id].rank.name
+          rank: taxon_data[taxon_id].rank?.name
     
-    # Set up the phenotypes table
-    
-    
-    super root_node
-  
+    root_node
   
   populate_phenotype_table: (phenotype_sets) ->
     
@@ -325,6 +326,14 @@ class VariationTree extends Tree
     phenotype_filter = "?" + $('form[name=complex_query_form]').serialize()
     
     base + taxon + phenotype_filter
+  
+  navigate_to_taxon: (taxon_id) ->
+    @current_taxon_id = taxon_id
+    
+    # TODO: test if the node is already present, and modify the existing tree
+    
+    # Start over with a new query
+    $('#term_info').change()
 
 
 

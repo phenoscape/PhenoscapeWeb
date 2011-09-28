@@ -20,8 +20,10 @@
     <div id="search_sidebar">
       <div id="term_info">
         <div class='section'>
-          Limit tree to <span id="current_taxon_name" style="border: 3px solid black">(none)</span> (X)
-          <input type="hidden" id="current_taxon_id" name="filter[taxa][0]" value="">
+          Limit tree to <span id="current_taxon_name" style="border: 3px solid black">(loading)</span>
+          <%= button_to_function 'change', "clearInputs(['#popupTermChoice','#term_id']);jQuery('#term_filter_container').dialog('open');" %>
+          (X)
+          <input type="hidden" id="current_taxon_id" name="filter[taxa][0]" value="<%= params[:filter][:taxa]["0"] rescue "" %>">
         </div>
         <div class="section">
           <input type="checkbox" name="exclude_unannotated" <%= 'checked="checked"' if params[:exclude_unannotated] %>>
@@ -56,6 +58,8 @@
       </table>
     </div>
   <% end %>
+  
+  <%= render :partial => 'search/term_filter_popup', :locals => {:label => "Taxon", :field_name => 'taxa', :for_variation_tree => true} %>
   
   <div id="search_main">
     <div id="variation-tree-loading" style="display: none">Loading...</div>

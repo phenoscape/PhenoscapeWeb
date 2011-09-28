@@ -374,11 +374,17 @@
       return VariationTree.__super__.initialize_spacetree.call(this);
     };
     VariationTree.prototype.query_callback = function(phenotype_sets, root_taxon_id, taxon_data) {
-      var current_taxon_node, root_node;
+      var root_node;
+      root_node = this.build_tree(phenotype_sets, root_taxon_id, taxon_data);
+      this.populate_phenotype_table(phenotype_sets);
+      return VariationTree.__super__.query_callback.call(this, root_node);
+    };
+    VariationTree.prototype.build_tree = function(phenotype_sets, root_taxon_id, taxon_data) {
+      var current_taxon_node, root_node, _ref;
       root_node = this.find_node(root_taxon_id) || this.root_node;
       current_taxon_node = root_node.find_or_create_child(this, root_taxon_id, taxon_data[root_taxon_id].name, {
         type: 'taxon',
-        rank: taxon_data[root_taxon_id].rank.name
+        rank: (_ref = taxon_data[root_taxon_id].rank) != null ? _ref.name : void 0
       });
       phenotype_sets.each(__bind(function(group) {
         var group_id;
@@ -386,15 +392,16 @@
         return current_taxon_node.find_or_create_child(this, group_id, group_id, {
           type: 'group',
           taxa: group.taxa.map(function(taxon_id) {
+            var _ref2;
             return {
               id: taxon_id,
               name: taxon_data[taxon_id].name,
-              rank: taxon_data[taxon_id].rank.name
+              rank: (_ref2 = taxon_data[taxon_id].rank) != null ? _ref2.name : void 0
             };
           })
         });
       }, this));
-      return VariationTree.__super__.query_callback.call(this, root_node);
+      return root_node;
     };
     VariationTree.prototype.populate_phenotype_table = function(phenotype_sets) {};
     VariationTree.prototype.current_state_path = function() {
@@ -403,6 +410,10 @@
       taxon = "/" + this.current_taxon_id;
       phenotype_filter = "?" + $('form[name=complex_query_form]').serialize();
       return base + taxon + phenotype_filter;
+    };
+    VariationTree.prototype.navigate_to_taxon = function(taxon_id) {
+      this.current_taxon_id = taxon_id;
+      return $('#term_info').change();
     };
     return VariationTree;
   })();

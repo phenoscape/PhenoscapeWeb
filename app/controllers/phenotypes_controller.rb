@@ -83,8 +83,9 @@ class PhenotypesController < ApplicationController
         @entity = Term.names(params[:id])['terms'].first
       end
       format.js do
+        taxon = params[:filter][:taxa]["0"] rescue nil
         qp = {:query => build_json_query}
-        qp['taxon'] = params[:taxon] if params[:taxon].present?
+        qp['taxon'] = taxon if taxon.present?
         qp['exclude_unannotated'] = params[:exclude_unannotated] == 'true' ? 'true' : false
         qp['exclude_attribute'] = params[:exclude_attribute] == 'true' ? 'true' : false
         

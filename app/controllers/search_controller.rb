@@ -22,16 +22,20 @@ class SearchController < ApplicationController
   
   
   def term_filter
-    term_id = nil
+    @term_id = nil
     unless params[:term_id].blank?
-      term_id = params[:term_id]
-      set_filter_term_names_for_ids(term_id)
+      @term_id = params[:term_id]
+      set_filter_term_names_for_ids(@term_id)
     end
-    render :update do |page|
-      page.replace_html 'term_filter', '' if params[:next_term_index].to_i == 0
-      page.insert_html :bottom, 'term_filter', :partial => 'term_filter_item', 
-        :locals => {:term_id => term_id, :index => params[:next_term_index].to_i, :field_name => params[:field_name]}
-      page << "jQuery('#term_filter_container').dialog('close')"
+    if params[:for_variation_tree]
+      # render term_filter.js.erb
+    else
+      render :update do |page|
+        page.replace_html 'term_filter', '' if params[:next_term_index].to_i == 0
+        page.insert_html :bottom, 'term_filter', :partial => 'term_filter_item', 
+          :locals => {:term_id => @term_id, :index => params[:next_term_index].to_i, :field_name => params[:field_name]}
+        page << "jQuery('#term_filter_container').dialog('close')"
+      end
     end
   end
   
