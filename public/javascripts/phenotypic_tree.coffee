@@ -260,13 +260,14 @@ class VariationTree extends Tree
         if node.data.type == 'group'
           label.addClass 'node-group'
           node.data.taxa.each (taxon) ->
-            label.append $("<div class='node-taxon' rel='#{taxon.id}'>#{taxon.name}</div>")
+            label.append $("<div class='node-taxon #{taxon.rank}' rel='#{taxon.id}'>#{taxon.name}</div>")
           if node.data.taxa.length == 0
             label.addClass 'node-group-without-phenotypes'
           else
             label.addClass 'node-group-with-phenotypes'
         else
           label.addClass 'node-taxon'
+          label.addClass node.data.rank
           label.html node.name
           if label.data.current
             label.addClass 'current'
@@ -297,17 +298,18 @@ class VariationTree extends Tree
   
   # Converts phenotype_sets from the data source into TreeNodes and stores them in the tree.
   # Also builds the phenotypes table.
-  query_callback: (phenotype_sets, root_taxon_id, taxon_name_map) ->
+  query_callback: (phenotype_sets, root_taxon_id, taxon_data) ->
     # Build the tree
     root_node = @find_node(root_taxon_id) || @root_node
-    current_taxon_node = root_node.find_or_create_child this, root_taxon_id, taxon_name_map[root_taxon_id], type: 'taxon'
+    current_taxon_node = root_node.find_or_create_child this, root_taxon_id, taxon_data[root_taxon_id].name, type: 'taxon', rank: taxon_data[root_taxon_id].rank.name
     phenotype_sets.each (group) =>
       group_id = "group-#{hex_md5 JSON.encode group}" # There's no id or any unique identifier; encode the whole group and hash it
       current_taxon_node.find_or_create_child this, group_id, group_id,
         type: 'group'
         taxa: group.taxa.map (taxon_id) ->
           id: taxon_id
-          name: taxon_name_map[taxon_id]
+          name: taxon_data[taxon_id].name
+          rank: taxon_data[taxon_id].rank.name
     
     # Set up the phenotypes table
     

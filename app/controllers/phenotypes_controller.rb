@@ -92,9 +92,9 @@ class PhenotypesController < ApplicationController
         phenotype_sets = result['phenotype_sets']
         parent_taxon_id = result['parent_taxon']
         taxon_ids = ([parent_taxon_id] + phenotype_sets.map { |set| set['taxa'] }).flatten.uniq
-        taxon_name_map = Term.names(taxon_ids)['terms'].each_with_object({}) { |term, map| map[term['id']] = term['name'] }
+        set_filter_term_names_for_ids taxon_ids
         
-        render :js => "window.variation_tree.query_callback(JSON.decode('#{phenotype_sets.to_json}'), '#{parent_taxon_id}', JSON.decode('#{taxon_name_map.to_json}'))"
+        render :js => "window.variation_tree.query_callback(JSON.decode('#{phenotype_sets.to_json}'), '#{parent_taxon_id}', JSON.decode('#{@filter_term_names.to_json}'))"
       end
     end
   end

@@ -326,7 +326,7 @@
           if (node.data.type === 'group') {
             label.addClass('node-group');
             node.data.taxa.each(function(taxon) {
-              return label.append($("<div class='node-taxon' rel='" + taxon.id + "'>" + taxon.name + "</div>"));
+              return label.append($("<div class='node-taxon " + taxon.rank + "' rel='" + taxon.id + "'>" + taxon.name + "</div>"));
             });
             if (node.data.taxa.length === 0) {
               label.addClass('node-group-without-phenotypes');
@@ -335,6 +335,7 @@
             }
           } else {
             label.addClass('node-taxon');
+            label.addClass(node.data.rank);
             label.html(node.name);
             if (label.data.current) {
               label.addClass('current');
@@ -372,11 +373,12 @@
       }
       return VariationTree.__super__.initialize_spacetree.call(this);
     };
-    VariationTree.prototype.query_callback = function(phenotype_sets, root_taxon_id, taxon_name_map) {
+    VariationTree.prototype.query_callback = function(phenotype_sets, root_taxon_id, taxon_data) {
       var current_taxon_node, root_node;
       root_node = this.find_node(root_taxon_id) || this.root_node;
-      current_taxon_node = root_node.find_or_create_child(this, root_taxon_id, taxon_name_map[root_taxon_id], {
-        type: 'taxon'
+      current_taxon_node = root_node.find_or_create_child(this, root_taxon_id, taxon_data[root_taxon_id].name, {
+        type: 'taxon',
+        rank: taxon_data[root_taxon_id].rank.name
       });
       phenotype_sets.each(__bind(function(group) {
         var group_id;
@@ -386,7 +388,8 @@
           taxa: group.taxa.map(function(taxon_id) {
             return {
               id: taxon_id,
-              name: taxon_name_map[taxon_id]
+              name: taxon_data[taxon_id].name,
+              rank: taxon_data[taxon_id].rank.name
             };
           })
         });
