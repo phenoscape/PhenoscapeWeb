@@ -4,12 +4,13 @@
     <div>
       Taxonomic distribution of
       <select name="filter[phenotypes][0][quality]" id="quality_select">
-        <%= options_for_select Attribute.all(:format => :array_for_select_options) %>
+        <% selected_quality = params[:filter][:phenotypes]["0"][:quality] rescue nil %>
+        <%= options_for_select Attribute.all(:format => :array_for_select_options), selected_quality %>
       </select>
       for
       <strong id="entity">
         <%= @entity['name'] %>
-        <input type="hidden" name="filter[phenotypes][0][entity]" value="<%= @entity['id'] %>">
+        <input type="hidden" id="current_entity_id" name="filter[phenotypes][0][entity]" value="<%= @entity['id'] %>">
       </strong>
       <button>change</button>
     </div>
@@ -23,9 +24,9 @@
           <input type="hidden" id="current_taxon_id" name="filter[taxa][0]" value="">
         </div>
         <div class="section">
-          <input type="checkbox" name="exclude_unannotated">
+          <input type="checkbox" name="exclude_unannotated" <%= 'checked="checked"' if params[:exclude_unannotated] %>>
           <label for="">Show taxa without phenotype data</label><br>
-          <input type="checkbox" name="exclude_attribute">
+          <input type="checkbox" name="exclude_attribute" <%= 'checked="checked"' if params[:exclude_attribute] %>>
           <label for="">Show taxa with unspecified <span class="quality_name"></span> phenotypes</label>
         </div>
       </div>

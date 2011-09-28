@@ -10,7 +10,7 @@ class Tree
       term_info_div = $('#term_info')
       initial_page_load = true
       term_info_div.change =>
-        path = @options.base_path + "?" + $('form[name=complex_query_form]').serialize()
+        path = @current_state_path()
 
         # If we're redirecting to change the URL (when pushState is unsupported), don't bother loading anything, but show the loading screen
         if !initial_page_load && new StateTransition(path).redirecting
@@ -209,17 +209,19 @@ class ProfileTree extends Tree
     
     empty_resultset = (matches.length == 0)
     super root_node, empty_resultset
+    
+  current_state_path: ->
+    @options.base_path + "?" + $('form[name=complex_query_form]').serialize()
 
 
 
 class VariationTree extends Tree
   constructor: (@container_id) ->
-    # Temporarily disable pushstate until it's implemented properly for VariationTree
-    StateTransition.prototype.push_state = -> # do nothing
-    
     @options =
       tree_node_class:  VariationTreeNode
       base_path:        '/phenotypes/variation_tree'
+    
+    @current_taxon_id = window.location.pathname.sub(/.*\//, '') # essentially params[:id]
 
     super @container_id
     
@@ -315,6 +317,12 @@ class VariationTree extends Tree
   
   populate_phenotype_table: (phenotype_sets) ->
     
+  current_state_path: ->
+    base = @options.base_path
+    taxon = "/" + @current_taxon_id
+    phenotype_filter = "?" + $('form[name=complex_query_form]').serialize()
+    
+    base + taxon + phenotype_filter
 
 
 

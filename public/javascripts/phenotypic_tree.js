@@ -20,7 +20,7 @@
         initial_page_load = true;
         term_info_div.change(__bind(function() {
           var path;
-          path = this.options.base_path + "?" + $('form[name=complex_query_form]').serialize();
+          path = this.current_state_path();
           if (!initial_page_load && new StateTransition(path).redirecting) {
             this.show_loading();
           } else {
@@ -273,17 +273,20 @@
       empty_resultset = matches.length === 0;
       return ProfileTree.__super__.query_callback.call(this, root_node, empty_resultset);
     };
+    ProfileTree.prototype.current_state_path = function() {
+      return this.options.base_path + "?" + $('form[name=complex_query_form]').serialize();
+    };
     return ProfileTree;
   })();
   VariationTree = (function() {
     __extends(VariationTree, Tree);
     function VariationTree(container_id) {
       this.container_id = container_id;
-      StateTransition.prototype.push_state = function() {};
       this.options = {
         tree_node_class: VariationTreeNode,
         base_path: '/phenotypes/variation_tree'
       };
+      this.current_taxon_id = window.location.pathname.sub(/.*\//, '');
       VariationTree.__super__.constructor.call(this, this.container_id);
       $(function() {
         var update_quality_name;
@@ -391,6 +394,13 @@
       return VariationTree.__super__.query_callback.call(this, root_node);
     };
     VariationTree.prototype.populate_phenotype_table = function(phenotype_sets) {};
+    VariationTree.prototype.current_state_path = function() {
+      var base, phenotype_filter, taxon;
+      base = this.options.base_path;
+      taxon = "/" + this.current_taxon_id;
+      phenotype_filter = "?" + $('form[name=complex_query_form]').serialize();
+      return base + taxon + phenotype_filter;
+    };
     return VariationTree;
   })();
   TreeNode = (function() {
