@@ -46,12 +46,6 @@ class Tree
       Edge:
         type: 'bezier'
         overridable: true
-      ## This code had no effect and wasn't important anyway. Leaving the framework here, in case we want to distinguish selected nodes later.
-      # onBeforePlotNode: (node) ->
-      #   if node.selected
-      #     node.data.$lineWidth = 1
-      #   else
-      #     node.data.$lineWidth = 0
       request: (nodeId, level, onComplete) =>
         @update_spacetree_callback = onComplete.onComplete
         @query nodeId
@@ -238,41 +232,66 @@ class VariationTree extends Tree
       update_quality_name()
 
   create_spacetree: ->
+    # For off-screen render in onCreateLabel
+    offscreen = @find_or_create_offscreen_renderer()
+    
     super
+      Edge:
+        color: '#000'
+        type: 'bezier'
+        overridable: true
       Node:
-        levelDistance: 300
+        height: 1
+        width: 130
+        type: 'rectangle'
+        overridable: true
+        levelDistance: 500
       Label:
         type: 'HTML'
       onCreateLabel: (label, node) ->
         label = $(label)
         label.attr 'id', node.id
-        label.css
-          cursor: 'pointer'
-          fontSize: '0.8em'
-          padding: '3px'
-          'white-space': 'nowrap'
+        label.addClass 'node' # It already has this class, but I name it here to make it easier to find
 
         # Groups get treated differently; they have sub-divs for each taxon in the group
+        # Style the nodes in an external stylesheet
         if node.data.type == 'group'
+          label.addClass 'node-group'
           node.data.taxa.each (taxon) ->
-            label.append $("<div class='variation-tree-grouped-taxon' rel='#{taxon.id}'>#{taxon.name}</div>")
-          label.css
-            color: '#333'
+            label.append $("<div class='node-taxon' rel='#{taxon.id}'>#{taxon.name}</div>")
+          if node.data.taxa.length == 0
+            label.addClass 'node-group-without-phenotypes'
+          else
+            label.addClass 'node-group-with-phenotypes'
         else
+          label.addClass 'node-taxon'
           label.html node.name
-          label.css
-            backgroundColor: 'blue'
-            color: '#333'
-
+          if label.data.current
+            label.addClass 'current'
+        
+        # Render off-screen to get the height, and use that to set the node height
+        node.data.$height = label.appendTo(offscreen).outerHeight()
+        
         unless node.data.leaf_node
           label.click -> st.onClick node.id
+  
+  find_or_create_offscreen_renderer: ->
+    offscreen = $('#variation-tree-offscreen-renderer')
+    if offscreen.length
+      return offscreen
+    else
+      return $('<div id="variation-tree-offscreen-renderer" style="position: absolute; left: -1000px; top: -1000px;">').appendTo $("##{@container_id}")
   
   load_selected_terms: ->
     super()
     @term_count = 1
   
   initialize_spacetree: ->
-    super() # TODO
+    for id, node of @spacetree.graph.nodes
+      console.log $("##{id}").outerHeight()
+      node.data.$height = $("##{id}").outerHeight()
+    
+    super()
   
   # Converts phenotype_sets from the data source into TreeNodes and stores them in the tree.
   # Also builds the phenotypes table.
@@ -335,8 +354,7 @@ class ProfileTreeNode extends TreeNode
 
 
 class VariationTreeNode extends TreeNode
-  color: ->
-    'white'
+  color: -> 'transparent'
 
 
 

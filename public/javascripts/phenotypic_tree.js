@@ -298,9 +298,20 @@
       });
     }
     VariationTree.prototype.create_spacetree = function() {
+      var offscreen;
+      offscreen = this.find_or_create_offscreen_renderer();
       return VariationTree.__super__.create_spacetree.call(this, {
+        Edge: {
+          color: '#000',
+          type: 'bezier',
+          overridable: true
+        },
         Node: {
-          levelDistance: 300
+          height: 1,
+          width: 130,
+          type: 'rectangle',
+          overridable: true,
+          levelDistance: 500
         },
         Label: {
           type: 'HTML'
@@ -308,26 +319,25 @@
         onCreateLabel: function(label, node) {
           label = $(label);
           label.attr('id', node.id);
-          label.css({
-            cursor: 'pointer',
-            fontSize: '0.8em',
-            padding: '3px',
-            'white-space': 'nowrap'
-          });
+          label.addClass('node');
           if (node.data.type === 'group') {
+            label.addClass('node-group');
             node.data.taxa.each(function(taxon) {
-              return label.append($("<div class='variation-tree-grouped-taxon' rel='" + taxon.id + "'>" + taxon.name + "</div>"));
+              return label.append($("<div class='node-taxon' rel='" + taxon.id + "'>" + taxon.name + "</div>"));
             });
-            label.css({
-              color: '#333'
-            });
+            if (node.data.taxa.length === 0) {
+              label.addClass('node-group-without-phenotypes');
+            } else {
+              label.addClass('node-group-with-phenotypes');
+            }
           } else {
+            label.addClass('node-taxon');
             label.html(node.name);
-            label.css({
-              backgroundColor: 'blue',
-              color: '#333'
-            });
+            if (label.data.current) {
+              label.addClass('current');
+            }
           }
+          node.data.$height = label.appendTo(offscreen).outerHeight();
           if (!node.data.leaf_node) {
             return label.click(function() {
               return st.onClick(node.id);
@@ -336,11 +346,27 @@
         }
       });
     };
+    VariationTree.prototype.find_or_create_offscreen_renderer = function() {
+      var offscreen;
+      offscreen = $('#variation-tree-offscreen-renderer');
+      if (offscreen.length) {
+        return offscreen;
+      } else {
+        return $('<div id="variation-tree-offscreen-renderer" style="position: absolute; left: -1000px; top: -1000px;">').appendTo($("#" + this.container_id));
+      }
+    };
     VariationTree.prototype.load_selected_terms = function() {
       VariationTree.__super__.load_selected_terms.call(this);
       return this.term_count = 1;
     };
     VariationTree.prototype.initialize_spacetree = function() {
+      var id, node, _ref;
+      _ref = this.spacetree.graph.nodes;
+      for (id in _ref) {
+        node = _ref[id];
+        console.log($("#" + id).outerHeight());
+        node.data.$height = $("#" + id).outerHeight();
+      }
       return VariationTree.__super__.initialize_spacetree.call(this);
     };
     VariationTree.prototype.query_callback = function(phenotype_sets, root_taxon_id, taxon_name_map) {
@@ -430,7 +456,7 @@
       VariationTreeNode.__super__.constructor.apply(this, arguments);
     }
     VariationTreeNode.prototype.color = function() {
-      return 'white';
+      return 'transparent';
     };
     return VariationTreeNode;
   })();

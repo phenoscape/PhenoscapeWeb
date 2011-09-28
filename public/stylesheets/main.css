@@ -304,3 +304,50 @@ table.grid td, table.grid th {
   border: 2px solid black;
   padding: 3px;
 }
+
+#variation-tree .node {
+  color: black;
+  padding: 5px;
+  min-width: 120px;
+}
+
+#variation-tree .node-taxon {
+  background-color: #d6d6d6;
+  border: 1px solid darkgray;
+  padding: 5px;
+}
+
+#variation-tree .node-taxon:hover {
+  background-color: #7a7a7a;
+  color: white;
+}
+
+#variation-tree .node-taxon.current {
+  border: 3px solid #19d17f;
+}
+
+#variation-tree .node-group .node-taxon {
+  clear: both;
+  display: inline-block;
+  float: left;
+}
+
+#variation-tree .node-group-with-phenotypes {
+  background-color: #abd6fd;
+  behavior: url(/public/javascripts/PIE.htc); /* CSS3 for IE */
+  border: 3px solid #abd5fd;
+  border-radius: 20px;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  padding: 10px;
+}
+
+#variation-tree .node-group-with-phenotypes.selected {
+  border: 3px solid black;
+  background-color: #00a9d6;
+}
+
+#variation-tree .node-group-without-phenotypes {
+  border: none;
+  background-color: transparent;
+}
