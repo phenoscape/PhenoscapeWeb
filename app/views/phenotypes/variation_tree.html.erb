@@ -19,7 +19,8 @@
     <div id="search_sidebar">
       <div id="term_info">
         <div class='section'>
-          Limit tree to <span style="border: 3px solid black">?</span> (X)
+          Limit tree to <span id="current_taxon_name" style="border: 3px solid black">(none)</span> (X)
+          <input type="hidden" id="current_taxon_id" name="filter[taxa][0]" value="">
         </div>
         <div class="section">
           <input type="checkbox" name="exclude_unannotated">
