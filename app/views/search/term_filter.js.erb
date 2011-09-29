@@ -1,5 +1,0 @@
-jQuery(function($) {
-  $('#current_taxon_name').html("<%= @filter_term_names[@term_id]['name'] %>");
-  $('#current_taxon_id').val("<%= @term_id %>");
-  window.variation_tree.navigate_to_taxon("<%= @term_id %>");
-});

@@ -28,7 +28,7 @@ class SearchController < ApplicationController
       set_filter_term_names_for_ids(@term_id)
     end
     if params[:for_variation_tree]
-      # render term_filter.js.erb
+      render :js => "window.variation_tree.navigate_to_taxon('#{@term_id}', '#{@filter_term_names[@term_id]['name']}');"
     else
       render :update do |page|
         page.replace_html 'term_filter', '' if params[:next_term_index].to_i == 0
@@ -50,25 +50,29 @@ class SearchController < ApplicationController
     end
     set_filter_term_names_for_ids(term_ids)
     
-    render :update do |page|
-      # if !params[:move_last_phenotype_index].blank?
-      #        page.replace_html "phenotype_filter_item_#{params[:move_last_phenotype_index]}", :partial => 'phenotype_filter_item', 
-      #          :locals => {:phenotype => phenotype, :index => params[:move_last_phenotype_index].to_i}
-      #          page.remove "phenotype_filter_item_#{params[:last_phenotype_index]}"
-      #        page << "jQuery('#broaden_refine_menu').click();"
-      #      els
-      if params[:replace_phenotype_index].present?
-        page.replace_html "phenotype_filter_item_#{params[:replace_phenotype_index]}", :partial => 'phenotype_filter_item', 
-          :locals => {:phenotype => phenotype, :index => params[:replace_phenotype_index].to_i}
-        page << "jQuery('#broaden_refine_menu').click();"
-      else
-        page.replace_html 'phenotype_filter', '' if params[:next_phenotype_index].to_i == 0
-        page.insert_html :bottom, 'phenotype_filter', :partial => 'phenotype_filter_item', :locals => {:phenotype => phenotype, 
-          :index => params[:next_phenotype_index].to_i}
-        page << "jQuery('#phenotype_filter_container').dialog('close')"
+    if params[:for_variation_tree]
+      render :js => "window.variation_tree.change_entity('#{phenotype[:entity]}', '#{@filter_term_names[phenotype[:entity]]['name']}');"
+    else
+      render :update do |page|
+        # if !params[:move_last_phenotype_index].blank?
+        #        page.replace_html "phenotype_filter_item_#{params[:move_last_phenotype_index]}", :partial => 'phenotype_filter_item', 
+        #          :locals => {:phenotype => phenotype, :index => params[:move_last_phenotype_index].to_i}
+        #          page.remove "phenotype_filter_item_#{params[:last_phenotype_index]}"
+        #        page << "jQuery('#broaden_refine_menu').click();"
+        #      els
+        if params[:replace_phenotype_index].present?
+          page.replace_html "phenotype_filter_item_#{params[:replace_phenotype_index]}", :partial => 'phenotype_filter_item', 
+            :locals => {:phenotype => phenotype, :index => params[:replace_phenotype_index].to_i}
+          page << "jQuery('#broaden_refine_menu').click();"
+        else
+          page.replace_html 'phenotype_filter', '' if params[:next_phenotype_index].to_i == 0
+          page.insert_html :bottom, 'phenotype_filter', :partial => 'phenotype_filter_item', :locals => {:phenotype => phenotype, 
+            :index => params[:next_phenotype_index].to_i}
+          page << "jQuery('#phenotype_filter_container').dialog('close')"
+        end
+        page << "changeSectionFilterOperators('phenotypes');"
+        page << "jQuery('#term_info').change();"
       end
-      page << "changeSectionFilterOperators('phenotypes');"
-      page << "jQuery('#term_info').change();"
     end
   end
   

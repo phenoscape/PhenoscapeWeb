@@ -8,11 +8,9 @@
         <%= options_for_select Attribute.all(:format => :array_for_select_options), selected_quality %>
       </select>
       for
-      <strong id="entity">
-        <%= @entity['name'] %>
-        <input type="hidden" id="current_entity_id" name="filter[phenotypes][0][entity]" value="<%= @entity['id'] %>">
-      </strong>
-      <button>change</button>
+      <strong><span id="current_entity_name"><%= @entity['name'] %></span></strong>
+      <input type="hidden" id="current_entity_id" name="filter[phenotypes][0][entity]" value="<%= @entity['id'] %>">
+      <%= button_to_function 'change', "clearInputs(['#entityChoice', '#entity_id']); jQuery('#phenotype_filter_container').dialog('open');" %>
     </div>
   
     <div class='clear'></div>
@@ -60,6 +58,7 @@
   <% end %>
   
   <%= render :partial => 'search/term_filter_popup', :locals => {:label => "Taxon", :field_name => 'taxa', :for_variation_tree => true} %>
+  <%= render :partial => 'search/phenotype_filter_popup', :locals => {:for_variation_tree => true} %>
   
   <div id="search_main">
     <div id="variation-tree-loading" style="display: none">Loading...</div>

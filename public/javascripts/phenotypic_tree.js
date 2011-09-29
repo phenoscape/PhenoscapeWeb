@@ -286,7 +286,7 @@
         tree_node_class: VariationTreeNode,
         base_path: '/phenotypes/variation_tree'
       };
-      this.current_taxon_id = window.location.pathname.sub(/.*\//, '');
+      this.current_entity_id = window.location.pathname.sub(/.*\//, '');
       VariationTree.__super__.constructor.call(this, this.container_id);
       $(function() {
         var update_quality_name;
@@ -370,6 +370,7 @@
         node = _ref[id];
         console.log($("#" + id).outerHeight());
         node.data.$height = $("#" + id).outerHeight();
+        node.data.$width = $("#" + id).outerWidth();
       }
       return VariationTree.__super__.initialize_spacetree.call(this);
     };
@@ -407,13 +408,20 @@
     VariationTree.prototype.current_state_path = function() {
       var base, phenotype_filter, taxon;
       base = this.options.base_path;
-      taxon = "/" + this.current_taxon_id;
+      taxon = "/" + this.current_entity_id;
       phenotype_filter = "?" + $('form[name=complex_query_form]').serialize();
       return base + taxon + phenotype_filter;
     };
-    VariationTree.prototype.navigate_to_taxon = function(taxon_id) {
-      this.current_taxon_id = taxon_id;
+    VariationTree.prototype.navigate_to_taxon = function(taxon_id, taxon_name) {
+      $('#current_taxon_id').val(taxon_id);
+      $('#current_taxon_name').html(taxon_name);
       return $('#term_info').change();
+    };
+    VariationTree.prototype.change_entity = function(entity_id, entity_name) {
+      this.current_entity_id = entity_id;
+      $('#current_entity_id').val(entity_id);
+      $('#current_entity_name').html(entity_name);
+      return this.navigate_to_taxon(null);
     };
     return VariationTree;
   })();

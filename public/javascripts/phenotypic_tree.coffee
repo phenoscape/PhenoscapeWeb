@@ -222,7 +222,7 @@ class VariationTree extends Tree
       tree_node_class:  VariationTreeNode
       base_path:        '/phenotypes/variation_tree'
     
-    @current_taxon_id = window.location.pathname.sub(/.*\//, '') # essentially params[:id]
+    @current_entity_id = window.location.pathname.sub(/.*\//, '') # essentially params[:id]
 
     super @container_id
     
@@ -294,6 +294,7 @@ class VariationTree extends Tree
     for id, node of @spacetree.graph.nodes
       console.log $("##{id}").outerHeight()
       node.data.$height = $("##{id}").outerHeight()
+      node.data.$width = $("##{id}").outerWidth()
     
     super()
   
@@ -322,19 +323,25 @@ class VariationTree extends Tree
     
   current_state_path: ->
     base = @options.base_path
-    taxon = "/" + @current_taxon_id
+    taxon = "/" + @current_entity_id
     phenotype_filter = "?" + $('form[name=complex_query_form]').serialize()
     
     base + taxon + phenotype_filter
   
-  navigate_to_taxon: (taxon_id) ->
-    @current_taxon_id = taxon_id
+  navigate_to_taxon: (taxon_id, taxon_name) ->
+    $('#current_taxon_id').val taxon_id
+    $('#current_taxon_name').html taxon_name
     
     # TODO: test if the node is already present, and modify the existing tree
     
     # Start over with a new query
     $('#term_info').change()
-
+  
+  change_entity: (entity_id, entity_name) ->
+    @current_entity_id = entity_id
+    $('#current_entity_id').val entity_id
+    $('#current_entity_name').html entity_name
+    @navigate_to_taxon null
 
 
 class TreeNode
