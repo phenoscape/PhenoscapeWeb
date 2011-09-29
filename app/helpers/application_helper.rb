@@ -395,7 +395,7 @@ module ApplicationHelper
   
   
   def term_css_classes(term)
-    css_class = ''
+    css_class = 'is-content'
     css_class += ' extinct-taxon' if term['extinct']
     css_class += ' italic-taxon' if term['rank'] && ['genus', 'species'].include?(term['rank']['name'])
     css_class += ' italic' if Term.type(term) == :gene
