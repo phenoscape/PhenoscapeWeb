@@ -219,11 +219,11 @@ table.popup_table th {background-color: white; color: black; text-align: right; 
 #term #tree_container {height: 400px; padding: 9px 4px 9px 9px; overflow: scroll;}
 #term #info_container {margin-left: 400px;}
 #term .section {margin-bottom: 18px;}
-#term .section h3 {border-bottom: 1px solid #74c4ab; color: #006f5f; padding: 2px 0px; font-size: 110%; margin: 0px 0px 10px 0px;}
+#term .section h3 {border-bottom: 1px solid #74c4ab; color: #005544; padding: 2px 0px; font-size: 110%; margin: 0px 0px 10px 0px;}
 /* BLOCK-STYLE VERSION: 
 #term .section h3 {border-bottom: 1px solid #74c4ab; color: #0a3a34; padding: 4px 4px 2px; font-size: 110%; margin: 0px 0px 10px 0px; background-color: #ddf5ee;}
 */
-#term .section strong {color: #006f5f;}
+#term .section strong {color: #005544;}
 #term .section .content {margin-left: 10px;}
 
 .term_link {color: #33c;}
