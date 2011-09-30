@@ -1,6 +1,6 @@
 <div id='term'>
   <h2 class='header'>taxon: <%= display_term(@taxon) %></h2>
-  <h4 class='subheader'>source: <%=h @taxon['source']['name'] if @taxon['source'] %></h4>
+  <h4 class='subheader'>source: <span class="is-content"><%=h @taxon['source']['name'] if @taxon['source'] %></span></h4>
   
   <%= render :partial => 'term_tree', :locals => {:term => @taxon} %>
   

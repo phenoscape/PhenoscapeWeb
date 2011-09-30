@@ -48,7 +48,7 @@
     <%= render :partial => 'shared/pagination', :locals => {:collection => @phenotypes['phenotypes'], 
           :total => @phenotypes['total']} %>
     
-    <table class="search_results sortable">
+    <table class="search_results rounded-small sortable">
       <tr>
         <% shared_locals = {:controller => "phenotypes", :action => "facets"} %>
         <%= sort_column 'Entity', 'entity', shared_locals %>

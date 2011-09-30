@@ -1,6 +1,6 @@
 <div id='term'>
   <h2 class='header'>quality: <%= display_term(@quality) %></h2>
-  <h4 class='subheader'>source: <%=h @quality['source']['name'] if @quality['source'] %></h4>
+  <h4 class='subheader'>source: <span class="is-content"><%=h @quality['source']['name'] if @quality['source'] %></span></h4>
   
   <%= render :partial => 'term_tree', :locals => {:term => @quality} %>
   

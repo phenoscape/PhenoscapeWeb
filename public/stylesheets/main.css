@@ -2,7 +2,7 @@ body {font-family: Helvetica, sans-serif; margin: 0.5em 0.75em;}
 div#sidebar {float: right; width: 15em;}
 div#main {padding-right: 14em;}
 div#main #termFormContent {max-width: 50em;}
-div#main #termFormContent .search-instructions {width: 80%;}
+div#main #termFormContent .search-instructions {}
 .navigation-group {width: 42%; display: inline-block; vertical-align: top; margin-right: 3em;}
 .navigation-group h3 {background-color: #74c4ab; color: #0a3a34;}
 h3#feedHeader {color: #0a3a34;}
@@ -17,7 +17,7 @@ h3#feedHeader {color: #0a3a34;}
 #feed {font-size: 75%;}
 
 h1.top_logo_holder {float: left;}
-div.header-message {float: right; width: 600px; padding: 0.0em 0.75em; border: 1px solid #ccc; color: #333; background-color: #f3f3f3; font-size: 0.9em; font-style: italic; line-height: 1.2em; margin: 6px 10px 10px;}
+div.header-message {padding: 0.0em 0.75em; border: 1px solid #ccc; color: #333; background-color: #f3f3f3; font-size: 0.9em; font-style: italic; line-height: 1.2em; margin: 6px 10px 10px 344px;}
 div.header-message a {font-weight: bold;}
 .feedback-widget {clear: right; float: right; margin: 0px -4px 8px 12px; border: 2px solid #fff; padding: 5px 16px; background-color:  #276; background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #276), color-stop(100%, #000000)); background-image: -webkit-linear-gradient(top, #276, #000000); background-image: -moz-linear-gradient(top, #276, #000000); background-image: -o-linear-gradient(top, #276, #000000); background-image: -ms-linear-gradient(top, #276, #000000); background-image: linear-gradient(top, #276, #000000);}
 div.header-message .feedback-widget {margin: 4px -22px 0px 12px;}
@@ -67,6 +67,15 @@ tr.odd {background-color: #EBECEE;}
 #navbar {background-color: #74c4ab; text-align: right; color: #0a3a34; clear: both;line-height: 1.7em; margin: 0 -0.75em;}
 #navbar a {color: #0a3a34; margin: 0; text-decoration: none; font-weight: bold; display: inline-block; padding: 2px 13px;}
 #navbar a:hover {color: white; background-color: #0a3a34;}
+#navbar a.breadcrumb {float: left; padding-left: 24px; margin-left: -14px; padding-right: 16px; border: 3px solid #fff; margin-top: -3px; background-color: #e9e9e9; color: #333;}
+#navbar a.breadcrumb-home {position: relative;}
+#navbar a.breadcrumb-search {background-color: #DDE9EE;}
+#navbar a.breadcrumb-browse {background-color: #EEF3DD;}
+#navbar a.breadcrumb-query {background-color: #EEE3DD;}
+#navbar a.breadcrumb-visualize {background-color: #DDE9EE;}
+#navbar a.breadcrumb-unknown {background-color: #AA1111; color: #fff;}
+
+
 .top_logo {height: 100px;}
 .relation-name {font-style: italic;}
 
@@ -115,7 +124,7 @@ div.search_area .section {border: 3px solid #115A50; margin-left: 3px; margin-ri
 .yui-skin-sam .yui-ac-content ul {max-height: 400px; overflow: scroll;}
 .yui-ac-ft {color: red;}
 #termForm {margin-left: auto; margin-right: auto;}
-#search-forms #termChoice {width: 400px !important;}
+#search-forms #termChoice {width: 75% !important; margin-bottom: 0.5em;}
 #termComplete {width: 75%;}
 #termChoiceGroup { margin: 0.5em 0; }
 #term-search-explanation { margin-top: 4px; color: #666; }
@@ -170,7 +179,7 @@ div.tree-row {text-indent: -3em; margin-left: 3em;}
 #search_sidebar img {vertical-align: top;}
 .section_indent {margin-left: 15px;}
 
-table.search_results {width: 100%;}
+table.search_results {width: 100%; border: 1px solid #ddd;}
 table.search_results td, table.search_results th {text-align: center; padding: 6px 0px; font-size: 90%;}
 table.search_results .less_padding th, table.search_results tr.less_padding td { padding: 2px 0px;}
 table.search_results tr {height: 31px;}
@@ -211,13 +220,19 @@ table.popup_table th {background-color: white; color: black; text-align: right; 
 #related_query_links ul {margin: 0px 0px 0px 10px; padding: 0px;}
 #related_query_links li {margin: 2px 0px 2px 20px; padding: 0px;}
 
-#term .header { margin: 15px 0px 3px 0px;}
-#term .subheader { margin: 3px 0px;}
-#term #tree_container {float: left; width: 350px; height: 400px; border: 1px solid #74c4ab; padding: 10px 5px 10px 10px; overflow: scroll;}
+#term .header { margin: 15px 0px 3px 0px; color: #006f5f;}
+#term .header span.is-content { color: #000; }
+#term .subheader { margin: 3px 0px; color: #006f5f;}
+#term .subheader span.is-content { color: #000; }
+#term .tree_frame {float: left; width: 350px; border: 1px solid #74c4ab; padding: 1px;}
+#term #tree_container {height: 400px; padding: 9px 4px 9px 9px; overflow: scroll;}
 #term #info_container {margin-left: 400px;}
 #term .section {margin-bottom: 18px;}
-#term .section h3 {background-color: #74c4ab; color: #0a3a34; padding: 2px; font-size: 98%; margin: 0px 0px 10px 0px;}
-#term .section strong {color: #0a3a34;}
+#term .section h3 {border-bottom: 1px solid #74c4ab; color: #005544; padding: 2px 0px; font-size: 110%; margin: 0px 0px 10px 0px;}
+/* BLOCK-STYLE VERSION: 
+#term .section h3 {border-bottom: 1px solid #74c4ab; color: #0a3a34; padding: 4px 4px 2px; font-size: 110%; margin: 0px 0px 10px 0px; background-color: #ddf5ee;}
+*/
+#term .section strong {color: #005544;}
 #term .section .content {margin-left: 10px;}
 
 .term_link {color: #33c;}
