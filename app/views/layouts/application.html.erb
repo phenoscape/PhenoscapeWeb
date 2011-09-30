@@ -182,8 +182,18 @@
  		when 'phenotypes, profile_tree'
  			bc_class = 'breadcrumb-visualize'
  			bc_text = 'Visualize Phenotypic Profile Tree'
- 			bc_url = '/phenotypes, profile_tree'
+ 			bc_url = '/phenotypes/profile_tree'
  		# TODO: Add 'Visualize Phenotype Variation Tree' when it's ready
+
+ 		# Other pages
+ 		when 'about, index'
+ 			bc_class = 'breadcrumb-general'
+ 			bc_text = 'About'
+ 			bc_url = '/about'
+ 		when 'workspaces, show'
+ 			bc_class = 'breadcrumb-general'
+ 			bc_text = 'Workspace'
+ 			bc_url = '/workspace'
 
  		# unknown pages
 	    else
