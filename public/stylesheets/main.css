@@ -2,7 +2,7 @@ body {font-family: Helvetica, sans-serif; margin: 0.5em 0.75em;}
 div#sidebar {float: right; width: 15em;}
 div#main {padding-right: 14em;}
 div#main #termFormContent {max-width: 50em;}
-div#main #termFormContent .search-instructions {width: 80%;}
+div#main #termFormContent .search-instructions {}
 .navigation-group {width: 42%; display: inline-block; vertical-align: top; margin-right: 3em;}
 .navigation-group h3 {background-color: #74c4ab; color: #0a3a34;}
 h3#feedHeader {color: #0a3a34;}
@@ -17,7 +17,7 @@ h3#feedHeader {color: #0a3a34;}
 #feed {font-size: 75%;}
 
 h1.top_logo_holder {float: left;}
-div.header-message {float: right; width: 600px; padding: 0.0em 0.75em; border: 1px solid #ccc; color: #333; background-color: #f3f3f3; font-size: 0.9em; font-style: italic; line-height: 1.2em; margin: 6px 10px 10px;}
+div.header-message {padding: 0.0em 0.75em; border: 1px solid #ccc; color: #333; background-color: #f3f3f3; font-size: 0.9em; font-style: italic; line-height: 1.2em; margin: 6px 10px 10px 344px;}
 div.header-message a {font-weight: bold;}
 .feedback-widget {clear: right; float: right; margin: 0px -4px 8px 12px; border: 2px solid #fff; padding: 5px 16px; background-color:  #276; background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #276), color-stop(100%, #000000)); background-image: -webkit-linear-gradient(top, #276, #000000); background-image: -moz-linear-gradient(top, #276, #000000); background-image: -o-linear-gradient(top, #276, #000000); background-image: -ms-linear-gradient(top, #276, #000000); background-image: linear-gradient(top, #276, #000000);}
 div.header-message .feedback-widget {margin: 4px -22px 0px 12px;}
@@ -124,7 +124,7 @@ div.search_area .section {border: 3px solid #115A50; margin-left: 3px; margin-ri
 .yui-skin-sam .yui-ac-content ul {max-height: 400px; overflow: scroll;}
 .yui-ac-ft {color: red;}
 #termForm {margin-left: auto; margin-right: auto;}
-#search-forms #termChoice {width: 400px !important;}
+#search-forms #termChoice {width: 75% !important; margin-bottom: 0.5em;}
 #termComplete {width: 75%;}
 #termChoiceGroup { margin: 0.5em 0; }
 #term-search-explanation { margin-top: 4px; color: #666; }

@@ -98,6 +98,9 @@
 </head>
 <body class="yui-skin-sam">
 
+<h1 class="top_logo_holder"><a href="/"><img class="top_logo" src="/images/phenoscape.png" alt="Phenoscape logo"></a>
+</h1>
+  
 	<% if controller_name == 'search' && action_name == 'index'%>
 	<div class="header-message rounded-medium">
 	   <p>
@@ -110,9 +113,6 @@
 	</div>
 	<% end %>
 
-<h1 class="top_logo_holder"><a href="/"><img class="top_logo" src="/images/phenoscape.png" alt="Phenoscape logo"></a>
-</h1>
-  
 	<% unless controller_name == 'search' && action_name == 'index'%>
     <form id="upperTermForm" action="/search/autocomplete">
   		<div id="upperTermChoiceGroup">
