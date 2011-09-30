@@ -133,7 +133,8 @@
 <!--    <h1><%= ca_test %></h1> -->
 	<% # show appropriate breadcrumb, based on combined controller+action names
     case ca_test
-    	# Search pages (if any)
+		# Search pages (if any)
+    	
 		# Browse pages
  		when 'phenotypes, facets':
  			bc_class = 'breadcrumb-browse'
@@ -143,7 +144,7 @@
  			bc_class = 'breadcrumb-browse'
  			bc_text = 'Browse Taxa'
  			bc_url = '/term/taxon/TTO:201'
- 		# TODO: Fix 'rowse Anatomical Entities' when it's working
+ 		# TODO: Fix 'Browse Anatomical Entities' when it's working
  		when 'term, index':  # TODO: filter on CARO
  			bc_class = 'breadcrumb-browse'
  			bc_text = 'Browse Anatomical Entities'
@@ -182,7 +183,7 @@
  			bc_class = 'breadcrumb-visualize'
  			bc_text = 'Visualize Phenotypic Profile Tree'
  			bc_url = '/phenotypes, profile_tree'
- 		# TODO: Add 'Visualize' when it's ready
+ 		# TODO: Add 'Visualize Phenotype Variation Tree' when it's ready
 
  		# unknown pages
 	    else
