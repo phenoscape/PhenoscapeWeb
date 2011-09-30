@@ -36,7 +36,8 @@
             link = term_link(term)
           end
         -%>
-        <%= link.inspect %><%= ',' unless i+1 == term_count %>
+        <%# IMPORTANT: We neutralize all instances of the sequence '</' or Firefox will dump raw JSON onto the page. %>
+        <%= link.inspect.gsub(/<\//, '<"+"/') %><%= ',' unless i+1 == term_count %>
       <%- end -%>
     };
   //-->
