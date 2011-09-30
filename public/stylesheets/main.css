@@ -67,6 +67,15 @@ tr.odd {background-color: #EBECEE;}
 #navbar {background-color: #74c4ab; text-align: right; color: #0a3a34; clear: both;line-height: 1.7em; margin: 0 -0.75em;}
 #navbar a {color: #0a3a34; margin: 0; text-decoration: none; font-weight: bold; display: inline-block; padding: 2px 13px;}
 #navbar a:hover {color: white; background-color: #0a3a34;}
+#navbar a.breadcrumb {float: left; padding-left: 24px; margin-left: -14px; padding-right: 16px; border: 3px solid #fff; margin-top: -3px; background-color: #e9e9e9; color: #333;}
+#navbar a.breadcrumb-home {position: relative;}
+#navbar a.breadcrumb-search {background-color: #DDE9EE;}
+#navbar a.breadcrumb-browse {background-color: #EEF3DD;}
+#navbar a.breadcrumb-query {background-color: #EEE3DD;}
+#navbar a.breadcrumb-visualize {background-color: #DDE9EE;}
+#navbar a.breadcrumb-unknown {background-color: #AA1111; color: #fff;}
+
+
 .top_logo {height: 100px;}
 .relation-name {font-style: italic;}
 

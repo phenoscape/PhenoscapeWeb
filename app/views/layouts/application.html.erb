@@ -126,7 +126,76 @@
     <div class="feedback-widget rounded-large"><a href="#" class="feedback_link popup-link">Feedback</a></div>
   <% end %>
 <div id="navbar">
-	<a href="/">Home</a>
+  <% unless controller_name == 'search' && action_name == 'index'%>	
+    <!-- Breadcrumbs (hide these on Home page) --> 
+	<a href="/" class="rounded-large breadcrumb breadcrumb-home">Home</a>
+   <% ca_test = "#{controller_name}, #{action_name}"; %>
+<!--    <h1><%= ca_test %></h1> -->
+	<% # show appropriate breadcrumb, based on combined controller+action names
+    case ca_test
+    	# Search pages (if any)
+		# Browse pages
+ 		when 'phenotypes, facets':
+ 			bc_class = 'breadcrumb-browse'
+ 			bc_text = 'Browse Phenotypes'
+ 			bc_url = '/phenotypes/facets'
+ 		when 'term, taxon':
+ 			bc_class = 'breadcrumb-browse'
+ 			bc_text = 'Browse Taxa'
+ 			bc_url = '/term/taxon/TTO:201'
+ 		# TODO: Fix 'rowse Anatomical Entities' when it's working
+ 		when 'term, index':  # TODO: filter on CARO
+ 			bc_class = 'breadcrumb-browse'
+ 			bc_text = 'Browse Anatomical Entities'
+ 			bc_url = '/term/index/CARO:0000003'
+ 		when 'term, quality':
+ 			bc_class = 'breadcrumb-browse'
+ 			bc_text = 'Browse Phenotypic Qualities'
+ 			bc_url = '/term/index/PATO:0000001'
+ 		# TODO: Add 'Browse Genes' when it's ready
+ 		# TODO: Add 'Browse Comparitive Publications' when it's ready
+
+ 		# Query pages
+ 		when 'taxon_annotations, index':
+ 			bc_class = 'breadcrumb-query'
+ 			bc_text = 'Query Phenotype Annotations to Taxa'
+ 			bc_url = '/taxon_annotations'
+ 		when 'gene_annotations, index':
+ 			bc_class = 'breadcrumb-query'
+ 			bc_text = 'Query Phenotype Annotations to Genes'
+ 			bc_url = '/gene_annotations'
+ 		when 'taxa, index':
+ 			bc_class = 'breadcrumb-query'
+ 			bc_text = 'Query Taxa'
+ 			bc_url = '/taxa'
+ 		when 'genes, index':
+ 			bc_class = 'breadcrumb-query'
+ 			bc_text = 'Query Genes'
+ 			bc_url = '/genes'
+ 		when 'publications, index':
+ 			bc_class = 'breadcrumb-query'
+ 			bc_text = 'Query Publications'
+ 			bc_url = '/publications'
+
+ 		# Visualize pages
+ 		when 'phenotypes, profile_tree'
+ 			bc_class = 'breadcrumb-visualize'
+ 			bc_text = 'Visualize Phenotypic Profile Tree'
+ 			bc_url = '/phenotypes, profile_tree'
+ 		# TODO: Add 'Visualize' when it's ready
+
+ 		# unknown pages
+	    else
+	    	bc_class = 'breadcrumb-unknown'
+	    	bc_text = ca_test
+	    	bc_url = '.'
+    end
+    %>
+	<a href="<%= bc_url %>" class="rounded-large breadcrumb <%= bc_class %>">
+		<!-- Browse Phenotypic Qualities -->
+		<%= bc_text %>
+	</a>
+  <% end %>
   <%= link_to "Workspace", workspace_path %>
 	<a href="/about/">About</a> 
 	<a href="http://www.phenoscape.org/wiki/acknowledgments" target="_blank">Acknowledgments</a>
