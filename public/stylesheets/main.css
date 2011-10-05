@@ -69,6 +69,7 @@ tr.odd {background-color: #EBECEE;}
 #navbar a:hover {color: white; background-color: #0a3a34;}
 #navbar a.breadcrumb {float: left; padding-left: 24px; margin-left: -14px; padding-right: 16px; border: 3px solid #fff; margin-top: -3px; background-color: #e9e9e9; color: #333;}
 #navbar a.breadcrumb-home {position: relative;}
+#navbar a.breadcrumb-general {background-color: #DDF5EE;}
 #navbar a.breadcrumb-search {background-color: #DDE9EE;}
 #navbar a.breadcrumb-browse {background-color: #EEF3DD;}
 #navbar a.breadcrumb-query {background-color: #EEE3DD;}
@@ -187,6 +188,7 @@ table.search_results tr {height: 31px;}
 .pagination {margin: 20px 0px 20px 0px; padding: 5px;}
 .pagination div {float: left; width: 33%;}
 .pagination div.results {text-align: center;}
+.pagination div.previous, .pagination div.next {color: gray;}
 .pagination div.next {text-align: right;}
 
 .sort_column img {vertical-align: middle;}

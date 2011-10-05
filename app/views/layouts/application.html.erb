@@ -36,7 +36,8 @@
             link = term_link(term)
           end
         -%>
-        <%= link.inspect %><%= ',' unless i+1 == term_count %>
+        <%# IMPORTANT: We neutralize all instances of the sequence '</' or Firefox will dump raw JSON onto the page. %>
+        <%= link.inspect.gsub(/<\//, '<"+"/') %><%= ',' unless i+1 == term_count %>
       <%- end -%>
     };
   //-->
@@ -138,52 +139,62 @@
 		# Browse pages
  		when 'phenotypes, facets':
  			bc_class = 'breadcrumb-browse'
- 			bc_text = 'Browse Phenotypes'
+ 			bc_text = 'Browse phenotypes'
  			bc_url = '/phenotypes/facets'
  		when 'term, taxon':
  			bc_class = 'breadcrumb-browse'
- 			bc_text = 'Browse Taxa'
+ 			bc_text = 'Browse taxa'
  			bc_url = '/term/taxon/TTO:201'
  		# TODO: Fix 'Browse Anatomical Entities' when it's working
  		when 'term, index':  # TODO: filter on CARO
  			bc_class = 'breadcrumb-browse'
- 			bc_text = 'Browse Anatomical Entities'
+ 			bc_text = 'Browse anatomical entities'
  			bc_url = '/term/index/CARO:0000003'
  		when 'term, quality':
  			bc_class = 'breadcrumb-browse'
- 			bc_text = 'Browse Phenotypic Qualities'
+ 			bc_text = 'Browse phenotypic qualities'
  			bc_url = '/term/index/PATO:0000001'
- 		# TODO: Add 'Browse Genes' when it's ready
- 		# TODO: Add 'Browse Comparitive Publications' when it's ready
+ 		# TODO: Add 'Browse genes' when it's ready
+ 		# TODO: Add 'Browse comparative publications' when it's ready
 
  		# Query pages
  		when 'taxon_annotations, index':
  			bc_class = 'breadcrumb-query'
- 			bc_text = 'Query Phenotype Annotations to Taxa'
+ 			bc_text = 'Query phenotype annotations to taxa'
  			bc_url = '/taxon_annotations'
  		when 'gene_annotations, index':
  			bc_class = 'breadcrumb-query'
- 			bc_text = 'Query Phenotype Annotations to Genes'
+ 			bc_text = 'Query phenotype annotations to genes'
  			bc_url = '/gene_annotations'
  		when 'taxa, index':
  			bc_class = 'breadcrumb-query'
- 			bc_text = 'Query Taxa'
+ 			bc_text = 'Query taxa'
  			bc_url = '/taxa'
  		when 'genes, index':
  			bc_class = 'breadcrumb-query'
- 			bc_text = 'Query Genes'
+ 			bc_text = 'Query genes'
  			bc_url = '/genes'
  		when 'publications, index':
  			bc_class = 'breadcrumb-query'
- 			bc_text = 'Query Publications'
+ 			bc_text = 'Query comparative publications'
  			bc_url = '/publications'
 
  		# Visualize pages
  		when 'phenotypes, profile_tree'
  			bc_class = 'breadcrumb-visualize'
- 			bc_text = 'Visualize Phenotypic Profile Tree'
- 			bc_url = '/phenotypes, profile_tree'
+ 			bc_text = 'Visualize phenotypic profile tree'
+ 			bc_url = '/phenotypes/profile_tree'
  		# TODO: Add 'Visualize Phenotype Variation Tree' when it's ready
+
+ 		# Other pages
+ 		when 'about, index'
+ 			bc_class = 'breadcrumb-general'
+ 			bc_text = 'About'
+ 			bc_url = '/about'
+ 		when 'workspaces, show'
+ 			bc_class = 'breadcrumb-general'
+ 			bc_text = 'Workspace'
+ 			bc_url = '/workspace'
 
  		# unknown pages
 	    else
