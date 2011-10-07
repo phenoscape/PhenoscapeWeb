@@ -11,7 +11,7 @@ h3#feedHeader {color: #0a3a34;}
 #data-tools { margin-right: 1em;}
 #data-tools td { padding: 1.25em; overflow: hidden;}
 #data-tools td.navigation-group { display: table-cell; margin-right: 0;}
-#data-tools td.navigation-group h3 {background-color: transparent; color: #333; margin-top: 0.25em;}
+#data-tools td.navigation-group h3 {background-color: transparent; color: #333; margin-top: 0.25em; margin-bottom: 0.4em;}
 .gfc-tabsArea {display: none;}
 .gfc-resultsHeader {display: none;}
 #feed {font-size: 75%;}
