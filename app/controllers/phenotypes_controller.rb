@@ -86,8 +86,9 @@ class PhenotypesController < ApplicationController
         taxon = params[:filter][:taxa]["0"] rescue nil
         qp = {:query => build_json_query}
         qp['taxon'] = taxon if taxon.present?
-        qp['exclude_unannotated'] = params[:exclude_unannotated] == 'true' ? 'true' : false
-        qp['exclude_attribute'] = params[:exclude_attribute] == 'true' ? 'true' : false
+        # A checked box means include; set exclude_x in the query to the opposite
+        qp['exclude_unannotated'] = params[:include_unannotated].blank?
+        qp['exclude_attribute']   = params[:include_attribute].blank?
         
         result = Phenotype.variationsets(qp)
         phenotype_sets = result['phenotype_sets']
