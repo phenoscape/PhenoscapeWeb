@@ -235,9 +235,6 @@ class VariationTree extends Tree
       update_quality_name()
 
   create_spacetree: ->
-    # For off-screen render in onCreateLabel
-    offscreen = @find_or_create_offscreen_renderer()
-    
     super
       Edge:
         color: '#000'
@@ -273,18 +270,8 @@ class VariationTree extends Tree
           if label.data.current
             label.addClass 'current'
         
-        # Render off-screen to get the height, and use that to set the node height
-        node.data.$height = label.appendTo(offscreen).outerHeight()
-        
         unless node.data.leaf_node
           label.click -> st.onClick node.id
-  
-  find_or_create_offscreen_renderer: ->
-    offscreen = $('#variation-tree-offscreen-renderer')
-    if offscreen.length
-      return offscreen
-    else
-      return $('<div id="variation-tree-offscreen-renderer" style="position: absolute; left: -1000px; top: -1000px;">').appendTo $("##{@container_id}")
   
   load_selected_terms: ->
     super()
@@ -308,14 +295,17 @@ class VariationTree extends Tree
   build_tree: (phenotype_sets, root_taxon_id, taxon_data) ->
     root_node = @find_node(root_taxon_id) || @root_node
     current_taxon_node = root_node.find_or_create_child this, root_taxon_id, taxon_data[root_taxon_id].name, type: 'taxon', rank: taxon_data[root_taxon_id].rank?.name
+    current_taxon_node.estimateRenderHeight()
     phenotype_sets.each (group) =>
       group_id = "group-#{hex_md5 JSON.encode group}" # There's no id or any unique identifier; encode the whole group and hash it
-      current_taxon_node.find_or_create_child this, group_id, group_id,
+      node = current_taxon_node.find_or_create_child this, group_id, group_id,
         type: 'group'
+        phenotypes: group.phenotypes
         taxa: group.taxa.map (taxon_id) ->
           id: taxon_id
           name: taxon_data[taxon_id].name
           rank: taxon_data[taxon_id].rank?.name
+      node.estimateRenderHeight()
     
     root_node
   
@@ -360,6 +350,7 @@ class TreeNode
 
     child = new @constructor tree, id, name, data
     @children.push child
+    
     child
   
   @create_root: (tree) ->
@@ -381,6 +372,12 @@ class ProfileTreeNode extends TreeNode
 
 class VariationTreeNode extends TreeNode
   color: -> 'transparent'
+  
+  estimateRenderHeight: ->
+    height = 30 * (@data.taxa?.length || 1)
+    height += 13 * 2 if @data.type == "group" and @data.phenotypes?.length > 0
+    
+    @data.$height = height
 
 
 

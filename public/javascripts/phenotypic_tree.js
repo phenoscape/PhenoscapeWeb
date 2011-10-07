@@ -301,8 +301,6 @@
       });
     }
     VariationTree.prototype.create_spacetree = function() {
-      var offscreen;
-      offscreen = this.find_or_create_offscreen_renderer();
       return VariationTree.__super__.create_spacetree.call(this, {
         Edge: {
           color: '#000',
@@ -341,7 +339,6 @@
               label.addClass('current');
             }
           }
-          node.data.$height = label.appendTo(offscreen).outerHeight();
           if (!node.data.leaf_node) {
             return label.click(function() {
               return st.onClick(node.id);
@@ -349,15 +346,6 @@
           }
         }
       });
-    };
-    VariationTree.prototype.find_or_create_offscreen_renderer = function() {
-      var offscreen;
-      offscreen = $('#variation-tree-offscreen-renderer');
-      if (offscreen.length) {
-        return offscreen;
-      } else {
-        return $('<div id="variation-tree-offscreen-renderer" style="position: absolute; left: -1000px; top: -1000px;">').appendTo($("#" + this.container_id));
-      }
     };
     VariationTree.prototype.load_selected_terms = function() {
       VariationTree.__super__.load_selected_terms.call(this);
@@ -387,11 +375,13 @@
         type: 'taxon',
         rank: (_ref = taxon_data[root_taxon_id].rank) != null ? _ref.name : void 0
       });
+      current_taxon_node.estimateRenderHeight();
       phenotype_sets.each(__bind(function(group) {
-        var group_id;
+        var group_id, node;
         group_id = "group-" + (hex_md5(JSON.encode(group)));
-        return current_taxon_node.find_or_create_child(this, group_id, group_id, {
+        node = current_taxon_node.find_or_create_child(this, group_id, group_id, {
           type: 'group',
+          phenotypes: group.phenotypes,
           taxa: group.taxa.map(function(taxon_id) {
             var _ref2;
             return {
@@ -401,6 +391,7 @@
             };
           })
         });
+        return node.estimateRenderHeight();
       }, this));
       return root_node;
     };
@@ -489,6 +480,14 @@
     }
     VariationTreeNode.prototype.color = function() {
       return 'transparent';
+    };
+    VariationTreeNode.prototype.estimateRenderHeight = function() {
+      var height, _ref, _ref2;
+      height = 30 * (((_ref = this.data.taxa) != null ? _ref.length : void 0) || 1);
+      if (this.data.type === "group" && ((_ref2 = this.data.phenotypes) != null ? _ref2.length : void 0) > 0) {
+        height += 13 * 2;
+      }
+      return this.data.$height = height;
     };
     return VariationTreeNode;
   })();
