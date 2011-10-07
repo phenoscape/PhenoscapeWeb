@@ -1,9 +1,9 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   
-  @@GENUS_ID = "TTO:genus"
-  @@SPECIES_ID = "TTO:species"
-  @@HAS_RANK = "has_rank"
+  GENUS_ID = "TAXRANK:0000005"
+  SPECIES_ID = "TAXRANK:0000006"
+  HAS_RANK = "has_rank"
   
   # takes a taxon structure or term info structure and determines if possesses an italic rank
   def italicize_taxon?(taxon)
@@ -12,12 +12,12 @@ module ApplicationHelper
       rank_id = taxon["rank"]["id"]
     elsif taxon.has_key?("parents")
       for link in taxon["parents"]
-        if link["relation"]["id"] == @@HAS_RANK
+        if link["relation"]["id"] == HAS_RANK
           rank_id = link["target"]["id"]
         end
       end
     end
-    return [@@GENUS_ID, @@SPECIES_ID].include?(rank_id)
+    return [GENUS_ID, SPECIES_ID].include?(rank_id)
   end
   
   def extinct_taxon?(taxon)
@@ -33,7 +33,7 @@ module ApplicationHelper
       return taxon["rank"]
     elsif taxon.has_key?("parents")
       for link in taxon["parents"]
-        if link["relation"]["id"] == @@HAS_RANK
+        if link["relation"]["id"] == HAS_RANK
           return link["target"]
         end
       end
@@ -397,7 +397,7 @@ module ApplicationHelper
   def term_css_classes(term)
     css_class = 'is-content'
     css_class += ' extinct-taxon' if term['extinct']
-    css_class += ' italic-taxon' if term['rank'] && ['genus', 'species'].include?(term['rank']['name'])
+    css_class += ' italic-taxon' if term['rank'] && [GENUS_ID, SPECIES_ID].include?(term['rank']['id'])
     css_class += ' italic' if Term.type(term) == :gene
     return css_class
   end
