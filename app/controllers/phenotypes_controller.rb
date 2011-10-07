@@ -96,6 +96,9 @@ class PhenotypesController < ApplicationController
         taxon_ids = ([parent_taxon_id] + phenotype_sets.map { |set| set['taxa'] }).flatten.uniq
         set_filter_term_names_for_ids taxon_ids
         
+        # Remove phenotype sets with no taxa
+        phenotype_sets.delete_if { |set| set['taxa'].empty? }
+        
         render :js => "window.variation_tree.query_callback(JSON.decode('#{phenotype_sets.to_json}'), '#{parent_taxon_id}', JSON.decode('#{@filter_term_names.to_json}'))"
       end
     end
