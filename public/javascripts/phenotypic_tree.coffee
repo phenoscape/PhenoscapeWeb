@@ -259,7 +259,7 @@ class VariationTree extends Tree
           label.addClass 'node-group'
           node.data.taxa.each (taxon) ->
             label.append $("<div class='node-taxon #{taxon.rank}' rel='#{taxon.id}'>#{taxon.name}</div>")
-          if node.data.taxa.length == 0
+          if node.data.phenotypes.length == 0
             label.addClass 'node-group-without-phenotypes'
           else
             label.addClass 'node-group-with-phenotypes'
