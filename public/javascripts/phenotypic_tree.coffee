@@ -273,6 +273,18 @@ class VariationTree extends Tree
         unless node.data.leaf_node
           label.click -> st.onClick node.id
   
+  destroy_spacetree: ->
+    $('#variation-table').hide().find('tbody').empty()
+    
+    super
+  
+  find_or_create_offscreen_renderer: ->
+    offscreen = $('#variation-tree-offscreen-renderer')
+    if offscreen.length
+      return offscreen
+    else
+      return $('<div id="variation-tree-offscreen-renderer" style="position: absolute; left: -1000px; top: -1000px;">').appendTo $("##{@container_id}")
+  
   load_selected_terms: ->
     super()
     @term_count = 1
@@ -298,6 +310,7 @@ class VariationTree extends Tree
     current_taxon_node.estimateRenderHeight()
     phenotype_sets.each (group) =>
       group_id = "group-#{hex_md5 JSON.encode group}" # There's no id or any unique identifier; encode the whole group and hash it
+      group.group_id = group_id
       node = current_taxon_node.find_or_create_child this, group_id, group_id,
         type: 'group'
         phenotypes: group.phenotypes
@@ -310,6 +323,35 @@ class VariationTree extends Tree
     root_node
   
   populate_phenotype_table: (phenotype_sets) ->
+    table = $('#variation-table')
+    
+    phenotypes = VariationTree.group_phenotype_sets_by_phenotype(phenotype_sets)
+    
+    body = table.find 'tbody'
+    rows = for identifier, phenotype of phenotypes
+      "<tr><td>#{phenotype.display_name}</td><td>#{phenotype.taxon_count}</td><td>#{phenotype.groups.length}</td></tr>"
+    body.html rows.join("\n")
+    
+    table.show()
+  
+  # Break phenotype_sets down into:
+  #  {'phenotype_1_identifier': {phenotype: {...}, groups: ['group-1', 'group-2', ...]}, ...}
+  @group_phenotype_sets_by_phenotype: (phenotype_sets) ->
+    phenotypes = {}
+    for group in phenotype_sets
+      for phenotype in group.phenotypes
+        identifier = "e=#{phenotype.entity.id};q=#{phenotype.quality.id}"
+        if phenotypes[identifier]
+          phenotypes[identifier].groups.push group.group_id
+          phenotypes[identifier].taxon_count += group.taxa.length
+        else
+          phenotypes[identifier] =
+            phenotype: phenotype
+            groups: [group.group_id]
+            taxon_count: group.taxa.length
+            display_name: "#{phenotype.entity.name} #{phenotype.quality.name}"
+    
+    phenotypes
     
   current_state_path: ->
     base = @options.base_path

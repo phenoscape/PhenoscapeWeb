@@ -347,6 +347,19 @@
         }
       });
     };
+    VariationTree.prototype.destroy_spacetree = function() {
+      $('#variation-table').hide().find('tbody').empty();
+      return VariationTree.__super__.destroy_spacetree.apply(this, arguments);
+    };
+    VariationTree.prototype.find_or_create_offscreen_renderer = function() {
+      var offscreen;
+      offscreen = $('#variation-tree-offscreen-renderer');
+      if (offscreen.length) {
+        return offscreen;
+      } else {
+        return $('<div id="variation-tree-offscreen-renderer" style="position: absolute; left: -1000px; top: -1000px;">').appendTo($("#" + this.container_id));
+      }
+    };
     VariationTree.prototype.load_selected_terms = function() {
       VariationTree.__super__.load_selected_terms.call(this);
       return this.term_count = 1;
@@ -379,6 +392,7 @@
       phenotype_sets.each(__bind(function(group) {
         var group_id, node;
         group_id = "group-" + (hex_md5(JSON.encode(group)));
+        group.group_id = group_id;
         node = current_taxon_node.find_or_create_child(this, group_id, group_id, {
           type: 'group',
           phenotypes: group.phenotypes,
@@ -395,7 +409,47 @@
       }, this));
       return root_node;
     };
-    VariationTree.prototype.populate_phenotype_table = function(phenotype_sets) {};
+    VariationTree.prototype.populate_phenotype_table = function(phenotype_sets) {
+      var body, identifier, phenotype, phenotypes, rows, table;
+      table = $('#variation-table');
+      phenotypes = VariationTree.group_phenotype_sets_by_phenotype(phenotype_sets);
+      body = table.find('tbody');
+      rows = (function() {
+        var _results;
+        _results = [];
+        for (identifier in phenotypes) {
+          phenotype = phenotypes[identifier];
+          _results.push("<tr><td>" + phenotype.display_name + "</td><td>" + phenotype.taxon_count + "</td><td>" + phenotype.groups.length + "</td></tr>");
+        }
+        return _results;
+      })();
+      body.html(rows.join("\n"));
+      return table.show();
+    };
+    VariationTree.group_phenotype_sets_by_phenotype = function(phenotype_sets) {
+      var group, identifier, phenotype, phenotypes, _i, _j, _len, _len2, _ref;
+      phenotypes = {};
+      for (_i = 0, _len = phenotype_sets.length; _i < _len; _i++) {
+        group = phenotype_sets[_i];
+        _ref = group.phenotypes;
+        for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
+          phenotype = _ref[_j];
+          identifier = "e=" + phenotype.entity.id + ";q=" + phenotype.quality.id;
+          if (phenotypes[identifier]) {
+            phenotypes[identifier].groups.push(group.group_id);
+            phenotypes[identifier].taxon_count += group.taxa.length;
+          } else {
+            phenotypes[identifier] = {
+              phenotype: phenotype,
+              groups: [group.group_id],
+              taxon_count: group.taxa.length,
+              display_name: "" + phenotype.entity.name + " " + phenotype.quality.name
+            };
+          }
+        }
+      }
+      return phenotypes;
+    };
     VariationTree.prototype.current_state_path = function() {
       var base, phenotype_filter, taxon;
       base = this.options.base_path;

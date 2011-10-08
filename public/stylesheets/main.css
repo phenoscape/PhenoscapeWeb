@@ -355,3 +355,7 @@ table.grid td, table.grid th {
 #variation-tree .node-taxon.species, #variation-tree .node-taxon.genus {
   font-style: italic;
 }
+
+#variation-table .selected {
+  background-color: #00a9d6;
+}

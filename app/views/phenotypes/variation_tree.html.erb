@@ -37,22 +37,16 @@
         <%= button_to_function 'Show current query', 'jQuery(this).closest("form").submit()' %>
       </p>
     
-      <table class="grid">
-        <tr>
-          <th>Phenotype</th>
-          <th>Taxa</th>
-          <th>Phenotype Profiles</th>
-        </tr>
-        <tr>
-          <td>triangular</td>
-          <td>1</td>
-          <td>1</td>
-        </tr>
-        <tr>
-          <td>Y-shaped</td>
-          <td>1</td>
-          <td>1</td>
-        </tr>
+      <table id="variation-table" class="grid" style="display: none;">
+        <thead>
+          <tr>
+            <th>Phenotype</th>
+            <th>Taxa</th>
+            <th>Phenotype Profiles</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
       </table>
     </div>
   <% end %>
