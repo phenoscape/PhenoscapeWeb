@@ -2,8 +2,109 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<% fulltitle = "Phenoscape Knowledgebase (BETA)" %>
-	<% fulltitle += ": " + @title if @title %>
+ <% ca_test = "#{controller_name}, #{action_name}"
+    # show appropriate title and breadcrumb, based on combined controller+action names
+    case ca_test
+    	# Home page
+ 		when 'search, index':
+ 			page_title = 'Phenoscape Knowledgebase (BETA)'
+    	    	
+		# Search pages (if any)
+    	
+		# Browse pages
+ 		when 'phenotypes, facets':
+ 			bc_class = 'breadcrumb-browse'
+ 			bc_text = 'Browse phenotypes'
+ 			bc_url = '/phenotypes/facets'
+ 			page_title = bc_text
+ 		when 'term, taxon':
+ 			bc_class = 'breadcrumb-browse'
+ 			bc_text = 'Browse taxa'
+ 			bc_url = '/term/taxon/TTO:201'
+ 			page_title = bc_text
+ 		# TODO: Fix 'Browse Anatomical Entities' when it's working
+ 		when 'term, index':  # TODO: filter on CARO
+ 			bc_class = 'breadcrumb-browse'
+ 			bc_text = 'Browse anatomical entities'
+ 			bc_url = '/term/index/CARO:0000003'
+ 			page_title = bc_text
+ 		when 'term, quality':
+ 			bc_class = 'breadcrumb-browse'
+ 			bc_text = 'Browse phenotypic qualities'
+ 			bc_url = '/term/index/PATO:0000001'
+ 			page_title = bc_text
+ 		# TODO: Add 'Browse genes' when it's ready
+ 		# TODO: Add 'Browse comparative publications' when it's ready
+
+ 		# Query pages
+ 		when 'phenotypes, index':
+ 			# NB - this is not on Home page, but can be chosen in Query UI!
+ 			bc_class = 'breadcrumb-query'
+ 			bc_text = 'Query phenotypes'
+ 			bc_url = '/phenotypes'
+ 			page_title = bc_text
+ 		when 'taxon_annotations, index':
+ 			bc_class = 'breadcrumb-query'
+ 			bc_text = 'Query phenotype annotations to taxa'
+ 			bc_url = '/taxon_annotations'
+ 			page_title = bc_text
+ 		when 'gene_annotations, index':
+ 			bc_class = 'breadcrumb-query'
+ 			bc_text = 'Query phenotype annotations to genes'
+ 			bc_url = '/gene_annotations'
+ 			page_title = bc_text
+ 		when 'taxa, index':
+ 			bc_class = 'breadcrumb-query'
+ 			bc_text = 'Query taxa'
+ 			bc_url = '/taxa'
+ 			page_title = bc_text
+ 		when 'genes, index':
+ 			bc_class = 'breadcrumb-query'
+ 			bc_text = 'Query genes'
+ 			bc_url = '/genes'
+ 			page_title = bc_text
+ 		when 'publications, index':
+ 			bc_class = 'breadcrumb-query'
+ 			bc_text = 'Query comparative publications'
+ 			bc_url = '/publications'
+ 			page_title = bc_text
+
+ 		# Visualize pages
+ 		when 'phenotypes, profile_tree'
+ 			bc_class = 'breadcrumb-visualize'
+ 			bc_text = 'Visualize phenotypic profile tree'
+ 			bc_url = '/phenotypes/profile_tree'
+ 			page_title = bc_text
+ 		# TODO: Add 'Visualize Phenotype Variation Tree' when it's ready
+
+ 		# Other pages
+ 		when 'about, index'
+ 			bc_class = 'breadcrumb-general'
+ 			bc_text = 'About'
+ 			bc_url = '/about'
+ 			page_title = bc_text
+ 		when 'workspaces, show'
+ 			bc_class = 'breadcrumb-general'
+ 			bc_text = 'Workspace'
+ 			bc_url = '/workspace'
+ 			page_title = bc_text
+
+ 		# unknown pages
+	    else
+	    	bc_class = 'breadcrumb-unknown'
+	    	bc_text = ca_test
+	    	bc_url = '.'
+ 			page_title = '???'
+    end
+    # prepend any @title, then append ' : Phenoscape'
+    fulltitle = page_title
+    if @title
+		fulltitle = @title + " : " + fulltitle
+    end
+    if !(fulltitle.include? 'Phenoscape')
+    	fulltitle += " : Phenoscape"
+    end
+  %>
 	<title><%= fulltitle %></title>
   
   <!-- jQuery libraries -->
@@ -130,79 +231,7 @@
   <% unless controller_name == 'search' && action_name == 'index'%>	
     <!-- Breadcrumbs (hide these on Home page) --> 
 	<a href="/" class="rounded-large breadcrumb breadcrumb-home">Home</a>
-   <% ca_test = "#{controller_name}, #{action_name}"; %>
-<!--    <h1><%= ca_test %></h1> -->
-	<% # show appropriate breadcrumb, based on combined controller+action names
-    case ca_test
-		# Search pages (if any)
-    	
-		# Browse pages
- 		when 'phenotypes, facets':
- 			bc_class = 'breadcrumb-browse'
- 			bc_text = 'Browse phenotypes'
- 			bc_url = '/phenotypes/facets'
- 		when 'term, taxon':
- 			bc_class = 'breadcrumb-browse'
- 			bc_text = 'Browse taxa'
- 			bc_url = '/term/taxon/TTO:201'
- 		# TODO: Fix 'Browse Anatomical Entities' when it's working
- 		when 'term, index':  # TODO: filter on CARO
- 			bc_class = 'breadcrumb-browse'
- 			bc_text = 'Browse anatomical entities'
- 			bc_url = '/term/index/CARO:0000003'
- 		when 'term, quality':
- 			bc_class = 'breadcrumb-browse'
- 			bc_text = 'Browse phenotypic qualities'
- 			bc_url = '/term/index/PATO:0000001'
- 		# TODO: Add 'Browse genes' when it's ready
- 		# TODO: Add 'Browse comparative publications' when it's ready
-
- 		# Query pages
- 		when 'taxon_annotations, index':
- 			bc_class = 'breadcrumb-query'
- 			bc_text = 'Query phenotype annotations to taxa'
- 			bc_url = '/taxon_annotations'
- 		when 'gene_annotations, index':
- 			bc_class = 'breadcrumb-query'
- 			bc_text = 'Query phenotype annotations to genes'
- 			bc_url = '/gene_annotations'
- 		when 'taxa, index':
- 			bc_class = 'breadcrumb-query'
- 			bc_text = 'Query taxa'
- 			bc_url = '/taxa'
- 		when 'genes, index':
- 			bc_class = 'breadcrumb-query'
- 			bc_text = 'Query genes'
- 			bc_url = '/genes'
- 		when 'publications, index':
- 			bc_class = 'breadcrumb-query'
- 			bc_text = 'Query comparative publications'
- 			bc_url = '/publications'
-
- 		# Visualize pages
- 		when 'phenotypes, profile_tree'
- 			bc_class = 'breadcrumb-visualize'
- 			bc_text = 'Visualize phenotypic profile tree'
- 			bc_url = '/phenotypes/profile_tree'
- 		# TODO: Add 'Visualize Phenotype Variation Tree' when it's ready
-
- 		# Other pages
- 		when 'about, index'
- 			bc_class = 'breadcrumb-general'
- 			bc_text = 'About'
- 			bc_url = '/about'
- 		when 'workspaces, show'
- 			bc_class = 'breadcrumb-general'
- 			bc_text = 'Workspace'
- 			bc_url = '/workspace'
-
- 		# unknown pages
-	    else
-	    	bc_class = 'breadcrumb-unknown'
-	    	bc_text = ca_test
-	    	bc_url = '.'
-    end
-    %>
+	<!-- see page_title and bc_* values above -->
 	<a href="<%= bc_url %>" class="rounded-large breadcrumb <%= bc_class %>">
 		<!-- Browse Phenotypic Qualities -->
 		<%= bc_text %>
