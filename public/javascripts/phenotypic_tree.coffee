@@ -233,6 +233,44 @@ class VariationTree extends Tree
         update_quality_name()
         $('#term_info').change()
       update_quality_name()
+      
+      # Set up hover events for groups and phenotypes
+      associated_targets = ->
+        targets = $(this)
+        associated_groups = targets.data 'associated'
+        if associated_groups
+          targets = targets.add($("##{group}")) for group in associated_groups
+        targets
+      $("##{@container_id} .node-group-with-phenotypes, #variation-table tbody tr").live
+        'mouseover': ->
+          # Save the current classes
+          associated_targets.call(@).each ->
+            target = $(@)
+            target.data 'classes', target.attr('class')
+            target.addClass 'selected'
+        'mouseout': ->
+          # Restore the pre-mouseover clasess, if it was stored
+          associated_targets.call(@).each ->
+            target = $(@)
+            classes = target.data 'classes'
+            if classes
+              target.attr 'class', classes
+        'click': ->
+          associated_targets.call(@).each ->
+            # Clear the restore data, making it permanent
+            target = $(@)
+            target.data 'classes', null
+          
+          # Unselect everything else
+          others = $('.selected').not(associated_targets.call(@))
+          others.removeClass 'selected'
+          
+      # Hovering nodes in the groups shouldn't trigger the hover event on the groups
+      dont_propagate = (event) -> event.stopPropagation()
+      $('.node-group-with-phenotypes .node-taxon').live
+        'mouseover': dont_propagate
+        'mouseout':  dont_propagate
+        'click':     dont_propagate
 
   create_spacetree: ->
     super
@@ -261,6 +299,7 @@ class VariationTree extends Tree
             label.append $("<div class='node-taxon #{taxon.rank}' rel='#{taxon.id}'>#{taxon.name}</div>")
           if node.data.phenotypes.length == 0
             label.addClass 'node-group-without-phenotypes'
+            label.data 'associated', (new Phenotype(phenotype).identifier() for phenotype in node.data.phenotypes)
           else
             label.addClass 'node-group-with-phenotypes'
         else
@@ -325,34 +364,16 @@ class VariationTree extends Tree
   populate_phenotype_table: (phenotype_sets) ->
     table = $('#variation-table')
     
-    phenotypes = VariationTree.group_phenotype_sets_by_phenotype(phenotype_sets)
+    phenotypes = Phenotype.group_sets_by_phenotype(phenotype_sets)
     
     body = table.find 'tbody'
-    rows = for identifier, phenotype of phenotypes
-      "<tr><td>#{phenotype.display_name}</td><td>#{phenotype.taxon_count}</td><td>#{phenotype.groups.length}</td></tr>"
-    body.html rows.join("\n")
+    for identifier, phenotype of phenotypes
+      row = $("<tr id='#{identifier}' class='phenotype-row'><td>#{phenotype.display_name}</td><td>#{phenotype.taxon_count}</td><td>#{phenotype.groups.length}</td></tr>")
+      row.appendTo body
+      row.data 'associated', phenotype.groups
     
     table.show()
   
-  # Break phenotype_sets down into:
-  #  {'phenotype_1_identifier': {phenotype: {...}, groups: ['group-1', 'group-2', ...]}, ...}
-  @group_phenotype_sets_by_phenotype: (phenotype_sets) ->
-    phenotypes = {}
-    for group in phenotype_sets
-      for phenotype in group.phenotypes
-        identifier = "e=#{phenotype.entity.id};q=#{phenotype.quality.id}"
-        if phenotypes[identifier]
-          phenotypes[identifier].groups.push group.group_id
-          phenotypes[identifier].taxon_count += group.taxa.length
-        else
-          phenotypes[identifier] =
-            phenotype: phenotype
-            groups: [group.group_id]
-            taxon_count: group.taxa.length
-            display_name: "#{phenotype.entity.name} #{phenotype.quality.name}"
-    
-    phenotypes
-    
   current_state_path: ->
     base = @options.base_path
     taxon = "/" + @current_entity_id
@@ -429,6 +450,38 @@ class StateTransition
   push_state: -> history.pushState {}, "", @path
   redirect: -> window.location = @path
   redirecting: !history.pushState
+
+
+
+# TODO: Multi-entity phenotypes
+class Phenotype
+  constructor: (@phenotype) ->
+  
+  identifier: ->
+    "e=#{@phenotype.entity.id};q=#{@phenotype.quality.id}"
+  
+  display_name: ->
+    "#{@phenotype.entity.name} #{@phenotype.quality.name}"
+  
+  # Break phenotype_sets down into:
+  #  {'phenotype_1_identifier': {phenotype: {...}, groups: ['group-1', 'group-2', ...]}, ...}
+  @group_sets_by_phenotype: (phenotype_sets) ->
+    phenotypes = {}
+    for group in phenotype_sets
+      for phenotype in group.phenotypes
+        p = new Phenotype(phenotype)
+        identifier = p.identifier()
+        if phenotypes[identifier]
+          phenotypes[identifier].groups.push group.group_id
+          phenotypes[identifier].taxon_count += group.taxa.length
+        else
+          phenotypes[identifier] =
+            phenotype: phenotype
+            groups: [group.group_id]
+            taxon_count: group.taxa.length
+            display_name: p.display_name()
+    
+    phenotypes
 
 
 
