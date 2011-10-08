@@ -381,9 +381,13 @@ module ApplicationHelper
   end
   
   
-  def display_term(term)
+  def display_term(term, stripMarkup=false)
+    simple_term = h(term['name'].blank? && term['label'].blank? ? 'unnamed' : (term['name'] || term['label']))
+    if stripMarkup
+      return simple_term
+    end
     content_tag :span, :class => term_css_classes(term) do
-      h(term['name'].blank? && term['label'].blank? ? 'unnamed' : (term['name'] || term['label']))
+      simple_term
     end
   end
   

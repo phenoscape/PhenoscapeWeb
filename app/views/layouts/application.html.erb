@@ -10,6 +10,12 @@
  			page_title = 'Phenoscape Knowledgebase (BETA)'
     	    	
 		# Search pages (if any)
+ 		when 'term, gene':
+ 			# Should this actually say 'Browse genes'? (currently has no browser UI!)
+ 			bc_class = 'breadcrumb-search'
+ 			bc_text = 'Find a specific term'
+ 			bc_url = '/'
+ 			page_title = bc_text
     	
 		# Browse pages
  		when 'phenotypes, facets':
@@ -24,6 +30,7 @@
  			page_title = bc_text
  		# TODO: Fix 'Browse Anatomical Entities' when it's working
  		when 'term, index':  # TODO: filter on CARO
+ 		when 'term, entity':
  			bc_class = 'breadcrumb-browse'
  			bc_text = 'Browse anatomical entities'
  			bc_url = '/term/index/CARO:0000003'
@@ -97,12 +104,33 @@
  			page_title = '???'
     end
     # prepend any @title, then append ' : Phenoscape'
+    title_separator = '«'
     fulltitle = page_title
     if @title
-		fulltitle = @title + " : " + fulltitle
+    	# defer to any passed-in title for this page
+		fulltitle = @title
     end
+    
+    # prepend any particular term for this page (if found)
+    if @taxon
+	    current_term = display_term(@taxon, stripMarkup=true)
+    end
+    if @quality
+	    current_term = display_term(@quality, stripMarkup=true)
+    end
+    if @gene
+	    current_term = display_term(@gene, stripMarkup=true)
+    end
+    if @entity
+	    current_term = display_term(@entity, stripMarkup=true)
+    end
+
+    if current_term
+    	fulltitle = "#{current_term} #{title_separator} #{fulltitle}"
+    end
+        
     if !(fulltitle.include? 'Phenoscape')
-    	fulltitle += " : Phenoscape"
+    	fulltitle += " #{title_separator} Phenoscape"
     end
   %>
 	<title><%= fulltitle %></title>
