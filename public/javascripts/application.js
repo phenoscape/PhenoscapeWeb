@@ -45,7 +45,7 @@ function initAutocomplete(input_id, ontologyPrefixes, query_type, min_chars, wid
 
 
 function setNextIndex(index_id, input_starts_with){
-  var inputs = jQuery("input[name*=" + input_starts_with + "]");
+  var inputs = jQuery("input[name*='" + input_starts_with + "']");
   var max_index = -1;
   inputs.each(function(i, el) {
     //example: filter_phenotype_1_entity
