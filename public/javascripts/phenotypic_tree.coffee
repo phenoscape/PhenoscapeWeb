@@ -380,12 +380,14 @@ class VariationTree extends Tree
     
     base + taxon + phenotype_filter
   
-  navigate_to_taxon: (taxon_id, taxon_name) ->
+  change_taxon: (taxon_id, taxon_name) ->
     $('#current_taxon_id').val taxon_id
     $('#current_taxon_name').html taxon_name
+  
+  navigate_to_taxon: (taxon_id, taxon_name) ->
+    @change_taxon taxon_name, taxon_name
     
-    # TODO: test if the node is already present, and modify the existing tree
-    
+    # TODO: test if the node is already present, and click on it instead of triggering a change()
     # Start over with a new query
     $('#term_info').change()
   
@@ -448,8 +450,11 @@ class VariationTreeNode extends TreeNode
     # Don't do anything when the current node is clicked.
     return if target.hasClass 'current'
     
+    # Update the form; query will use the form's values.
+    tree.change_taxon taxon.id, taxon.name
+    
     # Start the query to expand on the clicked taxon.
-    # tree.query taxon.id
+    tree.query taxon.id
     
     # The old current node is no longer current. Save its id though, so we can append to it.
     old_current_id = $('.node.current').removeClass('current').attr 'id'

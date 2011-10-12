@@ -488,9 +488,12 @@
       phenotype_filter = "?" + $('form[name=complex_query_form]').serialize();
       return base + taxon + phenotype_filter;
     };
-    VariationTree.prototype.navigate_to_taxon = function(taxon_id, taxon_name) {
+    VariationTree.prototype.change_taxon = function(taxon_id, taxon_name) {
       $('#current_taxon_id').val(taxon_id);
-      $('#current_taxon_name').html(taxon_name);
+      return $('#current_taxon_name').html(taxon_name);
+    };
+    VariationTree.prototype.navigate_to_taxon = function(taxon_id, taxon_name) {
+      this.change_taxon(taxon_name, taxon_name);
       return $('#term_info').change();
     };
     VariationTree.prototype.navigate_to_entity = function(entity_id, entity_name) {
@@ -581,6 +584,8 @@
       if (target.hasClass('current')) {
         return;
       }
+      tree.change_taxon(taxon.id, taxon.name);
+      tree.query(taxon.id);
       old_current_id = $('.node.current').removeClass('current').attr('id');
       if (!old_current_id) {
         throw "No node is selected as current";
