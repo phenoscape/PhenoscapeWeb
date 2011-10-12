@@ -383,7 +383,7 @@ module ApplicationHelper
   
   def display_term(term)
     content_tag :span, :class => term_css_classes(term) do
-      h(term['name'].blank? && term['label'].blank? ? 'unnamed' : (term['name'] || term['label']))
+      term['name'].blank? && term['label'].blank? ? 'unnamed' : (term['name'] || term['label'])
     end
   end
   
