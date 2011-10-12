@@ -70,10 +70,6 @@ class Tree
     unless @spacetree.graph.getNode(@spacetree.root).data.leaf_node
       @spacetree.onClick @spacetree.root
   
-  update_spacetree: (node) ->
-    return console.log "$jit failed to set update_spacetree_callback" unless @update_spacetree_callback || !console
-    @update_spacetree_callback node.id, node
-  
   load_selected_terms: ->
     @term_params = $("form#query_form}}").serialize()
   
@@ -192,6 +188,10 @@ class ProfileTree extends Tree
           fontSize: '0.8em'
           padding: '3px'
           'white-space': 'nowrap'
+  
+  update_spacetree: (node) ->
+    throw "$jit failed to set update_spacetree_callback" unless @update_spacetree_callback
+    @update_spacetree_callback node.id, node
   
   load_selected_terms: ->
     super()
@@ -332,20 +332,27 @@ class VariationTree extends Tree
     
     super()
   
+  update_spacetree: (subtree) ->
+    @spacetree.removeSubtree subtree.id, false, 'replot'
+    @spacetree.addSubtree subtree, 'replot'
+  
   # Converts phenotype_sets from the data source into TreeNodes and stores them in the tree.
   # Also builds the phenotypes table.
   query_callback: (phenotype_sets, root_taxon_id, taxon_data) ->
+    @change_taxon root_taxon_id, taxon_data[root_taxon_id].name
     root_node = @build_tree phenotype_sets, root_taxon_id, taxon_data
     @populate_phenotype_table phenotype_sets
     super root_node
   
   build_tree: (phenotype_sets, root_taxon_id, taxon_data) ->
-    root_node = @find_node(root_taxon_id) || @root_node
-    current_taxon_node = root_node.find_or_create_child this, root_taxon_id, taxon_data[root_taxon_id].name,
+    root_node = current_taxon_node = @find_node(root_taxon_id)
+    root_node ||= @root_node
+    current_taxon_node ||= root_node.find_or_create_child @, root_taxon_id, taxon_data[root_taxon_id].name,
       type: 'taxon'
       rank: taxon_data[root_taxon_id].rank?.name
       current: true
     current_taxon_node.estimateRenderHeight()
+    # TODO: Sort phenotype set groups
     phenotype_sets.each (group) =>
       group_id = "group-#{hex_md5 JSON.encode group}" # There's no id or any unique identifier; encode the whole group and hash it
       group.group_id = group_id

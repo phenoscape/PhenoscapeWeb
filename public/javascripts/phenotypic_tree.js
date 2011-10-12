@@ -81,12 +81,6 @@
         return this.spacetree.onClick(this.spacetree.root);
       }
     };
-    Tree.prototype.update_spacetree = function(node) {
-      if (!(this.update_spacetree_callback || !console)) {
-        return console.log("$jit failed to set update_spacetree_callback");
-      }
-      return this.update_spacetree_callback(node.id, node);
-    };
     Tree.prototype.load_selected_terms = function() {
       return this.term_params = $("form#query_form}}").serialize();
     };
@@ -241,6 +235,12 @@
           });
         }
       });
+    };
+    ProfileTree.prototype.update_spacetree = function(node) {
+      if (!this.update_spacetree_callback) {
+        throw "$jit failed to set update_spacetree_callback";
+      }
+      return this.update_spacetree_callback(node.id, node);
     };
     ProfileTree.prototype.load_selected_terms = function() {
       ProfileTree.__super__.load_selected_terms.call(this);
@@ -433,20 +433,26 @@
       }
       return VariationTree.__super__.initialize_spacetree.call(this);
     };
+    VariationTree.prototype.update_spacetree = function(subtree) {
+      this.spacetree.removeSubtree(subtree.id, false, 'replot');
+      return this.spacetree.addSubtree(subtree, 'replot');
+    };
     VariationTree.prototype.query_callback = function(phenotype_sets, root_taxon_id, taxon_data) {
       var root_node;
+      this.change_taxon(root_taxon_id, taxon_data[root_taxon_id].name);
       root_node = this.build_tree(phenotype_sets, root_taxon_id, taxon_data);
       this.populate_phenotype_table(phenotype_sets);
       return VariationTree.__super__.query_callback.call(this, root_node);
     };
     VariationTree.prototype.build_tree = function(phenotype_sets, root_taxon_id, taxon_data) {
       var current_taxon_node, root_node, _ref;
-      root_node = this.find_node(root_taxon_id) || this.root_node;
-      current_taxon_node = root_node.find_or_create_child(this, root_taxon_id, taxon_data[root_taxon_id].name, {
+      root_node = current_taxon_node = this.find_node(root_taxon_id);
+      root_node || (root_node = this.root_node);
+      current_taxon_node || (current_taxon_node = root_node.find_or_create_child(this, root_taxon_id, taxon_data[root_taxon_id].name, {
         type: 'taxon',
         rank: (_ref = taxon_data[root_taxon_id].rank) != null ? _ref.name : void 0,
         current: true
-      });
+      }));
       current_taxon_node.estimateRenderHeight();
       phenotype_sets.each(__bind(function(group) {
         var group_id, node;
