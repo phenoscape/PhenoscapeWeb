@@ -29,7 +29,7 @@ class Tree
   create_spacetree: (jit_options) ->
     $('#tree_empty_state').hide()
     
-    @root_node ||= @options.tree_node_class.create_root this
+    @root_node ||= @options.tree_node_class.create_root @
     
     jit_default_options =
       injectInto: @container_id
@@ -202,11 +202,11 @@ class ProfileTree extends Tree
     root_node = @find_node(root_taxon_id) || @root_node
     matches = matches.sortBy (m) -> m.name
     for match in matches
-      node = root_node.find_or_create_child this, match.taxon_id, match.name, greatest_profile_match: match.greatest_profile_match
+      node = root_node.find_or_create_child @, match.taxon_id, match.name, greatest_profile_match: match.greatest_profile_match
       if match.matches?
         match.matches = match.matches.sortBy (m) -> m.name
         for match_child in match.matches
-          node.find_or_create_child this, match_child.taxon_id, match_child.name, greatest_profile_match: match_child.greatest_profile_match
+          node.find_or_create_child @, match_child.taxon_id, match_child.name, greatest_profile_match: match_child.greatest_profile_match
     
     empty_resultset = (matches.length == 0)
     super root_node, empty_resultset
@@ -236,7 +236,7 @@ class VariationTree extends Tree
       
       # Set up hover events for groups and phenotypes
       associated_targets = ->
-        targets = $(this)
+        targets = $(@)
         associated_groups = targets.data 'associated'
         if associated_groups
           targets = targets.add($("##{group}")) for group in associated_groups
@@ -349,7 +349,7 @@ class VariationTree extends Tree
     phenotype_sets.each (group) =>
       group_id = "group-#{hex_md5 JSON.encode group}" # There's no id or any unique identifier; encode the whole group and hash it
       group.group_id = group_id
-      node = current_taxon_node.find_or_create_child this, group_id, group_id,
+      node = current_taxon_node.find_or_create_child @, group_id, group_id,
         type: 'group'
         phenotypes: group.phenotypes
         taxa: group.taxa.map (taxon_id) ->
@@ -416,7 +416,7 @@ class TreeNode
     child
   
   @create_root: (tree) ->
-    new this tree, 'root'
+    new @ tree, 'root'
 
 
 class ProfileTreeNode extends TreeNode
