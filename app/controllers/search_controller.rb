@@ -51,7 +51,7 @@ class SearchController < ApplicationController
     set_filter_term_names_for_ids(term_ids)
     
     if params[:for_variation_tree]
-      render :js => "window.variation_tree.change_entity('#{phenotype[:entity]}', '#{@filter_term_names[phenotype[:entity]]['name']}');"
+      render :js => "window.variation_tree.navigate_to_entity('#{phenotype[:entity]}', '#{@filter_term_names[phenotype[:entity]]['name']}');"
     else
       render :update do |page|
         # if !params[:move_last_phenotype_index].blank?

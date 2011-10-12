@@ -389,11 +389,11 @@ class VariationTree extends Tree
     # Start over with a new query
     $('#term_info').change()
   
-  change_entity: (entity_id, entity_name) ->
+  navigate_to_entity: (entity_id, entity_name) ->
     @current_entity_id = entity_id
     $('#current_entity_id').val entity_id
     $('#current_entity_name').html entity_name
-    @navigate_to_taxon null
+    @navigate_to_taxon()
 
 
 class TreeNode

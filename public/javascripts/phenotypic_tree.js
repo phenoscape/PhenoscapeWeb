@@ -493,11 +493,11 @@
       $('#current_taxon_name').html(taxon_name);
       return $('#term_info').change();
     };
-    VariationTree.prototype.change_entity = function(entity_id, entity_name) {
+    VariationTree.prototype.navigate_to_entity = function(entity_id, entity_name) {
       this.current_entity_id = entity_id;
       $('#current_entity_id').val(entity_id);
       $('#current_entity_name').html(entity_name);
-      return this.navigate_to_taxon(null);
+      return this.navigate_to_taxon();
     };
     return VariationTree;
   })();
