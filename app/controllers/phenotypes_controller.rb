@@ -31,7 +31,7 @@ class PhenotypesController < ApplicationController
     filter_term_names
     respond_to do |format|
       format.html do
-        @phenotypes = Phenotype.find({:query => build_json_query})
+        @phenotypes = Phenotype.find(query_params)
       end
       format.js do
         # Query for taxa for the given phenotypes
