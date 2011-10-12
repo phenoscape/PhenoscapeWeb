@@ -47,9 +47,6 @@ class Tree
       Edge:
         type: 'bezier'
         overridable: true
-      request: (nodeId, level, onComplete) =>
-        @update_spacetree_callback = onComplete.onComplete
-        @query nodeId
     $.extend jit_default_options, jit_options
     jit_options = jit_default_options
     
@@ -146,7 +143,7 @@ class Tree
   find_node: (id) ->
     return null unless id? && id.length > 0
     
-    search_nodes = @root_node.children
+    search_nodes = [@root_node]
     while search_nodes.any()
       result_node = search_nodes.find (node) -> node.id == id
       return result_node if result_node?
@@ -179,6 +176,9 @@ class ProfileTree extends Tree
       Navigation:
         enable: true
         panning: true
+      request: (nodeId, level, onComplete) =>
+        @update_spacetree_callback = onComplete.onComplete
+        @query nodeId
       onCreateLabel: (label, node) ->
         # Set label style
         label = $(label)
@@ -286,7 +286,7 @@ class VariationTree extends Tree
         levelDistance: 500
       Label:
         type: 'HTML'
-      onCreateLabel: (label, node) ->
+      onCreateLabel: (label, node) =>
         label = $(label)
         label.attr 'id', node.id
         label.addClass 'node' # It already has this class, but I name it here to make it easier to find
@@ -295,8 +295,10 @@ class VariationTree extends Tree
         # Style the nodes in an external stylesheet
         if node.data.type == 'group'
           label.addClass 'node-group'
-          node.data.taxa.each (taxon) ->
-            label.append $("<div class='node-taxon #{taxon.rank}' rel='#{taxon.id}'>#{taxon.name}</div>")
+          node.data.taxa.each (taxon) =>
+            grouped_taxon = $("<div class='node-taxon #{taxon.rank}' rel='#{taxon.id}'>#{taxon.name}</div>")
+            grouped_taxon.appendTo label
+            grouped_taxon.click (event) => VariationTreeNode.on_click(event, @, node, taxon)
           if node.data.phenotypes.length == 0
             label.addClass 'node-group-without-phenotypes'
             label.data 'associated', (new Phenotype(phenotype).identifier() for phenotype in node.data.phenotypes)
@@ -306,23 +308,18 @@ class VariationTree extends Tree
           label.addClass 'node-taxon'
           label.addClass node.data.rank
           label.html node.name
-          if label.data.current
-            label.addClass 'current'
-        
-        unless node.data.leaf_node
-          label.click -> st.onClick node.id
+          label.click (event) => VariationTreeNode.on_click event, @, node,
+            id: node.id
+            name: node.name
+            rank: node.data.rank
+          
+          if node.data.current       # Use the current class to keep track of the actual current node.
+            label.addClass 'current' # node.data.current will stay true even after it's no longer current.
   
   destroy_spacetree: ->
     $('#variation-table').hide().find('tbody').empty()
     
     super
-  
-  find_or_create_offscreen_renderer: ->
-    offscreen = $('#variation-tree-offscreen-renderer')
-    if offscreen.length
-      return offscreen
-    else
-      return $('<div id="variation-tree-offscreen-renderer" style="position: absolute; left: -1000px; top: -1000px;">').appendTo $("##{@container_id}")
   
   load_selected_terms: ->
     super()
@@ -330,7 +327,6 @@ class VariationTree extends Tree
   
   initialize_spacetree: ->
     for id, node of @spacetree.graph.nodes
-      console.log $("##{id}").outerHeight()
       node.data.$height = $("##{id}").outerHeight()
       node.data.$width = $("##{id}").outerWidth()
     
@@ -345,7 +341,10 @@ class VariationTree extends Tree
   
   build_tree: (phenotype_sets, root_taxon_id, taxon_data) ->
     root_node = @find_node(root_taxon_id) || @root_node
-    current_taxon_node = root_node.find_or_create_child this, root_taxon_id, taxon_data[root_taxon_id].name, type: 'taxon', rank: taxon_data[root_taxon_id].rank?.name
+    current_taxon_node = root_node.find_or_create_child this, root_taxon_id, taxon_data[root_taxon_id].name,
+      type: 'taxon'
+      rank: taxon_data[root_taxon_id].rank?.name
+      current: true
     current_taxon_node.estimateRenderHeight()
     phenotype_sets.each (group) =>
       group_id = "group-#{hex_md5 JSON.encode group}" # There's no id or any unique identifier; encode the whole group and hash it
@@ -400,7 +399,7 @@ class VariationTree extends Tree
 class TreeNode
   constructor: (@tree, @id, @name, @data={}, @children=[]) ->
     @set_color() unless @data.$color
-    @name = @id if !@name? or @name.blank()
+    @name = @id if !@name
 
   set_color: ->
     @data.$color = @color()
@@ -441,6 +440,49 @@ class VariationTreeNode extends TreeNode
     height += 13 * 2 if @data.type == "group" and @data.phenotypes?.length > 0
     
     @data.$height = height
+  
+  @on_click: (event, tree, node, taxon) ->
+    event.preventDefault()
+    target = $(event.target)
+    
+    # Don't do anything when the current node is clicked.
+    return if target.hasClass 'current'
+    
+    # Start the query to expand on the clicked taxon.
+    # tree.query taxon.id
+    
+    # The old current node is no longer current. Save its id though, so we can append to it.
+    old_current_id = $('.node.current').removeClass('current').attr 'id'
+    throw "No node is selected as current" unless old_current_id
+    
+    # If the clicked node is in a group, replace the current subtree with a new taxon node.
+    if node.data.type == 'group'
+      # Remove the subtree
+      tree.spacetree.removeSubtree(old_current_id, false, 'replot')
+      
+      # Create a new node to replace the group
+      subtree = tree.find_node old_current_id
+      subtree.children = []
+      child = subtree.find_or_create_child tree, taxon.id, taxon.name, rank: taxon.rank
+      child.estimateRenderHeight()
+      tree.spacetree.addSubtree(subtree, 'replot')
+      
+      # Set target to the newly created node
+      target = $(document.getElementById(taxon.id))
+      
+      # Focus/center the remaining leaf node.
+      tree.spacetree.onClick target.attr('id')
+    
+    # Otherwise, it's a parent of the current node. Select it and remove its subtree (order is important).
+    else
+      # reset clickedNode, because removeSubtree expects clickedNode to be in the graph when it refreshes
+      tree.spacetree.clickedNode = tree.spacetree.graph.getNode(tree.spacetree.root)
+      tree.spacetree.removeSubtree(target.attr('id'), false, 'replot')
+      tree.spacetree.onClick target.attr('id')
+    
+    
+    # Give the new/clicked node the current class.
+    target.addClass 'current'
 
 
 

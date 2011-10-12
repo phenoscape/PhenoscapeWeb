@@ -53,11 +53,7 @@
         Edge: {
           type: 'bezier',
           overridable: true
-        },
-        request: __bind(function(nodeId, level, onComplete) {
-          this.update_spacetree_callback = onComplete.onComplete;
-          return this.query(nodeId);
-        }, this)
+        }
       };
       $.extend(jit_default_options, jit_options);
       jit_options = jit_default_options;
@@ -178,7 +174,7 @@
       if (!((id != null) && id.length > 0)) {
         return null;
       }
-      search_nodes = this.root_node.children;
+      search_nodes = [this.root_node];
       while (search_nodes.any()) {
         result_node = search_nodes.find(function(node) {
           return node.id === id;
@@ -223,6 +219,10 @@
           enable: true,
           panning: true
         },
+        request: __bind(function(nodeId, level, onComplete) {
+          this.update_spacetree_callback = onComplete.onComplete;
+          return this.query(nodeId);
+        }, this),
         onCreateLabel: function(label, node) {
           label = $(label);
           label.attr('id', node.id);
@@ -367,19 +367,24 @@
         Label: {
           type: 'HTML'
         },
-        onCreateLabel: function(label, node) {
+        onCreateLabel: __bind(function(label, node) {
           var phenotype;
           label = $(label);
           label.attr('id', node.id);
           label.addClass('node');
           if (node.data.type === 'group') {
             label.addClass('node-group');
-            node.data.taxa.each(function(taxon) {
-              return label.append($("<div class='node-taxon " + taxon.rank + "' rel='" + taxon.id + "'>" + taxon.name + "</div>"));
-            });
+            node.data.taxa.each(__bind(function(taxon) {
+              var grouped_taxon;
+              grouped_taxon = $("<div class='node-taxon " + taxon.rank + "' rel='" + taxon.id + "'>" + taxon.name + "</div>");
+              grouped_taxon.appendTo(label);
+              return grouped_taxon.click(__bind(function(event) {
+                return VariationTreeNode.on_click(event, this, node, taxon);
+              }, this));
+            }, this));
             if (node.data.phenotypes.length === 0) {
               label.addClass('node-group-without-phenotypes');
-              label.data('associated', (function() {
+              return label.data('associated', (function() {
                 var _i, _len, _ref, _results;
                 _ref = node.data.phenotypes;
                 _results = [];
@@ -390,36 +395,29 @@
                 return _results;
               })());
             } else {
-              label.addClass('node-group-with-phenotypes');
+              return label.addClass('node-group-with-phenotypes');
             }
           } else {
             label.addClass('node-taxon');
             label.addClass(node.data.rank);
             label.html(node.name);
-            if (label.data.current) {
-              label.addClass('current');
+            label.click(__bind(function(event) {
+              return VariationTreeNode.on_click(event, this, node, {
+                id: node.id,
+                name: node.name,
+                rank: node.data.rank
+              });
+            }, this));
+            if (node.data.current) {
+              return label.addClass('current');
             }
           }
-          if (!node.data.leaf_node) {
-            return label.click(function() {
-              return st.onClick(node.id);
-            });
-          }
-        }
+        }, this)
       });
     };
     VariationTree.prototype.destroy_spacetree = function() {
       $('#variation-table').hide().find('tbody').empty();
       return VariationTree.__super__.destroy_spacetree.apply(this, arguments);
-    };
-    VariationTree.prototype.find_or_create_offscreen_renderer = function() {
-      var offscreen;
-      offscreen = $('#variation-tree-offscreen-renderer');
-      if (offscreen.length) {
-        return offscreen;
-      } else {
-        return $('<div id="variation-tree-offscreen-renderer" style="position: absolute; left: -1000px; top: -1000px;">').appendTo($("#" + this.container_id));
-      }
     };
     VariationTree.prototype.load_selected_terms = function() {
       VariationTree.__super__.load_selected_terms.call(this);
@@ -430,7 +428,6 @@
       _ref = this.spacetree.graph.nodes;
       for (id in _ref) {
         node = _ref[id];
-        console.log($("#" + id).outerHeight());
         node.data.$height = $("#" + id).outerHeight();
         node.data.$width = $("#" + id).outerWidth();
       }
@@ -447,7 +444,8 @@
       root_node = this.find_node(root_taxon_id) || this.root_node;
       current_taxon_node = root_node.find_or_create_child(this, root_taxon_id, taxon_data[root_taxon_id].name, {
         type: 'taxon',
-        rank: (_ref = taxon_data[root_taxon_id].rank) != null ? _ref.name : void 0
+        rank: (_ref = taxon_data[root_taxon_id].rank) != null ? _ref.name : void 0,
+        current: true
       });
       current_taxon_node.estimateRenderHeight();
       phenotype_sets.each(__bind(function(group) {
@@ -513,7 +511,7 @@
       if (!this.data.$color) {
         this.set_color();
       }
-      if (!(this.name != null) || this.name.blank()) {
+      if (!this.name) {
         this.name = this.id;
       }
     }
@@ -575,6 +573,35 @@
         height += 13 * 2;
       }
       return this.data.$height = height;
+    };
+    VariationTreeNode.on_click = function(event, tree, node, taxon) {
+      var child, old_current_id, subtree, target;
+      event.preventDefault();
+      target = $(event.target);
+      if (target.hasClass('current')) {
+        return;
+      }
+      old_current_id = $('.node.current').removeClass('current').attr('id');
+      if (!old_current_id) {
+        throw "No node is selected as current";
+      }
+      if (node.data.type === 'group') {
+        tree.spacetree.removeSubtree(old_current_id, false, 'replot');
+        subtree = tree.find_node(old_current_id);
+        subtree.children = [];
+        child = subtree.find_or_create_child(tree, taxon.id, taxon.name, {
+          rank: taxon.rank
+        });
+        child.estimateRenderHeight();
+        tree.spacetree.addSubtree(subtree, 'replot');
+        target = $(document.getElementById(taxon.id));
+        tree.spacetree.onClick(target.attr('id'));
+      } else {
+        tree.spacetree.clickedNode = tree.spacetree.graph.getNode(tree.spacetree.root);
+        tree.spacetree.removeSubtree(target.attr('id'), false, 'replot');
+        tree.spacetree.onClick(target.attr('id'));
+      }
+      return target.addClass('current');
     };
     return VariationTreeNode;
   })();
