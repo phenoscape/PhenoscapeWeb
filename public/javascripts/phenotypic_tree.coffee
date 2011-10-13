@@ -485,12 +485,13 @@ class VariationTreeNode extends TreeNode
       # Focus/center the remaining leaf node.
       tree.spacetree.onClick target.attr('id')
     
-    # Otherwise, it's a parent of the current node. Select it and remove its subtree (order is important).
+    # Otherwise, it's a parent of the current node. Select it and remove its subtree
     else
-      # reset clickedNode, because removeSubtree expects clickedNode to be in the graph when it refreshes
-      tree.spacetree.clickedNode = tree.spacetree.graph.getNode(tree.spacetree.root)
-      tree.spacetree.removeSubtree(target.attr('id'), false, 'replot')
-      tree.spacetree.onClick target.attr('id')
+      # Order matters here; removeSubtree triggers a refresh, which expects the last clicked node to be in the graph
+      subtree_id = target.attr 'id'
+      tree.spacetree.onClick subtree_id
+      tree.spacetree.removeSubtree(subtree_id, false, 'replot')
+      tree.find_node(subtree_id).children = []
     
     
     # Give the new/clicked node the current class.

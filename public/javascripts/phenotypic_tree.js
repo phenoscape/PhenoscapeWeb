@@ -584,7 +584,7 @@
       return this.data.$height = height;
     };
     VariationTreeNode.on_click = function(event, tree, node, taxon) {
-      var child, old_current_id, subtree, target;
+      var child, old_current_id, subtree, subtree_id, target;
       event.preventDefault();
       target = $(event.target);
       if (target.hasClass('current')) {
@@ -608,9 +608,10 @@
         target = $(document.getElementById(taxon.id));
         tree.spacetree.onClick(target.attr('id'));
       } else {
-        tree.spacetree.clickedNode = tree.spacetree.graph.getNode(tree.spacetree.root);
-        tree.spacetree.removeSubtree(target.attr('id'), false, 'replot');
-        tree.spacetree.onClick(target.attr('id'));
+        subtree_id = target.attr('id');
+        tree.spacetree.onClick(subtree_id);
+        tree.spacetree.removeSubtree(subtree_id, false, 'replot');
+        tree.find_node(subtree_id).children = [];
       }
       return target.addClass('current');
     };
