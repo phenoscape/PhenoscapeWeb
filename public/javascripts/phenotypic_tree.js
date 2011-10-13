@@ -63,7 +63,7 @@
       this.root_node = null;
       try {
         if (this.spacetree != null) {
-          return this.spacetree.removeSubtree('root', true, 'animate');
+          return this.spacetree.removeSubtree(this.spacetree.root, true, 'animate');
         }
       } catch (err) {
 
@@ -72,7 +72,7 @@
     Tree.prototype.initialize_spacetree = function() {
       if (this.root_node.children.length === 1) {
         this.root_node = this.root_node.children[0];
-        this.root_node.id = 'root';
+        this.root_node.data.is_root = true;
       }
       this.spacetree.loadJSON(this.root_node);
       this.spacetree.compute();
@@ -94,7 +94,7 @@
         return;
       }
       this.show_loading();
-      loading_root = !(taxon_id != null) || taxon_id === 'root';
+      loading_root = !(taxon_id != null);
       url = "" + this.options.base_path + "?" + (decodeURIComponent(this.term_params));
       if (!loading_root) {
         url += "&taxon=" + taxon_id;
@@ -115,7 +115,7 @@
         empty_resultset = false;
       }
       this.hide_loading();
-      if (root_node.id === 'root') {
+      if (root_node.data.is_root) {
         if (!empty_resultset) {
           root_node.name || (root_node.name = 'Phenotype query');
           root_node.data.leaf_node = false;
@@ -549,7 +549,9 @@
       return child;
     };
     TreeNode.create_root = function(tree) {
-      return new this(tree, 'root');
+      return new this(tree, 'root', 'root', {
+        is_root: true
+      });
     };
     return TreeNode;
   })();

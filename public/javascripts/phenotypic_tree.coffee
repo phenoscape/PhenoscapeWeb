@@ -55,14 +55,14 @@ class Tree
   destroy_spacetree: ->
     @root_node = null
     try
-      @spacetree.removeSubtree('root', true, 'animate') if @spacetree?
+      @spacetree.removeSubtree(@spacetree.root, true, 'animate') if @spacetree?
     catch err
   
   initialize_spacetree: ->
     # If the first level has only one child, replace the root with that child
     if @root_node.children.length == 1
       @root_node = @root_node.children[0]
-      @root_node.id = 'root'
+      @root_node.data.is_root = true
 
     @spacetree.loadJSON @root_node
     @spacetree.compute()
@@ -79,7 +79,7 @@ class Tree
     
     @show_loading()
     
-    loading_root = !taxon_id? || taxon_id == 'root'
+    loading_root = !taxon_id?
     
     url = "#{@options.base_path}?#{decodeURIComponent(@term_params)}" # @term_params set in load_selected_terms
     url += "&taxon=#{taxon_id}" unless loading_root
@@ -96,7 +96,7 @@ class Tree
   query_callback: (root_node, empty_resultset=false) ->
     @hide_loading()
 
-    if root_node.id == 'root'
+    if root_node.data.is_root
       unless empty_resultset
         root_node.name ||= 'Phenotype query'
         root_node.data.leaf_node = false
@@ -430,7 +430,7 @@ class TreeNode
     child
   
   @create_root: (tree) ->
-    new @ tree, 'root'
+    new @ tree, 'root', 'root', is_root: true
 
 
 class ProfileTreeNode extends TreeNode
