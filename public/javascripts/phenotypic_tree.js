@@ -391,7 +391,8 @@
       return VariationTree.__super__.initialize_spacetree.call(this);
     };
     VariationTree.prototype.update_spacetree = function(subtree) {
-      return this.spacetree.addSubtree(subtree, 'replot');
+      this.spacetree.addSubtree(subtree, 'replot');
+      return VariationTreeNode.click_node_when_ready(this, subtree.id);
     };
     VariationTree.prototype.query_callback = function(phenotype_sets, root_taxon_id, taxon_data) {
       var root_node;
@@ -592,7 +593,7 @@
       return this.data.$height = height;
     };
     VariationTreeNode.on_click = function(event, tree, node, taxon) {
-      var child, click_node_when_ready, old_current_id, subtree, subtree_id, target;
+      var child, old_current_id, subtree, subtree_id, target;
       event.preventDefault();
       target = $(event.target);
       if (target.hasClass('current' || tree.spacetree.busy)) {
@@ -614,24 +615,22 @@
         child.estimateRenderHeight();
         tree.spacetree.addSubtree(subtree, 'replot');
         target = $(document.getElementById(taxon.id));
-        click_node_when_ready = function() {
-          if (!tree.spacetree.busy) {
-            return tree.spacetree.onClick(target.attr('id'));
-          } else {
-            return setTimeout(function() {
-              return click_node_when_ready();
-            }, 50);
-          }
-        };
-        click_node_when_ready();
       } else {
         subtree_id = target.attr('id');
         tree.spacetree.clickedNode = tree.spacetree.graph.getNode(subtree_id);
-        tree.spacetree.onClick(subtree_id);
         tree.spacetree.removeSubtree(subtree_id, false, 'replot');
         tree.find_node(subtree_id).children = [];
       }
       return target.addClass('current');
+    };
+    VariationTreeNode.click_node_when_ready = function(tree, id) {
+      if (!tree.spacetree.busy) {
+        return tree.spacetree.onClick(id);
+      } else {
+        return setTimeout(function() {
+          return VariationTreeNode.click_node_when_ready(tree, id);
+        }, 50);
+      }
     };
     return VariationTreeNode;
   })();

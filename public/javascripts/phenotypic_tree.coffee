@@ -306,6 +306,8 @@ class VariationTree extends Tree
   
   update_spacetree: (subtree) ->
     @spacetree.addSubtree subtree, 'replot'
+    VariationTreeNode.click_node_when_ready @, subtree.id
+  
   
   # Converts phenotype_sets from the data source into TreeNodes and stores them in the tree.
   # Also builds the phenotypes table.
@@ -486,28 +488,25 @@ class VariationTreeNode extends TreeNode
       
       # Set target to the newly created node
       target = $(document.getElementById(taxon.id))
-      
-      # Focus/center the remaining leaf node.
-      click_node_when_ready = ->
-        unless tree.spacetree.busy
-          tree.spacetree.onClick target.attr('id')
-        else
-          setTimeout ->
-            click_node_when_ready()
-          , 50
-      click_node_when_ready()
     
     # Otherwise, it's a parent of the current node. Select it and remove its subtree
     else
       subtree_id = target.attr 'id'
       # Order matters here; removeSubtree triggers a refresh, which expects the last clickedNode to be in the graph
       tree.spacetree.clickedNode = tree.spacetree.graph.getNode(subtree_id)
-      tree.spacetree.onClick subtree_id
       tree.spacetree.removeSubtree(subtree_id, false, 'replot')
       tree.find_node(subtree_id).children = []
     
     # Give the new/clicked node the current class.
     target.addClass 'current'
+  
+  @click_node_when_ready: (tree, id) ->
+    unless tree.spacetree.busy
+      tree.spacetree.onClick id
+    else
+      setTimeout ->
+        VariationTreeNode.click_node_when_ready tree, id
+      , 50
 
 
 
