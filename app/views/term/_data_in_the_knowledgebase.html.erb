@@ -12,7 +12,10 @@
     <%= link_to 'Phenotype annotations to genes', :controller => :gene_annotations, :action => :index, :params => seach_params %><br />
 	<% end %>
 	<% unless controller.action_name == 'gene' %>
-    <%= link_to 'Comparative publications', :controller => :publications, :action => :index, :params => seach_params %>
+    <%= link_to 'Comparative publications', :controller => :publications, :action => :index, :params => seach_params %><br />
+	<% end %>
+	<% if controller.action_name == 'entity' %>
+	  <%= link_to "Taxonomic distribution of #{display_term(@entity)} phenotypes", :controller => :phenotypes, :action => :variation_tree, :id => params[:id] %>
 	<% end %>
   </div>
 </div>

@@ -17,4 +17,10 @@ class Phenotype
     Request.find("phenotype/profile", params, result_options)
   end
   
+  
+  #Return variation tree result from data service
+  def self.variationsets(params={}, result_options={})
+    Request.find("phenotype/variationsets", params, result_options)
+  end
+  
 end

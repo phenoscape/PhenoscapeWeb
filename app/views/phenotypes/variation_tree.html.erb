@@ -1,0 +1,68 @@
+<%= javascript_include_tag 'jit-st-2.0.1.min', 'md5-min', 'phenotypic_tree' %>
+<div>
+  <% form_tag '/phenotypes', :method => :get, :name => 'complex_query_form', :id => 'query_form' do %>
+    <div>
+      Taxonomic distribution of
+      <select name="filter[phenotypes][0][quality]" id="quality_select">
+        <% selected_quality = params[:filter][:phenotypes]["0"][:quality] rescue nil %>
+        <%= options_for_select Attribute.all(:format => :array_for_select_options), selected_quality %>
+      </select>
+      for
+      <strong><span id="current_entity_name"><%= @entity['name'] %></span></strong>
+      <input type="hidden" id="current_entity_id" name="filter[phenotypes][0][entity]" value="<%= @entity['id'] %>">
+      <%= button_to_function 'change', "clearInputs(['#entityChoice', '#entity_id']); jQuery('#phenotype_filter_container').dialog('open');" %>
+    </div>
+  
+    <div class='clear'></div>
+
+    <div id="search_sidebar">
+      <div id="term_info">
+        <div class='section'>
+          Limit tree to <span id="current_taxon_name" style="border: 3px solid black">(loading)</span>
+          <%= link_to_function image_tag('remove.png'), 'jQuery(document.getElementById(variation_tree.spacetree.root)).click(); jQuery(this).hide();', :id => 'clear-limit-tree-to', :style => 'display: none;' %>
+          <%= button_to_function 'change', "clearInputs(['#popupTermChoice','#term_id']);jQuery('#term_filter_container').dialog('open');" %>
+          <input type="hidden" id="current_taxon_id" name="filter[taxa][0]" value="<%= params[:filter][:taxa]["0"] rescue "" %>">
+        </div>
+        <div class="section">
+          <input type="checkbox" name="include_unannotated" <%= 'checked="checked"' if params[:include_unannotated] %>>
+          <label for="">Show taxa without phenotype data</label><br>
+          <input type="checkbox" name="include_attribute" <%= 'checked="checked"' if params[:include_attribute] %>>
+          <label for="">Show taxa with unspecified <span class="quality_name"></span> phenotypes</label>
+        </div>
+      </div>
+    
+      <p>
+        <%-# Using button_to_function instead of submit_tag, so that (at least in some browsers)
+           # if a user presses enter when a checkbox has focus, the form will not submit since there is no submit tag. -%>
+        <%= button_to_function 'Show current query', 'jQuery(this).closest("form").submit()' %>
+      </p>
+    
+      <table id="variation-table" class="grid" style="display: none;">
+        <thead>
+          <tr>
+            <th>Phenotype</th>
+            <th>Taxa</th>
+            <th>Phenotype Profiles</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+  
+  <%= render :partial => 'search/term_filter_popup', :locals => {:label => "Taxon", :field_name => 'taxa', :for_variation_tree => true} %>
+  <%= render :partial => 'search/phenotype_filter_popup', :locals => {:for_variation_tree => true} %>
+  
+  <div id="search_main">
+    <div id="variation-tree-loading" style="display: none">Loading...</div>
+    <div id="variation-tree-empty">
+      No results.
+    </div>
+    <div id="variation-tree">
+      
+    </div>
+  </div>
+  
+  <div class='clear'></div>
+</div>

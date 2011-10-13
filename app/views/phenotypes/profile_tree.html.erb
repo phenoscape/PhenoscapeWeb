@@ -1,7 +1,7 @@
-<%= javascript_include_tag 'jit-yc', 'phenotypic_profile_tree' %>
+<%= javascript_include_tag 'jit-st-2.0.1.min', 'phenotypic_tree' %>
 <div>
   <div id="search_sidebar">
-    <% form_tag '/taxa', :method => :get, :name => 'complex_query_form' do %>
+    <% form_tag '/taxa', :method => :get, :name => 'complex_query_form', :id => 'query_form' do %>
       <div id="term_info">
         
         <!-- Phenotype Filter -->
@@ -23,7 +23,7 @@
       </div>
       
       <p>
-        <%-# Using button_to_function instead of submit_tag, so that (at least in some browsers) 
+        <%-# Using button_to_function instead of submit_tag, so that (at least in some browsers)
            # if a user presses enter when a checkbox has focus, the form will not submit since there is no submit tag. -%>
         <%= button_to_function 'Query taxa with these phenotypes', 'jQuery(this).closest("form").submit()' %>
       </p>
@@ -36,14 +36,14 @@
   <div id="search_main">
     <h2>Phenotypic profile tree</h2>
     <p>Taxon color indicates the greatest level of match of specified phenotype(s) found within a species in the clade.</p>
-    <div id="tree-loading" style="display: none">Loading...</div>
-    <div id="tree-empty">
+    <div id="profile-tree-loading" style="display: none">Loading...</div>
+    <div id="profile-tree-empty">
       No phenotypes entered yet.<br/>
       Add a phenotype to the profile:
       <%= button_to_function('Add', "jQuery('#add_phenotype_button').click()") %>
     </div>
-    <div id="tree">
-      <div id="tree-key">
+    <div id="profile-tree">
+      <div id="profile-tree-key">
         Greatest level of match
         <div class="key">
           <div class="cell" style="background-color: #F44">100%</div>

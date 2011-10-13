@@ -1,3 +1,4 @@
+<% for_variation_tree ||= false %>
 <div id="phenotype_filter_container" title="Choose Phenotype">
   <% form_remote_tag :url => {:controller => :search, :action => :phenotype_filter}, :html => {:id => 'phenotype_filter_form', 
        :onsubmit => "setNextIndex('next_phenotype_index','filter\\[phenotypes\\]');"} do %>
@@ -5,21 +6,27 @@
     <% if params[:action] == 'profile_tree' %>
       <%= hidden_field_tag 'source', 'profile_tree' %>
       <%= hidden_field_tag 'filter[phenotypes_match_type]', 'all' %>
+    <% elsif for_variation_tree %>
+      <%= hidden_field_tag :for_variation_tree, 'yes' %>
     <% end %>
     <table class='popup_table'>
       <tr>
         <th><label for="entity">Entity:</label></th>
         <td><%= text_field_tag :entity_name, '', :id => 'entityChoice' %>
             <%= hidden_field_tag :entity_id %></td>
-      </tr><tr>
-        <th><label for="quality">Quality:</label></th>
-        <td><%= text_field_tag :quality_name, '', :id => 'qualityChoice' %>
-            <%= hidden_field_tag :quality_id %></td>
-      </tr><tr>
-        <th><label for="related_entity">Related Entity:</label></th>
-        <td><%= text_field_tag :related_entity_name, '', :id => 'relatedEntityChoice' %>
-            <%= hidden_field_tag :related_entity_id %></td>
       </tr>
+      <% unless for_variation_tree %>
+        <tr>
+          <th><label for="quality">Quality:</label></th>
+          <td><%= text_field_tag :quality_name, '', :id => 'qualityChoice' %>
+              <%= hidden_field_tag :quality_id %></td>
+        </tr>
+        <tr>
+          <th><label for="related_entity">Related Entity:</label></th>
+          <td><%= text_field_tag :related_entity_name, '', :id => 'relatedEntityChoice' %>
+              <%= hidden_field_tag :related_entity_id %></td>
+        </tr>
+      <% end %>
     </table>
     <%= submit_tag "Select Phenotype", :style => 'display:none', :id => 'phenotype_submit_button' %>
   <% end %>
@@ -29,7 +36,7 @@
     jQuery(function(){
       var dlg = jQuery("#phenotype_filter_container").dialog({
         autoOpen: false,
-        height: 250,
+        height: <%= for_variation_tree ? 200 : 250 %>,
         width: 400,
         modal: true,
         buttons: {

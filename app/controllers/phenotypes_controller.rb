@@ -16,6 +16,16 @@ class PhenotypesController < ApplicationController
   end
   
   
+  # For html requests, return the phenotypes specified by the query params
+  # The page will then do an Ajax request to this same action.
+  #
+  # For js requests, call the profile_tree query_callback with the args (matches, root_taxon_id), where:
+  #   matches is a hash / json object conaining the matches as returned by the data source,
+  #     but with the name as an additional field.
+  #     See https://www.phenoscape.org/wiki/Data_Services#Phenotypic_profile_match_service
+  #   root_taxon_id is the ID of the root taxon in the match tree.
+  #     It is used by the javascript ProfileTree to determine if this is a subtree (when expanding a node)
+  #     or the root of a tree (on the initial call)
   def profile_tree
     params[:source] = 'profile_tree' # Used in _phenotype_filter_item.html.erb to hide broaden/refine link
     filter_term_names
@@ -25,24 +35,24 @@ class PhenotypesController < ApplicationController
       end
       format.js do
         # Query for taxa for the given phenotypes
-        qp = query_params
+        qp = {:query => build_json_query}
         qp['taxon'] = params[:taxon] if params[:taxon].present?
         @taxa = Phenotype.profile(qp)
         
         # Collect taxon IDs for name lookup later
-        taxon_ids = @taxa['matches'].map {|taxon| taxon['taxon_id'] }
+        taxon_ids = @taxa['matches'].map { |taxon| taxon['taxon_id'] }
 
         # Query for another level of taxa, if specified
         if params[:levels].to_i > 1
           @taxa['matches'].each do |taxon|
             qp['taxon'] = taxon['taxon_id']
             taxon['matches'] = Phenotype.profile(qp)['matches']
-            taxon_ids += taxon['matches'].map {|t| t['taxon_id'] }
+            taxon_ids += taxon['matches'].map { |t| t['taxon_id'] }
           end
         end
         
         # Look up names for the taxa 
-        name_map = Term.names(taxon_ids)['terms'].each_with_object({}) {|term, map| map[term['id']] = term['name'] }
+        name_map = Term.names(taxon_ids)['terms'].each_with_object({}) { |term, map| map[term['id']] = term['name'] }
         @taxa['matches'].each do |taxon|
           taxon['name'] = name_map[taxon['taxon_id']]
           if taxon['matches']
@@ -58,6 +68,43 @@ class PhenotypesController < ApplicationController
   end
   
   
+  # For html requests, return the entity specified by params[:id].
+  # The page will then do an Ajax request to this same action.
+  #
+  # For js requests, call the variation_tree query_callback with the args (phenotype_sets, root_taxon_id, taxon_name_map), where:
+  #   phenotype_sets is a hash / json object conaining the sets as returned by the data source
+  #     See https://www.phenoscape.org/wiki/Data_Services#Phenotypic_variation_sets_service
+  #   root_taxon_id is the ID of the current taxon that is the parent all the taxa in phenotype_sets
+  #   taxon_name_map maps taxon ids to names, such as
+  #     {"TTO:1234": "Taxon name", ...}
+  def variation_tree
+    respond_to do |format|
+      format.html do
+        @entity = Term.names(params[:id])['terms'].first
+      end
+      format.js do
+        taxon = params[:filter][:taxa]["0"] rescue nil
+        qp = {:query => build_json_query}
+        qp['taxon'] = taxon if taxon.present?
+        # A checked box means include; set exclude_x in the query to the opposite
+        qp['exclude_unannotated'] = params[:include_unannotated].blank?
+        qp['exclude_attribute']   = params[:include_attribute].blank?
+        
+        result = Phenotype.variationsets(qp)
+        phenotype_sets = result['phenotype_sets']
+        parent_taxon_id = result['parent_taxon']
+        taxon_ids = ([parent_taxon_id] + phenotype_sets.map { |set| set['taxa'] }).flatten.uniq
+        set_filter_term_names_for_ids taxon_ids
+        
+        # Remove phenotype sets with no taxa
+        phenotype_sets.delete_if { |set| set['taxa'].empty? }
+        
+        render :js => "window.variation_tree.query_callback(JSON.decode('#{phenotype_sets.to_json}'), '#{parent_taxon_id}', JSON.decode('#{@filter_term_names.to_json}'))"
+      end
+    end
+  end
+  
+  
   def download
     download_query_results(Phenotype, query_params)
   end
@@ -67,8 +114,14 @@ class PhenotypesController < ApplicationController
   
   
     def query_params
-      sections = [:taxa, :genes]
-      sections << :publications unless action_name == 'facets'
+      sections = case action_name
+      when 'index', 'download'
+        [:taxa, :genes, :publications]
+      when 'facets'
+        [:taxa, :genes]
+      else
+        []
+      end
       setup_query_params('entity', sections, :any_or_all_sections => sections, :inferred => false)
     end
     

@@ -1,7 +1,9 @@
+<% for_variation_tree ||= false %>
 <div id="term_filter_container" title="Choose <%= label %>">
   <% form_remote_tag :url => {:controller => :search, :action => :term_filter}, :html => {:id => 'term_filter_form', 
        :onsubmit => "setNextIndex('next_term_index', 'filter\\[#{field_name}\\]');"} do %>
     <%= hidden_field_tag :next_term_index %>
+    <%= hidden_field_tag :for_variation_tree, 'yes' if for_variation_tree %>
     
     <label for="name"><%= label %>:</label>
     <%= text_field_tag :term_name, '', :id => 'popupTermChoice' %>
