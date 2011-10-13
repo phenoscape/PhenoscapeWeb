@@ -368,50 +368,7 @@
           type: 'HTML'
         },
         onCreateLabel: __bind(function(label, node) {
-          var phenotype;
-          label = $(label);
-          label.attr('id', node.id);
-          label.addClass('node');
-          if (node.data.type === 'group') {
-            label.addClass('node-group');
-            node.data.taxa.each(__bind(function(taxon) {
-              var grouped_taxon;
-              grouped_taxon = $("<div class='node-taxon " + taxon.rank + "' rel='" + taxon.id + "'>" + taxon.name + "</div>");
-              grouped_taxon.appendTo(label);
-              return grouped_taxon.click(__bind(function(event) {
-                return VariationTreeNode.on_click(event, this, node, taxon);
-              }, this));
-            }, this));
-            if (node.data.phenotypes.length === 0) {
-              label.addClass('node-group-without-phenotypes');
-              return label.data('associated', (function() {
-                var _i, _len, _ref, _results;
-                _ref = node.data.phenotypes;
-                _results = [];
-                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                  phenotype = _ref[_i];
-                  _results.push(new Phenotype(phenotype).identifier());
-                }
-                return _results;
-              })());
-            } else {
-              return label.addClass('node-group-with-phenotypes');
-            }
-          } else {
-            label.addClass('node-taxon');
-            label.addClass(node.data.rank);
-            label.html(node.name);
-            label.click(__bind(function(event) {
-              return VariationTreeNode.on_click(event, this, node, {
-                id: node.id,
-                name: node.name,
-                rank: node.data.rank
-              });
-            }, this));
-            if (node.data.current) {
-              return label.addClass('current');
-            }
-          }
+          return this.create_label(label, node);
         }, this)
       });
     };
@@ -489,6 +446,52 @@
         body.html('<tr class="empty"><td colspan="3">(none)</td></tr>');
       }
       return table.show();
+    };
+    VariationTree.prototype.create_label = function(label, node) {
+      var phenotype;
+      label = $(label);
+      label.attr('id', node.id);
+      label.addClass('node');
+      if (node.data.type === 'group') {
+        label.addClass('node-group');
+        node.data.taxa.each(__bind(function(taxon) {
+          var grouped_taxon;
+          grouped_taxon = $("<div class='node-taxon " + taxon.rank + "' rel='" + taxon.id + "'>" + taxon.name + "</div>");
+          grouped_taxon.appendTo(label);
+          return grouped_taxon.click(__bind(function(event) {
+            return VariationTreeNode.on_click(event, this, node, taxon);
+          }, this));
+        }, this));
+        if (node.data.phenotypes.length === 0) {
+          label.addClass('node-group-without-phenotypes');
+          return label.data('associated', (function() {
+            var _i, _len, _ref, _results;
+            _ref = node.data.phenotypes;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              phenotype = _ref[_i];
+              _results.push(new Phenotype(phenotype).identifier());
+            }
+            return _results;
+          })());
+        } else {
+          return label.addClass('node-group-with-phenotypes');
+        }
+      } else {
+        label.addClass('node-taxon');
+        label.addClass(node.data.rank);
+        label.html(node.name);
+        label.click(__bind(function(event) {
+          return VariationTreeNode.on_click(event, this, node, {
+            id: node.id,
+            name: node.name,
+            rank: node.data.rank
+          });
+        }, this));
+        if (node.data.current) {
+          return label.addClass('current');
+        }
+      }
     };
     VariationTree.prototype.current_state_path = function() {
       var base, phenotype_filter, taxon;

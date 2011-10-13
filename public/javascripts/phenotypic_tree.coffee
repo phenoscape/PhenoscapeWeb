@@ -286,35 +286,7 @@ class VariationTree extends Tree
         levelDistance: 500
       Label:
         type: 'HTML'
-      onCreateLabel: (label, node) =>
-        label = $(label)
-        label.attr 'id', node.id
-        label.addClass 'node' # It already has this class, but I name it here to make it easier to find
-
-        # Groups get treated differently; they have sub-divs for each taxon in the group
-        # Style the nodes in an external stylesheet
-        if node.data.type == 'group'
-          label.addClass 'node-group'
-          node.data.taxa.each (taxon) =>
-            grouped_taxon = $("<div class='node-taxon #{taxon.rank}' rel='#{taxon.id}'>#{taxon.name}</div>")
-            grouped_taxon.appendTo label
-            grouped_taxon.click (event) => VariationTreeNode.on_click(event, @, node, taxon)
-          if node.data.phenotypes.length == 0
-            label.addClass 'node-group-without-phenotypes'
-            label.data 'associated', (new Phenotype(phenotype).identifier() for phenotype in node.data.phenotypes)
-          else
-            label.addClass 'node-group-with-phenotypes'
-        else
-          label.addClass 'node-taxon'
-          label.addClass node.data.rank
-          label.html node.name
-          label.click (event) => VariationTreeNode.on_click event, @, node,
-            id: node.id
-            name: node.name
-            rank: node.data.rank
-          
-          if node.data.current       # Use the current class to keep track of the actual current node.
-            label.addClass 'current' # node.data.current will stay true even after it's no longer current.
+      onCreateLabel: (label, node) => @create_label label, node
   
   destroy_spacetree: ->
     $('#variation-table').hide().find('tbody').empty()
@@ -382,6 +354,36 @@ class VariationTree extends Tree
       body.html '<tr class="empty"><td colspan="3">(none)</td></tr>'
     
     table.show()
+  
+  create_label: (label, node) ->
+    label = $(label)
+    label.attr 'id', node.id
+    label.addClass 'node' # It already has this class, but I name it here to make it easier to find
+
+    # Groups get treated differently; they have sub-divs for each taxon in the group
+    # Style the nodes in an external stylesheet
+    if node.data.type == 'group'
+      label.addClass 'node-group'
+      node.data.taxa.each (taxon) =>
+        grouped_taxon = $("<div class='node-taxon #{taxon.rank}' rel='#{taxon.id}'>#{taxon.name}</div>")
+        grouped_taxon.appendTo label
+        grouped_taxon.click (event) => VariationTreeNode.on_click(event, @, node, taxon)
+      if node.data.phenotypes.length == 0
+        label.addClass 'node-group-without-phenotypes'
+        label.data 'associated', (new Phenotype(phenotype).identifier() for phenotype in node.data.phenotypes)
+      else
+        label.addClass 'node-group-with-phenotypes'
+    else
+      label.addClass 'node-taxon'
+      label.addClass node.data.rank
+      label.html node.name
+      label.click (event) => VariationTreeNode.on_click event, @, node,
+        id: node.id
+        name: node.name
+        rank: node.data.rank
+      
+      if node.data.current       # Use the current class to keep track of the actual current node.
+        label.addClass 'current' # node.data.current will stay true even after it's no longer current.
   
   current_state_path: ->
     base = @options.base_path
