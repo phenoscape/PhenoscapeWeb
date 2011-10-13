@@ -587,7 +587,7 @@
       var child, old_current_id, subtree, subtree_id, target;
       event.preventDefault();
       target = $(event.target);
-      if (target.hasClass('current')) {
+      if (target.hasClass('current' || tree.spacetree.busy)) {
         return;
       }
       tree.change_taxon(taxon.id, taxon.name);
@@ -609,6 +609,7 @@
         tree.spacetree.onClick(target.attr('id'));
       } else {
         subtree_id = target.attr('id');
+        tree.spacetree.clickedNode = tree.spacetree.graph.getNode(subtree_id);
         tree.spacetree.onClick(subtree_id);
         tree.spacetree.removeSubtree(subtree_id, false, 'replot');
         tree.find_node(subtree_id).children = [];

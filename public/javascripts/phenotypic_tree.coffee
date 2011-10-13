@@ -454,8 +454,8 @@ class VariationTreeNode extends TreeNode
     event.preventDefault()
     target = $(event.target)
     
-    # Don't do anything when the current node is clicked.
-    return if target.hasClass 'current'
+    # Don't do anything when the current node is clicked or the tree is busy.
+    return if target.hasClass 'current' or tree.spacetree.busy
     
     # Update the form; query will use the form's values.
     tree.change_taxon taxon.id, taxon.name
@@ -487,12 +487,12 @@ class VariationTreeNode extends TreeNode
     
     # Otherwise, it's a parent of the current node. Select it and remove its subtree
     else
-      # Order matters here; removeSubtree triggers a refresh, which expects the last clicked node to be in the graph
       subtree_id = target.attr 'id'
+      # Order matters here; removeSubtree triggers a refresh, which expects the last clickedNode to be in the graph
+      tree.spacetree.clickedNode = tree.spacetree.graph.getNode(subtree_id)
       tree.spacetree.onClick subtree_id
       tree.spacetree.removeSubtree(subtree_id, false, 'replot')
       tree.find_node(subtree_id).children = []
-    
     
     # Give the new/clicked node the current class.
     target.addClass 'current'
