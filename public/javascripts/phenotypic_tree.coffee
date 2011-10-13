@@ -333,7 +333,6 @@ class VariationTree extends Tree
     super()
   
   update_spacetree: (subtree) ->
-    @spacetree.removeSubtree subtree.id, false, 'replot'
     @spacetree.addSubtree subtree, 'replot'
   
   # Converts phenotype_sets from the data source into TreeNodes and stores them in the tree.
@@ -487,7 +486,14 @@ class VariationTreeNode extends TreeNode
       target = $(document.getElementById(taxon.id))
       
       # Focus/center the remaining leaf node.
-      tree.spacetree.onClick target.attr('id')
+      click_node_when_ready = ->
+        unless tree.spacetree.busy
+          tree.spacetree.onClick target.attr('id')
+        else
+          setTimeout ->
+            click_node_when_ready()
+          , 50
+      click_node_when_ready()
     
     # Otherwise, it's a parent of the current node. Select it and remove its subtree
     else

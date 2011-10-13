@@ -434,7 +434,6 @@
       return VariationTree.__super__.initialize_spacetree.call(this);
     };
     VariationTree.prototype.update_spacetree = function(subtree) {
-      this.spacetree.removeSubtree(subtree.id, false, 'replot');
       return this.spacetree.addSubtree(subtree, 'replot');
     };
     VariationTree.prototype.query_callback = function(phenotype_sets, root_taxon_id, taxon_data) {
@@ -588,7 +587,7 @@
       return this.data.$height = height;
     };
     VariationTreeNode.on_click = function(event, tree, node, taxon) {
-      var child, old_current_id, subtree, subtree_id, target;
+      var child, click_node_when_ready, old_current_id, subtree, subtree_id, target;
       event.preventDefault();
       target = $(event.target);
       if (target.hasClass('current' || tree.spacetree.busy)) {
@@ -610,7 +609,16 @@
         child.estimateRenderHeight();
         tree.spacetree.addSubtree(subtree, 'replot');
         target = $(document.getElementById(taxon.id));
-        tree.spacetree.onClick(target.attr('id'));
+        click_node_when_ready = function() {
+          if (!tree.spacetree.busy) {
+            return tree.spacetree.onClick(target.attr('id'));
+          } else {
+            return setTimeout(function() {
+              return click_node_when_ready();
+            }, 50);
+          }
+        };
+        click_node_when_ready();
       } else {
         subtree_id = target.attr('id');
         tree.spacetree.clickedNode = tree.spacetree.graph.getNode(subtree_id);
