@@ -298,45 +298,46 @@
           return $('#term_info').change();
         });
         update_quality_name();
-        associated_targets = function() {
-          var associated_groups, group, targets, _i, _len;
-          targets = $(this);
-          associated_groups = targets.data('associated');
-          if (associated_groups) {
-            for (_i = 0, _len = associated_groups.length; _i < _len; _i++) {
-              group = associated_groups[_i];
-              targets = targets.add($("#" + group));
+        associated_targets = function(hovered) {
+          var associated, target, targets, _i, _len;
+          targets = $(hovered);
+          associated = targets.data('associated');
+          if (associated) {
+            for (_i = 0, _len = associated.length; _i < _len; _i++) {
+              target = associated[_i];
+              targets = targets.add($("#" + target));
             }
           }
           return targets;
         };
         $("#" + this.container_id + " .node-group-with-phenotypes, #variation-table tbody tr:not(.empty)").live({
           'mouseover': function() {
-            return associated_targets.call(this).each(function() {
-              var target;
-              target = $(this);
-              target.data('classes', target.attr('class'));
-              return target.addClass('selected');
+            return associated_targets(this).each(function() {
+              var associated;
+              associated = $(this);
+              associated.data('classes', associated.attr('class'));
+              return associated.addClass('selected');
             });
           },
           'mouseout': function() {
-            return associated_targets.call(this).each(function() {
-              var classes, target;
-              target = $(this);
-              classes = target.data('classes');
+            return associated_targets(this).each(function() {
+              var associated, classes;
+              associated = $(this);
+              classes = associated.data('classes');
               if (classes) {
-                return target.attr('class', classes);
+                return associated.attr('class', classes);
               }
             });
           },
           'click': function() {
-            var others;
-            associated_targets.call(this).each(function() {
-              var target;
-              target = $(this);
-              return target.data('classes', null);
+            var a_t, others;
+            a_t = associated_targets(this);
+            a_t.each(function() {
+              var associated;
+              associated = $(this);
+              return associated.data('classes', null);
             });
-            others = $('.selected').not(associated_targets.call(this));
+            others = $('.selected').not(a_t);
             return others.removeClass('selected');
           }
         });

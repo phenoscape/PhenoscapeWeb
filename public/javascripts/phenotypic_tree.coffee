@@ -235,34 +235,35 @@ class VariationTree extends Tree
       update_quality_name()
       
       # Set up hover events for groups and phenotypes
-      associated_targets = ->
-        targets = $(@)
-        associated_groups = targets.data 'associated'
-        if associated_groups
-          targets = targets.add($("##{group}")) for group in associated_groups
+      associated_targets = (hovered) ->
+        targets = $(hovered)
+        associated = targets.data 'associated'
+        if associated
+          targets = targets.add($("##{target}")) for target in associated
         targets
       $("##{@container_id} .node-group-with-phenotypes, #variation-table tbody tr:not(.empty)").live
         'mouseover': ->
           # Save the current classes
-          associated_targets.call(@).each ->
-            target = $(@)
-            target.data 'classes', target.attr('class')
-            target.addClass 'selected'
+          associated_targets(@).each ->
+            associated = $(@)
+            associated.data 'classes', associated.attr('class')
+            associated.addClass 'selected'
         'mouseout': ->
           # Restore the pre-mouseover clasess, if it was stored
-          associated_targets.call(@).each ->
-            target = $(@)
-            classes = target.data 'classes'
+          associated_targets(@).each ->
+            associated = $(@)
+            classes = associated.data 'classes'
             if classes
-              target.attr 'class', classes
+              associated.attr 'class', classes
         'click': ->
-          associated_targets.call(@).each ->
+          a_t = associated_targets(@)
+          a_t.each ->
             # Clear the restore data, making it permanent
-            target = $(@)
-            target.data 'classes', null
+            associated = $(@)
+            associated.data 'classes', null
           
           # Unselect everything else
-          others = $('.selected').not(associated_targets.call(@))
+          others = $('.selected').not a_t
           others.removeClass 'selected'
           
       # Hovering nodes in the groups shouldn't trigger the hover event on the groups
