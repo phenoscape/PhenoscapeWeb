@@ -1,68 +1,68 @@
 <% content_for :javascript do %>
-  <!-- include Google Feed API -->
-  <!-- <script type="text/javascript" src="http://www.google.com/jsapi?key=[your API key]"></script>  -->
-  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-  
-  <!-- include this plugin -->   
-  <script type="text/javascript" src="/javascripts/jquery.gfeed.js"></script>
-  
-  <script type="text/javascript">
-      // when the DOM is ready, convert the feed anchors into feed content
-      jQuery(document).ready(function() {
-          jQuery('a.feed').gFeed( { target: '#feed', tabs: true } );
-      });
-  </script>
+    <!-- include Google Feed API -->	 
+	 <!-- <script type="text/javascript" src="http://www.google.com/jsapi?key=[your API key]"></script>  -->	 
+	 <script type="text/javascript" src="http://www.google.com/jsapi"></script>	 
+
+	 <!-- include this plugin -->	 
+	 <script type="text/javascript" src="/javascripts/jquery.gfeed.js"></script>	 
+
+	 <script type="text/javascript">	 
+	     // when the DOM is ready, convert the feed anchors into feed content	 
+	     jQuery(document).ready(function() {	 
+	         jQuery('a.feed').gFeed( { target: '#feed', tabs: true } );	 
+	     });	 
+	 </script>
 <% end %>
 
 <div id="sidebar">
-  <div class="sidebar-box">
-    <p>For further information about the Phenoscape project and project partners, please see our <a href="https://www.phenoscape.org/wiki/Main_Page">project wiki</a>.</p>
-  </div>
-
-  <div class="sidebar-box">
-    <p>The Knowledgebase currently contains <span class="count"><%=h number_with_delimiter(@statistics["taxon_annotations"], ',') %></span> phenotype statements about <span class="count"><%=h number_with_delimiter(@statistics["annotated_taxa"], ',') %></span> taxa, sourced from <span class="count"><%=h number_with_delimiter(@statistics["annotated_publications"], ',') %></span> <a href="/about/bibliography/">publications</a>. as well as <span class="count"><%=h number_with_delimiter(@statistics["gene_annotations"], ',') %></span> phenotype statements about <span class="count"><%=h number_with_delimiter(@statistics["annotated_genes"], ',') %></span> genes, retrieved from <a href="http://zfin.org">ZFIN</a>.  The data were last loaded into the Knowledgebase on <span class="count"><%=h @timestamp %></span>.</p>
-  </div>
+	<div class="sidebar-box">
+		<p>For further information about the Phenoscape project and project partners, please see our <a href="https://www.phenoscape.org/wiki/Main_Page">project wiki</a>.</p>
+	</div>
+	
+	<div class="sidebar-box">
+		<p>The Knowledgebase currently contains <span class="count"><%=h number_with_delimiter(@statistics["taxon_annotations"], ',') %></span> phenotype statements about <span class="count"><%=h number_with_delimiter(@statistics["annotated_taxa"], ',') %></span> taxa, sourced from <span class="count"><%=h number_with_delimiter(@statistics["annotated_publications"], ',') %></span> <a href="/about/bibliography/">publications</a>. as well as <span class="count"><%=h number_with_delimiter(@statistics["gene_annotations"], ',') %></span> phenotype statements about <span class="count"><%=h number_with_delimiter(@statistics["annotated_genes"], ',') %></span> genes, retrieved from <a href="http://zfin.org">ZFIN</a>.  The data were last loaded into the Knowledgebase on <span class="count"><%=h @timestamp %></span>.</p>
+	</div>
 </div>
 <div id="main">
-  <div id="search-forms">
-    <div id="term_search">
-      <h3 class="field_label">Search the Phenoscape Knowledgebase</h3>
-      <form id="termForm" action="/search/autocomplete">
-        <div id="termFormContent">
-          <div id="termChoiceGroup">
-            <%= render :partial => '/search/term_autocomplete' %>
-            <input id="termSubmit" type="submit" value="Search">
-            <div id="termComplete"></div>
-          </div>
-          <p class="search-instructions">Type at least 3 characters to select from matching ontology terms.  If there are many matches, the autocomplete menu may take a few seconds to respond. Search entity terms (e.g. basihyal bone), phenotypic qualities (e.g. shape, size), taxonomic names (e.g. Ictaluridae), gene names or symbols (e.g. cadherin 6, cdh6), or publications.</p>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="navigation-group">
-    <h3>Browse Data</h3>
-    <ul>
-      <li><%= link_to 'Browse all phenotypes', :controller => :phenotypes, :action => :facets %></li>
-      <li><%= link_to 'Taxa', :controller => :term, :action => :taxon, :id => 'TTO:201' %></li>
-      <li><%= link_to 'Anatomical entities', :controller => :term, :id => 'TAO:0000037' %></li>
-      <li><%= link_to 'Phenotypic qualities', :controller => :term, :id => 'PATO:0000001' %></li>
-      <li>Genes</li>
-      <li>Comparative publications</li>
-    </ul>
-  </div>
-  <div class="navigation-group">
-    <h3>Query Data</h3>
-    <ul>
-      <li><%= link_to 'Phenotypic profile tree', :controller => :phenotypes, :action => :profile_tree %></li>
-      <li><%= link_to 'Phenotype annotations to taxa', :controller => :taxon_annotations %></li>
-      <li><%= link_to 'Phenotype annotations to genes', :controller => :gene_annotations %></li>
-      <li><%= link_to 'Taxa', :controller => :taxa %></li>
-      <li><%= link_to 'Genes', :controller => :genes %></li>
-      <li><%= link_to 'Comparative publications', :controller => :publications %></li>
-    </ul>
-  </div>
-  <h3 id="feedHeader">Phenoscape News</h3>
-  <div id="feed">
-    <a class="feed" href="http://blog.phenoscape.org/feed/">Phenoscape News</a>
-  </div>
+	<div id="search-forms">
+		<div id="term_search">
+			<h3 class="field_label">Search the Phenoscape Knowledgebase</h3>
+			<form id="termForm" action="/search/autocomplete">
+				<div id="termFormContent">
+					<div id="termChoiceGroup">
+						<%= render :partial => '/search/term_autocomplete' %>
+						<input id="termSubmit" type="submit" value="Search">
+						<div id="termComplete"></div>
+					</div>
+					<p class="search-instructions">Type at least 3 characters to select from matching ontology terms.  If there are many matches, the autocomplete menu may take a few seconds to respond. Search entity terms (e.g. basihyal bone), phenotypic qualities (e.g. shape, size), taxonomic names (e.g. Ictaluridae), gene names or symbols (e.g. cadherin 6, cdh6), or publications.</p>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="navigation-group">
+		<h3>Browse Data</h3>
+		<ul>
+			<li><%= link_to 'Browse all phenotypes', :controller => :phenotypes, :action => :facets %></li>
+			<li><%= link_to 'Taxa', :controller => :term, :action => :taxon, :id => 'TTO:201' %></li>
+			<li><%= link_to 'Anatomical entities', :controller => :term, :id => 'TAO:0000037' %></li>
+			<li><%= link_to 'Phenotypic qualities', :controller => :term, :id => 'PATO:0000001' %></li>
+			<li>Genes</li>
+			<li>Comparative publications</li>
+		</ul>
+	</div>
+	<div class="navigation-group">
+		<h3>Query Data</h3>
+		<ul>
+			<li><%= link_to 'Phenotypic profile tree', :controller => :phenotypes, :action => :profile_tree %></li>
+			<li><%= link_to 'Phenotype annotations to taxa', :controller => :taxon_annotations %></li>
+			<li><%= link_to 'Phenotype annotations to genes', :controller => :gene_annotations %></li>
+			<li><%= link_to 'Taxa', :controller => :taxa %></li>
+			<li><%= link_to 'Genes', :controller => :genes %></li>
+			<li><%= link_to 'Comparative publications', :controller => :publications %></li>
+		</ul>
+	</div>
+	<h3 id="feedHeader">Phenoscape News</h3>
+	<div id="feed">
+	    <a class="feed" href="http://blog.phenoscape.org/feed/">Phenoscape News</a> 
+	</div>
 </div>
