@@ -310,7 +310,7 @@
           }
           return targets;
         };
-        $("#" + this.container_id + " .node-group-with-phenotypes, #variation-table tbody tr").live({
+        $("#" + this.container_id + " .node-group-with-phenotypes, #variation-table tbody tr:not(.empty)").live({
           'mouseover': function() {
             return associated_targets.call(this).each(function() {
               var target;
@@ -479,11 +479,15 @@
       table = $('#variation-table');
       phenotypes = Phenotype.group_sets_by_phenotype(phenotype_sets);
       body = table.find('tbody');
+      body.html('');
       for (identifier in phenotypes) {
         phenotype = phenotypes[identifier];
         row = $("<tr id='" + identifier + "' class='phenotype-row'><td>" + phenotype.display_name + "</td><td>" + phenotype.taxon_count + "</td><td>" + phenotype.groups.length + "</td></tr>");
         row.appendTo(body);
         row.data('associated', phenotype.groups);
+      }
+      if (body.html() === '') {
+        body.html('<tr class="empty"><td colspan="3">(none)</td></tr>');
       }
       return table.show();
     };
