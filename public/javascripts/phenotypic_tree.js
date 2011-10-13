@@ -305,12 +305,12 @@
           if (associated) {
             for (_i = 0, _len = associated.length; _i < _len; _i++) {
               target = associated[_i];
-              targets = targets.add($("#" + target));
+              targets = targets.add($(document.getElementById(target)));
             }
           }
           return targets;
         };
-        $("#" + this.container_id + " .node-group-with-phenotypes, #variation-table tbody tr:not(.empty)").live({
+        $(".node-group-with-phenotypes,#variation-table tbody tr:not(.empty)").live({
           'mouseover': function() {
             return associated_targets(this).each(function() {
               var associated;
@@ -465,7 +465,9 @@
           }, this));
         }, this));
         if (node.data.phenotypes.length === 0) {
-          label.addClass('node-group-without-phenotypes');
+          return label.addClass('node-group-without-phenotypes');
+        } else {
+          label.addClass('node-group-with-phenotypes');
           return label.data('associated', (function() {
             var _i, _len, _ref, _results;
             _ref = node.data.phenotypes;
@@ -476,8 +478,6 @@
             }
             return _results;
           })());
-        } else {
-          return label.addClass('node-group-with-phenotypes');
         }
       } else {
         label.addClass('node-taxon');

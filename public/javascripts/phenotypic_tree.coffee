@@ -236,12 +236,13 @@ class VariationTree extends Tree
       
       # Set up hover events for groups and phenotypes
       associated_targets = (hovered) ->
-        targets = $(hovered)
+        targets = $(hovered) # Include the hovered element as a target
         associated = targets.data 'associated'
         if associated
-          targets = targets.add($("##{target}")) for target in associated
+          # Use getElementById since the ID has special characters in it that will throw off jQuery("#foo") selectors
+          targets = targets.add($(document.getElementById(target))) for target in associated
         targets
-      $("##{@container_id} .node-group-with-phenotypes, #variation-table tbody tr:not(.empty)").live
+      $(".node-group-with-phenotypes,#variation-table tbody tr:not(.empty)").live
         'mouseover': ->
           # Save the current classes
           associated_targets(@).each ->
@@ -373,9 +374,9 @@ class VariationTree extends Tree
         grouped_taxon.click (event) => VariationTreeNode.on_click(event, @, node, taxon)
       if node.data.phenotypes.length == 0
         label.addClass 'node-group-without-phenotypes'
-        label.data 'associated', (new Phenotype(phenotype).identifier() for phenotype in node.data.phenotypes)
       else
         label.addClass 'node-group-with-phenotypes'
+        label.data 'associated', (new Phenotype(phenotype).identifier() for phenotype in node.data.phenotypes)
     else
       label.addClass 'node-taxon'
       label.addClass node.data.rank
