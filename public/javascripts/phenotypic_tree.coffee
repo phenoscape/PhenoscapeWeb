@@ -466,6 +466,7 @@ class VariationTreeNode extends TreeNode
     
     # Update the form; query will use the form's values.
     tree.change_taxon taxon.id, taxon.name
+    $('#clear-limit-tree-to').show()
     
     # Start the query to expand on the clicked taxon.
     tree.query taxon.id

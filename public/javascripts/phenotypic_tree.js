@@ -600,6 +600,7 @@
         return;
       }
       tree.change_taxon(taxon.id, taxon.name);
+      $('#clear-limit-tree-to').show();
       tree.query(taxon.id);
       old_current_id = $('.node.current').removeClass('current').attr('id');
       if (!old_current_id) {
