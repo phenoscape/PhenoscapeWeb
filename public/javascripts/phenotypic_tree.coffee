@@ -50,13 +50,14 @@ class Tree
     $.extend jit_default_options, jit_options
     jit_options = jit_default_options
     
-    @spacetree = st ?= new $jit.ST jit_options
+    @spacetree ?= new $jit.ST jit_options
   
   destroy_spacetree: ->
     @root_node = null
     try
-      @spacetree.removeSubtree(@spacetree.root, true, 'animate') if @spacetree?
+      @spacetree.removeSubtree(@spacetree.root, true, 'replot') if @spacetree?
     catch err
+      console.log err if console?.log
   
   initialize_spacetree: ->
     # If the first level has only one child, replace the root with that child

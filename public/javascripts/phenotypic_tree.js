@@ -35,7 +35,7 @@
       }, this));
     }
     Tree.prototype.create_spacetree = function(jit_options) {
-      var jit_default_options;
+      var jit_default_options, _ref;
       $('#tree_empty_state').hide();
       this.root_node || (this.root_node = this.options.tree_node_class.create_root(this));
       jit_default_options = {
@@ -57,16 +57,18 @@
       };
       $.extend(jit_default_options, jit_options);
       jit_options = jit_default_options;
-      return this.spacetree = typeof st !== "undefined" && st !== null ? st : st = new $jit.ST(jit_options);
+      return (_ref = this.spacetree) != null ? _ref : this.spacetree = new $jit.ST(jit_options);
     };
     Tree.prototype.destroy_spacetree = function() {
       this.root_node = null;
       try {
         if (this.spacetree != null) {
-          return this.spacetree.removeSubtree(this.spacetree.root, true, 'animate');
+          return this.spacetree.removeSubtree(this.spacetree.root, true, 'replot');
         }
       } catch (err) {
-
+        if (typeof console !== "undefined" && console !== null ? console.log : void 0) {
+          return console.log(err);
+        }
       }
     };
     Tree.prototype.initialize_spacetree = function() {
