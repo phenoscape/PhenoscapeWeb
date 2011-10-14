@@ -366,6 +366,7 @@ table.grid td, table.grid th {
 #variation-tree .node-taxon {
   background-color: #d6d6d6;
   border: 1px solid darkgray;
+  cursor: pointer;
   padding: 5px;
 }
 
