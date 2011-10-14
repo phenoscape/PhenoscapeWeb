@@ -295,7 +295,7 @@ a.toggle_link:hover {text-decoration: underline;}
   overflow: hidden;
 }
 
-#profile-tree-canvaswidget {
+#profile-tree-canvaswidget,#variation-tree-canvaswidget {
   cursor: grab;
   cursor: -moz-grab;
   cursor: -webkit-grab;
@@ -359,6 +359,7 @@ table.grid td, table.grid th {
 
 #variation-tree .node {
   color: black;
+  cursor: default;
   padding: 5px;
   min-width: 120px;
 }

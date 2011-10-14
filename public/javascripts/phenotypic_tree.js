@@ -373,6 +373,10 @@
         Label: {
           type: 'HTML'
         },
+        Navigation: {
+          enable: true,
+          panning: 'avoid nodes'
+        },
         onCreateLabel: __bind(function(label, node) {
           return this.create_label(label, node);
         }, this)

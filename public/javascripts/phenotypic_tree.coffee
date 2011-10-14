@@ -293,6 +293,9 @@ class VariationTree extends Tree
         levelDistance: 500
       Label:
         type: 'HTML'
+      Navigation:
+        enable: true
+        panning: 'avoid nodes'
       onCreateLabel: (label, node) => @create_label label, node
   
   destroy_spacetree: ->
