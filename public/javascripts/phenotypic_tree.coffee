@@ -224,8 +224,9 @@ class ProfileTree extends Tree
 class VariationTree extends Tree
   constructor: (@container_id) ->
     @options =
-      tree_node_class:  VariationTreeNode
-      base_path:        '/phenotypes/variation_tree'
+      tree_node_class:         VariationTreeNode
+      base_path:               '/phenotypes/variation_tree'
+      max_taxa_shown_in_group: 10
     
     @current_entity_id = window.location.pathname.sub(/.*\//, '') # essentially params[:id]
 
@@ -376,15 +377,33 @@ class VariationTree extends Tree
     # Style the nodes in an external stylesheet
     if node.data.type == 'group'
       label.addClass 'node-group'
-      node.data.taxa.each (taxon) =>
-        grouped_taxon = $("<div class='node-taxon #{taxon.rank}' rel='#{taxon.id}'>#{taxon.name}</div>")
-        grouped_taxon.appendTo label
-        grouped_taxon.click (event) => VariationTreeNode.on_click(event, @, node, taxon)
+      
+      if node.data.taxa.length <= @options.max_taxa_shown_in_group
+        node.data.taxa.each (taxon) =>
+          grouped_taxon = $("<div class='node-taxon #{taxon.rank}' rel='#{taxon.id}'>#{taxon.name}</div>")
+          grouped_taxon.appendTo label
+          grouped_taxon.click (event) => VariationTreeNode.on_click(event, @, node, taxon)
+      else
+        taxon_select_container = $("<div class='node-taxon summary'></div>")
+        taxon_selector = $("<select><option>#{node.data.taxa.length} taxa</option></select>")
+        node.data.taxa.each (taxon) =>
+          taxon_option = $("<option>#{taxon.name}</option>'")
+          taxon_option.data 'taxon', taxon
+          taxon_option.appendTo taxon_selector
+        setTimeout =>
+          taxon_selector.chosen().change (event) =>
+            taxon = $(event.target).find('option:selected').data 'taxon'
+            VariationTreeNode.on_click(event, @, node, taxon)
+        , 0 # Queue this for after the taxon_selector has rendered in the DOM
+        taxon_selector.appendTo taxon_select_container
+        taxon_select_container.appendTo label
+      
       if node.data.phenotypes.length == 0
         label.addClass 'node-group-without-phenotypes'
       else
         label.addClass 'node-group-with-phenotypes'
         label.data 'associated', (new Phenotype(phenotype).identifier() for phenotype in node.data.phenotypes)
+    
     else
       label.addClass 'node-taxon'
       label.addClass node.data.rank
@@ -462,8 +481,14 @@ class VariationTreeNode extends TreeNode
   color: -> 'transparent'
   
   estimateRenderHeight: ->
-    height = 30 * (@data.taxa?.length || 1)
-    height += 13 * 2 if @data.type == "group" and @data.phenotypes?.length > 0
+    effective_taxon_count = @data.taxa?.length
+    effective_taxon_count = 1 if !effective_taxon_count
+    summarize = effective_taxon_count > @tree.options.max_taxa_shown_in_group
+    effective_taxon_count = 1 if summarize
+    
+    height = 30 * effective_taxon_count
+    height += 10 if summarize
+    height += 13 * 2 if @data.type == "group"
     
     @data.$height = height
   

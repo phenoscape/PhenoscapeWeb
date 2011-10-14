@@ -289,7 +289,8 @@
       this.container_id = container_id;
       this.options = {
         tree_node_class: VariationTreeNode,
-        base_path: '/phenotypes/variation_tree'
+        base_path: '/phenotypes/variation_tree',
+        max_taxa_shown_in_group: 10
       };
       this.current_entity_id = window.location.pathname.sub(/.*\//, '');
       VariationTree.__super__.constructor.call(this, this.container_id);
@@ -459,20 +460,40 @@
       return table.show();
     };
     VariationTree.prototype.create_label = function(label, node) {
-      var phenotype;
+      var phenotype, taxon_select_container, taxon_selector;
       label = $(label);
       label.attr('id', node.id);
       label.addClass('node');
       if (node.data.type === 'group') {
         label.addClass('node-group');
-        node.data.taxa.each(__bind(function(taxon) {
-          var grouped_taxon;
-          grouped_taxon = $("<div class='node-taxon " + taxon.rank + "' rel='" + taxon.id + "'>" + taxon.name + "</div>");
-          grouped_taxon.appendTo(label);
-          return grouped_taxon.click(__bind(function(event) {
-            return VariationTreeNode.on_click(event, this, node, taxon);
+        if (node.data.taxa.length <= this.options.max_taxa_shown_in_group) {
+          node.data.taxa.each(__bind(function(taxon) {
+            var grouped_taxon;
+            grouped_taxon = $("<div class='node-taxon " + taxon.rank + "' rel='" + taxon.id + "'>" + taxon.name + "</div>");
+            grouped_taxon.appendTo(label);
+            return grouped_taxon.click(__bind(function(event) {
+              return VariationTreeNode.on_click(event, this, node, taxon);
+            }, this));
           }, this));
-        }, this));
+        } else {
+          taxon_select_container = $("<div class='node-taxon summary'></div>");
+          taxon_selector = $("<select><option>" + node.data.taxa.length + " taxa</option></select>");
+          node.data.taxa.each(__bind(function(taxon) {
+            var taxon_option;
+            taxon_option = $("<option>" + taxon.name + "</option>'");
+            taxon_option.data('taxon', taxon);
+            return taxon_option.appendTo(taxon_selector);
+          }, this));
+          setTimeout(__bind(function() {
+            return taxon_selector.chosen().change(__bind(function(event) {
+              var taxon;
+              taxon = $(event.target).find('option:selected').data('taxon');
+              return VariationTreeNode.on_click(event, this, node, taxon);
+            }, this));
+          }, this), 0);
+          taxon_selector.appendTo(taxon_select_container);
+          taxon_select_container.appendTo(label);
+        }
         if (node.data.phenotypes.length === 0) {
           return label.addClass('node-group-without-phenotypes');
         } else {
@@ -595,9 +616,20 @@
       return 'transparent';
     };
     VariationTreeNode.prototype.estimateRenderHeight = function() {
-      var height, _ref, _ref2;
-      height = 30 * (((_ref = this.data.taxa) != null ? _ref.length : void 0) || 1);
-      if (this.data.type === "group" && ((_ref2 = this.data.phenotypes) != null ? _ref2.length : void 0) > 0) {
+      var effective_taxon_count, height, summarize, _ref;
+      effective_taxon_count = (_ref = this.data.taxa) != null ? _ref.length : void 0;
+      if (!effective_taxon_count) {
+        effective_taxon_count = 1;
+      }
+      summarize = effective_taxon_count > this.tree.options.max_taxa_shown_in_group;
+      if (summarize) {
+        effective_taxon_count = 1;
+      }
+      height = 30 * effective_taxon_count;
+      if (summarize) {
+        height += 10;
+      }
+      if (this.data.type === "group") {
         height += 13 * 2;
       }
       return this.data.$height = height;

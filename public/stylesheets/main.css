@@ -386,6 +386,14 @@ table.grid td, table.grid th {
   float: left;
 }
 
+#variation-tree .node-group .node-taxon select {
+  min-width: 200px;
+}
+
+#variation-tree .node-group .node-taxon.summary:hover {
+  color: black;
+}
+
 #variation-tree .node-group-with-phenotypes {
   background-color: #abd6fd;
   behavior: url(/public/javascripts/PIE.htc); /* CSS3 for IE */

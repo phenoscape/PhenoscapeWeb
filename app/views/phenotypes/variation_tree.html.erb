@@ -1,4 +1,5 @@
-<%= javascript_include_tag 'jit-st-2.0.1.min', 'md5-min', 'phenotypic_tree' %>
+<%= javascript_include_tag 'jit-st-2.0.1.min', 'md5-min', 'chosen.jquery.min', 'phenotypic_tree' %>
+<%= stylesheet_link_tag 'chosen' %>
 <div>
   <% form_tag '/phenotypes', :method => :get, :name => 'complex_query_form', :id => 'query_form' do %>
     <div>
