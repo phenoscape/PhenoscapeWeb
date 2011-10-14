@@ -24,7 +24,7 @@ class Request
     response = Net::HTTP.start(self.host){|http| http.request(request) }
     options[:format] ||= :json
     result = response.body
-    result = JSON.parse(result) if options[:format] == :json rescue raise("Error parsing JSON response for query: http://" + self.host + url_prefix + url_suffix + "\nPost data:\n#{request.body}\n")
+    result = JSON.parse(result) if options[:format] == :json rescue raise("Error parsing JSON response for query: http://" + self.host + url_prefix + url_suffix + "\nPost data:\n#{request.body}\nResponse:\n#{result}")
     return result
   end
   
