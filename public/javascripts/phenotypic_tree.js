@@ -40,7 +40,7 @@
       this.root_node || (this.root_node = this.options.tree_node_class.create_root(this));
       jit_default_options = {
         injectInto: this.container_id,
-        duration: 600,
+        duration: 300,
         transition: $jit.Trans.Quart.easeOut,
         levelDistance: 100,
         levelsToShow: 1,

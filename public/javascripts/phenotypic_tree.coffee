@@ -33,7 +33,7 @@ class Tree
     
     jit_default_options =
       injectInto: @container_id
-      duration: 600
+      duration: 300
       transition: $jit.Trans.Quart.easeOut
       levelDistance: 100
       levelsToShow: 1
