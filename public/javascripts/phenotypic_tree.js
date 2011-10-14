@@ -57,6 +57,9 @@
       };
       $.extend(jit_default_options, jit_options);
       jit_options = jit_default_options;
+      $jit.ST.Label.HTML.prototype.fitsInCanvas = function() {
+        return true;
+      };
       return (_ref = this.spacetree) != null ? _ref : this.spacetree = new $jit.ST(jit_options);
     };
     Tree.prototype.destroy_spacetree = function() {

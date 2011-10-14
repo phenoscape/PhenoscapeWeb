@@ -50,6 +50,10 @@ class Tree
     $.extend jit_default_options, jit_options
     jit_options = jit_default_options
     
+    # Override fitsInCanvas, so labels don't disappear when the top-left corner is not in the canvas
+    $jit.ST.Label.HTML.prototype.fitsInCanvas = -> true
+    
+    # Create a new spacetree unless it already exists
     @spacetree ?= new $jit.ST jit_options
   
   destroy_spacetree: ->
