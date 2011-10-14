@@ -509,7 +509,7 @@
       return $('#current_taxon_name').html(taxon_name);
     };
     VariationTree.prototype.navigate_to_taxon = function(taxon_id, taxon_name) {
-      this.change_taxon(taxon_name, taxon_name);
+      this.change_taxon(taxon_id, taxon_name);
       return $('#term_info').change();
     };
     VariationTree.prototype.navigate_to_entity = function(entity_id, entity_name) {

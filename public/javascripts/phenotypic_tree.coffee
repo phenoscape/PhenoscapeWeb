@@ -402,7 +402,7 @@ class VariationTree extends Tree
     $('#current_taxon_name').html taxon_name
   
   navigate_to_taxon: (taxon_id, taxon_name) ->
-    @change_taxon taxon_name, taxon_name
+    @change_taxon taxon_id, taxon_name
     
     # TODO: test if the node is already present, and click on it instead of triggering a change()
     # Start over with a new query
