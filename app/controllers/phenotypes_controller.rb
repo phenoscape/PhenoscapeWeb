@@ -105,6 +105,22 @@ class PhenotypesController < ApplicationController
   end
   
   
+  # For html requests, return the entity specified by params[:id].
+  # The page will then do an Ajax request to this same action.
+  #
+  # For js requests, call the variation_tree query_callback with the args (phenotype_sets, root_taxon_id, taxon_name_map), where:
+  #   phenotype_sets is a hash / json object conaining the sets as returned by the data source
+  #     See https://www.phenoscape.org/wiki/Data_Services#Phenotypic_variation_sets_service
+  #   root_taxon_id is the ID of the current taxon that is the parent all the taxa in phenotype_sets
+  #   taxon_name_map maps taxon ids to names, such as
+  #     {"TTO:1234": "Taxon name", ...}
+  def variation_tree_suggested_taxa
+    qp = {:query => build_json_query}
+    result = Phenotype.suggested_variationset_taxa(qp)
+    render :json => result
+  end
+  
+  
   def download
     download_query_results(Phenotype, query_params)
   end

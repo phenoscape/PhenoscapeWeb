@@ -23,4 +23,11 @@ class Phenotype
     Request.find("phenotype/variationsets", params, result_options)
   end
   
+  
+  #Return suggested taxa for the variation tree from data service
+  def self.suggested_variationset_taxa(params={}, result_options={})
+    params[:taxon] = 'suggest'
+    Request.find("phenotype/variationsets", params, result_options)
+  end
+  
 end

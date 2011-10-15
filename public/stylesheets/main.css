@@ -421,3 +421,7 @@ table.grid td, table.grid th {
 #variation-table .selected {
   background-color: #00a9d6;
 }
+
+.suggested-taxon {
+  display: block;
+}

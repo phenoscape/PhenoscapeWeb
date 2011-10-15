@@ -298,6 +298,8 @@ class VariationTree extends Tree
         enable: true
         panning: 'avoid nodes'
       onCreateLabel: (label, node) => @create_label label, node
+    
+    @load_suggested_taxa()
   
   destroy_spacetree: ->
     $('#variation-table').hide().find('tbody').empty()
@@ -319,6 +321,28 @@ class VariationTree extends Tree
     @spacetree.addSubtree subtree, 'replot'
     VariationTreeNode.click_node_when_ready @, subtree.id
   
+  load_suggested_taxa: (attempt=0) ->
+    if attempt > 1 # retry this many times
+      return $('#suggested-taxa').html 'Failed to load suggested taxa'
+      
+    url = window.location.href.replace /\/variation_tree\//, '/variation_tree_suggested_taxa/'
+    $.ajax
+      url: url
+      type: 'get'
+      dataType: 'json'
+      data:
+        authenticitiy_token: AUTH_TOKEN
+      error: => @load_suggested_taxa(attempt + 1)
+      success: (data) ->
+        suggested_taxa = $('#suggested-taxa')
+        suggested_taxa.html ''
+        for taxon in data.taxa
+          link = $("<a href='#' class='suggested-taxon'>#{taxon.name}</a>")
+          link.click (event) ->
+            event.preventDefault()
+            $('#term_id').val taxon.id
+            $('#term_filter_form').submit()
+          link.appendTo suggested_taxa
   
   # Converts phenotype_sets from the data source into TreeNodes and stores them in the tree.
   # Also builds the phenotypes table.

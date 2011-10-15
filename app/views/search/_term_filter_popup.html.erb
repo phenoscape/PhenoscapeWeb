@@ -10,6 +10,11 @@
     <%= hidden_field_tag :term_id %>
     <%= hidden_field_tag :field_name, field_name %>
     
+    <% if for_variation_tree %>
+      <p>Suggested taxa:<p>
+      <div id="suggested-taxa"><%# I get filled in by phenotypic_tree.coffee/js %></div>
+    <% end %>
+    
     <%= submit_tag "Select #{label}", :style => 'display:none', :id => 'term_submit_button' %>
   <% end %>
 </div>
@@ -19,7 +24,7 @@
     jQuery(function(){
       var dlg = jQuery("#term_filter_container").dialog({
         autoOpen: false,
-        height: 200,
+        height: <%= for_variation_tree ? 300 : 200 %>,
         width: 500,
         modal: true,
         buttons: {
