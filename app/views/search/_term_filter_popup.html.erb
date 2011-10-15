@@ -24,14 +24,16 @@
         modal: true,
         buttons: {
           'Select <%= label %>': function() {
-            jQuery('#term_submit_button').click();
-            jQuery(this).dialog('close');
+            jQuery('#term_filter_form').submit()
           },
           Cancel: function() {
             jQuery(this).dialog('close');
           }
         },
         close: function() {}
+      });
+      jQuery('#term_filter_form').submit(function(){
+        jQuery('#term_filter_container').dialog('close');
       });
     });
   </script>
