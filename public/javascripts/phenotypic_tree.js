@@ -242,7 +242,7 @@
           label.html(node.name);
           if (!node.data.leaf_node) {
             label.click(function() {
-              return st.onClick(node.id);
+              return window.profile_tree.spacetree.onClick(node.id);
             });
           }
           return label.css({

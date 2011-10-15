@@ -198,7 +198,7 @@ class ProfileTree extends Tree
         label.attr 'id', node.id
         label.html node.name
         unless node.data.leaf_node
-          label.click -> st.onClick node.id
+          label.click -> window.profile_tree.spacetree.onClick node.id
         label.css
           cursor: 'pointer'
           color: '#333'
