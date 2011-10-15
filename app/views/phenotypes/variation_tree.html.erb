@@ -25,9 +25,11 @@
           <input type="hidden" id="current_taxon_id" name="filter[taxa][0]" value="<%= params[:filter][:taxa]["0"] rescue "" %>">
         </div>
         <div class="section">
-          <input type="checkbox" name="include_unannotated" <%= 'checked="checked"' if params[:include_unannotated] %>>
+          <input type="hidden" name="exclude_unannotated" value="true">
+          <input type="checkbox" name="exclude_unannotated" value="false" <%= 'checked="checked"' if params[:exclude_unannotated] != 'true' %>>
           <label for="">Show taxa without phenotype data</label><br>
-          <input type="checkbox" name="include_attribute" <%= 'checked="checked"' if params[:include_attribute] %>>
+          <input type="hidden" name="exclude_attribute" value="true">
+          <input type="checkbox" name="exclude_attribute" value="false" <%= 'checked="checked"' if params[:exclude_attribute] != 'true' %>>
           <label for="">Show taxa with unspecified <span class="quality_name"></span> phenotypes</label>
         </div>
       </div>
