@@ -541,6 +541,9 @@
       label.addClass('node');
       if (node.data.type === 'group') {
         label.addClass('node-group');
+        node.data.taxa = node.data.taxa.sortBy(function(taxon) {
+          return taxon.name;
+        });
         if (node.data.taxa.length <= this.options.max_taxa_shown_in_group) {
           node.data.taxa.each(__bind(function(taxon) {
             var grouped_taxon;

@@ -433,6 +433,9 @@ class VariationTree extends Tree
     if node.data.type == 'group'
       label.addClass 'node-group'
       
+      # Sort the taxa in a group alphabetically
+      node.data.taxa = node.data.taxa.sortBy (taxon) -> taxon.name
+      
       if node.data.taxa.length <= @options.max_taxa_shown_in_group
         node.data.taxa.each (taxon) =>
           grouped_taxon = $("<div class='node-taxon #{taxon.rank}' rel='#{taxon.id}'>#{taxon.name}</div>")
