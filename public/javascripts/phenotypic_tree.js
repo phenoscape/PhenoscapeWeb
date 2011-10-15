@@ -408,12 +408,25 @@
       return VariationTreeNode.click_node_when_ready(this, subtree.id);
     };
     VariationTree.prototype.load_suggested_taxa = function(attempt) {
-      var url;
+      var opts, url;
       if (attempt == null) {
         attempt = 0;
       }
       if (attempt > 1) {
         return $('#suggested-taxa').html('Failed to load suggested taxa');
+      }
+      if (attempt === 0) {
+        opts = {
+          lines: 10,
+          length: 4,
+          width: 3,
+          radius: 5,
+          color: "#000",
+          speed: 2,
+          trail: 60,
+          shadow: false
+        };
+        new Spinner(opts).spin(document.getElementById('suggested-taxa'));
       }
       url = window.location.href.replace(/\/variation_tree\//, '/variation_tree_suggested_taxa/');
       return $.ajax({

@@ -325,7 +325,20 @@ class VariationTree extends Tree
   load_suggested_taxa: (attempt=0) ->
     if attempt > 1 # retry this many times
       return $('#suggested-taxa').html 'Failed to load suggested taxa'
-      
+    
+    # Loading spinner
+    if attempt == 0
+      opts = 
+        lines: 10
+        length: 4
+        width: 3
+        radius: 5
+        color: "#000"
+        speed: 2
+        trail: 60
+        shadow: false
+      new Spinner(opts).spin(document.getElementById('suggested-taxa');)
+    
     url = window.location.href.replace /\/variation_tree\//, '/variation_tree_suggested_taxa/'
     $.ajax
       url: url

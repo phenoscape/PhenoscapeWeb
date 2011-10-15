@@ -422,6 +422,10 @@ table.grid td, table.grid th {
   background-color: #00a9d6;
 }
 
+#suggested-taxa div {
+  margin: 10px 0 0 10px
+}
+
 .suggested-taxon {
   display: block;
 }
