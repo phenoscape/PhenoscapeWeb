@@ -382,7 +382,8 @@
           return this.create_label(label, node);
         }, this)
       });
-      return this.load_suggested_taxa();
+      this.load_suggested_taxa();
+      return this.check_top_level();
     };
     VariationTree.prototype.destroy_spacetree = function() {
       $('#variation-table').hide().find('tbody').empty();
@@ -444,6 +445,13 @@
           return _results;
         }
       });
+    };
+    VariationTree.prototype.check_top_level = function() {
+      if (!window.location.search) {
+        return $(function() {
+          return $('#change-suggest-button').click();
+        });
+      }
     };
     VariationTree.prototype.query_callback = function(phenotype_sets, root_taxon_id, taxon_data) {
       var root_node;

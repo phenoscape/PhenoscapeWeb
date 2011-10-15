@@ -21,7 +21,7 @@
         <div class='section'>
           Limit tree to <span id="current_taxon_name" style="border: 3px solid black">(loading)</span>
           <%= link_to_function image_tag('remove.png'), 'jQuery(document.getElementById(variation_tree.spacetree.root)).click(); jQuery(this).hide();', :id => 'clear-limit-tree-to', :style => 'display: none;' %>
-          <%= button_to_function 'change/suggest', "clearInputs(['#popupTermChoice','#term_id']);jQuery('#term_filter_container').dialog('open');" %>
+          <%= button_to_function 'change/suggest', "clearInputs(['#popupTermChoice','#term_id']);jQuery('#term_filter_container').dialog('open');", :id => 'change-suggest-button' %>
           <input type="hidden" id="current_taxon_id" name="filter[taxa][0]" value="<%= params[:filter][:taxa]["0"] rescue "" %>">
         </div>
         <div class="section">

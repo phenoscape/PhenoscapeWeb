@@ -300,6 +300,7 @@ class VariationTree extends Tree
       onCreateLabel: (label, node) => @create_label label, node
     
     @load_suggested_taxa()
+    @check_top_level()
   
   destroy_spacetree: ->
     $('#variation-table').hide().find('tbody').empty()
@@ -343,6 +344,11 @@ class VariationTree extends Tree
             $('#term_id').val taxon.id
             $('#term_filter_form').submit()
           link.appendTo suggested_taxa
+  
+  # If we're at the top level of the tree, there's lots of uninteresting taxa to click through to get to anything real. Open the suggested taxa dialog.
+  check_top_level: ->
+    if !window.location.search
+      $ -> $('#change-suggest-button').click()
   
   # Converts phenotype_sets from the data source into TreeNodes and stores them in the tree.
   # Also builds the phenotypes table.
