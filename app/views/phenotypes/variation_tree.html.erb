@@ -5,7 +5,7 @@
     <div>
       Taxonomic distribution of
       <select name="filter[phenotypes][0][quality]" id="quality_select">
-        <% selected_quality = params[:filter][:phenotypes]["0"][:quality] rescue nil %>
+        <% selected_quality = params[:filter][:phenotypes]["0"][:quality] rescue 'PATO:0000052' %>
         <%= options_for_select Attribute.all(:format => :array_for_select_options), selected_quality %>
       </select>
       for
