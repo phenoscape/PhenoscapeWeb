@@ -115,7 +115,11 @@ class PhenotypesController < ApplicationController
   #   taxon_name_map maps taxon ids to names, such as
   #     {"TTO:1234": "Taxon name", ...}
   def variation_tree_suggested_taxa
-    qp = {:query => build_json_query}
+    params[:filter] ||= {}
+    params[:filter][:phenotypes] ||= {}
+    params[:filter][:phenotypes]['0'] ||= {:entity => params[:id]}
+    qp = query_params
+    pp qp
     result = Phenotype.suggested_variationset_taxa(qp)
     render :json => result
   end
