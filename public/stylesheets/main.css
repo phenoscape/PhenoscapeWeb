@@ -306,7 +306,7 @@ a.toggle_link:hover {text-decoration: underline;}
   font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
   font-size: 64px;
   font-weight: bold;
-  margin: 10px 30px;
+  margin: 120px 120px;
   position: absolute;
   z-index: 2;
 }

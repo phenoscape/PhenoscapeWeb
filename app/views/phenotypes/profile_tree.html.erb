@@ -1,4 +1,4 @@
-<%= javascript_include_tag 'jit-st-2.0.1.min', 'phenotypic_tree' %>
+<%= javascript_include_tag 'jit-st-2.0.1.min', 'phenotypic_tree', 'spin.min' %>
 <div>
   <div id="search_sidebar">
     <% form_tag '/taxa', :method => :get, :name => 'complex_query_form', :id => 'query_form' do %>
@@ -36,7 +36,7 @@
   <div id="search_main">
     <h2>Phenotypic profile tree</h2>
     <p>Taxon color indicates the greatest level of match of specified phenotype(s) found within a species in the clade.</p>
-    <div id="profile-tree-loading" style="display: none">Loading...</div>
+    <div id="profile-tree-loading" style="display: none"></div>
     <div id="profile-tree-empty">
       No phenotypes entered yet.<br/>
       Add a phenotype to the profile:

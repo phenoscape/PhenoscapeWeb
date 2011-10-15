@@ -136,7 +136,21 @@
       }
     };
     Tree.prototype.show_loading = function() {
+      var opts, _ref;
       this.loading = true;
+      opts = {
+        lines: 12,
+        length: 30,
+        width: 11,
+        radius: 30,
+        color: "#FFF",
+        speed: 1,
+        trail: 60,
+        shadow: false
+      };
+      if ((_ref = this.loading_spinner) == null) {
+        this.loading_spinner = new Spinner(opts).spin(document.getElementById("" + this.container_id + "-loading"));
+      }
       $("#" + this.container_id).animate({
         backgroundColor: '#BBE2D6'
       }, {

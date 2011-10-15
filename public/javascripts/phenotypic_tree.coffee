@@ -118,6 +118,18 @@ class Tree
   show_loading: ->
     @loading = true
     
+    opts = 
+      lines: 12
+      length: 30
+      width: 11
+      radius: 30
+      color: "#FFF"
+      speed: 1
+      trail: 60
+      shadow: false
+    @loading_spinner ?= new Spinner(opts).spin(document.getElementById("#{@container_id}-loading");)
+    
+    
     $("##{@container_id}").animate {backgroundColor: '#BBE2D6'},
       duration: 'fast'
       queue: true
