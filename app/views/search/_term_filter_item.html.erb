@@ -1,5 +1,5 @@
 <% unless term_id.blank? %>
-  <div class="term">
+  <div class="term rounded-large">
     <%= filter_operator(index, field_name) %>
     <%= hidden_field_tag "filter[#{field_name}][#{index}]", term_id %>
     <%= filter_term_link(term_id) %>

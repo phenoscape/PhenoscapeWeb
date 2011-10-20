@@ -6,7 +6,7 @@
     <% empty_workspace = session[:workspace].empty? || session[:workspace].values.flatten.empty? %>
     <% unless empty_workspace %>
       <div id="search_sidebar">
-        <div id="term_info">
+        <div id="term_info" class="workspace-area rounded-medium">
           <% categories.each_with_index do |category, i| %>
             <div class="section" id="<%= category.underscore %>">
               <div class="green_heading">
@@ -14,7 +14,7 @@
               </div>
               <div class="filter section_indent">
               </div>
-              <%= '<hr />' unless i+1 == categories.size %>
+              <%= '<div class="sidebar-divider">&nbsp;</div>' unless i+1 == categories.size %>
             </div>
           <% end %>
         </div>
@@ -25,7 +25,7 @@
       <% if empty_workspace %>
         <p>Your workspace is currently empty.</p>
       <% else %>
-        <div class="header">Send selections to: 
+        <div class="header rounded-large">Send selections to: 
           <%= render :partial => 'shared/related_query_links', :locals => {:phenotypic_profile_tree => true} %>
         </div>
       <% end %>

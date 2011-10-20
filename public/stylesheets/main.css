@@ -70,9 +70,9 @@ tr.odd {background-color: #EBECEE;}
 #navbar a.breadcrumb {float: left; padding-left: 24px; margin-left: -14px; padding-right: 16px; border: 3px solid #fff; margin-top: -3px; background-color: #e9e9e9; color: #333;}
 #navbar a.breadcrumb-home {position: relative;}
 #navbar a.breadcrumb-general {background-color: #DDF5EE;}
-#navbar a.breadcrumb-search, .search-area {background-color: #DDE9EE;}
-#navbar a.breadcrumb-browse, .browse-area {background-color: #EEF3DD;}
-#navbar a.breadcrumb-query, .query-area {background-color: #EEE3DD;}
+#navbar a.breadcrumb-search {background-color: #DDE9EE;}
+#navbar a.breadcrumb-browse {background-color: #EEF3DD;}
+#navbar a.breadcrumb-query {background-color: #EEE3DD;}
 #navbar a.breadcrumb-visualize, .visualize-area {background-color: #DDE9EE;}
 #navbar a.breadcrumb-unknown {background-color: #AA1111; color: #fff;}
 
@@ -92,8 +92,10 @@ tr.odd {background-color: #EBECEE;}
 #data-browse, .browse-area { background-color: #eef3dd !important; /* #EED; */ border-color: #DDC !important; }
 #data-query, .query-area { background-color: #eee3dd !important; border-color: #DCB !important; }
 #data-viz, .visualize-area { background-color: #DDE9EE !important; border-color: #CCDADD !important; }
+.workspace-area { background-color: #DDF5EE !important; border-color: #74C4AB !important;}
 
 .browse-area .sidebar-divider {height: 0px; border-top: 1px solid #DDC; margin: 10px -8px;}
+.workspace-area .sidebar-divider {height: 0px; border-top: 1px solid #74C4AB; margin: 10px -10px 6px -5px;}
 
 .search-instructions {margin-top: 0; font-size: 80%; font-style: italic; line-height: 1.1em;}
 #upperTermChoiceGroup {float: right; width: 33em; margin-right: 0; text-align: right; font-family: Helvetica, sans-serif;}
@@ -104,9 +106,11 @@ tr.odd {background-color: #EBECEE;}
 #sidebar .gfc-result .gf-title { height: auto; font-weight: bold; }
 
 #main {margin-left: 3px; margin-right: 3px;}
-#search_sidebar {float: left; width: 30%; margin-top: 10px;}
+#search_sidebar {float: left; width: 30%; margin-top: 30px;}
 #search_sidebar h4 {color: #115A50; margin-bottom: 10px;}
-#search_main {float: right; width: 70%; margin-top: 10px;}
+#search_main {float: right; width: 70%; margin-top: 14px;}
+#search_main .header {background-color: #74C4AB; padding: 4px 14px; margin-left: -30%;}
+#search_main .header #related_query_links {margin: 0px 0px -1px 2px; font-size: 90%;}
 #footer {clear: both; margin-top: 1em; padding-top: 2em; font-size: 75%;}
 #footer > div {color: #0a3a34; border-top: 5px solid #74c4ab;}
 #footer p {padding-left: 0.35em; padding-right: 0.35em;}
@@ -115,10 +119,10 @@ tr.odd {background-color: #EBECEE;}
 .sidebar-box { background-color: transparent; padding: 0.1em 1.0em; margin-top: 1em; border-left: 1px dotted #ccc;}
 .sidebar-box h4 {margin-top: 0.5em;}
 
-div#term_info {border: 1px solid #115A50; margin-left: 3px; margin-right: 1em;}
+div#term_info {border: 1px solid #115A50; margin-left: 3px; margin-right: 1em; padding-top: 6px;}
 div#term_info .section {padding: 5px 10px 5px 5px;}
 div#term_info .section.top_border {border-top: 1px solid #DDCCBB;}
-div#term_info div {margin-bottom: 0.25em;}
+div#term_info div {margin-bottom: 0em; padding: 0.1em 0.1em 0.1em 0.2em;}
 .term-info-header {background-color: #74c4ab; color: #0a3a34;}
 div#term_info .header {font-weight: bold;font-size:120%;margin-bottom: 10px; padding: 5px;}
 .term-info-field-label {font-weight: bold; color: #0a3a34;;}
@@ -280,12 +284,12 @@ a.toggle_link:hover {text-decoration: underline;}
     linear,
     right top,
     left top,
-    color-stop(0.05, #FFFFFF),
+    color-stop(0.05, #DDF5EE),
     color-stop(0.51, #74C4AB)
   );
   background-image: -moz-linear-gradient(
     right center,
-    #FFFFFF 5%,
+    #DDF5EE 5%,
     #74C4AB 51%
   );
   background-color: #74c4ab;
