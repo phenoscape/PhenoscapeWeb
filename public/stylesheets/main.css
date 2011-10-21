@@ -73,7 +73,7 @@ tr.odd {background-color: #EBECEE;}
 #navbar a.breadcrumb-search {background-color: #DDE9EE;}
 #navbar a.breadcrumb-browse {background-color: #EEF3DD;}
 #navbar a.breadcrumb-query {background-color: #EEE3DD;}
-#navbar a.breadcrumb-visualize, .visualize-area {background-color: #DDE9EE;}
+#navbar a.breadcrumb-visualize {background-color: #DDE9EE;}
 #navbar a.breadcrumb-unknown {background-color: #AA1111; color: #fff;}
 
 .lateral-nav-dot {color: #0a3a34; width: 0px; padding: 4px 10px; border: none;}
@@ -96,6 +96,11 @@ tr.odd {background-color: #EBECEE;}
 
 .browse-area .sidebar-divider {height: 0px; border-top: 1px solid #DDC; margin: 10px -8px;}
 .workspace-area .sidebar-divider {height: 0px; border-top: 1px solid #74C4AB; margin: 10px -10px 6px -5px;}
+.visualize-area .sidebar-divider {height: 0px; border-top: 1px solid #CCDADD; margin: 4px 0px 4px !important;}
+
+.visualize-header {background-color: #BBCACF /*#CCDADD*/; padding: 4px 14px; margin-left: 15%; margin-top: 14px; position: relative;}
+.visualize-header #quality_select {margin: 0px 2px -1px 2px; font-size: 90%;}
+
 
 .search-instructions {margin-top: 0; font-size: 80%; font-style: italic; line-height: 1.1em;}
 #upperTermChoiceGroup {float: right; width: 33em; margin-right: 0; text-align: right; font-family: Helvetica, sans-serif;}
@@ -107,6 +112,8 @@ tr.odd {background-color: #EBECEE;}
 
 #main {margin-left: 3px; margin-right: 3px;}
 #search_sidebar {float: left; width: 30%; margin-top: 30px;}
+#search_sidebar.visualize-sidebar {margin-top: -14px;}
+#search_sidebar.visualize-sidebar #term_info {padding: 4px 6px;}
 #search_sidebar h4 {color: #115A50; margin-bottom: 10px;}
 #search_main {float: right; width: 70%; margin-top: 14px;}
 #search_main .header {background-color: #74C4AB; padding: 4px 14px; margin-left: -30%;}
@@ -115,6 +122,8 @@ tr.odd {background-color: #EBECEE;}
 #footer > div {color: #0a3a34; border-top: 5px solid #74c4ab;}
 #footer p {padding-left: 0.35em; padding-right: 0.35em;}
 #footer a {color: inherit;}
+
+#search_sidebar #current_taxon_name {padding: 4px 5px; margin-left: -5px; background-color: #BBCACF;}
 
 .sidebar-box { background-color: transparent; padding: 0.1em 1.0em; margin-top: 1em; border-left: 1px dotted #ccc;}
 .sidebar-box h4 {margin-top: 0.5em;}
@@ -430,6 +439,17 @@ table.grid td, table.grid th {
   font-style: italic;
 }
 
+#variation-table {
+	border: 1px solid #DDDDDD;
+	border-collapse: separate;
+	width: 96%;
+}
+#variation-table tr {
+	background-color: #EBECEE;
+}
+#variation-table td, #variation-table th {
+	border: none;	
+}
 #variation-table .selected {
   background-color: #00a9d6;
 }
