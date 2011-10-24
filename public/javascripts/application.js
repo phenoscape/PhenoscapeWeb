@@ -10,6 +10,7 @@ function initAutocomplete(input_id, ontologyPrefixes, query_type, min_chars, wid
   
   var ac = jQuery("#"+input_id).autocomplete(OBDWS + "/term/search", {
     width: width,
+    mustMatch: true,
     //autoFill: true,
     //selectFirst: false,
     minChars: min_chars,
