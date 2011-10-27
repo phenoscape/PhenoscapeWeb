@@ -304,7 +304,7 @@
       this.options = {
         tree_node_class: VariationTreeNode,
         base_path: '/phenotypes/variation_tree',
-        max_taxa_shown_in_group: 10
+        max_taxa_shown_in_group: 20
       };
       this.current_entity_id = window.location.pathname.sub(/.*\//, '');
       VariationTree.__super__.constructor.call(this, this.container_id);
