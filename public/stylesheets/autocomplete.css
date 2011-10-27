@@ -50,3 +50,11 @@
   background-color: #0A246A;
   color: white;
 }
+
+.ac_non_matching_input {
+    color: red;
+    /*
+    border-color: red;
+    background-color: #fdd; 
+    */
+}

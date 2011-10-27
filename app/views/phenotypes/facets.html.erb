@@ -1,7 +1,10 @@
 <h3 class='facet_header'>Phenotypes involving <%= display_green_term(:quality) %> for <%= display_green_term(:entity) %> with
   <%= display_green_term(:related_entity) %> in <%= display_green_term(:taxon) %> or <%= display_green_term(:gene) %></h3>
 
-<div style='margin-top:5px;'><%= link_to "View these results as a phenotypes query", :controller => :phenotypes, :action => :index, :filter => params[:filter] %></div>
+<div style='margin-top:5px;'>
+	<%= link_to "View these results as a phenotypes query", {:controller => :phenotypes, :action => :index, :filter => params[:filter]}, :class => "" %>
+	<span class="lateral-nav-dot query-area rounded-large">&nbsp;</span>
+</div>
 
 <div>
   <div id="search_sidebar" class='no_margin'>
@@ -9,33 +12,33 @@
     
     <div class='search_area'>
       <!-- Phenotype Filter -->
-      <span class='section_heading'>Phenotype</span>
-      <div class='section'>
+      <span class='section_heading browse-area'>Phenotype</span>
+      <div class='section browse-area rounded-medium'>
         <%= select_tag 'facet_paths[part_of]', options_for_select([['type of', 'false'],  ['part of', 'true']], params[:facet_paths][:part_of]), :class => 'right', :onchange => 'facetPartSelectSubmit(this)' %>
         <div id='facet_filter'>
           <%= render :partial => 'facet_filter', :locals => {:facets => @entity_facets, :term_type => :entity} %>
         </div>
-        <hr/>
+        <div class='sidebar-divider'>&nbsp;</div>
         <div id='facet_filter'>
           <%= render :partial => 'facet_filter', :locals => {:facets => @quality_facets, :term_type => :quality} %>
         </div>
-        <hr/>
+        <div class='sidebar-divider'>&nbsp;</div>
         <div id='facet_filter'>
           <%= render :partial => 'facet_filter', :locals => {:facets => @related_entity_facets, :term_type => :related_entity} %>
         </div>
       </div>
     
       <!-- Taxon Filter -->
-      <span class='section_heading'>Taxon</span>
-      <div class='section'>
+      <span class='section_heading browse-area'>Taxon</span>
+      <div class='section browse-area rounded-medium'>
         <div id='facet_filter'>
           <%= render :partial => 'facet_filter', :locals => {:facets => @taxon_facets, :term_type => :taxon} %>
         </div>
       </div>
     
       <!-- Genes Filter -->
-      <span class='section_heading'>Gene</span>
-      <div class='section'>
+      <span class='section_heading browse-area'>Gene</span>
+      <div class='section browse-area rounded-medium'>
         <div id='facet_filter'>
           <%= render :partial => 'facet_filter', :locals => {:facets => @gene_facets, :term_type => :gene} %>
         </div>
