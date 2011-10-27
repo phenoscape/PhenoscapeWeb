@@ -276,6 +276,13 @@ class VariationTree extends Tree
               associated.attr 'class', classes
         'click': ->
           a_t = associated_targets(@)
+          if $(@).data('sticky')
+            a_t.data 'sticky', null
+            $('.selected').removeClass 'selected'
+          else
+            a_t.addClass 'selected'
+            a_t.data 'sticky', true
+          
           a_t.each ->
             # Clear the restore data, making it permanent
             associated = $(@)
@@ -284,7 +291,8 @@ class VariationTree extends Tree
           # Unselect everything else
           others = $('.selected').not a_t
           others.removeClass 'selected'
-          
+          others.data 'sticky', null
+      
       # Hovering nodes in the groups shouldn't trigger the hover event on the groups
       dont_propagate = (event) -> event.stopPropagation()
       $('.node-group-with-phenotypes .node-taxon').live

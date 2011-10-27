@@ -352,13 +352,21 @@
           'click': function() {
             var a_t, others;
             a_t = associated_targets(this);
+            if ($(this).data('sticky')) {
+              a_t.data('sticky', null);
+              $('.selected').removeClass('selected');
+            } else {
+              a_t.addClass('selected');
+              a_t.data('sticky', true);
+            }
             a_t.each(function() {
               var associated;
               associated = $(this);
               return associated.data('classes', null);
             });
             others = $('.selected').not(a_t);
-            return others.removeClass('selected');
+            others.removeClass('selected');
+            return others.data('sticky', null);
           }
         });
         dont_propagate = function(event) {
