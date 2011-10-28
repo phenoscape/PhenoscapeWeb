@@ -76,7 +76,8 @@ tr.odd {background-color: #EBECEE;}
 #navbar a.breadcrumb-visualize {background-color: #DDE9EE;}
 #navbar a.breadcrumb-unknown {background-color: #AA1111; color: #fff;}
 
-.lateral-nav-dot {color: #0a3a34; width: 0px; padding: 4px 10px; border: none;}
+.lateral-nav-link {color: #0a3a34; border: 1px solid #555; width: 0px; padding: 2px 8px; margin: 0 0.1em;}
+a:hover .lateral-nav-link {text-decoration: underline;}
 
 .top_logo {height: 100px;}
 .relation-name {font-style: italic;}
