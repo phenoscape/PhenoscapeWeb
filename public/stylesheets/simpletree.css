@@ -133,9 +133,9 @@ ul.simpleTree {
 .simpleTree .active
 {
   cursor: default;
-  background-color: #74c4ab;
+  background-color: #EEF3DD;
   padding: 2px 2px 0;
-  border: 1px solid #74c4ab;
+  border: 1px solid #DDDDCC;
   font-weight: bold;
 }
 #drag_container

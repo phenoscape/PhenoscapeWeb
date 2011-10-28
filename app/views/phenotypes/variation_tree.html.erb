@@ -2,7 +2,7 @@
 <%= stylesheet_link_tag 'chosen' %>
 <div>
   <% form_tag '/phenotypes', :method => :get, :name => 'complex_query_form', :id => 'query_form' do %>
-    <div>
+    <div class="visualize-header rounded-large">
       Taxonomic distribution of
       <select name="filter[phenotypes][0][quality]" id="quality_select">
         <% selected_quality = params[:filter][:phenotypes]["0"][:quality] rescue 'PATO:0000052' %>
@@ -16,11 +16,14 @@
   
     <div class='clear'></div>
 
-    <div id="search_sidebar">
-      <div id="term_info">
+    <div id="search_sidebar" class="visualize-sidebar">
+      <div id="term_info" class="visualize-area rounded-medium">
         <div class='section'>
-          Limit tree to <span id="current_taxon_name" style="border: 3px solid black">(loading)</span>
+          Limit tree to
+		 <div style="height: 6px;">&nbsp;</div>
+          <span id="current_taxon_name" class="rounded-small">(loading)</span>
           <%= link_to_function image_tag('remove.png'), 'jQuery(document.getElementById(variation_tree.spacetree.root)).click(); jQuery(this).hide();', :id => 'clear-limit-tree-to', :style => 'display: none;' %>
+		 <div style="height: 6px;">&nbsp;</div>
           <%= button_to_function 'change/suggest', "clearInputs(['#popupTermChoice','#term_id']);jQuery('#term_filter_container').dialog('open');", :id => 'change-suggest-button' %>
           <input type="hidden" id="current_taxon_id" name="filter[taxa][0]" value="<%= params[:filter][:taxa]["0"] rescue "" %>">
         </div>
@@ -38,7 +41,7 @@
         <%= button_to_function 'Show current query', 'jQuery(this).closest("form").submit()' %>
       </p>
     
-      <table id="variation-table" class="grid" style="display: none;">
+      <table id="variation-table" class="grid rounded-small" style="display: none;">
         <thead>
           <tr>
             <th>Phenotype</th>
@@ -60,7 +63,7 @@
     <div id="variation-tree-empty">
       No results.
     </div>
-    <div id="variation-tree">
+    <div id="variation-tree" class="visualize-area rounded-small" style="background-color: #fff !important;">
       
     </div>
   </div>

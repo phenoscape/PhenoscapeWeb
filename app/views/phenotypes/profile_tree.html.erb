@@ -2,7 +2,7 @@
 <div>
   <div id="search_sidebar">
     <% form_tag '/taxa', :method => :get, :name => 'complex_query_form', :id => 'query_form' do %>
-      <div id="term_info">
+      <div id="term_info" class="rounded-medium visualize-area">
         
         <!-- Phenotype Filter -->
         <div class='section'>
@@ -14,8 +14,8 @@
             <%= render :partial => '/search/phenotype_filter', :locals => {:phenotypes => params[:filter][:phenotypes]} %>
           </div>
         </div>
-
-        <div class='section top_border'>
+		<div class="sidebar-divider">&nbsp;</div>
+        <div class='section'>
           <%= check_box_tag 'filter[include_inferred]', true, params[:filter][:include_inferred] %>
           <span class='green_heading'>Include inferred phenotypes</span>
         </div>
@@ -42,10 +42,10 @@
       Add a phenotype to the profile:
       <%= button_to_function('Add', "jQuery('#add_phenotype_button').click()") %>
     </div>
-    <div id="profile-tree">
+    <div id="profile-tree" class="visualize-area rounded-small" style="background-color: #fff !important;">
       <div id="profile-tree-key">
         Greatest level of match
-        <div class="key">
+        <div class="key rounded-small">
           <div class="cell" style="background-color: #F44">100%</div>
           <div class="cell" style="background-color: orange">75%</div>
           <div class="cell" style="background-color: yellow">50%</div>

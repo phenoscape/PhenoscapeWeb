@@ -195,7 +195,7 @@
               checkbox.attr('name', name).val(term['id']);
             }
           }
-          var term_container = $('<div class="term"></div>');
+          var term_container = $('<div class="term rounded-large"></div>');
           var use_checkbox = $('<input type="checkbox" class="left"/>');
           var term_name_container = $('<div class="term_name">' + SESSION_WORKSPACE_LINKS[term_json] + '</div>');
           var delete_button = $('<a href="#"><img src="/images/remove.png" alt="remove" title="remove" /></a>');
