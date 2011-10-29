@@ -77,12 +77,12 @@
  			page_title = bc_text
 
  		# Visualize pages
- 		when 'phenotypes, profile_tree'
+ 		when 'phenotypes, profile_tree':
  			bc_class = 'breadcrumb-visualize'
  			bc_text = 'Visualize phenotypic profile tree'
  			bc_url = '/phenotypes/profile_tree'
  			page_title = bc_text
- 		when 'phenotypes, variation_tree'
+ 		when 'phenotypes, variation_tree':
  			bc_class = 'breadcrumb-visualize'
  			bc_text = 'Visualize phenotype variation tree'
  			bc_url = '/phenotypes/variation_tree/TAO:0000316'
@@ -90,12 +90,17 @@
  		# TODO: Add 'Visualize Phenotype Variation Tree' when it's ready
 
  		# Other pages
- 		when 'about, index'
+ 		when 'about, index':
  			bc_class = 'breadcrumb-general'
  			bc_text = 'About'
  			bc_url = '/about'
  			page_title = bc_text
- 		when 'workspaces, show'
+ 		when 'about, bibliography':
+ 			bc_class = 'breadcrumb-general'
+ 			bc_text = 'About'
+ 			bc_url = '/about'
+ 			page_title = bc_text
+ 		when 'workspaces, show':
  			bc_class = 'breadcrumb-general'
  			bc_text = 'Workspace'
  			bc_url = '/workspace'
@@ -237,11 +242,11 @@
 </h1>
   
 	<% if controller_name == 'search' && action_name == 'index'%>
-	<div class="header-message rounded-medium">
+	<div class="header-message rounded-medium shadow-small">
 	   <p>
 	       The Knowledgebase currently contains <span class="count">518,905</span> phenotype statements about <span class="count">2,473</span> taxa, sourced from <span class="count">52</span> <a href="http://kb-staging.phenoscape.org/about/bibliography/">publications</a>. as well as <span class="count">22,484</span> phenotype statements about <span class="count">3,941</span> genes, retrieved from <a href="http://zfin.org/">ZFIN</a>.  The data were last loaded into the Knowledgebase on <span class="count">2011-05-10</span>.
 	   </p>
-	   <div class="feedback-widget rounded-large"><a href="#" class="feedback_link popup-link">Feedback</a></div>
+	   <div class="feedback-widget rounded-large shadow-medium"><a href="#" class="feedback_link popup-link">Feedback</a></div>
 	   <p>
 	       The Phenoscape Knowledgebase is currently in beta testing. We would greatly value your <a href="#" class="feedback_link popup-link">feedback</a> as we continue its development.
 	   </p>
@@ -258,7 +263,7 @@
   			<p id="upperSearchExamples">Enter entity terms (e.g. basihyal bone), phenotypic qualities (e.g. shape, size), taxonomic names (e.g. Ictaluridae), gene names or symbols (e.g. cadherin 6, cdh6), or publications.</p>
   		</div>
   	</form>
-    <div class="feedback-widget rounded-large"><a href="#" class="feedback_link popup-link">Feedback</a></div>
+    <div class="feedback-widget rounded-large shadow-medium"><a href="#" class="feedback_link popup-link">Feedback</a></div>
   <% end %>
 <div id="navbar">
   <% unless controller_name == 'search' && action_name == 'index'%>	

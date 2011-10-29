@@ -2,7 +2,7 @@
 <%= stylesheet_link_tag 'chosen' %>
 <div>
   <% form_tag '/phenotypes', :method => :get, :name => 'complex_query_form', :id => 'query_form' do %>
-    <div class="visualize-header rounded-large">
+    <div class="visualize-header rounded-large shadow-medium">
       Taxonomic distribution of
       <select name="filter[phenotypes][0][quality]" id="quality_select">
         <% selected_quality = params[:filter][:phenotypes]["0"][:quality] rescue 'PATO:0000052' %>
@@ -17,7 +17,7 @@
     <div class='clear'></div>
 
     <div id="search_sidebar" class="visualize-sidebar">
-      <div id="term_info" class="visualize-area rounded-medium">
+      <div id="term_info" class="visualize-area rounded-medium shadow-small">
         <div class='section'>
           Limit tree to
 		 <div style="height: 6px;">&nbsp;</div>

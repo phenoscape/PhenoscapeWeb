@@ -2,7 +2,7 @@
 <div>
   <div id="search_sidebar">
     <% form_tag '/taxa', :method => :get, :name => 'complex_query_form', :id => 'query_form' do %>
-      <div id="term_info" class="rounded-medium visualize-area">
+      <div id="term_info" class="rounded-medium visualize-area shadow-small">
         
         <!-- Phenotype Filter -->
         <div class='section'>
@@ -37,7 +37,7 @@
     <h2>Phenotypic profile tree</h2>
     <p>Taxon color indicates the greatest level of match of specified phenotype(s) found within a species in the clade.</p>
     <div id="profile-tree-loading" style="display: none"></div>
-    <div id="profile-tree-empty">
+    <div id="profile-tree-empty" class="shadow-medium">
       No phenotypes entered yet.<br/>
       Add a phenotype to the profile:
       <%= button_to_function('Add', "jQuery('#add_phenotype_button').click()") %>

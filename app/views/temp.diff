@@ -1,0 +1,351 @@
+diff --git a/app/views/gene_annotations/index.html.erb b/app/views/gene_annotations/index.html.erb
+index 29c1df4..279d39c 100644
+--- a/app/views/gene_annotations/index.html.erb
++++ b/app/views/gene_annotations/index.html.erb
+@@ -2,7 +2,7 @@
+ <div>
+   <div id="search_sidebar">
+     <% form_tag '', :method => :get, :name => 'complex_query_form' do %>
+-      <div id="term_info" class="query-area rounded-medium">
++      <div id="term_info" class="query-area rounded-medium shadow-small">
+ 		<div class='header'>Query for: <%= render :partial => 'shared/related_query_links' %>
+ 	    </div>      
+         <!-- Gene Filter -->
+diff --git a/app/views/genes/index.html.erb b/app/views/genes/index.html.erb
+index baa808c..24ad542 100644
+--- a/app/views/genes/index.html.erb
++++ b/app/views/genes/index.html.erb
+@@ -2,7 +2,7 @@
+ <div>
+   <div id="search_sidebar">
+     <% form_tag '', :method => :get, :name => 'complex_query_form' do %>
+-      <div id="term_info" class="query-area rounded-medium">
++      <div id="term_info" class="query-area rounded-medium shadow-small">
+ 		<div class='header'>Query for: <%= render :partial => 'shared/related_query_links' %>
+ 	    </div>          
+         <!-- Phenotype Filter -->
+diff --git a/app/views/layouts/application.html.erb b/app/views/layouts/application.html.erb
+index b11f4a9..3ed4705 100644
+--- a/app/views/layouts/application.html.erb
++++ b/app/views/layouts/application.html.erb
+@@ -77,12 +77,12 @@
+  			page_title = bc_text
+ 
+  		# Visualize pages
+- 		when 'phenotypes, profile_tree'
++ 		when 'phenotypes, profile_tree':
+  			bc_class = 'breadcrumb-visualize'
+  			bc_text = 'Visualize phenotypic profile tree'
+  			bc_url = '/phenotypes/profile_tree'
+  			page_title = bc_text
+- 		when 'phenotypes, variation_tree'
++ 		when 'phenotypes, variation_tree':
+  			bc_class = 'breadcrumb-visualize'
+  			bc_text = 'Visualize phenotype variation tree'
+  			bc_url = '/phenotypes/variation_tree/TAO:0000316'
+@@ -90,12 +90,17 @@
+  		# TODO: Add 'Visualize Phenotype Variation Tree' when it's ready
+ 
+  		# Other pages
+- 		when 'about, index'
++ 		when 'about, index':
+  			bc_class = 'breadcrumb-general'
+  			bc_text = 'About'
+  			bc_url = '/about'
+  			page_title = bc_text
+- 		when 'workspaces, show'
++ 		when 'about, bibliography':
++ 			bc_class = 'breadcrumb-general'
++ 			bc_text = 'About'
++ 			bc_url = '/about'
++ 			page_title = bc_text
++ 		when 'workspaces, show':
+  			bc_class = 'breadcrumb-general'
+  			bc_text = 'Workspace'
+  			bc_url = '/workspace'
+@@ -237,11 +242,11 @@
+ </h1>
+   
+ 	<% if controller_name == 'search' && action_name == 'index'%>
+-	<div class="header-message rounded-medium">
++	<div class="header-message rounded-medium shadow-small">
+ 	   <p>
+ 	       The Knowledgebase currently contains <span class="count">518,905</span> phenotype statements about <span class="count">2,473</span> taxa, sourced from <span class="count">52</span> <a href="http://kb-staging.phenoscape.org/about/bibliography/">publications</a>. as well as <span class="count">22,484</span> phenotype statements about <span class="count">3,941</span> genes, retrieved from <a href="http://zfin.org/">ZFIN</a>.  The data were last loaded into the Knowledgebase on <span class="count">2011-05-10</span>.
+ 	   </p>
+-	   <div class="feedback-widget rounded-large"><a href="#" class="feedback_link popup-link">Feedback</a></div>
++	   <div class="feedback-widget rounded-large shadow-medium"><a href="#" class="feedback_link popup-link">Feedback</a></div>
+ 	   <p>
+ 	       The Phenoscape Knowledgebase is currently in beta testing. We would greatly value your <a href="#" class="feedback_link popup-link">feedback</a> as we continue its development.
+ 	   </p>
+@@ -258,7 +263,7 @@
+   			<p id="upperSearchExamples">Enter entity terms (e.g. basihyal bone), phenotypic qualities (e.g. shape, size), taxonomic names (e.g. Ictaluridae), gene names or symbols (e.g. cadherin 6, cdh6), or publications.</p>
+   		</div>
+   	</form>
+-    <div class="feedback-widget rounded-large"><a href="#" class="feedback_link popup-link">Feedback</a></div>
++    <div class="feedback-widget rounded-large shadow-medium"><a href="#" class="feedback_link popup-link">Feedback</a></div>
+   <% end %>
+ <div id="navbar">
+   <% unless controller_name == 'search' && action_name == 'index'%>	
+diff --git a/app/views/phenotypes/facets.html.erb b/app/views/phenotypes/facets.html.erb
+index 8e2f12e..1616ee7 100644
+--- a/app/views/phenotypes/facets.html.erb
++++ b/app/views/phenotypes/facets.html.erb
+@@ -11,8 +11,8 @@
+     
+     <div class='search_area'>
+       <!-- Phenotype Filter -->
+-      <span class='section_heading browse-area'>Phenotype</span>
+-      <div class='section browse-area rounded-medium'>
++      <span class='section_heading browse-area shadow-small'>Phenotype</span>
++      <div class='section browse-area rounded-medium shadow-small'>
+         <%= select_tag 'facet_paths[part_of]', options_for_select([['type of', 'false'],  ['part of', 'true']], params[:facet_paths][:part_of]), :class => 'right', :onchange => 'facetPartSelectSubmit(this)' %>
+         <div id='facet_filter'>
+           <%= render :partial => 'facet_filter', :locals => {:facets => @entity_facets, :term_type => :entity} %>
+@@ -28,16 +28,16 @@
+       </div>
+     
+       <!-- Taxon Filter -->
+-      <span class='section_heading browse-area'>Taxon</span>
+-      <div class='section browse-area rounded-medium'>
++      <span class='section_heading browse-area shadow-small'>Taxon</span>
++      <div class='section browse-area rounded-medium shadow-small'>
+         <div id='facet_filter'>
+           <%= render :partial => 'facet_filter', :locals => {:facets => @taxon_facets, :term_type => :taxon} %>
+         </div>
+       </div>
+     
+       <!-- Genes Filter -->
+-      <span class='section_heading browse-area'>Gene</span>
+-      <div class='section browse-area rounded-medium'>
++      <span class='section_heading browse-area shadow-small'>Gene</span>
++      <div class='section browse-area rounded-medium shadow-small'>
+         <div id='facet_filter'>
+           <%= render :partial => 'facet_filter', :locals => {:facets => @gene_facets, :term_type => :gene} %>
+         </div>
+diff --git a/app/views/phenotypes/index.html.erb b/app/views/phenotypes/index.html.erb
+index f2789f5..f3a49ed 100644
+--- a/app/views/phenotypes/index.html.erb
++++ b/app/views/phenotypes/index.html.erb
+@@ -2,7 +2,7 @@
+ <div>
+   <div id="search_sidebar">
+     <% form_tag '', :method => :get, :name => 'complex_query_form' do %>
+-      <div id="term_info" class="query-area rounded-medium">
++      <div id="term_info" class="query-area rounded-medium shadow-small">
+         <div class='header'>Query for: <%= render :partial => 'shared/related_query_links' %></div>
+ 
+           
+diff --git a/app/views/phenotypes/profile_tree.html.erb b/app/views/phenotypes/profile_tree.html.erb
+index ed5fa49..14757cb 100644
+--- a/app/views/phenotypes/profile_tree.html.erb
++++ b/app/views/phenotypes/profile_tree.html.erb
+@@ -2,7 +2,7 @@
+ <div>
+   <div id="search_sidebar">
+     <% form_tag '/taxa', :method => :get, :name => 'complex_query_form', :id => 'query_form' do %>
+-      <div id="term_info" class="rounded-medium visualize-area">
++      <div id="term_info" class="rounded-medium visualize-area shadow-small">
+         
+         <!-- Phenotype Filter -->
+         <div class='section'>
+@@ -37,7 +37,7 @@
+     <h2>Phenotypic profile tree</h2>
+     <p>Taxon color indicates the greatest level of match of specified phenotype(s) found within a species in the clade.</p>
+     <div id="profile-tree-loading" style="display: none"></div>
+-    <div id="profile-tree-empty">
++    <div id="profile-tree-empty" class="shadow-medium">
+       No phenotypes entered yet.<br/>
+       Add a phenotype to the profile:
+       <%= button_to_function('Add', "jQuery('#add_phenotype_button').click()") %>
+diff --git a/app/views/phenotypes/variation_tree.html.erb b/app/views/phenotypes/variation_tree.html.erb
+index 32b979a..e647b61 100644
+--- a/app/views/phenotypes/variation_tree.html.erb
++++ b/app/views/phenotypes/variation_tree.html.erb
+@@ -2,7 +2,7 @@
+ <%= stylesheet_link_tag 'chosen' %>
+ <div>
+   <% form_tag '/phenotypes', :method => :get, :name => 'complex_query_form', :id => 'query_form' do %>
+-    <div class="visualize-header rounded-large">
++    <div class="visualize-header rounded-large shadow-medium">
+       Taxonomic distribution of
+       <select name="filter[phenotypes][0][quality]" id="quality_select">
+         <% selected_quality = params[:filter][:phenotypes]["0"][:quality] rescue 'PATO:0000052' %>
+@@ -17,7 +17,7 @@
+     <div class='clear'></div>
+ 
+     <div id="search_sidebar" class="visualize-sidebar">
+-      <div id="term_info" class="visualize-area rounded-medium">
++      <div id="term_info" class="visualize-area rounded-medium shadow-small">
+         <div class='section'>
+           Limit tree to
+ 		 <div style="height: 6px;">&nbsp;</div>
+diff --git a/app/views/publications/index.html.erb b/app/views/publications/index.html.erb
+index 5785d73..8b0d165 100644
+--- a/app/views/publications/index.html.erb
++++ b/app/views/publications/index.html.erb
+@@ -2,7 +2,7 @@
+ <div>
+   <div id="search_sidebar">
+     <% form_tag '', :method => :get, :name => 'complex_query_form' do %>
+-      <div id="term_info" class="query-area rounded-medium">
++      <div id="term_info" class="query-area rounded-medium shadow-small">
+ 		<div class='header'>Query for: <%= render :partial => 'shared/related_query_links' %>
+ 	    </div>          
+         <!-- Taxon Filter -->
+diff --git a/app/views/search/index.html.erb b/app/views/search/index.html.erb
+index 4be4882..4f7e0a8 100644
+--- a/app/views/search/index.html.erb
++++ b/app/views/search/index.html.erb
+@@ -100,4 +100,4 @@
+             </td>
+        </tr>
+    </table>   
+-</div>
+\ No newline at end of file
++</div>
+diff --git a/app/views/taxa/index.html.erb b/app/views/taxa/index.html.erb
+index 6da2fbc..d1d1344 100644
+--- a/app/views/taxa/index.html.erb
++++ b/app/views/taxa/index.html.erb
+@@ -2,7 +2,7 @@
+ <div>
+   <div id="search_sidebar">
+     <% form_tag '', :method => :get, :name => 'complex_query_form' do %>
+-      <div id="term_info" class="query-area rounded-medium">
++      <div id="term_info" class="query-area rounded-medium shadow-small">
+ 		<div class='header'>Query for: <%= render :partial => 'shared/related_query_links' %>
+ 	    </div>          
+         <!-- Taxon Filter -->
+diff --git a/app/views/taxon_annotations/index.html.erb b/app/views/taxon_annotations/index.html.erb
+index 28df6cd..c9cab88 100644
+--- a/app/views/taxon_annotations/index.html.erb
++++ b/app/views/taxon_annotations/index.html.erb
+@@ -2,7 +2,7 @@
+ <div>
+   <div id="search_sidebar">
+     <% form_tag '', :method => :get, :name => 'complex_query_form' do %>
+-      <div id="term_info" class="query-area rounded-medium">
++      <div id="term_info" class="query-area rounded-medium shadow-small">
+         <div class='header'>Query for: <%= render :partial => 'shared/related_query_links' %>
+ 	    </div>
+ 
+diff --git a/app/views/term/_term_tree.html.erb b/app/views/term/_term_tree.html.erb
+index c45c012..966dbfe 100644
+--- a/app/views/term/_term_tree.html.erb
++++ b/app/views/term/_term_tree.html.erb
+@@ -1,4 +1,4 @@
+-<div class="tree_frame rounded-small">
++<div class="tree_frame rounded-small shadow-small">
+  <div id='tree_container'>
+   <ul class="simpleTree">
+     <li class="root">
+diff --git a/app/views/workspaces/show.html.erb b/app/views/workspaces/show.html.erb
+index 81c13b6..27d8351 100644
+--- a/app/views/workspaces/show.html.erb
++++ b/app/views/workspaces/show.html.erb
+@@ -6,7 +6,7 @@
+     <% empty_workspace = session[:workspace].empty? || session[:workspace].values.flatten.empty? %>
+     <% unless empty_workspace %>
+       <div id="search_sidebar">
+-        <div id="term_info" class="workspace-area rounded-medium">
++        <div id="term_info" class="workspace-area rounded-medium shadow-small">
+           <% categories.each_with_index do |category, i| %>
+             <div class="section" id="<%= category.underscore %>">
+               <div class="green_heading">
+@@ -25,7 +25,7 @@
+       <% if empty_workspace %>
+         <p>Your workspace is currently empty.</p>
+       <% else %>
+-        <div class="header rounded-large">Send selections to: 
++        <div class="header rounded-large shadow-medium">Send selections to: 
+           <%= render :partial => 'shared/related_query_links', :locals => {:phenotypic_profile_tree => true} %>
+         </div>
+       <% end %>
+diff --git a/config/environment.rb b/config/environment.rb
+index b83505e..a778a4d 100644
+--- a/config/environment.rb
++++ b/config/environment.rb
+@@ -5,7 +5,8 @@
+ # ENV['RAILS_ENV'] ||= 'production'
+ 
+ # Specifies gem version of Rails to use when vendor/rails is not present
+-RAILS_GEM_VERSION = '2.3.5' unless defined? RAILS_GEM_VERSION
++# jimA: disabling this, to use newer BitNami version of Rails
++#RAILS_GEM_VERSION = '2.3.5' unless defined? RAILS_GEM_VERSION
+ 
+ # Bootstrap the Rails environment, frameworks, and default configuration
+ require File.join(File.dirname(__FILE__), 'boot')
+@@ -35,7 +36,9 @@ Rails::Initializer.run do |config|
+   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
+   # config.gem "aws-s3", :lib => "aws/s3"
+   config.gem 'json'
+-  config.gem 'pg'
++  #jimA: DISABLING pg on my development box
++  #config.gem 'pg'
++  config.gem 'ruby-debug'
+   
+   # Only load the plugins named here, in the order given. By default, all plugins 
+   # in vendor/plugins are loaded in alphabetical order.
+diff --git a/db/development.sqlite3 b/db/development.sqlite3
+index e69de29..7428c84 100644
+Binary files a/db/development.sqlite3 and b/db/development.sqlite3 differ
+diff --git a/public/stylesheets/main.css b/public/stylesheets/main.css
+index 378cb7f..f5aee32 100644
+--- a/public/stylesheets/main.css
++++ b/public/stylesheets/main.css
+@@ -19,7 +19,7 @@ h3#feedHeader {color: #0a3a34;}
+ h1.top_logo_holder {float: left;}
+ div.header-message {padding: 0.0em 0.75em; border: 1px solid #ccc; color: #333; background-color: #f3f3f3; font-size: 0.9em; font-style: italic; line-height: 1.2em; margin: 6px 10px 10px 344px;}
+ div.header-message a {font-weight: bold;}
+-.feedback-widget {clear: right; float: right; margin: 0px -4px 8px 12px; border: 2px solid #fff; padding: 5px 16px; background-color:  #276; background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #276), color-stop(100%, #000000)); background-image: -webkit-linear-gradient(top, #276, #000000); background-image: -moz-linear-gradient(top, #276, #000000); background-image: -o-linear-gradient(top, #276, #000000); background-image: -ms-linear-gradient(top, #276, #000000); background-image: linear-gradient(top, #276, #000000);}
++.feedback-widget {clear: right; float: right; margin: 0px -4px 8px 12px; border: none; padding: 7px 18px; background-color:  #276; background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #276), color-stop(100%, #000000)); background-image: -webkit-linear-gradient(top, #276, #000000); background-image: -moz-linear-gradient(top, #276, #000000); background-image: -o-linear-gradient(top, #276, #000000); background-image: -ms-linear-gradient(top, #276, #000000); background-image: linear-gradient(top, #276, #000000);}
+ div.header-message .feedback-widget {margin: 4px -22px 0px 12px;}
+ .feedback-widget a { color: #fff; font-style: normal; font-size: 120%; }
+ .feedback-widget a:visited {color: #fff;}
+@@ -27,7 +27,7 @@ div.header-message .feedback-widget {margin: 4px -22px 0px 12px;}
+ .rounded-small { -webkit-border-radius: 4px 4px; -moz-border-radius: 4px / 4px; -o-border-radius: 4px / 4px; -ms-border-radius: 4px / 4px; -khtml-border-radius: 4px / 4px; border-radius: 4px / 4px; }
+ .rounded-medium { -webkit-border-radius: 8px 8px; -moz-border-radius: 8px / 8px; -o-border-radius: 8px / 8px; -ms-border-radius: 8px / 8px; -khtml-border-radius: 8px / 8px; border-radius: 8px / 8px; }
+ .rounded-large { -webkit-border-radius: 12px 12px; -moz-border-radius: 12px / 12px; -o-border-radius: 12px / 12px; -ms-border-radius: 12px / 12px; -khtml-border-radius: 12px / 12px; border-radius: 12px / 12px; }
+-
++  
+ img {border: none;}
+ h1 {margin-bottom: 0; color: rgb(159, 0, 2); font-size: 12pt;}
+ h1 img {float: left;}
+@@ -88,6 +88,28 @@ a:hover .lateral-nav-link {text-decoration: underline;}
+ #data-query { -moz-border-radius-bottomleft: 18px; border-bottom-left-radius: 18px; }
+ #data-viz { -moz-border-radius-bottomright: 18px; border-bottom-right-radius: 18px; }
+ 
++.shadow-small, #search-forms:hover, #data-browse:hover, #data-query:hover, #data-viz:hover {	
++  -moz-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
++  -webkit-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
++  box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
++  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=135, Color='#999999')";
++  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=135, Color='#999999');
++}
++.shadow-medium {	
++  -moz-box-shadow: 4px 4px 6px rgba(0,0,0,0.5);
++  -webkit-box-shadow: 4px 4px 6px rgba(0,0,0,0.5);
++  box-shadow: 4px 4px 6px rgba(0,0,0,0.5);
++  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#999999')";
++  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#999999');
++}
++.shadow-rightonly, .Xsection_heading {
++  -moz-box-shadow: 0px 2px 4px rgba(0,0,0,0.5);
++  -webkit-box-shadow: 0px 2px 4px rgba(0,0,0,0.5);
++  box-shadow: 0px 2px 4px rgba(0,0,0,0.5);
++  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=90, Color='#999999')";
++  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=90, Color='#999999');
++}
++
+ /* distinct colors for different discovery tools */
+ #search-forms, .search-area { background-color: #eee3ee !important; border-color: #DCD !important; }
+ #data-browse, .browse-area { background-color: #eef3dd !important; /* #EED; */ border-color: #DDC !important; }
+@@ -139,7 +161,7 @@ div#term_info .header {font-weight: bold;font-size:120%;margin-bottom: 10px; pad
+ #term_info .green_heading {color: #444; font-weight: bold; font-size: 17px; letter-spacing: -1px;}
+ 
+ div.search_area .section_heading {display: inline-block; margin-bottom: -1px; background-color: #ddd; color: #333; margin-left: 3px; margin-right: 1em; padding: 4px 6px 3px; border: 1px solid #999; border-bottom: none; -moz-border-radius-topleft: 9px; border-top-left-radius: 9px; -moz-border-radius-topright: 9px; border-top-right-radius: 9px;}
+-div.search_area .section {border: 1px solid #115A50; margin-left: 3px; margin-right: 1em; margin-bottom: 15px; padding: 8px;  -moz-border-radius-topleft: 0px; border-top-left-radius: 0px;}
++div.search_area .section {position: relative; border: 1px solid #115A50; margin-left: 3px; margin-right: 1em; margin-bottom: 15px; padding: 8px;  -moz-border-radius-topleft: 0px; border-top-left-radius: 0px;}
+ 
+ .yui-skin-sam .yui-ac-input { position: static; width: 100%;}
+ .yui-skin-sam .yui-ac-container {max-height: 400px;}
