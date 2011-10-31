@@ -43,7 +43,9 @@ OBJECT_RELATION_MAPPINGS = {
   "correlates_with"       => "correlates with",
   "reciprocal_of"         => "has reciprocal",
   "OBO_REL:has_part"      => "may be part of",
-  "has_quality"           => "may be quality of"
+  "has_quality"           => "may be quality of",
+  "increased_in_magnitude_relative_to" => "may be decreased in magnitude relative to",
+  "decreased_in_magnitude_relative_to" => "may be increased in magnitude relative to"
 }
 
 
