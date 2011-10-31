@@ -31,7 +31,7 @@
     
     <table class="search_results rounded-small sortable">
       <tr>
-        <th><a href="#" id="save-all" title="Save all results on this page to workspace"><img src="/images/add.png"></a></th>
+        <th class="always-show-help"><a href="#" id="save-all" title="Save all results on this page to workspace"><img src="/images/add.png"></a><a href="/hints/WebHints#AboutTheWorkspace" class="help-link"><img src="/images/help.png" alt="help"></a></th>
         <% shared_locals = {:controller => "genes", :action => "index"} %>
         <%= sort_column 'Gene Symbol', 'gene', shared_locals %>
         <%= sort_column 'Gene Name', 'fullname', shared_locals %>
