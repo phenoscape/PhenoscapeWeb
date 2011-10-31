@@ -41,7 +41,7 @@
         
         <div class='section top_border'>
           <%= check_box_tag 'filter[include_inferred]', true, params[:filter][:include_inferred] %>
-          <span class='green_heading'>Include inferred annotations <%= help_link "Inferred annotations" %></span>
+          <span class='green_heading always-show-help'>Apply higher taxon annotations to all included species <a href="/hints/WebHints#AboutInferredAnnotations" class="help-link"><img src="/images/help.png" alt="help"></a></span>
         </div>
         <div class='section top_border center'>
           <%= submit_tag 'Apply Filter' %>

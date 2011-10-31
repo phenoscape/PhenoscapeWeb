@@ -7,7 +7,13 @@
     case ca_test
     	# Home page
  		when 'search, index':
- 			page_title = 'Phenoscape Knowledgebase (BETA)'
+ 			page_title = 'Phenoscape Knowledgebase'
+			
+		when 'about, ontology_relationships':
+			bc_class = 'breadcrumb-browse'
+ 			bc_text = 'About relationships'
+ 			bc_url = '/about/ontology_relationships'
+ 			page_title = bc_text
     	    	
 		# Search pages (if any)
  		when 'term, gene':
