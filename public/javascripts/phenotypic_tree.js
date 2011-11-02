@@ -462,22 +462,19 @@
           return this.load_suggested_taxa(attempt + 1);
         }, this),
         success: function(data) {
-          var link, suggested_taxa, taxon, _i, _len, _ref, _results;
+          var suggested_taxa;
           suggested_taxa = $('#suggested-taxa');
           suggested_taxa.html('');
-          _ref = data.taxa;
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            taxon = _ref[_i];
+          return data.taxa.each(function(taxon) {
+            var link;
             link = $("<a href='#' class='suggested-taxon'>" + taxon.name + "</a>");
             link.click(function(event) {
               event.preventDefault();
               $('#term_id').val(taxon.id);
               return $('#term_filter_form').submit();
             });
-            _results.push(link.appendTo(suggested_taxa));
-          }
-          return _results;
+            return link.appendTo(suggested_taxa);
+          });
         }
       });
     };
