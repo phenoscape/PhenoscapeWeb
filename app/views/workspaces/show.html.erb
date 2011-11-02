@@ -24,7 +24,7 @@
     <div id="search_main">
       <% if empty_workspace %>
         <p>Your workspace is currently empty.</p>
-        <p>You can add phenotypes with the <%= image_tag 'add.png' %> button on any of the query pages, including the <a href="/phenotypes">phenotype query page</a>.</p>
+        <p>You can add phenotypes with the <%= image_tag 'add.png' %> button on any of the query pages, such as the <a href="/phenotypes">phenotype query page</a>.</p>
       <% else %>
         <div class="header rounded-large">Send selections to: 
           <%= render :partial => 'shared/related_query_links', :locals => {:phenotypic_profile_tree => true} %>
