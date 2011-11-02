@@ -24,13 +24,14 @@
     <div id="search_main">
       <% if empty_workspace %>
         <p>Your workspace is currently empty.</p>
+        <p>You can add phenotypes with the <%= image_tag 'add.png' %> button on any of the query pages, including the <a href="/phenotypes">phenotype query page</a>.</p>
       <% else %>
         <div class="header rounded-large">Send selections to: 
           <%= render :partial => 'shared/related_query_links', :locals => {:phenotypic_profile_tree => true} %>
         </div>
       <% end %>
-      <p>Click on any of the saved workspace items to the left to include them in a new query.</p>
       <% unless empty_workspace %>
+        <p>Click on any of the saved workspace items to the left to include them in a new query.</p>
         <div class="query_options">
           <% categories.each do |category| %>
             <div class="section_options" id="<%= category.underscore %>_options">
