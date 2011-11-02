@@ -99,7 +99,8 @@ class Tree
       data:
         levels: if loading_root then 2 else 1
         authenticitiy_token: AUTH_TOKEN
-      error: @ajax_error_handler
+      success: => @hide_error()
+      error: => @ajax_error_handler()
   
   query_callback: (root_node, empty_resultset=false) ->
     @hide_loading()
@@ -150,12 +151,10 @@ class Tree
         $("##{@container_id}-loading").hide() unless @loading # Check @loading because of potential race conditions - if started loading again while fading out
   
   ajax_error_handler: (jqXHR, textStatus, errorThrown) ->
-    alert 'There was a problem requesting data. Check your internet connection or report this problem in feedback.'
-    if console
-      console.log "Error:"
-      console.log jqXHR
-      console.log textStatus
-      console.log errorThrown
+    $("##{@container_id}").prepend $('<div class="error rounded-small visualize-area">An error occurred. You might reload the page and try again.</div>')
+  
+  hide_error: ->
+    $("##{@container_id} .error").remove()
   
   find_node: (id) ->
     return null unless id? && id.length > 0

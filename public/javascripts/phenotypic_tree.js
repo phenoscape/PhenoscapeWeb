@@ -115,7 +115,12 @@
           levels: loading_root ? 2 : 1,
           authenticitiy_token: AUTH_TOKEN
         },
-        error: this.ajax_error_handler
+        success: __bind(function() {
+          return this.hide_error();
+        }, this),
+        error: __bind(function() {
+          return this.ajax_error_handler();
+        }, this)
       });
     };
     Tree.prototype.query_callback = function(root_node, empty_resultset) {
@@ -178,13 +183,10 @@
       });
     };
     Tree.prototype.ajax_error_handler = function(jqXHR, textStatus, errorThrown) {
-      alert('There was a problem requesting data. Check your internet connection or report this problem in feedback.');
-      if (console) {
-        console.log("Error:");
-        console.log(jqXHR);
-        console.log(textStatus);
-        return console.log(errorThrown);
-      }
+      return $("#" + this.container_id).prepend($('<div class="error rounded-small visualize-area">An error occurred. You might reload the page and try again.</div>'));
+    };
+    Tree.prototype.hide_error = function() {
+      return $("#" + this.container_id + " .error").remove();
     };
     Tree.prototype.find_node = function(id) {
       var result_node, search_nodes;
