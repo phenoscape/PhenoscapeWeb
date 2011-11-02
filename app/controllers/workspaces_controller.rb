@@ -21,6 +21,12 @@ class WorkspacesController < ApplicationController
   end
   
   def destroy
+    if params['clear_workspace']
+      session[:workspace] = {}
+      redirect_to workspace_path
+      return
+    end
+    
     data = JSON.parse params['data']
     type = data.keys.first
     items = data.values.first
