@@ -370,7 +370,7 @@ class VariationTree extends Tree
       success: (data) ->
         suggested_taxa = $('#suggested-taxa')
         suggested_taxa.html ''
-        data.taxa.each (taxon) ->
+        data.taxa.sortBy((taxon) -> taxon.name).each (taxon) ->
           link = $("<a href='#' class='suggested-taxon'>#{taxon.name}</a>")
           link.click (event) ->
             event.preventDefault()

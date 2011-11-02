@@ -465,7 +465,9 @@
           var suggested_taxa;
           suggested_taxa = $('#suggested-taxa');
           suggested_taxa.html('');
-          return data.taxa.each(function(taxon) {
+          return data.taxa.sortBy(function(taxon) {
+            return taxon.name;
+          }).each(function(taxon) {
             var link;
             link = $("<a href='#' class='suggested-taxon'>" + taxon.name + "</a>");
             link.click(function(event) {
