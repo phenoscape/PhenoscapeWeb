@@ -4,7 +4,10 @@ $ = jQuery
 class Tree
   constructor: (@container_id) ->
     $ => # DOM ready
-      $("##{@container_id}").css('visibility', 'hidden') # Tree should not be visible at first
+      container = $("##{@container_id}")
+      container.css('visibility', 'hidden') # Tree should not be visible at first
+      @options ||= {}
+      @options.loading_background_color = "#DDE9EE"
 
       term_info_div = $('#term_info')
       initial_page_load = true
@@ -130,7 +133,8 @@ class Tree
     @loading_spinner ?= new Spinner(opts).spin(document.getElementById("#{@container_id}-loading");)
     
     
-    $("##{@container_id}").animate {backgroundColor: '#BBE2D6'},
+    self = @
+    $("##{@container_id}").animate {backgroundColor: self.options.loading_background_color},
       duration: 'fast'
       queue: true
     

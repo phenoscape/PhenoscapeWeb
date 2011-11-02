@@ -14,8 +14,11 @@
     function Tree(container_id) {
       this.container_id = container_id;
       $(__bind(function() {
-        var initial_page_load, term_info_div;
-        $("#" + this.container_id).css('visibility', 'hidden');
+        var container, initial_page_load, term_info_div;
+        container = $("#" + this.container_id);
+        container.css('visibility', 'hidden');
+        this.options || (this.options = {});
+        this.options.loading_background_color = "#DDE9EE";
         term_info_div = $('#term_info');
         initial_page_load = true;
         term_info_div.change(__bind(function() {
@@ -136,7 +139,7 @@
       }
     };
     Tree.prototype.show_loading = function() {
-      var opts, _ref;
+      var opts, self, _ref;
       this.loading = true;
       opts = {
         lines: 12,
@@ -151,8 +154,9 @@
       if ((_ref = this.loading_spinner) == null) {
         this.loading_spinner = new Spinner(opts).spin(document.getElementById("" + this.container_id + "-loading"));
       }
+      self = this;
       $("#" + this.container_id).animate({
-        backgroundColor: '#BBE2D6'
+        backgroundColor: self.options.loading_background_color
       }, {
         duration: 'fast',
         queue: true

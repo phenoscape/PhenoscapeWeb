@@ -91,7 +91,7 @@ tr.odd {background-color: #EBECEE;}
 #search-forms, .search-area { background-color: #eee3ee !important; border-color: #DCD !important; }
 #data-browse, .browse-area { background-color: #eef3dd !important; /* #EED; */ border-color: #DDC !important; }
 #data-query, .query-area { background-color: #eee3dd !important; border-color: #DCB !important; }
-#data-viz, .visualize-area { background-color: #DDE9EE !important; border-color: #CCDADD !important; }
+#data-viz, .visualize-area { background-color: #DDE9EE; border-color: #CCDADD !important; }
 .workspace-area { background-color: #DDF5EE !important; border-color: #74C4AB !important;}
 
 .browse-area .sidebar-divider {height: 0px; border-top: 1px solid #DDC; margin: 10px -8px;}
@@ -304,13 +304,8 @@ a.toggle_link:hover {text-decoration: underline;}
   background-color: #74c4ab;
 }
 
-#variation-tree {
-  border: 2px solid #115A50;
-  height: 550px;
-  overflow: hidden;
-}
-
-#profile-tree {
+#variation-tree, #profile-tree {
+  background-color: white;
   border: 2px solid #115A50;
   height: 550px;
   overflow: hidden;
