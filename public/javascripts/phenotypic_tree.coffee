@@ -14,6 +14,12 @@ class Tree
       
       # This event gets called when anything is added to or removed from the Phenotype list
       term_info_div.change =>
+        # Wait until the spacetree is done animating before we try to make it do anything
+        if @spacetree?.busy
+          return setTimeout =>
+            term_info_div.change()
+          , 10
+
         path = @current_state_path()
 
         # If we're redirecting to change the URL (when pushState is unsupported), don't bother loading anything, but show the loading screen

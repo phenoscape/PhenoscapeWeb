@@ -22,7 +22,12 @@
         term_info_div = $('#term_info');
         initial_page_load = true;
         term_info_div.change(__bind(function() {
-          var path;
+          var path, _ref;
+          if ((_ref = this.spacetree) != null ? _ref.busy : void 0) {
+            return setTimeout(__bind(function() {
+              return term_info_div.change();
+            }, this), 10);
+          }
           path = this.current_state_path();
           if (!initial_page_load && new StateTransition(path).redirecting) {
             this.show_loading();
