@@ -126,8 +126,15 @@
       });
     };
     Tree.prototype.query_callback = function(sequence, root_node, empty_resultset) {
+      var this_method;
       if (empty_resultset == null) {
         empty_resultset = false;
+      }
+      if (this.spacetree.busy) {
+        this_method = arguments.callee;
+        return setTimeout(__bind(function() {
+          return this_method.call(this, sequence, root_node, empty_resultset);
+        }, this), 10);
       }
       if (sequence !== this.sequence) {
         return;

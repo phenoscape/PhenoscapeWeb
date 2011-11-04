@@ -105,6 +105,13 @@ class Tree
       error: => @ajax_error_handler()
   
   query_callback: (sequence, root_node, empty_resultset=false) ->
+    # Wait until the spacetree is done animating before we try to make it do anything
+    if @spacetree.busy
+      this_method = arguments.callee # Can't use self.query_callback, or we'll get the subclass's method
+      return setTimeout =>
+        this_method.call this, sequence, root_node, empty_resultset
+      , 10
+    
     # A user can change options rapidly, and each change sends a new query. Only the most recent results matter.
     # Discard any responses that are not in response to the most recent query.
     return unless sequence is @sequence
