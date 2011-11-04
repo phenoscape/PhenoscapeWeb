@@ -107,11 +107,13 @@
       if (!loading_root) {
         url += "&taxon=" + taxon_id;
       }
+      this.sequence = (this.sequence || 0) + 1;
       return $.ajax({
         url: url,
         type: 'get',
         dataType: 'script',
         data: {
+          sequence: this.sequence,
           levels: loading_root ? 2 : 1,
           authenticitiy_token: AUTH_TOKEN
         },
@@ -123,9 +125,12 @@
         }, this)
       });
     };
-    Tree.prototype.query_callback = function(root_node, empty_resultset) {
+    Tree.prototype.query_callback = function(sequence, root_node, empty_resultset) {
       if (empty_resultset == null) {
         empty_resultset = false;
+      }
+      if (sequence !== this.sequence) {
+        return;
       }
       this.hide_loading();
       if (root_node.data.is_root) {
@@ -271,8 +276,11 @@
       ProfileTree.__super__.load_selected_terms.call(this);
       return this.term_count = $("#term_info .phenotype").length;
     };
-    ProfileTree.prototype.query_callback = function(matches, root_taxon_id) {
+    ProfileTree.prototype.query_callback = function(sequence, matches, root_taxon_id) {
       var empty_resultset, match, match_child, node, root_node, _i, _j, _len, _len2, _ref;
+      if (sequence !== this.sequence) {
+        return;
+      }
       root_node = this.find_node(root_taxon_id) || this.root_node;
       matches = matches.sortBy(function(m) {
         return m.name;
@@ -296,7 +304,7 @@
         }
       }
       empty_resultset = matches.length === 0;
-      return ProfileTree.__super__.query_callback.call(this, root_node, empty_resultset);
+      return ProfileTree.__super__.query_callback.call(this, sequence, root_node, empty_resultset);
     };
     ProfileTree.prototype.current_state_path = function() {
       return this.options.base_path + "?" + $('form[name=complex_query_form]').serialize();
@@ -485,12 +493,15 @@
         }
       });
     };
-    VariationTree.prototype.query_callback = function(phenotype_sets, root_taxon_id, taxon_data) {
+    VariationTree.prototype.query_callback = function(sequence, phenotype_sets, root_taxon_id, taxon_data) {
       var root_node;
+      if (sequence !== this.sequence) {
+        return;
+      }
       this.change_taxon(root_taxon_id, taxon_data[root_taxon_id].name);
       root_node = this.build_tree(phenotype_sets, root_taxon_id, taxon_data);
       this.populate_phenotype_table(phenotype_sets);
-      return VariationTree.__super__.query_callback.call(this, root_node);
+      return VariationTree.__super__.query_callback.call(this, sequence, root_node);
     };
     VariationTree.prototype.build_tree = function(phenotype_sets, root_taxon_id, taxon_data) {
       var current_taxon_node, root_node, _ref;

@@ -62,7 +62,7 @@ class PhenotypesController < ApplicationController
           end
         end
         
-        render :js => "window.profile_tree.query_callback(JSON.decode('#{@taxa['matches'].to_json}'), '#{params[:taxon]}')"
+        render :js => "window.profile_tree.query_callback(#{params[:sequence].to_i}, JSON.decode('#{@taxa['matches'].to_json}'), '#{params[:taxon]}')"
       end
     end
   end
@@ -99,7 +99,7 @@ class PhenotypesController < ApplicationController
         # Remove phenotype sets with no taxa
         phenotype_sets.delete_if { |set| set['taxa'].empty? }
         
-        render :js => "window.variation_tree.query_callback(JSON.decode('#{phenotype_sets.to_json}'), '#{parent_taxon_id}', JSON.decode('#{@filter_term_names.to_json}'))"
+        render :js => "window.variation_tree.query_callback(#{params[:sequence].to_i}, JSON.decode('#{phenotype_sets.to_json}'), '#{parent_taxon_id}', JSON.decode('#{@filter_term_names.to_json}'))"
       end
     end
   end

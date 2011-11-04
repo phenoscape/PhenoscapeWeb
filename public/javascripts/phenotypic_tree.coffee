@@ -92,17 +92,23 @@ class Tree
     url = "#{@options.base_path}?#{decodeURIComponent(@term_params)}" # @term_params set in load_selected_terms
     url += "&taxon=#{taxon_id}" unless loading_root
 
+    @sequence = (@sequence || 0) + 1
     $.ajax
       url: url
       type: 'get'
       dataType: 'script'
       data:
+        sequence: @sequence
         levels: if loading_root then 2 else 1
         authenticitiy_token: AUTH_TOKEN
       success: => @hide_error()
       error: => @ajax_error_handler()
   
-  query_callback: (root_node, empty_resultset=false) ->
+  query_callback: (sequence, root_node, empty_resultset=false) ->
+    # A user can change options rapidly, and each change sends a new query. Only the most recent results matter.
+    # Discard any responses that are not in response to the most recent query.
+    return unless sequence is @sequence
+
     @hide_loading()
 
     if root_node.data.is_root
@@ -218,7 +224,11 @@ class ProfileTree extends Tree
     @term_count = $("#term_info .phenotype").length
   
   # Converts matches from the data source into TreeNodes and stores them in the tree
-  query_callback: (matches, root_taxon_id) ->
+  query_callback: (sequence, matches, root_taxon_id) ->
+    # A user can change options rapidly, and each change sends a new query. Only the most recent results matter.
+    # Discard any responses that are not in response to the most recent query.
+    return unless sequence is @sequence
+
     root_node = @find_node(root_taxon_id) || @root_node
     matches = matches.sortBy (m) -> m.name
     for match in matches
@@ -229,7 +239,7 @@ class ProfileTree extends Tree
           node.find_or_create_child @, match_child.taxon_id, match_child.name, greatest_profile_match: match_child.greatest_profile_match
     
     empty_resultset = (matches.length == 0)
-    super root_node, empty_resultset
+    super sequence, root_node, empty_resultset
     
   current_state_path: ->
     @options.base_path + "?" + $('form[name=complex_query_form]').serialize()
@@ -382,11 +392,15 @@ class VariationTree extends Tree
   
   # Converts phenotype_sets from the data source into TreeNodes and stores them in the tree.
   # Also builds the phenotypes table.
-  query_callback: (phenotype_sets, root_taxon_id, taxon_data) ->
+  query_callback: (sequence, phenotype_sets, root_taxon_id, taxon_data) ->
+    # A user can change options rapidly, and each change sends a new query. Only the most recent results matter.
+    # Discard any responses that are not in response to the most recent query.
+    return unless sequence is @sequence
+
     @change_taxon root_taxon_id, taxon_data[root_taxon_id].name
     root_node = @build_tree phenotype_sets, root_taxon_id, taxon_data
     @populate_phenotype_table phenotype_sets
-    super root_node
+    super sequence, root_node
   
   build_tree: (phenotype_sets, root_taxon_id, taxon_data) ->
     root_node = current_taxon_node = @find_node(root_taxon_id)
