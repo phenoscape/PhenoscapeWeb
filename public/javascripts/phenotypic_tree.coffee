@@ -63,8 +63,7 @@ class Tree
     @root_node = null
     try
       @spacetree.removeSubtree(@spacetree.root, true, 'replot') if @spacetree?
-    catch err
-      console.log err if console?.log
+    catch err # we expect this to sometimes throw an exception, depending on the state. It doesn't matter though.
   
   initialize_spacetree: ->
     # If the first level has only one child, replace the root with that child

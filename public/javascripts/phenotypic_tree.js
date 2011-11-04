@@ -72,9 +72,7 @@
           return this.spacetree.removeSubtree(this.spacetree.root, true, 'replot');
         }
       } catch (err) {
-        if (typeof console !== "undefined" && console !== null ? console.log : void 0) {
-          return console.log(err);
-        }
+
       }
     };
     Tree.prototype.initialize_spacetree = function() {
