@@ -4,13 +4,22 @@ $ = jQuery
 class Tree
   constructor: (@container_id) ->
     $ => # DOM ready
-      $("##{@container_id}").css('visibility', 'hidden') # Tree should not be visible at first
+      container = $("##{@container_id}")
+      container.css('visibility', 'hidden') # Tree should not be visible at first
+      @options ||= {}
+      @options.loading_background_color = "#DDE9EE"
 
       term_info_div = $('#term_info')
       initial_page_load = true
       
       # This event gets called when anything is added to or removed from the Phenotype list
       term_info_div.change =>
+        # Wait until the spacetree is done animating before we try to make it do anything
+        if @spacetree?.busy
+          return setTimeout =>
+            term_info_div.change()
+          , 10
+
         path = @current_state_path()
 
         # If we're redirecting to change the URL (when pushState is unsupported), don't bother loading anything, but show the loading screen
@@ -60,8 +69,7 @@ class Tree
     @root_node = null
     try
       @spacetree.removeSubtree(@spacetree.root, true, 'replot') if @spacetree?
-    catch err
-      console.log err if console?.log
+    catch err # we expect this to sometimes throw an exception, depending on the state. It doesn't matter though.
   
   initialize_spacetree: ->
     # If the first level has only one child, replace the root with that child
@@ -89,16 +97,30 @@ class Tree
     url = "#{@options.base_path}?#{decodeURIComponent(@term_params)}" # @term_params set in load_selected_terms
     url += "&taxon=#{taxon_id}" unless loading_root
 
+    @sequence = (@sequence || 0) + 1
     $.ajax
       url: url
       type: 'get'
       dataType: 'script'
       data:
+        sequence: @sequence
         levels: if loading_root then 2 else 1
         authenticitiy_token: AUTH_TOKEN
-      error: @ajax_error_handler
+      success: => @hide_error()
+      error: => @ajax_error_handler()
   
-  query_callback: (root_node, empty_resultset=false) ->
+  query_callback: (sequence, root_node, empty_resultset=false) ->
+    # Wait until the spacetree is done animating before we try to make it do anything
+    if @spacetree.busy
+      this_method = arguments.callee # Can't use self.query_callback, or we'll get the subclass's method
+      return setTimeout =>
+        this_method.call this, sequence, root_node, empty_resultset
+      , 10
+    
+    # A user can change options rapidly, and each change sends a new query. Only the most recent results matter.
+    # Discard any responses that are not in response to the most recent query.
+    return unless sequence is @sequence
+
     @hide_loading()
 
     if root_node.data.is_root
@@ -130,7 +152,8 @@ class Tree
     @loading_spinner ?= new Spinner(opts).spin(document.getElementById("#{@container_id}-loading");)
     
     
-    $("##{@container_id}").animate {backgroundColor: '#BBE2D6'},
+    self = @
+    $("##{@container_id}").animate {backgroundColor: self.options.loading_background_color},
       duration: 'fast'
       queue: true
     
@@ -146,12 +169,10 @@ class Tree
         $("##{@container_id}-loading").hide() unless @loading # Check @loading because of potential race conditions - if started loading again while fading out
   
   ajax_error_handler: (jqXHR, textStatus, errorThrown) ->
-    alert 'There was a problem requesting data. Check your internet connection or report this problem in feedback.'
-    if console
-      console.log "Error:"
-      console.log jqXHR
-      console.log textStatus
-      console.log errorThrown
+    $("##{@container_id}").prepend $('<div class="error rounded-small visualize-area">An error occurred. You might reload the page and try again.</div>')
+  
+  hide_error: ->
+    $("##{@container_id} .error").remove()
   
   find_node: (id) ->
     return null unless id? && id.length > 0
@@ -215,7 +236,11 @@ class ProfileTree extends Tree
     @term_count = $("#term_info .phenotype").length
   
   # Converts matches from the data source into TreeNodes and stores them in the tree
-  query_callback: (matches, root_taxon_id) ->
+  query_callback: (sequence, matches, root_taxon_id) ->
+    # A user can change options rapidly, and each change sends a new query. Only the most recent results matter.
+    # Discard any responses that are not in response to the most recent query.
+    return unless sequence is @sequence
+
     root_node = @find_node(root_taxon_id) || @root_node
     matches = matches.sortBy (m) -> m.name
     for match in matches
@@ -226,7 +251,7 @@ class ProfileTree extends Tree
           node.find_or_create_child @, match_child.taxon_id, match_child.name, greatest_profile_match: match_child.greatest_profile_match
     
     empty_resultset = (matches.length == 0)
-    super root_node, empty_resultset
+    super sequence, root_node, empty_resultset
     
   current_state_path: ->
     @options.base_path + "?" + $('form[name=complex_query_form]').serialize()
@@ -320,7 +345,6 @@ class VariationTree extends Tree
       onCreateLabel: (label, node) => @create_label label, node
     
     @load_suggested_taxa()
-    @check_top_level()
   
   destroy_spacetree: ->
     $('#variation-table').hide().find('tbody').empty()
@@ -370,7 +394,7 @@ class VariationTree extends Tree
       success: (data) ->
         suggested_taxa = $('#suggested-taxa')
         suggested_taxa.html ''
-        for taxon in data.taxa
+        data.taxa.sortBy((taxon) -> taxon.name).each (taxon) ->
           link = $("<a href='#' class='suggested-taxon'>#{taxon.name}</a>")
           link.click (event) ->
             event.preventDefault()
@@ -378,18 +402,17 @@ class VariationTree extends Tree
             $('#term_filter_form').submit()
           link.appendTo suggested_taxa
   
-  # If we're at the top level of the tree, there's lots of uninteresting taxa to click through to get to anything real. Open the suggested taxa dialog.
-  check_top_level: ->
-    if !window.location.search
-      $ -> $('#change-suggest-button').click()
-  
   # Converts phenotype_sets from the data source into TreeNodes and stores them in the tree.
   # Also builds the phenotypes table.
-  query_callback: (phenotype_sets, root_taxon_id, taxon_data) ->
+  query_callback: (sequence, phenotype_sets, root_taxon_id, taxon_data) ->
+    # A user can change options rapidly, and each change sends a new query. Only the most recent results matter.
+    # Discard any responses that are not in response to the most recent query.
+    return unless sequence is @sequence
+
     @change_taxon root_taxon_id, taxon_data[root_taxon_id].name
     root_node = @build_tree phenotype_sets, root_taxon_id, taxon_data
     @populate_phenotype_table phenotype_sets
-    super root_node
+    super sequence, root_node
   
   build_tree: (phenotype_sets, root_taxon_id, taxon_data) ->
     root_node = current_taxon_node = @find_node(root_taxon_id)

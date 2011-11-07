@@ -1,6 +1,11 @@
 <%= javascript_include_tag 'workspace' %>
 <% categories = %w(Taxa Genes Entities Qualities Publications Phenotypes) %>
 
+<% form_tag workspace_path, :method => :delete, :id => 'clear-workspace-form' do %>
+  <input type="hidden" name="clear_workspace" value="true">
+  <input type="hidden" name="_method" value="delete">
+<% end %>
+
 <div id="workspace">
   <form method="get">
     <% empty_workspace = session[:workspace].empty? || session[:workspace].values.flatten.empty? %>
@@ -24,13 +29,17 @@
     <div id="search_main">
       <% if empty_workspace %>
         <p>Your workspace is currently empty.</p>
+        <p>You can add phenotypes with the <%= image_tag 'add.png' %> button on any of the query pages, such as the <a href="/phenotypes">phenotype query page</a>.</p>
       <% else %>
-        <div class="header rounded-large shadow-medium">Send selections to: 
+        <div class="header rounded-large shadow-medium">
+          <%= button_to_function 'Clear Workspace', 'jQuery("#clear-workspace-form").submit()', :style => 'margin-right: 158px;' %>
+          
+          Send selections to: 
           <%= render :partial => 'shared/related_query_links', :locals => {:phenotypic_profile_tree => true} %>
         </div>
       <% end %>
-      <p>Click on any of the saved workspace items to the left to include them in a new query.</p>
       <% unless empty_workspace %>
+        <p>Click on any of the saved workspace items to the left to include them in a new query.</p>
         <div class="query_options">
           <% categories.each do |category| %>
             <div class="section_options" id="<%= category.underscore %>_options">

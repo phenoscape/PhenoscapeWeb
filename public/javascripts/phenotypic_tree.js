@@ -14,12 +14,20 @@
     function Tree(container_id) {
       this.container_id = container_id;
       $(__bind(function() {
-        var initial_page_load, term_info_div;
-        $("#" + this.container_id).css('visibility', 'hidden');
+        var container, initial_page_load, term_info_div;
+        container = $("#" + this.container_id);
+        container.css('visibility', 'hidden');
+        this.options || (this.options = {});
+        this.options.loading_background_color = "#DDE9EE";
         term_info_div = $('#term_info');
         initial_page_load = true;
         term_info_div.change(__bind(function() {
-          var path;
+          var path, _ref;
+          if ((_ref = this.spacetree) != null ? _ref.busy : void 0) {
+            return setTimeout(__bind(function() {
+              return term_info_div.change();
+            }, this), 10);
+          }
           path = this.current_state_path();
           if (!initial_page_load && new StateTransition(path).redirecting) {
             this.show_loading();
@@ -69,9 +77,7 @@
           return this.spacetree.removeSubtree(this.spacetree.root, true, 'replot');
         }
       } catch (err) {
-        if (typeof console !== "undefined" && console !== null ? console.log : void 0) {
-          return console.log(err);
-        }
+
       }
     };
     Tree.prototype.initialize_spacetree = function() {
@@ -104,20 +110,37 @@
       if (!loading_root) {
         url += "&taxon=" + taxon_id;
       }
+      this.sequence = (this.sequence || 0) + 1;
       return $.ajax({
         url: url,
         type: 'get',
         dataType: 'script',
         data: {
+          sequence: this.sequence,
           levels: loading_root ? 2 : 1,
           authenticitiy_token: AUTH_TOKEN
         },
-        error: this.ajax_error_handler
+        success: __bind(function() {
+          return this.hide_error();
+        }, this),
+        error: __bind(function() {
+          return this.ajax_error_handler();
+        }, this)
       });
     };
-    Tree.prototype.query_callback = function(root_node, empty_resultset) {
+    Tree.prototype.query_callback = function(sequence, root_node, empty_resultset) {
+      var this_method;
       if (empty_resultset == null) {
         empty_resultset = false;
+      }
+      if (this.spacetree.busy) {
+        this_method = arguments.callee;
+        return setTimeout(__bind(function() {
+          return this_method.call(this, sequence, root_node, empty_resultset);
+        }, this), 10);
+      }
+      if (sequence !== this.sequence) {
+        return;
       }
       this.hide_loading();
       if (root_node.data.is_root) {
@@ -136,7 +159,7 @@
       }
     };
     Tree.prototype.show_loading = function() {
-      var opts, _ref;
+      var opts, self, _ref;
       this.loading = true;
       opts = {
         lines: 12,
@@ -151,8 +174,9 @@
       if ((_ref = this.loading_spinner) == null) {
         this.loading_spinner = new Spinner(opts).spin(document.getElementById("" + this.container_id + "-loading"));
       }
+      self = this;
       $("#" + this.container_id).animate({
-        backgroundColor: '#BBE2D6'
+        backgroundColor: self.options.loading_background_color
       }, {
         duration: 'fast',
         queue: true
@@ -174,13 +198,10 @@
       });
     };
     Tree.prototype.ajax_error_handler = function(jqXHR, textStatus, errorThrown) {
-      alert('There was a problem requesting data. Check your internet connection or report this problem in feedback.');
-      if (console) {
-        console.log("Error:");
-        console.log(jqXHR);
-        console.log(textStatus);
-        return console.log(errorThrown);
-      }
+      return $("#" + this.container_id).prepend($('<div class="error rounded-small visualize-area">An error occurred. You might reload the page and try again.</div>'));
+    };
+    Tree.prototype.hide_error = function() {
+      return $("#" + this.container_id + " .error").remove();
     };
     Tree.prototype.find_node = function(id) {
       var result_node, search_nodes;
@@ -265,8 +286,11 @@
       ProfileTree.__super__.load_selected_terms.call(this);
       return this.term_count = $("#term_info .phenotype").length;
     };
-    ProfileTree.prototype.query_callback = function(matches, root_taxon_id) {
+    ProfileTree.prototype.query_callback = function(sequence, matches, root_taxon_id) {
       var empty_resultset, match, match_child, node, root_node, _i, _j, _len, _len2, _ref;
+      if (sequence !== this.sequence) {
+        return;
+      }
       root_node = this.find_node(root_taxon_id) || this.root_node;
       matches = matches.sortBy(function(m) {
         return m.name;
@@ -290,7 +314,7 @@
         }
       }
       empty_resultset = matches.length === 0;
-      return ProfileTree.__super__.query_callback.call(this, root_node, empty_resultset);
+      return ProfileTree.__super__.query_callback.call(this, sequence, root_node, empty_resultset);
     };
     ProfileTree.prototype.current_state_path = function() {
       return this.options.base_path + "?" + $('form[name=complex_query_form]').serialize();
@@ -404,8 +428,7 @@
           return this.create_label(label, node);
         }, this)
       });
-      this.load_suggested_taxa();
-      return this.check_top_level();
+      return this.load_suggested_taxa();
     };
     VariationTree.prototype.destroy_spacetree = function() {
       $('#variation-table').hide().find('tbody').empty();
@@ -462,38 +485,33 @@
           return this.load_suggested_taxa(attempt + 1);
         }, this),
         success: function(data) {
-          var link, suggested_taxa, taxon, _i, _len, _ref, _results;
+          var suggested_taxa;
           suggested_taxa = $('#suggested-taxa');
           suggested_taxa.html('');
-          _ref = data.taxa;
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            taxon = _ref[_i];
+          return data.taxa.sortBy(function(taxon) {
+            return taxon.name;
+          }).each(function(taxon) {
+            var link;
             link = $("<a href='#' class='suggested-taxon'>" + taxon.name + "</a>");
             link.click(function(event) {
               event.preventDefault();
               $('#term_id').val(taxon.id);
               return $('#term_filter_form').submit();
             });
-            _results.push(link.appendTo(suggested_taxa));
-          }
-          return _results;
+            return link.appendTo(suggested_taxa);
+          });
         }
       });
     };
-    VariationTree.prototype.check_top_level = function() {
-      if (!window.location.search) {
-        return $(function() {
-          return $('#change-suggest-button').click();
-        });
-      }
-    };
-    VariationTree.prototype.query_callback = function(phenotype_sets, root_taxon_id, taxon_data) {
+    VariationTree.prototype.query_callback = function(sequence, phenotype_sets, root_taxon_id, taxon_data) {
       var root_node;
+      if (sequence !== this.sequence) {
+        return;
+      }
       this.change_taxon(root_taxon_id, taxon_data[root_taxon_id].name);
       root_node = this.build_tree(phenotype_sets, root_taxon_id, taxon_data);
       this.populate_phenotype_table(phenotype_sets);
-      return VariationTree.__super__.query_callback.call(this, root_node);
+      return VariationTree.__super__.query_callback.call(this, sequence, root_node);
     };
     VariationTree.prototype.build_tree = function(phenotype_sets, root_taxon_id, taxon_data) {
       var current_taxon_node, root_node, _ref;

@@ -20,11 +20,11 @@
       <div id="term_info" class="visualize-area rounded-medium shadow-small">
         <div class='section'>
           Limit tree to
-		 <div style="height: 6px;">&nbsp;</div>
+          <div style="height: 6px;">&nbsp;</div>
           <span id="current_taxon_name" class="rounded-small">(loading)</span>
           <%= link_to_function image_tag('remove.png'), 'jQuery(document.getElementById(variation_tree.spacetree.root)).click(); jQuery(this).hide();', :id => 'clear-limit-tree-to', :style => 'display: none;' %>
-		 <div style="height: 6px;">&nbsp;</div>
-          <%= button_to_function 'change/suggest', "clearInputs(['#popupTermChoice','#term_id']);jQuery('#term_filter_container').dialog('open');", :id => 'change-suggest-button' %>
+          <div style="height: 6px;">&nbsp;</div>
+          <%= button_to_function 'change/suggest', "clearInputs(['#popupTermChoice','#term_id']);jQuery('#term_filter_container').dialog('open');" %>
           <input type="hidden" id="current_taxon_id" name="filter[taxa][0]" value="<%= params[:filter][:taxa]["0"] rescue "" %>">
         </div>
         <div class="section">
@@ -64,7 +64,6 @@
       No results.
     </div>
     <div id="variation-tree" class="visualize-area rounded-small" style="background-color: #eef3f6 !important;">
-      
     </div>
   </div>
   
