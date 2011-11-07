@@ -19,7 +19,7 @@ h3#feedHeader {color: #0a3a34;}
 h1.top_logo_holder {float: left;}
 div.header-message {padding: 0.0em 0.75em; border: 1px solid #ccc; color: #333; background-color: #f3f3f3; font-size: 0.9em; font-style: italic; line-height: 1.2em; margin: 6px 10px 10px 344px;}
 div.header-message a {font-weight: bold;}
-.feedback-widget {clear: right; float: right; margin: 0px -4px 8px 12px; border: 2px solid #fff; padding: 5px 16px; background-color:  #276; background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #276), color-stop(100%, #000000)); background-image: -webkit-linear-gradient(top, #276, #000000); background-image: -moz-linear-gradient(top, #276, #000000); background-image: -o-linear-gradient(top, #276, #000000); background-image: -ms-linear-gradient(top, #276, #000000); background-image: linear-gradient(top, #276, #000000);}
+.feedback-widget {clear: right; float: right; margin: 0px -4px 8px 12px; border: none; padding: 7px 18px; background-color:  #276; background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #276), color-stop(100%, #000000)); background-image: -webkit-linear-gradient(top, #276, #000000); background-image: -moz-linear-gradient(top, #276, #000000); background-image: -o-linear-gradient(top, #276, #000000); background-image: -ms-linear-gradient(top, #276, #000000); background-image: linear-gradient(top, #276, #000000);}
 div.header-message .feedback-widget {margin: 4px -22px 0px 12px;}
 .feedback-widget a { color: #fff; font-style: normal; font-size: 120%; }
 .feedback-widget a:visited {color: #fff;}
@@ -27,7 +27,7 @@ div.header-message .feedback-widget {margin: 4px -22px 0px 12px;}
 .rounded-small { -webkit-border-radius: 4px 4px; -moz-border-radius: 4px / 4px; -o-border-radius: 4px / 4px; -ms-border-radius: 4px / 4px; -khtml-border-radius: 4px / 4px; border-radius: 4px / 4px; }
 .rounded-medium { -webkit-border-radius: 8px 8px; -moz-border-radius: 8px / 8px; -o-border-radius: 8px / 8px; -ms-border-radius: 8px / 8px; -khtml-border-radius: 8px / 8px; border-radius: 8px / 8px; }
 .rounded-large { -webkit-border-radius: 12px 12px; -moz-border-radius: 12px / 12px; -o-border-radius: 12px / 12px; -ms-border-radius: 12px / 12px; -khtml-border-radius: 12px / 12px; border-radius: 12px / 12px; }
-
+  
 img {border: none;}
 h1 {margin-bottom: 0; color: rgb(159, 0, 2); font-size: 12pt;}
 h1 img {float: left;}
@@ -76,7 +76,8 @@ tr.odd {background-color: #EBECEE;}
 #navbar a.breadcrumb-visualize {background-color: #DDE9EE;}
 #navbar a.breadcrumb-unknown {background-color: #AA1111; color: #fff;}
 
-.lateral-nav-dot {color: #0a3a34; width: 0px; padding: 4px 10px; border: none;}
+.lateral-nav-link {color: #0a3a34; border: 1px solid #555; width: 0px; padding: 2px 8px; margin: 0 0.1em;}
+a:hover .lateral-nav-link {text-decoration: underline;}
 
 .top_logo {height: 100px;}
 .relation-name {font-style: italic;}
@@ -86,6 +87,28 @@ tr.odd {background-color: #EBECEE;}
 #data-browse { -moz-border-radius-topright: 18px; border-top-right-radius: 18px; }
 #data-query { -moz-border-radius-bottomleft: 18px; border-bottom-left-radius: 18px; }
 #data-viz { -moz-border-radius-bottomright: 18px; border-bottom-right-radius: 18px; }
+
+.shadow-small, #search-forms:hover, #data-browse:hover, #data-query:hover, #data-viz:hover {	
+  -moz-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  -webkit-box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=135, Color='#999999')";
+  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=135, Color='#999999');
+}
+.shadow-medium {	
+  -moz-box-shadow: 4px 4px 6px rgba(0,0,0,0.5);
+  -webkit-box-shadow: 4px 4px 6px rgba(0,0,0,0.5);
+  box-shadow: 4px 4px 6px rgba(0,0,0,0.5);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#999999')";
+  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#999999');
+}
+.shadow-rightonly, .Xsection_heading {
+  -moz-box-shadow: 0px 2px 4px rgba(0,0,0,0.5);
+  -webkit-box-shadow: 0px 2px 4px rgba(0,0,0,0.5);
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.5);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=90, Color='#999999')";
+  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=90, Color='#999999');
+}
 
 /* distinct colors for different discovery tools */
 #search-forms, .search-area { background-color: #eee3ee !important; border-color: #DCD !important; }
@@ -138,7 +161,7 @@ div#term_info .header {font-weight: bold;font-size:120%;margin-bottom: 10px; pad
 #term_info .green_heading {color: #444; font-weight: bold; font-size: 17px; letter-spacing: -1px;}
 
 div.search_area .section_heading {display: inline-block; margin-bottom: -1px; background-color: #ddd; color: #333; margin-left: 3px; margin-right: 1em; padding: 4px 6px 3px; border: 1px solid #999; border-bottom: none; -moz-border-radius-topleft: 9px; border-top-left-radius: 9px; -moz-border-radius-topright: 9px; border-top-right-radius: 9px;}
-div.search_area .section {border: 1px solid #115A50; margin-left: 3px; margin-right: 1em; margin-bottom: 15px; padding: 8px;  -moz-border-radius-topleft: 0px; border-top-left-radius: 0px;}
+div.search_area .section {position: relative; border: 1px solid #115A50; margin-left: 3px; margin-right: 1em; margin-bottom: 15px; padding: 8px;  -moz-border-radius-topleft: 0px; border-top-left-radius: 0px;}
 
 .yui-skin-sam .yui-ac-input { position: static; width: 100%;}
 .yui-skin-sam .yui-ac-container {max-height: 400px;}
