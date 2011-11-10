@@ -83,6 +83,9 @@ class Tree
     unless @spacetree.graph.getNode(@spacetree.root).data.leaf_node
       @spacetree.onClick @spacetree.root
   
+  center_canvas: (options) ->
+    @spacetree.canvas.translate(-@spacetree.canvas.translateOffsetX, -@spacetree.canvas.translateOffsetY)
+  
   load_selected_terms: ->
     @term_params = $("form#query_form}}").serialize()
   
@@ -213,13 +216,15 @@ class ProfileTree extends Tree
       request: (nodeId, level, onComplete) =>
         @update_spacetree_callback = onComplete.onComplete
         @query nodeId
-      onCreateLabel: (label, node) ->
+      onCreateLabel: (label, node) =>
         # Set label style
         label = $(label)
         label.attr 'id', node.id
         label.html node.name
         unless node.data.leaf_node
-          label.click -> window.profile_tree.spacetree.onClick node.id
+          label.click =>
+            @center_canvas()
+            window.profile_tree.spacetree.onClick node.id
         label.css
           cursor: 'pointer'
           color: '#333'
@@ -584,6 +589,9 @@ class VariationTreeNode extends TreeNode
   @on_click: (event, tree, node, taxon) ->
     event.preventDefault()
     target = $(event.target)
+    
+    # Center the canvas if we've panned a far way off
+    tree.center_canvas()
     
     # Don't do anything when the current node is clicked or the tree is busy.
     return if target.hasClass 'current' or tree.spacetree.busy
