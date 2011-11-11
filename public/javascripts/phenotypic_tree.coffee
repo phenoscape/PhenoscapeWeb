@@ -562,7 +562,7 @@ class ProfileTreeNode extends TreeNode
   color: ->
     percentage = @data.greatest_profile_match / @tree.term_count
     if percentage < .50 or @data.leaf_node
-      'lightgray'
+      '#D3D3D3' # lightgray doesn't render the right color in IE
     else if percentage  < .75
       'yellow'
     else if percentage  < 1

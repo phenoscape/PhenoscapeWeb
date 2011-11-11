@@ -704,7 +704,7 @@
       var percentage;
       percentage = this.data.greatest_profile_match / this.tree.term_count;
       if (percentage < .50 || this.data.leaf_node) {
-        return 'lightgray';
+        return '#D3D3D3';
       } else if (percentage < .75) {
         return 'yellow';
       } else if (percentage < 1) {
