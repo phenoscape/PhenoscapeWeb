@@ -92,6 +92,9 @@
         return this.spacetree.onClick(this.spacetree.root);
       }
     };
+    Tree.prototype.center_canvas = function(options) {
+      return this.spacetree.canvas.translate(-this.spacetree.canvas.translateOffsetX, -this.spacetree.canvas.translateOffsetY);
+    };
     Tree.prototype.load_selected_terms = function() {
       return this.term_params = $("form#query_form}}").serialize();
     };
@@ -257,14 +260,15 @@
           this.update_spacetree_callback = onComplete.onComplete;
           return this.query(nodeId);
         }, this),
-        onCreateLabel: function(label, node) {
+        onCreateLabel: __bind(function(label, node) {
           label = $(label);
           label.attr('id', node.id);
           label.html(node.name);
           if (!node.data.leaf_node) {
-            label.click(function() {
+            label.click(__bind(function() {
+              this.center_canvas();
               return window.profile_tree.spacetree.onClick(node.id);
-            });
+            }, this));
           }
           return label.css({
             cursor: 'pointer',
@@ -273,7 +277,7 @@
             padding: '3px',
             'white-space': 'nowrap'
           });
-        }
+        }, this)
       });
     };
     ProfileTree.prototype.update_spacetree = function(node) {
@@ -700,7 +704,7 @@
       var percentage;
       percentage = this.data.greatest_profile_match / this.tree.term_count;
       if (percentage < .50 || this.data.leaf_node) {
-        return 'lightgray';
+        return '#D3D3D3';
       } else if (percentage < .75) {
         return 'yellow';
       } else if (percentage < 1) {
@@ -742,6 +746,7 @@
       var child, old_current_id, subtree, subtree_id, target;
       event.preventDefault();
       target = $(event.target);
+      tree.center_canvas();
       if (target.hasClass('current' || tree.spacetree.busy)) {
         return;
       }
