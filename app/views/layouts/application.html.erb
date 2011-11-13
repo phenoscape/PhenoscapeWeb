@@ -19,7 +19,7 @@
  		when 'term, gene':
  			# Should this actually say 'Browse genes'? (currently has no browser UI!)
  			bc_class = 'breadcrumb-search'
- 			bc_text = 'Find a specific term'
+ 			bc_text = 'Gene detail'
  			bc_url = '/'
  			page_title = bc_text
     	
@@ -45,6 +45,11 @@
  			bc_class = 'breadcrumb-browse'
  			bc_text = 'Browse phenotypic qualities'
  			bc_url = '/term/index/PATO:0000001'
+ 			page_title = bc_text
+		when 'term, publication':
+			bc_class = 'breadcrumb-browse'
+ 			bc_text = 'Publication detail'
+ 			bc_url = '/'
  			page_title = bc_text
  		# TODO: Add 'Browse genes' when it's ready
  		# TODO: Add 'Browse comparative publications' when it's ready
