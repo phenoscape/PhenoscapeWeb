@@ -1,5 +1,5 @@
 <% width = defined?(width) && !width.blank? ? width : '500' %>
-<input type="text" id="termChoice" style='width: <%= width %>px'>
+<input type="text" id="termChoice" style='width: <%= width %>px' spellcheck="false">
 <%= hidden_field_tag :ac_term_id %>
 <%= hidden_field_tag :ac_term_source %>
 
