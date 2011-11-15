@@ -1,3 +1,5 @@
+<%= javascript_include_tag 'workspace' %>
+
 <h3 class='facet_header'>Phenotypes involving <%= display_green_term(:quality) %> for <%= display_green_term(:entity) %> with
   <%= display_green_term(:related_entity) %> in <%= display_green_term(:taxon) %> or <%= display_green_term(:gene) %></h3>
 
@@ -52,6 +54,7 @@
     
     <table class="search_results rounded-small sortable">
       <tr>
+		<th class="always-show-help"><a href="#" id="save-all" title="Save all results on this page to workspace"><img src="/images/add.png"></a><a href="/hints/WebHints#AboutTheWorkspace" class="help-link"><img src="/images/help.png" alt="help"></a></th>
         <% shared_locals = {:controller => "phenotypes", :action => "facets"} %>
         <%= sort_column 'Entity', 'entity', shared_locals %>
         <%= sort_column 'Quality', 'quality', shared_locals %>
@@ -59,6 +62,7 @@
       </tr>
       <% for phenotype in @phenotypes['phenotypes'] %>
         <tr class="<%= cycle('odd','even') %>">
+		  <td><a href="#" class="save" title="Save to workspace" category="phenotypes" <%= json_rel_for('phenotypes', phenotype) %>><img src="/images/add.png"></a></td>
           <td class="post-composable"><%= term_link(phenotype['entity']) if phenotype['entity'] %></td>
           <td class="post-composable"><%= term_link(phenotype['quality']) if phenotype['quality'] %></td>
           <td class="post-composable"><%= term_link(phenotype['related_entity']) if phenotype['related_entity'] %></td>
