@@ -375,9 +375,11 @@ a.toggle_link:hover {text-decoration: underline;}
 #profile-tree-key {
   margin-top: 10px;
   position: absolute;
-  right: 20px;
+  right: 15px;
   white-space: nowrap;
   z-index: 1;
+  width: 11em;
+  text-align: center;
 }
 
 #profile-tree-key .key {
