@@ -249,7 +249,7 @@ table.search_results tr {height: 31px;}
 
 table.popup_table th {background-color: white; color: black; text-align: right; font-weight: normal;}
 
-.download_links {margin: 20px 0px 0px 10px; font-size: 90%;}
+.download_links {margin: 7px 0px 0px 10px; font-size: 90%; background-color: #f3f3f3; border: 1px solid #ccc; float: left; padding: 10px 14px;}
 .download_links ul {margin: 0px; padding: 0px;}
 .download_links li {margin: 2px 0px 2px 20px; padding: 0px;}
 
