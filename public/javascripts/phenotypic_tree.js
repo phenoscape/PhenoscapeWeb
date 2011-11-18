@@ -165,15 +165,8 @@
       });
     };
     Tree.prototype.query_callback = function(sequence, root_node, empty_resultset) {
-      var this_method;
       if (empty_resultset == null) {
         empty_resultset = false;
-      }
-      if (this.spacetree.busy) {
-        this_method = arguments.callee;
-        return setTimeout(__bind(function() {
-          return this_method.call(this, sequence, root_node, empty_resultset);
-        }, this), 10);
       }
       if (sequence !== this.sequence) {
         return;
@@ -547,6 +540,11 @@
       var root_node;
       if (sequence !== this.sequence) {
         return;
+      }
+      if (this.spacetree.busy) {
+        return setTimeout(__bind(function() {
+          return self.query_callback.call(this, sequence, phenotype_sets, root_taxon_id, taxon_data);
+        }, this), 10);
       }
       this.change_taxon(root_taxon_id, taxon_data[root_taxon_id].name);
       root_node = this.build_tree(phenotype_sets, root_taxon_id, taxon_data);
