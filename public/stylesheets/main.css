@@ -127,7 +127,7 @@ a:hover .lateral-nav-link {text-decoration: underline;}
 
 .search-instructions {margin-top: 0; font-size: 80%; font-style: italic; line-height: 1.1em;}
 #upperTermChoiceGroup {float: right; width: 33em; margin-right: 0; text-align: right; font-family: Helvetica, sans-serif;}
-#upperSearchExamples {width: 43em; float: right; font-size: 75%; font-style: italic;}
+#upperSearchExamples {width: 43em; float: right; font-size: 75%; font-style: italic; margin: 0.5em 0 0.8em;}
 #upperTermChoice {width: 17em;}
 #sidebar {float: left; width: 30%;}
 #sidebar .gfc-result { margin-bottom: 1em; }
