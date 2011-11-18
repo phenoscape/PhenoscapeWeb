@@ -287,8 +287,15 @@
           return this.query(nodeId);
         }, this),
         onCreateLabel: __bind(function(label, node) {
+          var formatted_percent_match;
           label = $(label);
           label.attr('id', node.id);
+          if (node.data.percent_match) {
+            formatted_percent_match = "" + (Math.round(node.data.percent_match * 100)) + "% match";
+          }
+          if (formatted_percent_match) {
+            label.attr('title', formatted_percent_match);
+          }
           label.html(node.name);
           if (!node.data.leaf_node) {
             label.click(__bind(function() {
@@ -731,7 +738,13 @@
   })();
   ProfileTreeNode = (function() {
     __extends(ProfileTreeNode, TreeNode);
-    function ProfileTreeNode() {
+    function ProfileTreeNode(tree, id, name, data, children) {
+      this.tree = tree;
+      this.id = id;
+      this.name = name;
+      this.data = data != null ? data : {};
+      this.children = children != null ? children : [];
+      this.data.percent_match = this.percent_match();
       ProfileTreeNode.__super__.constructor.apply(this, arguments);
     }
     ProfileTreeNode.prototype.color = function() {
@@ -741,7 +754,7 @@
         diff = [end_color[0] - start_color[0], end_color[1] - start_color[1], end_color[2] - start_color[2]];
         return "rgb(" + (Math.round(start_color[0] + diff[0] * percentage)) + "," + (Math.round(start_color[1] + diff[1] * percentage)) + "," + (Math.round(start_color[2] + diff[2] * percentage)) + ")";
       };
-      percentage = this.data.greatest_profile_match / this.tree.term_count;
+      percentage = this.percent_match();
       if (!percentage || percentage < .33) {
         return 'rgb(212,212,212)';
       } else if (percentage < .5) {
@@ -749,6 +762,9 @@
       } else {
         return color_on_gradient([255, 255, 0], [255, 68, 68], (percentage - .5) / (1 - .5));
       }
+    };
+    ProfileTreeNode.prototype.percent_match = function() {
+      return this.data.greatest_profile_match / this.tree.term_count;
     };
     return ProfileTreeNode;
   })();

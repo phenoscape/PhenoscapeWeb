@@ -235,6 +235,8 @@ class ProfileTree extends Tree
         # Set label style
         label = $(label)
         label.attr 'id', node.id
+        formatted_percent_match = "#{Math.round(node.data.percent_match * 100)}% match" if node.data.percent_match
+        label.attr 'title', formatted_percent_match if formatted_percent_match
         label.html node.name
         unless node.data.leaf_node
           label.click =>
@@ -583,6 +585,11 @@ class TreeNode
 
 
 class ProfileTreeNode extends TreeNode
+  constructor: (@tree, @id, @name, @data={}, @children=[]) ->
+    @data.percent_match = @percent_match()
+    
+    super
+
   color: ->
     # Calculate a color on a gradient at a percentage along the gradient.
     # Colors should be arrays with three rgb integer values (out of 255), eg: start_color: [0, 127, 255]
@@ -592,13 +599,16 @@ class ProfileTreeNode extends TreeNode
       diff = [end_color[0] - start_color[0], end_color[1] - start_color[1], end_color[2] - start_color[2]]
       "rgb(#{Math.round(start_color[0] + diff[0] * percentage)},#{Math.round(start_color[1] + diff[1] * percentage)},#{Math.round(start_color[2] + diff[2] * percentage)})"
     
-    percentage = @data.greatest_profile_match / @tree.term_count
+    percentage = @percent_match()
     if !percentage or percentage < .33
       'rgb(212,212,212)'
     else if percentage < .5
       color_on_gradient([212, 212, 212], [255, 255, 0], (percentage - .33) / (.5 - .33))
     else
       color_on_gradient([255, 255, 0], [255, 68, 68], (percentage - .5) / (1 - .5))
+  
+  percent_match: ->
+    @data.greatest_profile_match / @tree.term_count
 
 
 class VariationTreeNode extends TreeNode
