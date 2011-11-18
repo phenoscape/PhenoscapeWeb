@@ -146,7 +146,7 @@ a:hover .lateral-nav-link {text-decoration: underline;}
 #footer p {padding-left: 0.35em; padding-right: 0.35em;}
 #footer a {color: inherit;}
 
-#search_sidebar #current_taxon_name {padding: 4px 5px; margin-left: -5px; background-color: #BBCACF;}
+#search_sidebar #current_taxon_name {padding: 4px 5px; margin-left: -5px; background-color: #BBCACF; display: inline-block; margin-top: 0; margin-bottom: 0;}
 
 .sidebar-box { background-color: transparent; padding: 0.1em 1.0em; margin-top: 1em; border-left: 1px dotted #ccc;}
 .sidebar-box h4 {margin-top: 0.5em;}
