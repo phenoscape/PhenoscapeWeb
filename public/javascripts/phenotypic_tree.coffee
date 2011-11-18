@@ -11,6 +11,10 @@ class Tree
 
       term_info_div = $('#term_info')
       initial_page_load = true
+      current_label_content = ->
+        'current_entity_name': $("#current_entity_name").html()
+        'quality_name': $(".quality_name").html()
+      @initial_from_data = $('#query_form').serialize()
       
       # This event gets called when anything is added to or removed from the Phenotype list
       term_info_div.change =>
@@ -20,17 +24,35 @@ class Tree
             term_info_div.change()
           , 10
 
-        path = @current_state_path()
-
+        new_state = false
+        unless term_info_div.data('restoring_state')
+          path = @current_state_path()
+          state =
+            form_data: $('#query_form').serialize()
+            labels: current_label_content()
+          popstate_callback = (event) =>
+            term_info_div.data 'restoring_state', true
+            if (state = event.originalEvent?.state)
+              form_data = state.form_data || @initial_from_data
+              labels = state.labels || @initial_label_content
+              $('#query_form').unserializeForm(form_data)
+              for label, html of labels
+                $("##{label},.#{label}").html(html)
+            term_info_div.change()
+          
+          unless initial_page_load
+            new_state = new StateTransition(path, state, popstate_callback)
+        else
+          term_info_div.data 'restoring_state', false
+        
         # If we're redirecting to change the URL (when pushState is unsupported), don't bother loading anything, but show the loading screen
-        if !initial_page_load && new StateTransition(path).redirecting
+        if new_state.redirecting
           @show_loading()
         else
           @destroy_spacetree()
           @create_spacetree()
           @query()
-        
-        @check_empty_state() # @query() must come before this call, because it calls @load_selected_terms(), which sets @term_count
+          @check_empty_state() # @query() must come before this call, because it calls @load_selected_terms(), which sets @term_count
 
       term_info_div.change() # fire on page load, in case phenotypes are there from the profile tree
       initial_page_load = false
@@ -271,9 +293,8 @@ class VariationTree extends Tree
       max_taxa_shown_in_group: 20
     
     @current_entity_id = window.location.pathname.sub(/.*\//, '') # essentially params[:id]
-
-    super @container_id
     
+    # Set the quality name before super() saves the initial state
     $ ->
       update_quality_name = ->
         $('.quality_name').html $('#quality_select option:selected').html()
@@ -281,7 +302,10 @@ class VariationTree extends Tree
         update_quality_name()
         $('#term_info').change()
       update_quality_name()
-      
+    
+    super @container_id
+    
+    $ ->
       # Set up hover events for groups and phenotypes
       associated_targets = (hovered) ->
         targets = $(hovered) # Include the hovered element as a target
@@ -644,11 +668,20 @@ class VariationTreeNode extends TreeNode
 
 
 class StateTransition
-  constructor: (@path) -> if @pushstate_supported then @push_state() else @redirect()
+  constructor: (@path, @state, @popstate_callback) ->
+    if @pushstate_supported
+      @push_state()
+      @set_popstate()
+    else
+      @redirect()
   pushstate_supported: !!history.pushState
-  push_state: -> history.pushState {}, "", @path
+  push_state: -> history.pushState @state, '', @path
   redirect: -> window.location = @path
   redirecting: !history.pushState
+  set_popstate: ->
+    w = $(window)
+    w.unbind 'popstate'
+    w.bind 'popstate', @popstate_callback
 
 
 
