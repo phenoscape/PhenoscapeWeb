@@ -24,6 +24,7 @@ ul.simpleTree {
   display:inline;
   clear: left;
   white-space: nowrap;
+  zoom: 1;
 }
 .simpleTree ul
 {
