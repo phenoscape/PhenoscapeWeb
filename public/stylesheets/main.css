@@ -443,7 +443,7 @@ table.grid td, table.grid th {
 
 #variation-tree .node-group-with-phenotypes {
   background-color: #abd6fd;
-  behavior: url(/public/javascripts/PIE.htc); /* CSS3 for IE */
+  behavior: url(/javascripts/PIE.htc); /* CSS3 for IE */
   border: 3px solid #abd5fd;
   border-radius: 20px;
   -moz-border-radius: 20px;
