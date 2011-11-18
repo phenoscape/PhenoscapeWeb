@@ -384,6 +384,25 @@ a.toggle_link:hover {text-decoration: underline;}
   border: 3px solid black;
   margin: 5px auto;
   width: 60px;
+  
+  /* Generated using http://gradients.glrzad.com/ */
+  background-image: linear-gradient(bottom, rgb(212,212,212) 33%, rgb(255,255,0) 50%, rgb(255,68,68) 100%);
+  background-image: -o-linear-gradient(bottom, rgb(212,212,212) 33%, rgb(255,255,0) 50%, rgb(255,68,68) 100%);
+  background-image: -moz-linear-gradient(bottom, rgb(212,212,212) 33%, rgb(255,255,0) 50%, rgb(255,68,68) 100%);
+  background-image: -webkit-linear-gradient(bottom, rgb(212,212,212) 33%, rgb(255,255,0) 50%, rgb(255,68,68) 100%);
+  background-image: -ms-linear-gradient(bottom, rgb(212,212,212) 33%, rgb(255,255,0) 50%, rgb(255,68,68) 100%);
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.33, rgb(212,212,212)),
+    color-stop(0.5, rgb(255,255,0)),
+    color-stop(1, rgb(255,68,68))
+  );
+  
+  /* IE support */
+  -pie-background: linear-gradient(#CCC, #EEE);
+  behavior: url(/javascripts/PIE.htc);
 }
 
 #profile-tree-key .key .cell {

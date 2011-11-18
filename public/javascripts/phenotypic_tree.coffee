@@ -584,15 +584,21 @@ class TreeNode
 
 class ProfileTreeNode extends TreeNode
   color: ->
+    # Calculate a color on a gradient at a percentage along the gradient.
+    # Colors should be arrays with three rgb integer values (out of 255), eg: start_color: [0, 127, 255]
+    # Percentage should be a number between 0 and 1, representing 0-100% along the gradient between start_color and end_color.
+    # Returns a CSS rgb() string, ie: "rgb(0,127,255)"
+    color_on_gradient = (start_color, end_color, percentage) ->
+      diff = [end_color[0] - start_color[0], end_color[1] - start_color[1], end_color[2] - start_color[2]]
+      "rgb(#{Math.round(start_color[0] + diff[0] * percentage)},#{Math.round(start_color[1] + diff[1] * percentage)},#{Math.round(start_color[2] + diff[2] * percentage)})"
+    
     percentage = @data.greatest_profile_match / @tree.term_count
-    if percentage < .50 or @data.leaf_node
-      '#D3D3D3' # lightgray doesn't render the right color in IE
-    else if percentage  < .75
-      'yellow'
-    else if percentage  < 1
-      'orange'
+    if !percentage or percentage < .33
+      'rgb(212,212,212)'
+    else if percentage < .5
+      color_on_gradient([212, 212, 212], [255, 255, 0], (percentage - .33) / (.5 - .33))
     else
-      '#F44' # a lighter red
+      color_on_gradient([255, 255, 0], [255, 68, 68], (percentage - .5) / (1 - .5))
 
 
 class VariationTreeNode extends TreeNode

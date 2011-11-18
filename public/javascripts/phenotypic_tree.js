@@ -735,16 +735,19 @@
       ProfileTreeNode.__super__.constructor.apply(this, arguments);
     }
     ProfileTreeNode.prototype.color = function() {
-      var percentage;
+      var color_on_gradient, percentage;
+      color_on_gradient = function(start_color, end_color, percentage) {
+        var diff;
+        diff = [end_color[0] - start_color[0], end_color[1] - start_color[1], end_color[2] - start_color[2]];
+        return "rgb(" + (Math.round(start_color[0] + diff[0] * percentage)) + "," + (Math.round(start_color[1] + diff[1] * percentage)) + "," + (Math.round(start_color[2] + diff[2] * percentage)) + ")";
+      };
       percentage = this.data.greatest_profile_match / this.tree.term_count;
-      if (percentage < .50 || this.data.leaf_node) {
-        return '#D3D3D3';
-      } else if (percentage < .75) {
-        return 'yellow';
-      } else if (percentage < 1) {
-        return 'orange';
+      if (!percentage || percentage < .33) {
+        return 'rgb(212,212,212)';
+      } else if (percentage < .5) {
+        return color_on_gradient([212, 212, 212], [255, 255, 0], (percentage - .33) / (.5 - .33));
       } else {
-        return '#F44';
+        return color_on_gradient([255, 255, 0], [255, 68, 68], (percentage - .5) / (1 - .5));
       }
     };
     return ProfileTreeNode;
