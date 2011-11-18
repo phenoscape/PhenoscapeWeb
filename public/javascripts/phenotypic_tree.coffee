@@ -701,7 +701,6 @@ class StateTransition
 
 
 
-# TODO: Multi-entity phenotypes
 class Phenotype
   constructor: (@phenotype) ->
   
