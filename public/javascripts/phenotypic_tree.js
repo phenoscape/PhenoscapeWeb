@@ -283,6 +283,9 @@
           panning: true
         },
         request: __bind(function(nodeId, level, onComplete) {
+          if (level === 0) {
+            return this.spacetree.busy = false;
+          }
           this.update_spacetree_callback = onComplete.onComplete;
           return this.query(nodeId);
         }, this),
@@ -299,6 +302,9 @@
           label.html(node.name);
           if (!node.data.leaf_node) {
             label.click(__bind(function() {
+              if (this.spacetree.graph.nodes[node.id] === this.spacetree.clickedNode) {
+                return;
+              }
               this.center_canvas();
               return window.profile_tree.spacetree.onClick(node.id);
             }, this));

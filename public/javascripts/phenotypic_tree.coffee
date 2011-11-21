@@ -229,6 +229,12 @@ class ProfileTree extends Tree
         enable: true
         panning: true
       request: (nodeId, level, onComplete) =>
+        # Bugfix: For some reason, spacetree tries to fetch grandchildren (with n ajax queries)
+        # when clicking a node whose children are already loaded. When this happens, level is 0.
+        # These ajax queries will be dropped, since we we use @sequence now to ignore all but the latest.
+        # This caused the spacetree to sit waiting in busy mode for them forever, freezing up the tree.
+        return @spacetree.busy = false if level is 0
+        
         @update_spacetree_callback = onComplete.onComplete
         @query nodeId
       onCreateLabel: (label, node) =>
@@ -240,6 +246,9 @@ class ProfileTree extends Tree
         label.html node.name
         unless node.data.leaf_node
           label.click =>
+            # Ignore requests to click the currently selected node
+            return if @spacetree.graph.nodes[node.id] == @spacetree.clickedNode
+            
             @center_canvas()
             window.profile_tree.spacetree.onClick node.id
         label.css
