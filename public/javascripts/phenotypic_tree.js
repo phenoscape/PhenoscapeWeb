@@ -14,20 +14,15 @@
     function Tree(container_id) {
       this.container_id = container_id;
       $(__bind(function() {
-        var container, current_label_content, initial_page_load, term_info_div;
+        var container, initial_page_load, term_info_div;
         container = $("#" + this.container_id);
         container.css('visibility', 'hidden');
         this.options || (this.options = {});
         this.options.loading_background_color = "#DDE9EE";
         term_info_div = $('#term_info');
         initial_page_load = true;
-        current_label_content = function() {
-          return {
-            'current_entity_name': $("#current_entity_name").html(),
-            'quality_name': $(".quality_name").html()
-          };
-        };
         this.initial_from_data = $('#query_form').serialize();
+        this.initial_content = this.get_current_state_content();
         term_info_div.change(__bind(function() {
           var new_state, path, popstate_callback, state, _ref;
           if ((_ref = this.spacetree) != null ? _ref.busy : void 0) {
@@ -40,19 +35,19 @@
             path = this.current_state_path();
             state = {
               form_data: $('#query_form').serialize(),
-              labels: current_label_content()
+              content: this.get_current_state_content()
             };
             popstate_callback = __bind(function(event) {
-              var form_data, html, label, labels, _ref2;
+              var content, form_data, html, selector, _ref2;
               term_info_div.data('restoring_state', true);
               if ((state = (_ref2 = event.originalEvent) != null ? _ref2.state : void 0)) {
+                content = state.content || this.initial_content;
                 form_data = state.form_data || this.initial_from_data;
-                labels = state.labels || this.initial_label_content;
-                $('#query_form').unserializeForm(form_data);
-                for (label in labels) {
-                  html = labels[label];
-                  $("#" + label + ",." + label).html(html);
+                for (selector in content) {
+                  html = content[selector];
+                  $("#" + selector + ",." + selector).html(html);
                 }
+                $('#query_form').unserializeForm(form_data);
               }
               return term_info_div.change();
             }, this);
@@ -276,6 +271,11 @@
       };
       ProfileTree.__super__.constructor.call(this, this.container_id);
     }
+    ProfileTree.prototype.get_current_state_content = function() {
+      return {
+        'term_info': $("#term_info").html()
+      };
+    };
     ProfileTree.prototype.create_spacetree = function() {
       return ProfileTree.__super__.create_spacetree.call(this, {
         Navigation: {
@@ -449,6 +449,12 @@
         });
       });
     }
+    VariationTree.prototype.get_current_state_content = function() {
+      return {
+        'current_entity_name': $("#current_entity_name").html(),
+        'quality_name': $(".quality_name").html()
+      };
+    };
     VariationTree.prototype.create_spacetree = function() {
       VariationTree.__super__.create_spacetree.call(this, {
         Edge: {

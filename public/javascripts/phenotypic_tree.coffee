@@ -11,10 +11,8 @@ class Tree
 
       term_info_div = $('#term_info')
       initial_page_load = true
-      current_label_content = ->
-        'current_entity_name': $("#current_entity_name").html()
-        'quality_name': $(".quality_name").html()
       @initial_from_data = $('#query_form').serialize()
+      @initial_content = @get_current_state_content()
       
       # This event gets called when anything is added to or removed from the Phenotype list
       term_info_div.change =>
@@ -29,15 +27,15 @@ class Tree
           path = @current_state_path()
           state =
             form_data: $('#query_form').serialize()
-            labels: current_label_content()
+            content: @get_current_state_content()
           popstate_callback = (event) =>
             term_info_div.data 'restoring_state', true
             if (state = event.originalEvent?.state)
+              content = state.content || @initial_content
               form_data = state.form_data || @initial_from_data
-              labels = state.labels || @initial_label_content
+              for selector, html of content
+                $("##{selector},.#{selector}").html(html)
               $('#query_form').unserializeForm(form_data)
-              for label, html of labels
-                $("##{label},.#{label}").html(html)
             term_info_div.change()
           
           unless initial_page_load
@@ -223,6 +221,9 @@ class ProfileTree extends Tree
 
     super @container_id
   
+  get_current_state_content: ->
+    'term_info': $("#term_info").html()
+
   create_spacetree: ->
     super
       Navigation:
@@ -357,6 +358,10 @@ class VariationTree extends Tree
         'mouseover': dont_propagate
         'mouseout':  dont_propagate
         'click':     dont_propagate
+
+  get_current_state_content: ->
+    'current_entity_name': $("#current_entity_name").html()
+    'quality_name': $(".quality_name").html()
 
   create_spacetree: ->
     super
