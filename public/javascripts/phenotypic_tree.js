@@ -40,15 +40,14 @@
             popstate_callback = __bind(function(event) {
               var content, form_data, html, selector, _ref2;
               term_info_div.data('restoring_state', true);
-              if ((state = (_ref2 = event.originalEvent) != null ? _ref2.state : void 0)) {
-                content = state.content || this.initial_content;
-                form_data = state.form_data || this.initial_from_data;
-                for (selector in content) {
-                  html = content[selector];
-                  $("#" + selector + ",." + selector).html(html);
-                }
-                $('#query_form').unserializeForm(form_data);
+              state = ((_ref2 = event.originalEvent) != null ? _ref2.state : void 0) || {};
+              content = state.content || this.initial_content;
+              form_data = state.form_data || this.initial_from_data;
+              for (selector in content) {
+                html = content[selector];
+                $("#" + selector + ",." + selector).html(html);
               }
+              $('#query_form').unserializeForm(form_data);
               return term_info_div.change();
             }, this);
             if (!initial_page_load) {

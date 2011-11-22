@@ -30,12 +30,12 @@ class Tree
             content: @get_current_state_content()
           popstate_callback = (event) =>
             term_info_div.data 'restoring_state', true
-            if (state = event.originalEvent?.state)
-              content = state.content || @initial_content
-              form_data = state.form_data || @initial_from_data
-              for selector, html of content
-                $("##{selector},.#{selector}").html(html)
-              $('#query_form').unserializeForm(form_data)
+            state = event.originalEvent?.state || {}
+            content = state.content || @initial_content
+            form_data = state.form_data || @initial_from_data
+            for selector, html of content
+              $("##{selector},.#{selector}").html(html)
+            $('#query_form').unserializeForm(form_data)
             term_info_div.change()
           
           unless initial_page_load
