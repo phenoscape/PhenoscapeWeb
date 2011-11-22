@@ -24,6 +24,7 @@ ul.simpleTree {
   display:inline;
   clear: left;
   white-space: nowrap;
+  zoom: 1;
 }
 .simpleTree ul
 {
@@ -138,6 +139,12 @@ ul.simpleTree {
   border: 1px solid #DDDDCC;
   font-weight: bold;
 }
+
+div#tree_container, #tree_container li {
+  /* required to preserve tree scrolling _and_ suppress extra drop-shadows in IE 7 & 8 */
+  position: relative;
+}
+
 #drag_container
 {
   background:#ffffff;
