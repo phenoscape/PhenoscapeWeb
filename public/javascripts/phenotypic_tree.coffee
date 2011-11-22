@@ -226,6 +226,12 @@ class ProfileTree extends Tree
 
   create_spacetree: ->
     super
+      Node:
+        height: 30
+        width: 160
+        type: 'rectangle'
+        overridable: true
+        levelDistance: 500
       Navigation:
         enable: true
         panning: true
@@ -245,6 +251,7 @@ class ProfileTree extends Tree
         formatted_percent_match = "#{Math.round(node.data.percent_match * 100)}% match" if node.data.percent_match
         label.attr 'title', formatted_percent_match if formatted_percent_match
         label.html node.name
+        label.css backgroundColor: node.data.color
         unless node.data.leaf_node
           label.click =>
             # Ignore requests to click the currently selected node
@@ -252,12 +259,6 @@ class ProfileTree extends Tree
             
             @center_canvas()
             window.profile_tree.spacetree.onClick node.id
-        label.css
-          cursor: 'pointer'
-          color: '#333'
-          fontSize: '0.8em'
-          padding: '3px'
-          'white-space': 'nowrap'
   
   update_spacetree: (node) ->
     throw "$jit failed to set update_spacetree_callback" unless @update_spacetree_callback
@@ -577,11 +578,12 @@ class VariationTree extends Tree
 
 class TreeNode
   constructor: (@tree, @id, @name, @data={}, @children=[]) ->
-    @set_color() unless @data.$color
+    @set_color() unless @data.color
+    @data.$color = 'transparent'
     @name = @id if !@name
 
   set_color: ->
-    @data.$color = @color()
+    @data.color = @color()
 
   # Find and return a decendent of this node that matches the given id.
   # If no descendent is found, create a the node using the given data and add it as a child of this node.

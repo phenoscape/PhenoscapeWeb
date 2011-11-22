@@ -278,6 +278,13 @@
     };
     ProfileTree.prototype.create_spacetree = function() {
       return ProfileTree.__super__.create_spacetree.call(this, {
+        Node: {
+          height: 30,
+          width: 160,
+          type: 'rectangle',
+          overridable: true,
+          levelDistance: 500
+        },
         Navigation: {
           enable: true,
           panning: true
@@ -300,8 +307,11 @@
             label.attr('title', formatted_percent_match);
           }
           label.html(node.name);
+          label.css({
+            backgroundColor: node.data.color
+          });
           if (!node.data.leaf_node) {
-            label.click(__bind(function() {
+            return label.click(__bind(function() {
               if (this.spacetree.graph.nodes[node.id] === this.spacetree.clickedNode) {
                 return;
               }
@@ -309,13 +319,6 @@
               return window.profile_tree.spacetree.onClick(node.id);
             }, this));
           }
-          return label.css({
-            cursor: 'pointer',
-            color: '#333',
-            fontSize: '0.8em',
-            padding: '3px',
-            'white-space': 'nowrap'
-          });
         }, this)
       });
     };
@@ -716,15 +719,16 @@
       this.name = name;
       this.data = data != null ? data : {};
       this.children = children != null ? children : [];
-      if (!this.data.$color) {
+      if (!this.data.color) {
         this.set_color();
       }
+      this.data.$color = 'transparent';
       if (!this.name) {
         this.name = this.id;
       }
     }
     TreeNode.prototype.set_color = function() {
-      return this.data.$color = this.color();
+      return this.data.color = this.color();
     };
     TreeNode.prototype.find_or_create_child = function(tree, id, name, data) {
       var child;

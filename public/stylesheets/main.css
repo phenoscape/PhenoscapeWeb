@@ -411,6 +411,15 @@ a.toggle_link:hover {text-decoration: underline;}
   text-align: center;
 }
 
+#profile-tree .node {
+  color: black;
+  border: 1px solid #666;
+  border-radius: 5px;
+  cursor: pointer;
+  min-width: 160px;
+  padding: 5px;
+}
+
 table.grid {
   border: 2px solid black;
   border-collapse: collapse;
