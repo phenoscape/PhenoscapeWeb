@@ -383,6 +383,7 @@ module ApplicationHelper
   
   def display_term(term, stripMarkup=false)
     simple_term = term['name'].blank? && term['label'].blank? ? 'unnamed' : (term['name'] || term['label'])
+    simple_term = simple_term.gsub("&apos;", "&#39;")  #NOTE: &apos; entity is not supported in IE7
     if stripMarkup
       return simple_term
     end

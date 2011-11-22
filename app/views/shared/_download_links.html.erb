@@ -1,7 +1,7 @@
 <% if total > 0 %>
-  <div class='download_links'>
-    Download all <%= pluralize(total, 'result') %> as: <%= help_link "File formats (for data downloads)" %>
-	
+  <div class='download_links rounded-medium shadow-small always-show-help'>
+    Download all <%= pluralize(total, 'result') %> as: 
+	<a href="/hints/Knowledgebase:File_formats_(for_data_downloads)#DownloadFileFormats" class="help-link"><img src="/images/help.png" alt="help"></a>
     <ul>
       <li><%= link_to 'plain text (tab-delimited for Excel)', :action => :download, :media => 'text', :filter => params[:filter] %></li>
       <li><%= link_to 'JSON (Javascript object notation)', :action => :download, :media => 'json', :filter => params[:filter] %></li>

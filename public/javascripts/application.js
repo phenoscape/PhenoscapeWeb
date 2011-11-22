@@ -223,9 +223,6 @@ function initializeHints() {
         // split URL on fragment, to show just part of the page
         ajaxURL = ajaxURL.split('#').join(' #') + " > *";
       }
-      if (console && console.log) {
-        console.log("ajaxURL: "+ ajaxURL);
-      }
       jQuery(this).bt({
          trigger: 'hover',
          // WORKS: ajaxPath: '/hints/Informatics #Synchronization_Tool',
