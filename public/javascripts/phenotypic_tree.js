@@ -89,6 +89,10 @@
         Edge: {
           type: 'bezier',
           overridable: true
+        },
+        Navigation: {
+          enable: true,
+          panning: 'avoid nodes'
         }
       };
       $.extend(jit_default_options, jit_options);
@@ -285,10 +289,6 @@
           overridable: true,
           levelDistance: 500
         },
-        Navigation: {
-          enable: true,
-          panning: true
-        },
         request: __bind(function(nodeId, level, onComplete) {
           if (level === 0) {
             return this.spacetree.busy = false;
@@ -474,10 +474,6 @@
         },
         Label: {
           type: 'HTML'
-        },
-        Navigation: {
-          enable: true,
-          panning: 'avoid nodes'
         },
         onCreateLabel: __bind(function(label, node) {
           return this.create_label(label, node);

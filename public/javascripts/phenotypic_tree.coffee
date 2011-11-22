@@ -76,6 +76,9 @@ class Tree
       Edge:
         type: 'bezier'
         overridable: true
+      Navigation:
+        enable: true
+        panning: 'avoid nodes'
     $.extend jit_default_options, jit_options
     jit_options = jit_default_options
     
@@ -232,9 +235,6 @@ class ProfileTree extends Tree
         type: 'rectangle'
         overridable: true
         levelDistance: 500
-      Navigation:
-        enable: true
-        panning: true
       request: (nodeId, level, onComplete) =>
         # Bugfix: For some reason, spacetree tries to fetch grandchildren (with n ajax queries)
         # when clicking a node whose children are already loaded. When this happens, level is 0.
@@ -378,9 +378,6 @@ class VariationTree extends Tree
         levelDistance: 500
       Label:
         type: 'HTML'
-      Navigation:
-        enable: true
-        panning: 'avoid nodes'
       onCreateLabel: (label, node) => @create_label label, node
     
     @load_suggested_taxa()
