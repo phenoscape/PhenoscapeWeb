@@ -105,7 +105,7 @@
       this.root_node = null;
       try {
         if (this.spacetree != null) {
-          return this.spacetree.removeSubtree(this.spacetree.root, true, 'replot');
+          return this.spacetree.removeSubtree(this.spacetree.root, true, 'animate');
         }
       } catch (err) {
 

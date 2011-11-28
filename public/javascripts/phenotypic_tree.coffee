@@ -90,8 +90,8 @@ class Tree
   destroy_spacetree: ->
     @root_node = null
     try
-      @spacetree.removeSubtree(@spacetree.root, true, 'replot') if @spacetree?
-    catch err # we expect this to sometimes throw an exception, depending on the state. It doesn't matter though.
+      @spacetree.removeSubtree(@spacetree.root, true, 'animate') if @spacetree?
+    catch err # A bug in spacetree causes an error to be thrown when removing the root
   
   initialize_spacetree: ->
     # If the first level has only one child, replace the root with that child
