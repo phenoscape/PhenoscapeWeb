@@ -14,32 +14,32 @@
     function Tree(container_id) {
       this.container_id = container_id;
       $(__bind(function() {
-        var container, initial_page_load, term_info_div;
+        var container, controller_div, initial_page_load;
         container = $("#" + this.container_id);
         container.css('visibility', 'hidden');
         this.options || (this.options = {});
         this.options.loading_background_color = "#DDE9EE";
-        term_info_div = $('#term_info');
+        controller_div = $("#" + this.options.controller_id);
         initial_page_load = true;
-        this.initial_from_data = $('#query_form').serialize();
+        this.initial_from_data = $("form#" + this.options.controller_form_id).serialize();
         this.initial_content = this.get_current_state_content();
-        term_info_div.change(__bind(function() {
+        controller_div.change(__bind(function() {
           var new_state, path, popstate_callback, state, _ref;
           if ((_ref = this.spacetree) != null ? _ref.busy : void 0) {
             return setTimeout(__bind(function() {
-              return term_info_div.change();
+              return controller_div.change();
             }, this), 10);
           }
           new_state = false;
-          if (!term_info_div.data('restoring_state')) {
+          if (!controller_div.data('restoring_state')) {
             path = this.current_state_path();
             state = {
-              form_data: $('#query_form').serialize(),
+              form_data: $("form#" + this.options.controller_form_id).serialize(),
               content: this.get_current_state_content()
             };
             popstate_callback = __bind(function(event) {
               var content, form_data, html, selector, _ref2;
-              term_info_div.data('restoring_state', true);
+              controller_div.data('restoring_state', true);
               state = ((_ref2 = event.originalEvent) != null ? _ref2.state : void 0) || {};
               content = state.content || this.initial_content;
               form_data = state.form_data || this.initial_from_data;
@@ -47,14 +47,14 @@
                 html = content[selector];
                 $("#" + selector + ",." + selector).html(html);
               }
-              $('#query_form').unserializeForm(form_data);
-              return term_info_div.change();
+              $("form#" + this.options.controller_form_id).unserializeForm(form_data);
+              return controller_div.change();
             }, this);
             if (!initial_page_load) {
               new_state = new StateTransition(path, state, popstate_callback);
             }
           } else {
-            term_info_div.data('restoring_state', false);
+            controller_div.data('restoring_state', false);
           }
           if (new_state.redirecting) {
             return this.show_loading();
@@ -65,7 +65,7 @@
             return this.check_empty_state();
           }
         }, this));
-        term_info_div.change();
+        controller_div.change();
         return initial_page_load = false;
       }, this));
     }
@@ -127,7 +127,7 @@
       return this.spacetree.canvas.translate(-this.spacetree.canvas.translateOffsetX, -this.spacetree.canvas.translateOffsetY);
     };
     Tree.prototype.load_selected_terms = function() {
-      return this.term_params = $("form#query_form}}").serialize();
+      return this.term_params = $("form#" + this.options.controller_form_id).serialize();
     };
     Tree.prototype.query = function(taxon_id) {
       var loading_root, url;
@@ -270,14 +270,16 @@
       this.container_id = container_id;
       this.options = {
         tree_node_class: ProfileTreeNode,
-        base_path: '/phenotypes/profile_tree'
+        base_path: '/phenotypes/profile_tree',
+        controller_id: 'term_info',
+        controller_form_id: 'query_form'
       };
       ProfileTree.__super__.constructor.call(this, this.container_id);
     }
     ProfileTree.prototype.get_current_state_content = function() {
-      return {
-        'term_info': $("#term_info").html()
-      };
+      var content;
+      content = {};
+      return content[this.options.controller_id] = $("#" + this.options.controller_id).html();
     };
     ProfileTree.prototype.create_spacetree = function() {
       return ProfileTree.__super__.create_spacetree.call(this, {
@@ -329,7 +331,7 @@
     };
     ProfileTree.prototype.load_selected_terms = function() {
       ProfileTree.__super__.load_selected_terms.call(this);
-      return this.term_count = $("#term_info .phenotype").length;
+      return this.term_count = $("#" + this.options.controller_id).find(".phenotype").length;
     };
     ProfileTree.prototype.query_callback = function(sequence, matches, root_taxon_id) {
       var empty_resultset, match, match_child, node, root_node, _i, _j, _len, _len2, _ref;
@@ -362,7 +364,7 @@
       return ProfileTree.__super__.query_callback.call(this, sequence, root_node, empty_resultset);
     };
     ProfileTree.prototype.current_state_path = function() {
-      return this.options.base_path + "?" + $('form[name=complex_query_form]').serialize();
+      return this.options.base_path + "?" + $("form#" + this.options.controller_form_id).serialize();
     };
     return ProfileTree;
   })();
@@ -373,20 +375,22 @@
       this.options = {
         tree_node_class: VariationTreeNode,
         base_path: '/phenotypes/variation_tree',
+        controller_id: 'term_info',
+        controller_form_id: 'query_form',
         max_taxa_shown_in_group: 20
       };
       this.current_entity_id = window.location.pathname.sub(/.*\//, '');
-      $(function() {
+      $(__bind(function() {
         var update_quality_name;
         update_quality_name = function() {
           return $('.quality_name').html($('#quality_select option:selected').html());
         };
-        $('#quality_select').change(function() {
+        $('#quality_select').change(__bind(function() {
           update_quality_name();
-          return $('#term_info').change();
-        });
+          return $("#" + this.options.controller_id).change();
+        }, this));
         return update_quality_name();
-      });
+      }, this));
       VariationTree.__super__.constructor.call(this, this.container_id);
       $(function() {
         var associated_targets, dont_propagate;
@@ -688,7 +692,7 @@
       var base, phenotype_filter, taxon;
       base = this.options.base_path;
       taxon = "/" + this.current_entity_id;
-      phenotype_filter = "?" + $('form[name=complex_query_form]').serialize();
+      phenotype_filter = "?" + $("form#" + this.options.controller_form_id).serialize();
       return base + taxon + phenotype_filter;
     };
     VariationTree.prototype.change_taxon = function(taxon_id, taxon_name) {
@@ -697,7 +701,7 @@
     };
     VariationTree.prototype.navigate_to_taxon = function(taxon_id, taxon_name) {
       this.change_taxon(taxon_id, taxon_name);
-      return $('#term_info').change();
+      return $("#" + this.options.controller_id).change();
     };
     VariationTree.prototype.navigate_to_entity = function(entity_id, entity_name) {
       this.current_entity_id = entity_id;

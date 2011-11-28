@@ -9,39 +9,40 @@ class Tree
       @options ||= {}
       @options.loading_background_color = "#DDE9EE"
 
-      term_info_div = $('#term_info')
+      controller_div = $("##{@options.controller_id}")
       initial_page_load = true
-      @initial_from_data = $('#query_form').serialize()
+      @initial_from_data = $("form##{@options.controller_form_id}").serialize()
       @initial_content = @get_current_state_content()
       
       # This event gets called when anything is added to or removed from the Phenotype list
-      term_info_div.change =>
+      controller_div.change =>
         # Wait until the spacetree is done animating before we try to make it do anything
         if @spacetree?.busy
           return setTimeout =>
-            term_info_div.change()
+            controller_div.change()
           , 10
 
+        # Save the sate, unless we got here by restoring the state
         new_state = false
-        unless term_info_div.data('restoring_state')
+        unless controller_div.data('restoring_state')
           path = @current_state_path()
           state =
-            form_data: $('#query_form').serialize()
+            form_data: $("form##{@options.controller_form_id}").serialize()
             content: @get_current_state_content()
           popstate_callback = (event) =>
-            term_info_div.data 'restoring_state', true
+            controller_div.data 'restoring_state', true
             state = event.originalEvent?.state || {}
             content = state.content || @initial_content
             form_data = state.form_data || @initial_from_data
             for selector, html of content
               $("##{selector},.#{selector}").html(html)
-            $('#query_form').unserializeForm(form_data)
-            term_info_div.change()
+            $("form##{@options.controller_form_id}").unserializeForm(form_data)
+            controller_div.change()
           
           unless initial_page_load
             new_state = new StateTransition(path, state, popstate_callback)
         else
-          term_info_div.data 'restoring_state', false
+          controller_div.data 'restoring_state', false
         
         # If we're redirecting to change the URL (when pushState is unsupported), don't bother loading anything, but show the loading screen
         if new_state.redirecting
@@ -52,7 +53,7 @@ class Tree
           @query()
           @check_empty_state() # @query() must come before this call, because it calls @load_selected_terms(), which sets @term_count
 
-      term_info_div.change() # fire on page load, in case phenotypes are there from the profile tree
+      controller_div.change() # fire on page load, in case phenotypes are there from the profile tree
       initial_page_load = false
 
   create_spacetree: (jit_options) ->
@@ -69,8 +70,6 @@ class Tree
       Node:
         autoHeight: true
         autoWidth: true
-        # height: 20
-        # width: 60
         type: 'rectangle'
         overridable: true
       Edge:
@@ -110,7 +109,7 @@ class Tree
     @spacetree.canvas.translate(-@spacetree.canvas.translateOffsetX, -@spacetree.canvas.translateOffsetY)
   
   load_selected_terms: ->
-    @term_params = $("form#query_form}}").serialize()
+    @term_params = $("form##{@options.controller_form_id}").serialize()
   
   query: (taxon_id=null) ->
     @load_selected_terms()
@@ -219,13 +218,16 @@ class Tree
 class ProfileTree extends Tree
   constructor: (@container_id) ->
     @options =
-      tree_node_class:  ProfileTreeNode
-      base_path:        '/phenotypes/profile_tree'
+      tree_node_class:    ProfileTreeNode
+      base_path:          '/phenotypes/profile_tree'
+      controller_id:      'term_info'
+      controller_form_id: 'query_form'
 
     super @container_id
   
   get_current_state_content: ->
-    'term_info': $("#term_info").html()
+    content = {}
+    content[@options.controller_id] = $("##{@options.controller_id}").html()
 
   create_spacetree: ->
     super
@@ -266,7 +268,7 @@ class ProfileTree extends Tree
   
   load_selected_terms: ->
     super()
-    @term_count = $("#term_info .phenotype").length
+    @term_count = $("##{@options.controller_id}").find(".phenotype").length
   
   # Converts matches from the data source into TreeNodes and stores them in the tree
   query_callback: (sequence, matches, root_taxon_id) ->
@@ -287,7 +289,7 @@ class ProfileTree extends Tree
     super sequence, root_node, empty_resultset
     
   current_state_path: ->
-    @options.base_path + "?" + $('form[name=complex_query_form]').serialize()
+    @options.base_path + "?" + $("form##{@options.controller_form_id}").serialize()
 
 
 
@@ -296,17 +298,19 @@ class VariationTree extends Tree
     @options =
       tree_node_class:         VariationTreeNode
       base_path:               '/phenotypes/variation_tree'
+      controller_id:           'term_info'
+      controller_form_id:      'query_form'
       max_taxa_shown_in_group: 20
     
     @current_entity_id = window.location.pathname.sub(/.*\//, '') # essentially params[:id]
     
     # Set the quality name before super() saves the initial state
-    $ ->
+    $ =>
       update_quality_name = ->
         $('.quality_name').html $('#quality_select option:selected').html()
-      $('#quality_select').change ->
+      $('#quality_select').change =>
         update_quality_name()
-        $('#term_info').change()
+        $("##{@options.controller_id}").change()
       update_quality_name()
     
     super @container_id
@@ -551,7 +555,7 @@ class VariationTree extends Tree
   current_state_path: ->
     base = @options.base_path
     taxon = "/" + @current_entity_id
-    phenotype_filter = "?" + $('form[name=complex_query_form]').serialize()
+    phenotype_filter = "?" + $("form##{@options.controller_form_id}").serialize()
     
     base + taxon + phenotype_filter
   
@@ -564,7 +568,7 @@ class VariationTree extends Tree
     
     # TODO: test if the node is already present, and click on it instead of triggering a change()
     # Start over with a new query
-    $('#term_info').change()
+    $("##{@options.controller_id}").change()
   
   navigate_to_entity: (entity_id, entity_name) ->
     @current_entity_id = entity_id
