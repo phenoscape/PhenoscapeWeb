@@ -300,7 +300,7 @@ class VariationTree extends Tree
       base_path:               '/phenotypes/variation_tree'
       controller_id:           'term_info'
       controller_form_id:      'query_form'
-      max_taxa_shown_in_group: 20
+      max_taxa_shown_in_group: 10
     
     @current_entity_id = window.location.pathname.sub(/.*\//, '') # essentially params[:id]
     
