@@ -29,7 +29,8 @@ SUBJECT_RELATION_MAPPINGS = {
   "similar_in_magnitude_relative_to"   => "similar in magnitude relative to",
   "reciprocal_of"         => "reciprocal of",
   "OBO_REL:has_part"      => "has part",
-  "has_quality"           => "has quality"
+  "has_quality"           => "has quality",
+  "has_location"          => "has location"
 }
 
 
@@ -45,7 +46,8 @@ OBJECT_RELATION_MAPPINGS = {
   "OBO_REL:has_part"      => "may be part of",
   "has_quality"           => "may be quality of",
   "increased_in_magnitude_relative_to" => "may be decreased in magnitude relative to",
-  "decreased_in_magnitude_relative_to" => "may be increased in magnitude relative to"
+  "decreased_in_magnitude_relative_to" => "may be increased in magnitude relative to",
+  "has_location"          => "location of"
 }
 
 
