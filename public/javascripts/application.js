@@ -89,13 +89,13 @@ function buildBroadenRefineMenu(link, terms, element_index){
       jQuery.ajax({url: OBDWS + "/term/" + term_id, dataType: 'json', async: false,
         success: function(data){
           if(data.parents.length > 0){ section['subMenu'][0]['subMenu'] = []; }
-          jQuery.each(data.parents, function(i,item){
+          jQuery.each(_.sortBy(data.parents, function(item){ return item.target.name; }), function(i,item){
             if(i > 0){ section['subMenu'][0]['subMenu'].push({src: ''}); } //add separator line
             //item.target.id
             section['subMenu'][0]['subMenu'].push({src: item.target.name, data: {id: item.target.id, term_type: term_type}});
           });
           if(data.children.length > 0){ section['subMenu'][2]['subMenu'] = []; }
-          jQuery.each(data.children, function(i,item){
+          jQuery.each(_.sortBy(data.children, function(item){ return item.target.name; }), function(i,item){
             if(i > 0){ section['subMenu'][2]['subMenu'].push({src: ''}); } //add separator line
             //item.target.id
             section['subMenu'][2]['subMenu'].push({src: item.target.name, data: {id: item.target.id, term_type: term_type}});
