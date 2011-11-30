@@ -23,7 +23,7 @@
     <%= link_to_function image_tag("remove.png"), "$(this).up('.phenotype').remove(); updateFilterSection('phenotype_filter'); jQuery('#term_info').change()" %><br/>
     
     <div class='including_parts'>
-      <%= check_box_tag "filter[phenotypes][#{index}][including_parts]", true, phenotype[:including_parts] %>
+      <%= check_box_tag "filter[phenotypes][#{index}][including_parts]", true, phenotype[:including_parts], :onchange => "this.form.submit();" %>
       <span class='info'>including parts</span>
     </div>
   </div>

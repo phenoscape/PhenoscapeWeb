@@ -1,6 +1,6 @@
 <span class='any_or_all'>
   <%= radio_button_tag "filter[#{section}_match_type]", 'any', params[:filter]["#{section}_match_type"] != 'all', 
-    :onchange => "changeSectionFilterOperators('#{section}')" %> any
+    :onchange => "changeSectionFilterOperators('#{section}'); this.form.submit();" %> any
   <%= radio_button_tag "filter[#{section}_match_type]", 'all', params[:filter]["#{section}_match_type"] == 'all', 
-    :onchange => "changeSectionFilterOperators('#{section}')" %> all
+    :onchange => "changeSectionFilterOperators('#{section}'); this.form.submit();" %> all
 </span>

@@ -35,6 +35,7 @@ class SearchController < ApplicationController
         page.insert_html :bottom, 'term_filter', :partial => 'term_filter_item', 
           :locals => {:term_id => @term_id, :index => params[:next_term_index].to_i, :field_name => params[:field_name]}
         page << "jQuery('#term_filter_container').dialog('close')"
+        page << "jQuery('form[name=\"complex_query_form\"]').submit();"
       end
     end
   end
@@ -71,7 +72,7 @@ class SearchController < ApplicationController
           page << "jQuery('#phenotype_filter_container').dialog('close')"
         end
         page << "changeSectionFilterOperators('phenotypes');"
-        page << "jQuery('#term_info').change();"
+        page << "jQuery('form[name=\"complex_query_form\"]').submit();"
       end
     end
   end
@@ -89,6 +90,7 @@ class SearchController < ApplicationController
         :locals => {:publication_id => publication_id, :index => params[:next_publication_index].to_i}
       page << "jQuery('#publication_filter_container').dialog('close')"
       page << "changeSectionFilterOperators('publications');"
+      page << "jQuery('form[name=\"complex_query_form\"]').submit();"
     end
   end
   
@@ -105,6 +107,7 @@ class SearchController < ApplicationController
         :locals => {:gene_id => gene_id, :index => params[:next_gene_index].to_i}
       page << "jQuery('#gene_filter_container').dialog('close')"
       page << "changeSectionFilterOperators('genes');"
+      page << "jQuery('form[name=\"complex_query_form\"]').submit();"
     end
   end
   

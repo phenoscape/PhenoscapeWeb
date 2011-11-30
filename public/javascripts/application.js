@@ -187,6 +187,7 @@ function updateFilterSection(filter_section_id) {
       first_div.find("div.filter_operator").remove();
     }
   }
+  jQuery('form[name="complex_query_form"]').submit();
 }
 
 
