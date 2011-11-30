@@ -9,6 +9,7 @@ SOURCE_KEYS = {
   'biological_process'  => :entity,
   'molecular_function'  => :entity,
   'cellular_component'  => :entity,
+  'spatial'             => :entity,
   'quality'             => :quality,
   'phenoscape_pub'      => :publication,
   'zfin_pub'            => :zfin_publication,
