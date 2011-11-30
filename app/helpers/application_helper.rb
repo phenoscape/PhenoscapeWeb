@@ -332,6 +332,7 @@ module ApplicationHelper
     else
       type = Term.type(term)
       if type == :zfin_publication
+        term['name'] = "Untitled ZFIN literature curation" if term['name'] == nil
         link_to((link_text ? link_text : display_term(term)), zfin_pub_url(term), html_options)
       elsif type == :zfin_genotype
         link_to((link_text ? link_text : display_term(term)), zfin_genotype_url(term), html_options)
