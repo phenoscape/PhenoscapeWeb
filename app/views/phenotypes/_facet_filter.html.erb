@@ -3,8 +3,9 @@
   <%= render :partial => 'facet_item', :locals => {:item => facet_item, :level => facet_level, :term_type => term_type} %>&nbsp;
   <% if facet_level == 0 %>
 	<% container_id = term_type.to_s + "container_id" %>
+	<span class="facet-choose-container">
   	<%= button_to_function 'Choose', "jQuery('##{container_id}').dialog('open');",
-      :id => "add_phenotype_button" %>
+      :id => "add_phenotype_button" %> <a href="/hints/WebHints#ChooseTermForFacet" class="help-link facet-help"><img src="/images/help.png" alt="help"></a></span>
 	  <%= render :partial => 'search/faceted_browsing_term_filter_popup', :locals => {:label => "Entity", :term_type => term_type, :autocomplete_type => autocomplete} %>
   <% end %>
   </div>
