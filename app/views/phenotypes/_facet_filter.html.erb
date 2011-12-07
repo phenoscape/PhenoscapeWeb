@@ -6,7 +6,7 @@
 	<span class="facet-choose-container">
   	<%= button_to_function 'Choose', "jQuery('##{container_id}').dialog('open');",
       :id => "add_phenotype_button" %> <a href="/hints/WebHints#ChooseTermForFacet" class="help-link facet-help"><img src="/images/help.png" alt="help"></a></span>
-	  <%= render :partial => 'search/faceted_browsing_term_filter_popup', :locals => {:label => "Entity", :term_type => term_type, :autocomplete_type => autocomplete} %>
+	  <%= render :partial => 'search/faceted_browsing_term_filter_popup', :locals => {:label => term_type.to_s.humanize.titleize, :term_type => term_type, :autocomplete_type => autocomplete} %>
   <% end %>
   </div>
   <% if facet_item['children'] %>
