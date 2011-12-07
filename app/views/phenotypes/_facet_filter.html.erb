@@ -1,8 +1,18 @@
 <% facets['facet'].each_with_index do |facet_item, facet_level| %>
-  <%= render :partial => 'facet_item', :locals => {:item => facet_item, :level => facet_level, :term_type => term_type} %>
+  <div>
+  <%= render :partial => 'facet_item', :locals => {:item => facet_item, :level => facet_level, :term_type => term_type} %>&nbsp;
+  <% if facet_level == 0 %>
+	<% container_id = term_type.to_s + "container_id" %>
+  	<%= button_to_function 'Choose', "jQuery('##{container_id}').dialog('open');",
+      :id => "add_phenotype_button" %>
+	  <%= render :partial => 'search/faceted_browsing_term_filter_popup', :locals => {:label => "Entity", :term_type => term_type, :autocomplete_type => autocomplete} %>
+  <% end %>
+  </div>
   <% if facet_item['children'] %>
     <% facet_item['children'].sort{|a,b| @filter_term_names[a['id']]['name'] <=> @filter_term_names[b['id']]['name']}.each do |child| %>
+	  <div>
       <%= render :partial => 'facet_item', :locals => {:item => child, :level => facet_level+1, :term_type => term_type} %>
+	  </div>
     <% end %>
   <% end %>
 <% end %>

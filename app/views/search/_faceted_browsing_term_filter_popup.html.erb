@@ -1,0 +1,48 @@
+<% input_id = term_type.to_s + "input_id" %>
+<% container_id = term_type.to_s + "container_id" %>
+<% form_id = term_type.to_s + "form_id" %>
+<% selected_term_field_name = "facet_paths[#{term_type}]" %>
+<% selected_term_field_id = "facet_paths_#{term_type}" %>
+<div id="<%= container_id %>" title="Choose <%= label %>">
+  <% form_tag({:controller => :phenotypes, :action => :facets}, :method => :get, :id => form_id) do %>
+    <label for="name"><%= label %>:</label>
+    <%= text_field_tag :term_name, '', :id => input_id %>
+	<%= hash_as_hidden_fields({'facet_paths' => (params['facet_paths'].reject{|k,v| k==term_type.to_s})}) %>
+    <%= hidden_field_tag selected_term_field_name, nil, :id => selected_term_field_id %>
+    <%= submit_tag "Select #{label}", :style => 'display:none', :id => 'term_submit_button' %>
+  <% end %>
+</div>
+
+<% content_for :javascript do %>
+  <script type='text/javascript'>
+    jQuery(function(){
+      var dlg = jQuery("#<%= container_id %>").dialog({
+        autoOpen: false,
+        height: 200,
+        width: 500,
+        modal: true,
+        buttons: {
+          'Select <%= label %>': function() {
+            jQuery('#<%= form_id %>').submit()
+          },
+          Cancel: function() {
+            jQuery(this).dialog('close');
+          }
+        },
+        close: function() {}
+      });
+      jQuery('#<%= form_id %>').submit(function(){
+        jQuery('#<%= container_id %>').dialog('close');
+      });
+    });
+  </script>
+<% end %>
+
+<% content_for :footer_javascript do %>
+  <script type="text/javascript">
+    var ac = initAutocomplete('<%= input_id %>', [ONTOLOGY.TAO, ONTOLOGY.ZFIN, ONTOLOGY.TTO], '<%= autocomplete_type %>', 2);
+    ac.result(function(event, data, formatted) {
+      if(data){ jQuery("#<%= selected_term_field_id %>").attr('value', data.id); }
+    });
+  </script>
+<% end %>

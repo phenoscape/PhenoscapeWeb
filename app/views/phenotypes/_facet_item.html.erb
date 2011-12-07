@@ -2,7 +2,7 @@
 	big_indent_ems = 1.2;
 	outdent_ems = 0.4;
  %>
-<div class='facet_item <%= "active" if item.has_key?('children') %>' 
+<span class='facet_item <%= "active" if item.has_key?('children') %>' 
 	 style='padding-left:<%= (level * big_indent_ems) + outdent_ems %>em; text-indent: -<%= outdent_ems %>em;'>
   <!--<%= tabs(level) %>-->
   <% if item.has_key?('id') %>
@@ -12,4 +12,4 @@
 	<% item['count'] = 'none' if item.has_key?('children') && item['children'].empty? %>
   <% end %>
   <span class='facet_count'>(<%= item['count'] %>)</span>
-</div>
+</span>
