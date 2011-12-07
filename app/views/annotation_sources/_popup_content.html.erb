@@ -17,13 +17,15 @@
     <% if annotation_source['publication'] %>
       <div class="source <%= 'dotted_border' if index > 0 %>">
 		<% if params[:node_type] == 'gene' # remove this after zfin sources are properly loaded %>
-		<% annotation_source['publication']['source'] = {'id'=>'zfin_pub'} %>
+         <% annotation_source['publication']['source'] = {'id'=>'zfin_pub'} %>
 		<% end %>
 		<% if annotation_source['genotype'] %>
-			Genotype or morpholino: 
-			<%= term_page_link(annotation_source['genotype']) %> — 
+            <strong>Genotype or morpholino: 
+			<%= term_page_link(annotation_source['genotype']) %> — </strong>
 		<% end %>
-	    <%= term_page_link(annotation_source['publication']) %>
+        <% if  not annotation_source['genotype'] %><strong><% end %>
+         <%= term_page_link(annotation_source['publication']) %>
+        <% if  not annotation_source['genotype'] %></strong><% end %>
         <% if annotation_source['character'] %>
           <table class='character_state'>
             <tr>
