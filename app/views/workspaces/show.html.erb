@@ -35,7 +35,7 @@
           <%= button_to_function 'Clear Workspace', 'jQuery("#clear-workspace-form").submit()', :style => 'margin-right: 158px;' %>
           
           Send selections to: 
-          <%= render :partial => 'shared/related_query_links', :locals => {:phenotypic_profile_tree => true} %>
+          <%= render :partial => 'shared/related_query_links', :locals => {:phenotypic_profile_tree => true, :faceted_browsing => true} %>
         </div>
       <% end %>
       <% unless empty_workspace %>
