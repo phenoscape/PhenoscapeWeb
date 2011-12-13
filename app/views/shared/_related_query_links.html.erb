@@ -1,7 +1,11 @@
 <% phenotypic_profile_tree ||= false %>
+<% faceted_browsing ||= false %>
 	<select id='related_query_links' onchange="performRelatedQuery(this);">
     <% if phenotypic_profile_tree %>
   		<option value="/phenotypes/profile_tree">Phenotypic profile tree</option>
+  	<% end %>
+	<% if faceted_browsing %>
+  		<option value="/phenotypes/facets">Faceted browsing</option>
   	<% end %>
 		<option <% unless controller.controller_name == 'phenotypes' %>value="/phenotypes" <% else %> value="" selected="selected" <% end %>>Phenotypes</option>
 		<option <% unless controller.controller_name == 'taxon_annotations' %>value="/taxon_annotations" <% else %> value="" selected="selected" <% end %>>Phenotype annotations to taxa</option>
