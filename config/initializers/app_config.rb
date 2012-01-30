@@ -31,7 +31,12 @@ SUBJECT_RELATION_MAPPINGS = {
   "reciprocal_of"         => "reciprocal of",
   "OBO_REL:has_part"      => "has part",
   "has_quality"           => "has quality",
-  "has_location"          => "has location"
+  "has_location"          => "has location",
+  "participates_in"       => "participates in",
+  "negatively_regulates"  => "negatively regulates",
+  "positively_regulates"  => "positively regulates",
+  "regulates"             => "regulates",
+  "disjoint_from"         => "disjoint from"
 }
 
 
@@ -48,7 +53,12 @@ OBJECT_RELATION_MAPPINGS = {
   "has_quality"           => "may be quality of",
   "increased_in_magnitude_relative_to" => "may be decreased in magnitude relative to",
   "decreased_in_magnitude_relative_to" => "may be increased in magnitude relative to",
-  "has_location"          => "location of"
+  "has_location"          => "location of",
+  "participates_in"       => "may have participant",
+  "negatively_regulates"  => "may be negatively regulated by",
+  "positively_regulates"  => "may be positively regulated by",
+  "regulates"             => "may be regulated by",
+  "disjoint_from"         => "disjoint from"
 }
 
 
