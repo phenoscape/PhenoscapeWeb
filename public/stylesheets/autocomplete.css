@@ -51,8 +51,12 @@
   color: white;
 }
 
+.ac_input {
+	color: green;
+}
+
 .ac_non_matching_input {
-    color: red;
+    color: black;
     /*
     border-color: red;
     background-color: #fdd; 

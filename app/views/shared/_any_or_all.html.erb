@@ -1,4 +1,5 @@
-<span class='any_or_all'>
+<% hide = params[:filter][section].size < 2 %>
+<span class='any_or_all' <%= hide ? "style='display: none'" : '' %> >
   <%= radio_button_tag "filter[#{section}_match_type]", 'any', params[:filter]["#{section}_match_type"] != 'all', 
     :onchange => "changeSectionFilterOperators('#{section}'); this.form.submit();" %> any
   <%= radio_button_tag "filter[#{section}_match_type]", 'all', params[:filter]["#{section}_match_type"] == 'all', 

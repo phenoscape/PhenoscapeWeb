@@ -10,7 +10,7 @@
         <div class='section'>
           <div class='right'><%= button_to_function 'Add', "clearInputs(['#popupTermChoice','#term_id']);jQuery('#term_filter_container').dialog('open');" %></div>
           <div class='green_heading'>Taxon is:
-	<%= render :partial => 'shared/any_or_all', :locals => {:section => 'taxa'} %>:</div>
+	<%= render :partial => 'shared/any_or_all', :locals => {:section => 'taxa'} %></div>
           <div id='term_filter' class='section_indent'>
             <%= render :partial => '/search/term_filter', :locals => {:terms => params[:filter][:taxa], :field_name => "taxa", :any_or_all => true} %>
           </div>
@@ -34,7 +34,7 @@
         <div class='section'>
           <div class='right'><%= button_to_function 'Add', "clearInputs(['#publicationChoice','#publication_id']);jQuery('#publication_filter_container').dialog('open');" %></div>
           <div class='green_heading'>Publication is:
-		<%= render :partial => 'shared/any_or_all', :locals => {:section => 'publications'} %>:</div>
+		<%= render :partial => 'shared/any_or_all', :locals => {:section => 'publications'} %></div>
           <div id='publication_filter' class='section_indent'>
             <%= render :partial => '/search/publication_filter', :locals => {:publications => params[:filter][:publications], :any_or_all => true} %>
           </div>
@@ -46,7 +46,7 @@
         <div class='section'>
           <div class='right'><%= button_to_function 'Add', "clearInputs(['#geneChoice','#gene_id']);jQuery('#gene_filter_container').dialog('open');" %></div>
           <div class='green_heading'>Gene is:
-	<%= render :partial => 'shared/any_or_all', :locals => {:section => 'genes'} %>:</div>
+	<%= render :partial => 'shared/any_or_all', :locals => {:section => 'genes'} %></div>
           <div id='gene_filter' class='section_indent'>
             <%= render :partial => '/search/gene_filter', :locals => {:genes => params[:filter][:genes], :any_or_all => true} %>
           </div>
