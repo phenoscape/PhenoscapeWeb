@@ -4,7 +4,7 @@
        :onsubmit => "setNextIndex('next_term_index', 'filter\\[#{field_name}\\]');"} do %>
     <%= hidden_field_tag :next_term_index %>
     <%= hidden_field_tag :for_variation_tree, 'yes' if for_variation_tree %>
-    
+    <p class="popup_instructions">Begin typing to choose a term from the autocomplete menu.</p>
     <label for="name"><%= label %>:</label>
     <%= text_field_tag :term_name, '', :id => 'popupTermChoice' %>
     <%= hidden_field_tag :term_id %>

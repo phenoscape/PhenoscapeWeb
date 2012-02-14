@@ -2,7 +2,7 @@
   <% form_remote_tag :url => {:controller => :search, :action => :publication_filter}, :html => {:id => 'publication_filter_form', 
        :onsubmit => "setNextIndex('next_publication_index', 'filter\\[publications\\]');"} do %>
     <%= hidden_field_tag :next_publication_index %>
-    
+    <p class="popup_instructions">Begin typing to choose a term from the autocomplete menu.</p>
     <label for="name">Publication:</label>
     <%= text_field_tag :publication_name, '', :id => 'publicationChoice' %>
     <%= hidden_field_tag :publication_id %>

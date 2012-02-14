@@ -2,7 +2,7 @@
   <% form_remote_tag :url => {:controller => :search, :action => :gene_filter}, :html => {:id => 'gene_filter_form', 
        :onsubmit => "setNextIndex('next_gene_index', 'filter\\[genes\\]');"} do %>
     <%= hidden_field_tag :next_gene_index %>
-    
+    <p class="popup_instructions">Begin typing to choose a term from the autocomplete menu.</p>
     <label for="name">Gene:</label>
     <%= text_field_tag :gene_name, '', :id => 'geneChoice' %>
     <%= hidden_field_tag :gene_id %>

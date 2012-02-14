@@ -521,3 +521,8 @@ table.grid td, table.grid th {
 .suggested-taxon {
   display: block;
 }
+
+.popup_instructions {
+	font-size: 75%;
+	font-style: italic;
+}

@@ -9,6 +9,7 @@
     <% elsif for_variation_tree %>
       <%= hidden_field_tag :for_variation_tree, 'yes' %>
     <% end %>
+	<span class="popup_instructions">Begin typing to choose a term from the autocomplete menu.</span>
     <table class='popup_table'>
       <tr>
         <th><label for="entity">Entity:</label></th>
@@ -36,7 +37,7 @@
     jQuery(function(){
       var dlg = jQuery("#phenotype_filter_container").dialog({
         autoOpen: false,
-        height: <%= for_variation_tree ? 200 : 250 %>,
+        height: <%= for_variation_tree ? 200 : 275 %>,
         width: 400,
         modal: true,
         buttons: {
