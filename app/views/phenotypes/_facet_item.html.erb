@@ -1,8 +1,9 @@
 <% 	# set indent and outdent values for n-level items
 	big_indent_ems = 1.2;
 	outdent_ems = 0.4;
+	active = item.has_key?('children')
  %>
-<span class='facet_item <%= "active" if item.has_key?('children') %>' 
+<span class='facet_item <%= "active" if active %>' 
 	 style='padding-left:<%= (level * big_indent_ems) + outdent_ems %>em; text-indent: -<%= outdent_ems %>em;'>
   <!--<%= tabs(level) %>-->
   <% if item.has_key?('id') %>
@@ -11,5 +12,5 @@
     <%= link_to_facet "Any #{term_type.to_s.titleize.downcase}", term_type %>
 	<% item['count'] = 'none' if item.has_key?('children') && item['children'].empty? %>
   <% end %>
-  <span class='facet_count'>(<%= item['count'] %>)</span>
+  <span class='facet_count'>(<%= item['count'] %><%= " phenotypes" if active %>)</span>
 </span>
