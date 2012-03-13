@@ -13,7 +13,7 @@
     
     <div class='search_area'>
       <!-- Phenotype Filter -->
-      <span class='section_heading browse-area shadow-small'>Phenotype</span>
+      <span class='section_heading browse-area shadow-small always-show-help'>Phenotype <a href="/hints/WebHints#WhatArePhenotypes" class="help-link"><img src="/images/help.png" alt="help"></a></span>
       <div class='section browse-area rounded-medium shadow-small'>
         <%= select_tag 'facet_paths[part_of]', options_for_select([['type of', 'false'],  ['part of', 'true']], params[:facet_paths][:part_of]), :class => 'right', :onchange => 'facetPartSelectSubmit(this)' %>
         <div id='facet_filter'>

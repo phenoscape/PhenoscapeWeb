@@ -526,3 +526,5 @@ table.grid td, table.grid th {
 	font-size: 75%;
 	font-style: italic;
 }
+
+.ui-dialog {overflow: visible;}
