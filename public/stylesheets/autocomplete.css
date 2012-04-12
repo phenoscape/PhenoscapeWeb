@@ -52,13 +52,9 @@
 }
 
 .ac_input {
-	color: green;
+	font-weight: bold;
 }
 
 .ac_non_matching_input {
-    color: black;
-    /*
-    border-color: red;
-    background-color: #fdd; 
-    */
+	font-weight: normal;
 }
