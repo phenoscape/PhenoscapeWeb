@@ -168,7 +168,7 @@ class PhenotypesController < ApplicationController
       end
       [:phenotypes, :taxa, :genes].each{|type| params[:filter][type] = nil if params[:filter][type]['0'].blank? }
       unless params[:filter][:phenotypes].nil?
-        params[:filter][:phenotypes]['0'][:including_parts] = (params[:facet_paths][:part_of].to_s == 'true')
+        params[:filter][:phenotypes]['0'][:including_parts] = (params[:facet_paths][:part_of].to_s == 'true').to_s
       end
       
       [:entity, :quality, :related_entity, :taxon, :gene].each do |term_type|

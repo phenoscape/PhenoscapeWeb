@@ -10,7 +10,7 @@
     <%= link_to_facet display_filter_term(item['id']), term_type, item['id'] %>
   <% else %>
     <%= link_to_facet "Any #{term_type.to_s.titleize.downcase}", term_type %>
-	<% item['count'] = 'none' if item.has_key?('children') && item['children'].empty? %>
+	<% item['count'] = 'no' if item.has_key?('children') && item['children'].empty? %>
   <% end %>
   <span class='facet_count'>(<%= item['count'] %><%= " phenotypes" if active %>)</span>
 </span>
