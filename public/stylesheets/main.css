@@ -554,4 +554,9 @@ table.grid td, table.grid th {
 
   div#sidebar {float: none; display: none;}
     
+  #term .tree_frame {display: none;}
+  
+  #term #info_container {margin-left: 0;}
+  
+  
 }
