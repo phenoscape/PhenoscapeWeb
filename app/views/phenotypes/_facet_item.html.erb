@@ -3,8 +3,8 @@
 	outdent_ems = 0.4;
 	active = item.has_key?('children')
  %>
-<span class='facet_item <%= "active" if active %>' 
-	 style='padding-left:<%= (level * big_indent_ems) + outdent_ems %>em; text-indent: -<%= outdent_ems %>em;'>
+<span class='facet_item <%= "active" if active %>' >
+	<% level.times do %>&nbsp;&nbsp;&nbsp;&nbsp;<% end %>
   <% if item.has_key?('id') %>
     <%= link_to_facet display_filter_term(item['id']), term_type, item['id'] %>
   <% else %>
