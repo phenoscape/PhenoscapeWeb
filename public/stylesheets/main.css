@@ -528,3 +528,17 @@ table.grid td, table.grid th {
 }
 
 .ui-dialog {overflow: visible;}
+
+@media screen and (max-width: 600px) {
+  
+  #search_sidebar {
+    float: none;
+    width: 100%;
+  }
+  
+  #search_main {
+      float: none;
+      width: 100%;
+  }
+  
+}
