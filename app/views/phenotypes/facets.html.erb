@@ -16,15 +16,15 @@
       <span class='section_heading browse-area shadow-small always-show-help'>Phenotype <a href="/hints/WebHints#WhatArePhenotypes" class="help-link"><img src="/images/help.png" alt="help"></a></span>
       <div class='section browse-area rounded-medium shadow-small'>
         <%= select_tag 'facet_paths[part_of]', options_for_select([['type of', 'false'],  ['part of', 'true']], params[:facet_paths][:part_of]), :class => 'right', :onchange => 'facetPartSelectSubmit(this)' %>
-        <div id='facet_filter'>
+        <div class='facet_filter'>
           <%= render :partial => 'facet_filter', :locals => {:facets => @entity_facets, :term_type => :entity, :autocomplete => :entity} %>
         </div>
         <div class='sidebar-divider'>&nbsp;</div>
-        <div id='facet_filter'>
+        <div class='facet_filter'>
           <%= render :partial => 'facet_filter', :locals => {:facets => @quality_facets, :term_type => :quality, :autocomplete => :quality} %>
         </div>
         <div class='sidebar-divider'>&nbsp;</div>
-        <div id='facet_filter'>
+        <div class='facet_filter'>
           <%= render :partial => 'facet_filter', :locals => {:facets => @related_entity_facets, :term_type => :related_entity, :autocomplete => :entity} %>
         </div>
       </div>
@@ -32,7 +32,7 @@
       <!-- Taxon Filter -->
       <span class='section_heading browse-area shadow-small'>Taxon</span>
       <div class='section browse-area rounded-medium shadow-small'>
-        <div id='facet_filter'>
+        <div class='facet_filter'>
           <%= render :partial => 'facet_filter', :locals => {:facets => @taxon_facets, :term_type => :taxon, :autocomplete => :taxon} %>
         </div>
       </div>
@@ -40,7 +40,7 @@
       <!-- Genes Filter -->
       <span class='section_heading browse-area shadow-small'>Gene</span>
       <div class='section browse-area rounded-medium shadow-small'>
-        <div id='facet_filter'>
+        <div class='facet_filter'>
 	<!-- need to fix autocomplete to include gene_ontology -->
           <%= render :partial => 'facet_filter', :locals => {:facets => @gene_facets, :term_type => :gene, :autocomplete => :gene} %>
         </div>

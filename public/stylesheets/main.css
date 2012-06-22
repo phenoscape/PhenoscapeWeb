@@ -1,4 +1,6 @@
 body {font-family: Helvetica, sans-serif; margin: 0.5em 0.75em;}
+img {max-width: 100%;}
+#upperTermForm, #upperSearchExamples {max-width: 100%;}
 div#sidebar {float: right; width: 15em;}
 div#main {padding-right: 14em;}
 div#main #termFormContent {max-width: 50em;}
@@ -16,8 +18,7 @@ h3#feedHeader {color: #0a3a34;}
 .gfc-resultsHeader {display: none;}
 #feed {font-size: 75%;}
 
-h1.top_logo_holder {float: left;}
-div.header-message {padding: 0.0em 0.75em; border: 1px solid #ccc; color: #333; background-color: #f3f3f3; font-size: 0.9em; font-style: italic; line-height: 1.2em; margin: 6px 10px 10px 344px;}
+div.header-message {padding: 0.0em 0.75em; border: 1px solid #ccc; color: #333; background-color: #f3f3f3; font-size: 0.9em; font-style: italic; line-height: 1.2em; margin: 6px 10px; max-width: 33em; float: right;}
 div.header-message a {font-weight: bold;}
 .feedback-widget {clear: right; float: right; margin: 0px -4px 8px 12px; border: none; padding: 7px 18px; background-color:  #276; background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #276), color-stop(100%, #000000)); background-image: -webkit-linear-gradient(top, #276, #000000); background-image: -moz-linear-gradient(top, #276, #000000); background-image: -o-linear-gradient(top, #276, #000000); background-image: -ms-linear-gradient(top, #276, #000000); background-image: linear-gradient(top, #276, #000000);}
 div.header-message .feedback-widget {margin: 4px -22px 0px 12px;}
@@ -127,8 +128,8 @@ a:hover .lateral-nav-link {text-decoration: underline;}
 
 
 .search-instructions {margin-top: 0; font-size: 80%; font-style: italic; line-height: 1.1em;}
-#upperTermChoiceGroup {float: right; width: 33em; margin-right: 0; text-align: right; font-family: Helvetica, sans-serif;}
-#upperSearchExamples {width: 43em; float: right; font-size: 75%; font-style: italic; margin: 0.5em 0 0.8em;}
+#upperTermChoiceGroup {float: right; max-width: 25em; margin-right: 0; text-align: right; font-family: Helvetica, sans-serif;}
+#upperSearchExamples { float: right; font-size: 75%; font-style: italic; margin: 0.5em 0 0.8em;}
 #upperTermChoice {width: 17em;}
 #sidebar {float: left; width: 30%;}
 #sidebar .gfc-result { margin-bottom: 1em; }
@@ -528,3 +529,34 @@ table.grid td, table.grid th {
 }
 
 .ui-dialog {overflow: visible;}
+
+#feedHeader a {color: inherit;}
+
+@media screen and (max-width: 600px) {
+    
+    h1 img {
+        float: none;
+    }
+  
+  #search_sidebar {
+    float: none;
+    width: 100%;
+  }
+  
+  #search_main {
+      float: none;
+      width: 100%;
+  }
+  
+  #upperTermChoiceGroup { max-width: 100%;}
+  
+  div#main {padding-right: 0;}
+
+  div#sidebar {float: none; display: none;}
+    
+  #term .tree_frame {display: none;}
+  
+  #term #info_container {margin-left: 0;}
+  
+  
+}
