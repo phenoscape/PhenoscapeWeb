@@ -1,5 +1,5 @@
 body {font-family: Helvetica, sans-serif; margin: 0.5em 0.75em;}
-img {max-width: 100%;}
+img.top_logo {max-width: 100%;}
 #upperTermForm, #upperSearchExamples {max-width: 100%;}
 div#sidebar {float: right; width: 15em;}
 div#main {padding-right: 14em;}
