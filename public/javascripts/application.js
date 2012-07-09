@@ -2,6 +2,19 @@
 // This file is automatically included by javascript_include_tag :defaults
 
 
+/*
+ * Registers a callback which copies the csrf token into the
+ * X-CSRF-Token header with each ajax request.  Necessary to 
+ * work with rails applications which have fixed
+ * CVE-2011-0447
+*/
+
+jQuery(document).ajaxSend(function(e, xhr, options) {
+  var token = jQuery('meta[name="csrf-token"]').attr("content");
+  xhr.setRequestHeader("X-CSRF-Token", token);
+});
+
+
 // initializes an autocomplete text field using jquery
 function initAutocomplete(input_id, ontologyPrefixes, query_type, min_chars, width){
   if(!query_type){query_type='';}
