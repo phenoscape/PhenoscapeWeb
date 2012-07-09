@@ -25,7 +25,7 @@
       <p>
         <%-# Using button_to_function instead of submit_tag, so that (at least in some browsers)
            # if a user presses enter when a checkbox has focus, the form will not submit since there is no submit tag. -%>
-        <%= button_to_function 'Query taxa with these phenotypes', 'jQuery(this).closest("form").submit()' %>
+        <%= button_to_function 'Query taxa with these phenotypes', 'var form = jQuery(this).closest("form"); form.attr("action", "/taxa"); form.submit();' %>
       </p>
       
     <% end %>
