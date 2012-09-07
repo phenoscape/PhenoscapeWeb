@@ -204,8 +204,8 @@ function updateFilterSection(filter_section_id) {
 }
 
 
-function initializeTooltip(element_id, term_id) {
-  jQuery(element_id).bt({trigger: 'click',
+function initializeTooltip(element_id, term_id, trigger) {
+  jQuery(element_id).bt({trigger: (trigger === undefined ? 'click' : trigger),
                          ajaxPath: '/search/term_tooltip/' + term_id,
                          width: 325,
                          fill: '#FFF',

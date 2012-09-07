@@ -388,9 +388,12 @@ module ApplicationHelper
     if stripMarkup
       return simple_term
     end
-    content_tag :span, :class => term_css_classes(term) do
+    element_id = "term_link_#{unique_id}"
+    #str = "<span id='#{element_id}'
+    str = content_tag :span, :class => term_css_classes(term), :id => element_id do
       simple_term
     end
+    str += "<script>jQuery(document).ready(function(){initializeTooltip('##{element_id}', '#{term['id']}', 'hover');})</script>"
   end
   
   
