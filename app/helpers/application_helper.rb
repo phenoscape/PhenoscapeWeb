@@ -162,7 +162,7 @@ module ApplicationHelper
   def zfin_url(term)
     id = term["id"]
     fixed_id = id.sub(/^ZFIN:/, "")
-    return "http://zfin.org/cgi-bin/webdriver?MIval=aa-markerview.apg&OID=#{fixed_id}"
+    return "http://zfin.org/action/marker/view/#{fixed_id}"
   end
   
   def zfin_pub_url(term)
