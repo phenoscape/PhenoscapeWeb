@@ -345,13 +345,13 @@ module ApplicationHelper
   end
   
   
-  def term_link(term)
+  def term_link(term, popup_style='click')
     if (term['name'].blank? && term['label'].blank?) && !term['parents'].blank?
       format_term(term, 'term_link')
     else
       element_id = "term_link_#{unique_id}"
       str = "<span id='#{element_id}' class='term_link'>#{display_term(term)}</span>"
-      str += "<script>jQuery(document).ready(function(){initializeTooltip('##{element_id}', '#{term['id']}');})</script>"
+      str += "<script>jQuery(document).ready(function(){initializeTooltip('##{element_id}', '#{term['id']}', '#{popup_style}');})</script>"
       return str
     end
   end
@@ -388,17 +388,14 @@ module ApplicationHelper
     if stripMarkup
       return simple_term
     end
-    element_id = "term_link_#{unique_id}"
-    #str = "<span id='#{element_id}'
-    str = content_tag :span, :class => term_css_classes(term), :id => element_id do
+    content_tag :span, :class => term_css_classes(term) do
       simple_term
     end
-    str += "<script>jQuery(document).ready(function(){initializeTooltip('##{element_id}', '#{term['id']}', 'hover');})</script>"
   end
   
   
   def display_filter_term(id)
-    return display_term(@filter_term_names[id.to_s]) if @filter_term_names[id.to_s]
+    return term_link(@filter_term_names[id.to_s], 'hover') if @filter_term_names[id.to_s]
     return ''
   end
   

@@ -312,7 +312,8 @@ a.toggle_link:hover {text-decoration: underline;}
 
 .facet_header {margin-bottom:0px; margin-top: 10px;}
 .facet_item.active {font-weight: bold;}
-.facet_item.active a{color: black;}
+.facet_item.active a {color: black;}
+.facet_item .term_link {color: inherit;}
 .facet_item .facet_count {color: gray;}
 
 #workspace .section.disabled,#workspace .section.disabled * {color: gray !important;}

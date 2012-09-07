@@ -205,7 +205,7 @@ function updateFilterSection(filter_section_id) {
 
 
 function initializeTooltip(element_id, term_id, trigger) {
-  jQuery(element_id).bt({trigger: (trigger === undefined ? 'click' : trigger),
+  jQuery(element_id).bt({trigger: (MochiKit.Base.isUndefinedOrNull(trigger) ? 'click' : trigger),
                          ajaxPath: '/search/term_tooltip/' + term_id,
                          width: 325,
                          fill: '#FFF',
