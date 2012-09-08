@@ -13,6 +13,7 @@
     <div class='clear'></div>
   </div>
   
+	<% is_gene = false %>
   <% annotation_sources['annotations'].each_with_index do |annotation_source, index| %>
     <% if annotation_source['publication'] %>
       <div class="source <%= 'dotted_border' if index > 0 %>">
@@ -20,6 +21,7 @@
          <% annotation_source['publication']['source'] = {'id'=>'zfin_pub'} %>
 		<% end %>
 		<% if annotation_source['genotype'] %>
+			<% is_gene = true %>
             <strong>Genotype or morpholino: 
 			<%= term_page_link(annotation_source['genotype']) %> — </strong>
 		<% end %>
@@ -55,13 +57,13 @@
             <div class='clear'></div>
           </div>
         <% end %>
-		<% if annotation_source['genotype'] %>
-			<br><br>
-			<div class="gene-phenotypes-link">
-				<%= link_to("View all phenotypes for this gene at ZFIN", (zfin_url(annotation_source['gene']) + "#phenotype")) %>
-			</div>
-		<% end %>
       </div>
     <% end %>
   <% end %>
+	<% if is_gene %>
+		<br><br>
+		<div class="gene-phenotypes-link">
+			<%= link_to("View all phenotypes for this gene at ZFIN", (zfin_url({"id" => params[:node_id]}) + "#phenotype")) %>
+		</div>
+	<% end %>
 </div>
