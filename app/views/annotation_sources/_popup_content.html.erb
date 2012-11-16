@@ -44,6 +44,13 @@
 				<td><%=h annotation_source['otu'] %></td>
 			</tr>
 			<% end %>
+			<% if annotation_source['curator'] %>
+				<tr></tr>
+				<tr>
+					<th>curated by:</th>
+					<td><%=h annotation_source['curator'] %></td>
+				</tr>
+			<% end %>
           </table>
         <% end %>
         <% if params[:include_inferred] == 'true' %>
