@@ -26,7 +26,7 @@
     <div class='section'>
       <h3>Elsewhere</h3>
       <div class='content'>
-        <% if @taxon['xrefs'].any? && @taxon['xrefs'].first{|xref| xref['id'].starts_with?("urn:lsid:globalnames.org:index:")}%>
+        <% if @taxon['xrefs'].any? && @taxon['xrefs'].find{|xref| xref['id'].starts_with?("urn:lsid:globalnames.org:index:")}%>
           <%= external_link_to 'View in Global Names Index', "http://gni.globalnames.org/name_strings?search_term=" + 
                 CGI::escape(@taxon['name']) %><br />
         <% end %>
