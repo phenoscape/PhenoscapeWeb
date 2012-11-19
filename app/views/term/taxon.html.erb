@@ -30,7 +30,7 @@
           <%= external_link_to 'View in Global Names Index', "http://gni.globalnames.org/name_strings?search_term=" + 
                 CGI::escape(@taxon['name']) %><br />
         <% end %>
-        <% if @taxon['xrefs'].any? && ncbi_taxon = @taxon['xrefs'].first{|xref| xref['id'].starts_with?("NCBITaxon:")} %>
+        <% if @taxon['xrefs'].any? && ncbi_taxon = @taxon['xrefs'].find{|xref| xref['id'].starts_with?("NCBITaxon:")} %>
           <%= external_link_to 'View in NCBI taxonomy', "http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=" + 
                 CGI::escape(ncbi_taxon['id'][10..-1]) %><br />
         <% end %>
