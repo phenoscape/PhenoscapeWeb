@@ -34,6 +34,9 @@
           <%= external_link_to 'View in NCBI taxonomy', "http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=" + 
                 CGI::escape(ncbi_taxon['id'][10..-1]) %><br />
         <% end %>
+		<% if @taxon['xrefs'].any? && fishbase_ref = @taxon['xrefs'].find{|xref| xref['id'].starts_with?("http://www.fishbase.org/")} %>
+          <%= external_link_to 'View at FishBase', fishbase_ref['id'] %><br />
+        <% end %>
         <%= external_link_to 'View at EoL', 'http://www.eol.org/search?q=' + CGI::escape(@taxon['name']) %><br />
         <%= external_link_to 'View at Wikipedia', 'http://en.wikipedia.org/wiki/Special:Search?go=Go&search=' + 
           CGI::escape(@taxon['name']) %>
