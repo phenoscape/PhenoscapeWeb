@@ -4,6 +4,7 @@ SOURCE_KEYS = {
   'teleost-taxonomy'    => :taxon,
   'teleost_anatomy'     => :entity,
   'vertebrate_anatomy'  => :entity,
+  'vertebrate_skeletal_anatomy' => :entity,
   'caro'                => :entity,
   'gene_ontology'       => :entity,
   'biological_process'  => :entity,
