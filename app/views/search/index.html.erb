@@ -1,25 +1,8 @@
-<% content_for :javascript do %>
-    <!-- include Google Feed API -->	 
-	 <!-- <script type="text/javascript" src="http://www.google.com/jsapi?key=[your API key]"></script>  -->	 
-	 <script type="text/javascript" src="http://www.google.com/jsapi"></script>	 
-
-	 <!-- include this plugin -->	 
-	 <script type="text/javascript" src="/javascripts/jquery.gfeed.js"></script>	 
-
-	 <script type="text/javascript">	 
-	     // when the DOM is ready, convert the feed anchors into feed content	 
-	     jQuery(document).ready(function() {	 
-	         jQuery('a.feed').gFeed( { target: '#feed', tabs: true } );	 
-	     }); 
-	 </script>
-<% end %>
 
 <div id="sidebar">
 	<div class="sidebar-box rounded-small">
 		<h3 id="feedHeader" class="clear"><a href="http://blog.phenoscape.org/">Phenoscape News</a></h3>
-		<div id="feed">
-		    <a class="feed" href="http://blog.phenoscape.org/feed/">Phenoscape News</a> 
-		</div>
+		<p>This site is an archival instance of the first version of the Phenoscape Knowledgebase. Keep up with continued Phenoscape activities at <a href="http://blog.phenoscape.org/">the Phenoscape blog</a>.</p>
 	</div>
 </div>
 <div id="main">
